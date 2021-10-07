@@ -3,6 +3,7 @@ import logging
 import stormpy
 import stormpy.synthesis
 
+from .cegis_parallelism_loop import CegisParallelismLoop
 from ..family_checkers.quotientbased import QuotientBasedFamilyChecker, logger as quotientbased_logger
 from ..jani.jani_quotient_builder import logger as jani_quotient_builder_logger
 from ..jani.quotient_container import logger as quotient_container_logger
@@ -309,72 +310,13 @@ class IntegratedChecker(QuotientBasedFamilyChecker, CEGISChecker):
         )
         Profiler.stop()
 
-        # process family members
-        Profiler.start("is - pick DTMC")
-        assignment = family.pick_member()
-        Profiler.stop()
-
-        while assignment is not None:
-            self.iterations_cegis += 1
-            logger.debug(f"CEGIS: iteration {self.iterations_cegis}.")
-            logger.debug(f"CEGIS: picked family member: {assignment}.")
-
-            # collect indices of violated formulae
-            violated_formulae_indices = []
-            for formula_index in family.formulae_indices:
-                # logger.debug(f"CEGIS: model checking DTMC against formula with index {formula_index}.")
-                Profiler.start("is - DTMC model checking")
-                Family.dtmc_checks_inc()
-                sat, _ = family.analyze_member(formula_index)
-                Profiler.stop()
-                logger.debug(f"Formula {formula_index} is {'SAT' if sat else 'UNSAT'}")
-                if not sat:
-                    violated_formulae_indices.append(formula_index)
-            if (not violated_formulae_indices or violated_formulae_indices == [len(self.formulae) - 1]) \
-                    and self.input_has_optimality_property():
-                self._check_optimal_property(family, assignment, counterexample_generator)
-            elif not violated_formulae_indices:
-                Profiler.add_ce_stats(counterexample_generator.stats)
-                return True
-
-            # some formulae UNSAT: construct counterexamples
-            # logger.debug("CEGIS: preprocessing DTMC.")
-            Profiler.start("_")
-            counterexample_generator.prepare_dtmc(family.dtmc, family.dtmc_state_map)
-            Profiler.stop()
-
-            Profiler.start("is - constructing CE")
-            conflicts = []
-            for formula_index in violated_formulae_indices:
-                # logger.debug(f"CEGIS: constructing CE for formula with index {formula_index}.")
-                conflict_indices = counterexample_generator.construct_conflict(formula_index)
-                # conflict = counterexample_generator.construct(formula_index, self.use_nontrivial_bounds)
-                conflict_holes = [Family.hole_list[index] for index in conflict_indices]
-                generalized_count = len(Family.hole_list) - len(conflict_holes)
-                logger.debug(
-                    f"CEGIS: found conflict involving {conflict_holes} (generalized {generalized_count} holes)."
-                )
-                conflicts.append(conflict_indices)
-
-                # compare to maxsat, state exploration, naive hole exploration, global vs local bounds
-                self.ce_quality_measure(
-                    assignment, relevant_holes, counterexample_generator,
-                    family.dtmc, family.dtmc_state_map, formula_index
-                )
-
-            family.exclude_member(conflicts)
-            Profiler.stop()
-
-            # pick next member
-            Profiler.start("is - pick DTMC")
-            assignment = family.pick_member()
-            Profiler.stop()
-
-            # record stage
-            if self.stage_step(0) and not ONLY_CEGIS:
-                # switch requested
-                Profiler.add_ce_stats(counterexample_generator.stats)
-                return None
+        # TODO: this is parallel loop of CEGIS
+        # TODO: here starting all parallelism with processes TypeError
+        cegisProces = CegisParallelismLoop(self.iterations_cegis, self.formulae, family, self.families,
+                                           counterexample_generator, relevant_holes)
+        cegisProces.start()
+        # block the process until everything is done!
+        cegisProces.join()
 
         # full family pruned
         logger.debug("CEGIS: no more family members.")

@@ -33,71 +33,7 @@ class SynthesisTestSuite(unittest.TestCase):
         stdout, stderr = process.communicate()
         # 3.verify phase
         self.assertIn("Hybrid: opt = 18.19306", str(stdout))
-        self.assertEqual("b''", str(stderr))
 
-    def run_kydie_for_oracle(self, method):
-
-        process = subprocess.Popen([
-            'python3',
-            PayntTestUtils.get_path_to_paynt_executable(),
-            '--project', PayntTestUtils.get_path_to_workspace_examples() + '/kydie/',
-            f'{method}',
-            '--short-summary',
-        ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-        stdout, stderr = process.communicate()
-        # 3.verify phase
-        method = "1-by-1" if method == "onebyone" else method
-        self.assertIn(f"{method}: opt = 3.666667", str(stdout))
-        self.assertEqual("b''", str(stderr))
-
-    def test_kydie_hybrid(self):
-
-        self.run_kydie_for_oracle('Hybrid')
-
-    def test_kydie_cegar(self):
-
-        self.run_kydie_for_oracle('CEGAR')
-
-    def test_kydie_cegis(self):
-
-        self.run_kydie_for_oracle('CEGIS')
-
-    def test_kydie_one_by_one(self):
-
-        self.run_kydie_for_oracle('onebyone')
-
-    def run_grid_optimal_for_oracle(self, method):
-
-        process = subprocess.Popen([
-            'python3',
-            PayntTestUtils.get_path_to_paynt_executable(),
-            '--project', PayntTestUtils.get_path_to_workspace_examples() + '/grid/orig/',
-            '--properties', 'optimal.properties',
-            f'{method}',
-            '--short-summary',
-            '--constants', 'CMAX=2,THRESHOLD=0.0'
-        ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-        stdout, stderr = process.communicate()
-        # 3.verify phase
-        method = "1-by-1" if method == "onebyone" else method
-        self.assertIn(f"{method}: opt = 0.064286", str(stdout))
-        self.assertEqual("b''", str(stderr))
-
-    def test_grid_optimal_hybrid(self):
-
-        self.run_grid_optimal_for_oracle('Hybrid')
-
-    def test_grid_optimal_cegar(self):
-
-        self.run_grid_optimal_for_oracle('CEGAR')
-
-    # def test_grid_optimal_cegis(self):
-    #     self.run_grid_optimal_for_oracle('CEGIS')
-    #
-    # def test_grid_optimal_one_by_one(self):
-    #     self.run_grid_optimal_for_oracle('onebyone')
 
     @classmethod
     def tearDownClass(cls):

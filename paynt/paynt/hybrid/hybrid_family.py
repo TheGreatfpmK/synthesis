@@ -143,7 +143,7 @@ class FamilyHybrid(Family):
         # success
         return self.member_assignment
 
-    def exclude_member(self, conflicts):
+    def exclude_member(self, conflicts, withDeletionOfMembers=True):
         """
         Exclude the subfamily induced by the selected assignment and a set of conflicts.
         """
@@ -161,6 +161,29 @@ class FamilyHybrid(Family):
             counterexample_encoding = z3.Not(z3.And(list(counterexample_clauses.values())))
             Family._solver.add(counterexample_encoding)
         self.member_assignment = None
+
+    def pick_member_with_exclude_all_holes(self):
+        """
+            Pick member from specific family and immediately exclude it from super-family. In this case
+            all holes from assigment are relevant. For instance assignment= M0LFAIR: [2],M0HFAIR: [0],M1LFAIR: [1],
+            M1HFAIR: [0],MxxA: [0],MxxB: [0],MxxC: [0] will be excluded from super-family and never used again.
+        """
+        assigment = self.pick_member()
+
+        # termination condition for CEGIS loop
+        if assigment == None:
+            return None
+
+        # every hole is relevant so we exclude specific assigment from family
+        myOwnConflicts = []
+        for i in range(len(Family.hole_list)):
+            myOwnConflicts.append(i)
+        print(myOwnConflicts)
+
+        # exclude specific assigment
+        self.exclude_member([myOwnConflicts], False)
+
+        return assigment
 
     def analyze_member(self, formula_index):
         assert self.dtmc is not None

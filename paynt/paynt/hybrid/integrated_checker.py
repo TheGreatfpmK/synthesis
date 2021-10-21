@@ -313,9 +313,9 @@ class IntegratedChecker(QuotientBasedFamilyChecker, CEGISChecker):
         # TODO: this is parallel loop of CEGIS
         # TODO: here starting all parallelism with processes TypeError
         cegisProces = CegisParallelismLoop(self.iterations_cegis, self.formulae, family, self.families,
-                                           counterexample_generator, relevant_holes)
+                                           counterexample_generator, relevant_holes, self.input_has_optimality_property(),
+                                           self._optimality_setting, self._optimal_value, self.sketch)
         cegisProces.start()
-        # block the process until everything is done!
         cegisProces.join()
 
         # full family pruned
@@ -366,7 +366,7 @@ class IntegratedChecker(QuotientBasedFamilyChecker, CEGISChecker):
             return None, None
         self.stage_step(0)
 
-        # initiate CEGAR-CEGIS loop (first phase: CEGIS) 
+        # initiate CEGAR-CEGIS loop (first phase: CEGIS)
         self.families = [family]
         logger.debug("Initiating CEGAR--CEGIS loop")
         while self.families:

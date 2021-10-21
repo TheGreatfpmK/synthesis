@@ -147,6 +147,8 @@ class FamilyHybrid(Family):
         """
         Exclude the subfamily induced by the selected assignment and a set of conflicts.
         """
+        logger.error("here--------------------" + str(self.member_assignment))
+
         assert self.member_assignment is not None
 
         for conflict in conflicts:

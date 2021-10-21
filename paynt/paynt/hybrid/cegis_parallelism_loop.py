@@ -9,6 +9,8 @@ from ..profiler import Profiler, Timer
 from .cegis import CEGISChecker
 
 ONLY_CEGIS = True
+ONLY_CEGAR = False
+PRINT_STAGE_INFO = False
 
 class CegisParallelismLoop(mp.Process, CEGISChecker):
 
@@ -17,8 +19,10 @@ class CegisParallelismLoop(mp.Process, CEGISChecker):
     _logger = logging.getLogger(__name__)
     # static member of class (    # shared counter across all processes)
     shared_data = None
+    stage_score_limit = 99999
 
-    def __init__(self, iterations_cegis, formulae, family, families, counterexample_generator, relevant_holes):
+    def __init__(self, iterations_cegis, formulae, family, families, counterexample_generator, relevant_holes,
+                 input_has_optimality_property, optimality_setting, optimal_value, sketch):
         super().__init__()
         print("CONSTRUCTOR HAS BEEN CALLED")
 
@@ -32,9 +36,27 @@ class CegisParallelismLoop(mp.Process, CEGISChecker):
         self.ce_maxsat_timer, self.ce_zero_timer, self.ce_global_timer, self.ce_local_timer = \
             Timer(), Timer(), Timer(), Timer()
         self.family = family
-        # self.families = families
-        # self.counterexample_generator = counterexample_generator
+        self.families = families
+        self.counterexample_generator = counterexample_generator
         self.relevant_holes = relevant_holes
+        self.input_has_optimality_property = input_has_optimality_property
+        self._optimality_setting = optimality_setting
+        self._optimal_value = optimal_value
+        self.stage_switch_allowed = True
+        self.stage_time_cegar, self.stage_pruned_cegar, self.stage_time_cegis, self.stage_pruned_cegis = 0, 0, 0, 0
+
+        self.cegis_allocated_time_factor = 1.0
+        # start with CEGAR
+        self.stage_cegar = True
+        self.cegis_allocated_time = 0
+        self.stage_time_allocation_cegis = 0
+
+        self.models_total = family.size
+        self.stage_score = 0
+        self.stage_start(request_stage_cegar=True)
+        self.stage_step(family.size)
+
+        self.sketch = sketch
         print("CONSTRUCTOR EXIT...")
 
     # def __str__(self) -> str:
@@ -55,7 +77,7 @@ class CegisParallelismLoop(mp.Process, CEGISChecker):
     #             # f'{self.ce_local_timer!r}, '
     #             f'{self.iterations_cegis!r})')
 
-    def run(self, ) -> None:
+    def run(self, ) -> bool:
         print("RUN METHOD HAS BEEN CALLED")
         print('Process ID: ', os.getpid())
 
@@ -77,12 +99,15 @@ class CegisParallelismLoop(mp.Process, CEGISChecker):
                 Profiler.start("is - DTMC model checking")
                 Family.dtmc_checks_inc()
                 sat, _ = self.family.analyze_member(formula_index)
+
+                self._logger.info(f"FAMILY ANALYZE member {sat}")
+
                 Profiler.stop()
                 self._logger.debug(f"Formula {formula_index} is {'SAT' if sat else 'UNSAT'}")
                 if not sat:
                     violated_formulae_indices.append(formula_index)
             if (not violated_formulae_indices or violated_formulae_indices == [len(self.formulae) - 1]) \
-                    and self.input_has_optimality_property():
+                    and self.input_has_optimality_property:
                 self._check_optimal_property(self.family, assignment, self.counterexample_generator)
             elif not violated_formulae_indices:
                 Profiler.add_ce_stats(self.counterexample_generator.stats)
@@ -114,7 +139,7 @@ class CegisParallelismLoop(mp.Process, CEGISChecker):
                 )
 
             # TODO: mutex here...
-            self.family.exclude_member(conflicts)
+            # self.family.exclude_member(conflicts)
             Profiler.stop()
 
             # pick next member
@@ -130,7 +155,7 @@ class CegisParallelismLoop(mp.Process, CEGISChecker):
                 return None
 
         #
-        # # process family members
+        # process family members
         # Profiler.start("is - pick DTMC")
         # # TODO: mutex here...
         # assignment = self.family.pick_member_with_exclude_all_holes()
@@ -297,3 +322,98 @@ class CegisParallelismLoop(mp.Process, CEGISChecker):
         # resume timers
         self.stage_timer.start()
         self.statistic.timer.start()
+
+    def stage_start(self, request_stage_cegar):
+        self.stage_cegar = request_stage_cegar
+        if ONLY_CEGAR:
+            # disallow return to CEGIS
+            self.stage_switch_allowed = False
+        self.stage_timer.reset()
+        self.stage_timer.start()
+
+    def stage_step(self, models_pruned):
+        """Performs a stage step, returns True if the method switch took place"""
+
+        # if the method switch is prohibited, we do not care about stats
+        if not self.stage_switch_allowed:
+            return False
+
+        # record pruned models
+        self.stage_pruned_cegar += models_pruned / self.models_total if self.stage_cegar else 0
+        self.stage_pruned_cegis += models_pruned / self.models_total if not self.stage_cegar else 0
+
+        # allow cegis another stage step if some time remains
+        if not self.stage_cegar and self.stage_timer.read() < self.cegis_allocated_time:
+            return False
+
+        # stage is finished: record time
+        self.stage_timer.stop()
+        current_time = self.stage_timer.read()
+        if self.stage_cegar:
+            # cegar stage over: allocate time for cegis and switch
+            self.stage_time_cegar += current_time
+            self.cegis_allocated_time = current_time * self.cegis_allocated_time_factor
+            self.stage_start(request_stage_cegar=False)
+            return True
+
+        # cegis stage over
+        self.stage_time_cegis += current_time
+
+        self._logger.error(str(self.stage_time_cegar))
+        self._logger.error(str(self.stage_time_cegis))
+
+        # calculate average success rate, update stage score
+        success_rate_cegar = self.stage_pruned_cegar / self.stage_time_cegar
+        success_rate_cegis = self.stage_pruned_cegis / self.stage_time_cegis
+        if success_rate_cegar > success_rate_cegis:
+            # cegar wins the stage
+            self.stage_score += 1
+            if self.stage_score >= self.stage_score_limit:
+                # cegar wins the synthesis
+                # print("> only cegar")
+                self.stage_switch_allowed = False
+                # switch back to cegar
+                self.stage_start(request_stage_cegar=True)
+                return True
+        elif success_rate_cegar < success_rate_cegis:
+            # cegis wins the stage
+            self.stage_score -= 1
+            if self.stage_score <= -self.stage_score_limit:
+                # cegar wins the synthesis
+                # print("> only cegis")
+                self.stage_switch_allowed = False
+                # no need to switch
+                return False
+
+        # neither method prevails: adjust cegis time allocation factor
+        if self.stage_pruned_cegar == 0 or self.stage_pruned_cegis == 0:
+            cegar_dominance = 1
+        else:
+            cegar_dominance = success_rate_cegar / success_rate_cegis
+        cegis_dominance = 1 / cegar_dominance
+        self.stage_time_allocation_cegis = cegis_dominance
+
+        # stage log
+        if PRINT_STAGE_INFO:
+            print("> ", end="")
+            print(
+                f"{success_rate_cegar:.2e} \\\\ {success_rate_cegis:.2e} = {cegis_dominance:.1e} ({self.stage_score})"
+            )
+
+        # switch back to cegar
+        self.stage_start(request_stage_cegar=True)
+        return True
+
+    # ----- CE quality ----- #
+
+    # def construct_global_cex_generator(self, family):
+    #     self.statistic.timer.stop()
+    #     self.stage_timer.stop()
+
+    #     if self.ce_quality_compute:
+    #         Family.global_cex_generator = stormpy.synthesis.SynthesisCounterexample(
+    #             family.mdp, len(Family.hole_list), family.state_to_hole_indices, self.formulae, family.bounds
+    #         )
+
+    #     self.stage_timer.start()
+    #     self.statistic.timer.start()

@@ -99,7 +99,7 @@ if [ "$INSTALL_TACAS21" = true ]; then
 fi
 cd $SYNTHESIS/storm/build
 cmake ..
-make storm-main storm-synthesis --jobs $THREADS
+make storm-main storm-synthesis storm-pomdp-cli --jobs $THREADS
 #[TEST] make check --jobs $THREADS
 cd $SYNTHESIS
 

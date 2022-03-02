@@ -8,6 +8,12 @@ from ..profiler import Timer,Profiler
 
 from ..sketch.holes import Holes,DesignSpace
 
+#For parallel storm calls
+import os
+import subprocess
+import time
+import signal
+
 import math
 from collections import defaultdict
 
@@ -133,6 +139,13 @@ class SynthesizerPOMDP():
             
             # synthesize optimal assignment
             synthesized_assignment = self.synthesize(family)
+
+            #test parallel storm call
+            belief_check = ParallelStorm()
+            #belief_check.check_model()
+            #belief_check.get_result()
+            #print(self.sketch.quotient.pomdp)
+            #print(self.sketch.specification.stormpy_properties()[0])
            
             # identify hole that we want to improve
             selected_hole = None
@@ -267,11 +280,37 @@ class SynthesizerPOMDP():
 
 
     def run(self):
-        # self.strategy_full()
-        # self.strategy_iterative()
+        #self.strategy_full()
+        #self.strategy_iterative()
         self.strategy_expected()
 
 
+class ParallelStorm():
+
+    proc = None
+    current_result = None
+    
+    def __init__(self):
+        pass
+
+    def check_model(self):
+        self.proc = subprocess.Popen(["./storm/build/bin/storm-pomdp", "--prism", "./test/workspace/examples/pomdp/grid/avoid/sketch.templ", 
+                                     "--prop", "./test/workspace/examples/pomdp/grid/avoid/sketch.props", "--belief-exploration", "unfold",
+                                     "--refine", "0", "--timeout", "60", "--gap-threshold", "0", "--size-threshold", "0", "2", "--signal-timeout", "600"]
+                                     , stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+
+
+    def get_result(self):
+        time.sleep(5)
+
+        self.proc.send_signal(signal.SIGINT)
+        self.proc.wait()
+
+        self.current_result = self.proc.stdout.readlines()
+
+        print(self.current_result[-2].decode('UTF-8'))
+
+        return self.current_result
 
 
 

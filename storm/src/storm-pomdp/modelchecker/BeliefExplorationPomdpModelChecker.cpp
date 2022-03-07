@@ -394,6 +394,10 @@ namespace storm {
                         }
                     }
                     
+
+
+
+
                     if (storm::utility::resources::isTerminate()) {
                         break;
                     } else {
@@ -419,6 +423,9 @@ namespace storm {
                                 STORM_LOG_INFO("\tCurrent result is ≤" << result.upperBound << ".");
                             }
                             STORM_LOG_WARN_COND(statistics.refinementSteps.get() < 1000, "Refinement requires  more than 1000 iterations.");
+
+                            //TEST BREAK AFTER FIRST ITERATION
+                            break;
                         }
                     }
                     if (overApproxFixPoint && underApproxFixPoint) {
@@ -845,6 +852,11 @@ namespace storm {
                     statistics.underApproximationBuildTime.stop();
                     return false;
                 }
+
+
+
+
+
                 
                 underApproximation->finishExploration();
                 statistics.underApproximationBuildTime.stop();

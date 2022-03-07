@@ -317,6 +317,10 @@ namespace storm {
             // Actually, nothing needs to be done for rewards since we already initialize the vector with the "old" values
         }
 
+
+
+
+
         template<typename PomdpType, typename BeliefValueType>
         void BeliefMdpExplorer<PomdpType, BeliefValueType>::finishExploration() {
             STORM_LOG_ASSERT(status == Status::Exploring, "Method call is invalid in current status.");
@@ -564,6 +568,10 @@ namespace storm {
             return result;
         }
 
+
+
+
+
         template<typename PomdpType, typename BeliefValueType>
         void BeliefMdpExplorer<PomdpType, BeliefValueType>::computeValuesOfExploredMdp(storm::solver::OptimizationDirection const &dir) {
             STORM_LOG_ASSERT(status == Status::ModelFinished, "Method call is invalid in current status.");
@@ -574,6 +582,47 @@ namespace storm {
             std::unique_ptr<storm::modelchecker::CheckResult> res(storm::api::verifyWithSparseEngine<ValueType>(exploredMdp, task));
             if (res) {
                 values = std::move(res->asExplicitQuantitativeCheckResult<ValueType>().getValueVector());
+
+                {
+                    std::ofstream myfile, mydot;
+                    myfile.open("test/test.txt");
+                    mydot.open("test/test.dot");
+
+                    storm::models::sparse::NondeterministicModel<ValueType> idk = (storm::models::sparse::NondeterministicModel<ValueType>) *exploredMdp;
+                    idk.writeDotToStream(myfile);
+                    myfile << "\n\n";
+                    
+                    res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().printToStream(myfile);
+
+                    idk.applyScheduler(res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler())->writeDotToStream(mydot);
+                    myfile << "\n\n";
+
+
+                    STORM_LOG_INFO(values);
+
+                    STORM_LOG_INFO(getBeliefManager().getNumberOfBeliefIds());
+
+                    for (MdpStateType i = 1; i < getCurrentNumberOfMdpStates(); i++)
+                    {
+                        //STORM_LOG_INFO(getBeliefManager().toString(i));
+                        myfile << "state " <<  i << " belief: " << getBeliefManager().toString(getBeliefId(i)) << " val: " << values[i] << "\n";
+                    }
+                    myfile << "\n\n";
+
+                    storm::storage::BitVector actionSelection = res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().computeActionSupport(idk.getNondeterministicChoiceIndices());
+                    storm::storage::BitVector allStates(idk.getNumberOfStates(), true);
+                    auto subsystem = storm::utility::graph::getReachableStates(idk.getTransitionMatrix(), idk.getInitialStates(), allStates, 
+                                                                               storm::storage::BitVector(allStates.size(), false), false, 0, actionSelection);
+                    STORM_LOG_INFO(subsystem);
+                                                                    
+
+                    STORM_LOG_INFO(beliefIdToMdpStateMap);
+                    STORM_LOG_INFO(exploredBeliefIds);
+
+                    myfile.close();
+                    mydot.close();
+                }
+                
                 STORM_LOG_WARN_COND_DEBUG(storm::utility::vector::compareElementWise(lowerValueBounds, values, std::less_equal<ValueType>()),
                                           "Computed values are smaller than the lower bound.");
                 STORM_LOG_WARN_COND_DEBUG(storm::utility::vector::compareElementWise(upperValueBounds, values, std::greater_equal<ValueType>()),
@@ -593,6 +642,7 @@ namespace storm {
         template<typename PomdpType, typename BeliefValueType>
         std::vector<typename BeliefMdpExplorer<PomdpType, BeliefValueType>::ValueType> const &BeliefMdpExplorer<PomdpType, BeliefValueType>::getValuesOfExploredMdp() const {
             STORM_LOG_ASSERT(status == Status::ModelChecked, "Method call is invalid in current status.");
+
             return values;
         }
 
@@ -728,6 +778,7 @@ namespace storm {
             hint.setResultHint(values);
             auto hintPtr = std::make_shared<storm::modelchecker::ExplicitModelCheckerHint<ValueType>>(hint);
             task.setHint(hintPtr);
+            task.setProduceSchedulers(true);
             return task;
         }
 

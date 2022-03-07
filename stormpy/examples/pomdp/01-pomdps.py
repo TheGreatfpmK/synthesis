@@ -52,7 +52,7 @@ def example_parametric_models_01():
 
     ####
     # How to apply an unknown FSC to obtain a pMC from a pPOMDP
-    path = stormpy.examples.files.prism_par_pomdp_maze
+    path = stormpy.examples.files.prism_pomdp_maze
     prism_program = stormpy.parse_prism_program(path)
 
     formula_str = "P=? [!\"bad\" U \"goal\"]"
@@ -61,20 +61,28 @@ def example_parametric_models_01():
     options = stormpy.BuilderOptions([p.raw_formula for p in properties])
     options.set_build_state_valuations()
     options.set_build_choice_labels()
-    pomdp = stormpy.build_sparse_parametric_model_with_options(prism_program, options)
+    pomdp = stormpy.build_sparse_exact_model_with_options(prism_program, options)
     # make its representation canonic.
-    pomdp = stormpy.pomdp.make_canonic(pomdp)
+    #pomdp = stormpy.pomdp.make_canonic(pomdp)
 
-    # construct the memory for the FSC
-    # in this case, a selective counter with two states
-    memory_builder = stormpy.pomdp.PomdpMemoryBuilder()
-    memory = memory_builder.build(stormpy.pomdp.PomdpMemoryPattern.selective_counter, 3)
-    # apply the memory onto the POMDP to get the cartesian product
-    pomdp = stormpy.pomdp.unfold_memory(pomdp, memory, add_memory_labels=True, keep_state_valuations=True)
-    # make the POMDP simple. This step is optional but often beneficial
-    pomdp = stormpy.pomdp.make_simple(pomdp, keep_state_valuations=True)
-    # apply the unknown FSC to obtain a pmc from the POMDP
-    pmc = stormpy.pomdp.apply_unknown_fsc(pomdp, stormpy.pomdp.PomdpFscApplicationMode.simple_linear)
+    pomdp = stormpy.pomdp.create_nondeterminstic_belief_tracker(pomdp, 10000, 10000)
+
+    #pomdp.reduce
+
+    print(pomdp.dimension.__str__)
+
+    # # construct the memory for the FSC
+    # # in this case, a selective counter with two states
+    # memory_builder = stormpy.pomdp.PomdpMemoryBuilder()
+    # memory = memory_builder.build(stormpy.pomdp.PomdpMemoryPattern.selective_counter, 3)
+    # # apply the memory onto the POMDP to get the cartesian product
+    # pomdp = stormpy.pomdp.unfold_memory(pomdp, memory, add_memory_labels=True, keep_state_valuations=True)
+    # # make the POMDP simple. This step is optional but often beneficial
+    # pomdp = stormpy.pomdp.make_simple(pomdp, keep_state_valuations=True)
+    # print(pomdp)
+    # # apply the unknown FSC to obtain a pmc from the POMDP
+    # pmc = stormpy.pomdp.apply_unknown_fsc(pomdp, stormpy.pomdp.PomdpFscApplicationMode.simple_linear)
+    # print(pmc)
 
     export_pmc = False # Set to True to export the pMC as drn.
     if export_pmc:

@@ -7,6 +7,12 @@
 #include <boost/optional.hpp>
 
 
+#include <boost/optional/optional_io.hpp>
+#include <storm/utility/graph.h>
+#include <storm/models/sparse/StateLabeling.h>
+#include <storm/models/sparse/ChoiceLabeling.h>
+
+
 #include "storm/storage/BitVector.h"
 #include "storm-pomdp/storage/BeliefManager.h"
 #include "storm-pomdp/modelchecker/TrivialPomdpValueBoundsModelChecker.h"

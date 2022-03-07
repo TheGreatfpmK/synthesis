@@ -390,6 +390,9 @@ namespace storm {
             // Create model components
             storm::storage::sparse::ModelComponents<ValueType> modelComponents(std::move(mdpTransitionMatrix), std::move(mdpLabeling), std::move(mdpRewardModels));
 
+            // Add ChoiceLabeling
+            modelComponents.choiceLabeling = storm::models::sparse::ChoiceLabeling(getCurrentNumberOfMdpChoices());
+
             // Potentially create a choice labeling
             if (!delayedExplorationChoices.empty()) {
                 modelComponents.choiceLabeling = storm::models::sparse::ChoiceLabeling(getCurrentNumberOfMdpChoices());
@@ -589,10 +592,43 @@ namespace storm {
                     mydot.open("test/test.dot");
 
                     storm::models::sparse::NondeterministicModel<ValueType> idk = (storm::models::sparse::NondeterministicModel<ValueType>) *exploredMdp;
-                    idk.writeDotToStream(myfile);
+                    //STORM_LOG_INFO(exploredMdp->hasChoiceLabeling());
+                    //idk.writeDotToStream(myfile);
                     myfile << "\n\n";
                     
                     res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().printToStream(myfile);
+
+
+                    storm::storage::BitVector actionSelection = res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().computeActionSupport(idk.getNondeterministicChoiceIndices());
+                    storm::storage::BitVector allStates(idk.getNumberOfStates(), true);
+                    auto subsystem = storm::utility::graph::getReachableStates(idk.getTransitionMatrix(), idk.getInitialStates(), allStates, 
+                                                                               storm::storage::BitVector(allStates.size(), false), false, 0, actionSelection);
+                    STORM_LOG_INFO(subsystem);
+
+                    for (MdpStateType i = 1; i < getCurrentNumberOfMdpStates(); i++)
+                    {
+                        if (subsystem[i])
+                        {
+                            
+                            idk.getStateLabeling().addLabel(getBeliefManager().toString(getBeliefId(i)));
+                            idk.getStateLabeling().addLabelToState(getBeliefManager().toString(getBeliefId(i)), i);
+
+                            std::string choiceLabel = std::to_string(res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().getChoice(i).getDeterministicChoice());
+                            if (!idk.getOptionalChoiceLabeling()->getLabels().count(choiceLabel))
+                            {
+                                idk.getOptionalChoiceLabeling()->addLabel(choiceLabel);
+                            }
+                            idk.getOptionalChoiceLabeling()->addLabelToChoice(choiceLabel, res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().getChoice(i).getDeterministicChoice());
+                        }
+                    }
+
+                    STORM_LOG_INFO(idk.getChoiceLabeling());
+
+                    //getChoiceLabeling()
+                    //addLabelToChoice
+                    
+
+
 
                     idk.applyScheduler(res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler())->writeDotToStream(mydot);
                     myfile << "\n\n";
@@ -609,11 +645,6 @@ namespace storm {
                     }
                     myfile << "\n\n";
 
-                    storm::storage::BitVector actionSelection = res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().computeActionSupport(idk.getNondeterministicChoiceIndices());
-                    storm::storage::BitVector allStates(idk.getNumberOfStates(), true);
-                    auto subsystem = storm::utility::graph::getReachableStates(idk.getTransitionMatrix(), idk.getInitialStates(), allStates, 
-                                                                               storm::storage::BitVector(allStates.size(), false), false, 0, actionSelection);
-                    STORM_LOG_INFO(subsystem);
                                                                     
 
                     STORM_LOG_INFO(beliefIdToMdpStateMap);

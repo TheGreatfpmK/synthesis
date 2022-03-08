@@ -599,13 +599,15 @@ namespace storm {
                                                                                storm::storage::BitVector(allStates.size(), false), false, 0, actionSelection);
                     STORM_LOG_INFO(subsystem);
 
-                    for (MdpStateType i = 1; i < getCurrentNumberOfMdpStates(); i++)
+                    for (MdpStateType i = beliefIdToMdpStateMap[0]; i < getCurrentNumberOfMdpStates(); i++)
                     {
                         if (subsystem[i])
                         {
-                            
-                            idk.getStateLabeling().addLabel(getBeliefManager().toString(getBeliefId(i)));
-                            idk.getStateLabeling().addLabelToState(getBeliefManager().toString(getBeliefId(i)), i);
+                            if (!idk.getStateLabeling().getLabels().count(beliefManager->toString(getBeliefId(i))))
+                            {
+                                idk.getStateLabeling().addLabel(beliefManager->toString(getBeliefId(i)));
+                            }
+                            idk.getStateLabeling().addLabelToState(beliefManager->toString(getBeliefId(i)), i);
 
                             std::string observationlabel = std::to_string(beliefManager->getBeliefObservation(getBeliefId(i)));
                             if (!idk.getStateLabeling().getLabels().count(observationlabel))
@@ -625,6 +627,7 @@ namespace storm {
                     }
 
                     idk.applyScheduler(res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler())->writeDotToStream(mydot);
+                    mydot.close();
                     STORM_LOG_INFO(idk.getChoiceLabeling());
 
                     
@@ -632,7 +635,7 @@ namespace storm {
                     //Number of states representing given observation
                     myfile << "Number of states representing given observation:\n\n";
                     std::map<int, int> obscnt;
-                    for (MdpStateType i = 1; i < getCurrentNumberOfMdpStates(); i++)
+                    for (MdpStateType i = beliefIdToMdpStateMap[0]; i < getCurrentNumberOfMdpStates(); i++)
                     {
                         if (subsystem[i])
                         {
@@ -650,7 +653,7 @@ namespace storm {
                     //Action frequency for observation
                     myfile << "Action frequency for observation:\n\n";
                     std::map<int, std::map<int, int>> actcnt;
-                    for (MdpStateType i = 1; i < getCurrentNumberOfMdpStates(); i++)
+                    for (MdpStateType i = beliefIdToMdpStateMap[0]; i < getCurrentNumberOfMdpStates(); i++)
                     {
                         if (subsystem[i])
                         {
@@ -684,7 +687,7 @@ namespace storm {
 
                     STORM_LOG_INFO(getBeliefManager().getNumberOfBeliefIds());
 
-                    for (MdpStateType i = 1; i < getCurrentNumberOfMdpStates(); i++)
+                    for (MdpStateType i = beliefIdToMdpStateMap[0]; i < getCurrentNumberOfMdpStates(); i++)
                     {
                         //STORM_LOG_INFO(getBeliefManager().toString(i));
                         myfile << "state " <<  i << " belief: " << getBeliefManager().toString(getBeliefId(i)) << " val: " << values[i] << "\n";
@@ -698,7 +701,6 @@ namespace storm {
                     STORM_LOG_INFO(exploredBeliefIds);
 
                     myfile.close();
-                    mydot.close();
                 }
                 
                 STORM_LOG_WARN_COND_DEBUG(storm::utility::vector::compareElementWise(lowerValueBounds, values, std::less_equal<ValueType>()),

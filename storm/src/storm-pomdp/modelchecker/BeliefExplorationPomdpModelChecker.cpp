@@ -425,7 +425,7 @@ namespace storm {
                             STORM_LOG_WARN_COND(statistics.refinementSteps.get() < 1000, "Refinement requires  more than 1000 iterations.");
 
                             //TEST BREAK AFTER FIRST ITERATION
-                            break;
+                            //break;
                         }
                     }
                     if (overApproxFixPoint && underApproxFixPoint) {

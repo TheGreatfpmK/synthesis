@@ -592,12 +592,6 @@ namespace storm {
                     mydot.open("test/test.dot");
 
                     storm::models::sparse::NondeterministicModel<ValueType> idk = (storm::models::sparse::NondeterministicModel<ValueType>) *exploredMdp;
-                    //STORM_LOG_INFO(exploredMdp->hasChoiceLabeling());
-                    //idk.writeDotToStream(myfile);
-                    myfile << "\n\n";
-                    
-                    res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().printToStream(myfile);
-
 
                     storm::storage::BitVector actionSelection = res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().computeActionSupport(idk.getNondeterministicChoiceIndices());
                     storm::storage::BitVector allStates(idk.getNumberOfStates(), true);
@@ -613,25 +607,77 @@ namespace storm {
                             idk.getStateLabeling().addLabel(getBeliefManager().toString(getBeliefId(i)));
                             idk.getStateLabeling().addLabelToState(getBeliefManager().toString(getBeliefId(i)), i);
 
+                            std::string observationlabel = std::to_string(beliefManager->getBeliefObservation(getBeliefId(i)));
+                            if (!idk.getStateLabeling().getLabels().count(observationlabel))
+                            {
+                                idk.getStateLabeling().addLabel(std::to_string(beliefManager->getBeliefObservation(getBeliefId(i))));
+                            }
+                            idk.getStateLabeling().addLabelToState(std::to_string(beliefManager->getBeliefObservation(getBeliefId(i))), i);
+
                             std::string choiceLabel = std::to_string(res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().getChoice(i).getDeterministicChoice());
                             if (!idk.getOptionalChoiceLabeling()->getLabels().count(choiceLabel))
                             {
                                 idk.getOptionalChoiceLabeling()->addLabel(choiceLabel);
                             }
-                            idk.getOptionalChoiceLabeling()->addLabelToChoice(choiceLabel, res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().getChoice(i).getDeterministicChoice());
+                            idk.getOptionalChoiceLabeling()->addLabelToChoice(choiceLabel, 
+                                                                idk.getChoiceIndex(storm::storage::StateActionPair(i, res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().getChoice(i).getDeterministicChoice())));
                         }
                     }
 
+                    idk.applyScheduler(res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler())->writeDotToStream(mydot);
                     STORM_LOG_INFO(idk.getChoiceLabeling());
 
-                    //getChoiceLabeling()
-                    //addLabelToChoice
                     
 
+                    //Number of states representing given observation
+                    myfile << "Number of states representing given observation:\n\n";
+                    std::map<int, int> obscnt;
+                    for (MdpStateType i = 1; i < getCurrentNumberOfMdpStates(); i++)
+                    {
+                        if (subsystem[i])
+                        {
+                            obscnt[beliefManager->getBeliefObservation(getBeliefId(i))]++;
+                        }
+                    }
+
+                    for(auto it = obscnt.cbegin(); it != obscnt.cend(); ++it)
+                    {
+                        myfile << "observation: " << it->first << "\tcount: " << it->second << "\n";
+                    }
+
+                    myfile << "\n";
+
+                    //Action frequency for observation
+                    myfile << "Action frequency for observation:\n\n";
+                    std::map<int, std::map<int, int>> actcnt;
+                    for (MdpStateType i = 1; i < getCurrentNumberOfMdpStates(); i++)
+                    {
+                        if (subsystem[i])
+                        {
+                            actcnt[beliefManager->getBeliefObservation(getBeliefId(i))][res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().getChoice(i).getDeterministicChoice()]++;
+                        }
+                    }
+
+                    for(auto it = actcnt.cbegin(); it != actcnt.cend(); ++it)
+                    {
+                        myfile << "observation: " << it->first << "\n";
+                        for (auto it2 = it->second.cbegin(); it2 != it->second.cend(); ++it2)
+                        {
+                            myfile << "\t" << "action: " << it2->first << "\tcount: " << it2->second << "\n";
+                        }
+                        //myfile << "\n";
+                    }
+
+                    myfile << "\n";
+
+                    //State frequency in beliefs
+                    //myfile << "State frequency in beliefs:\n\n";
+                    //std::map<int, int> statecnt;
 
 
-                    idk.applyScheduler(res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler())->writeDotToStream(mydot);
                     myfile << "\n\n";
+
+
 
 
                     STORM_LOG_INFO(values);
@@ -643,9 +689,10 @@ namespace storm {
                         //STORM_LOG_INFO(getBeliefManager().toString(i));
                         myfile << "state " <<  i << " belief: " << getBeliefManager().toString(getBeliefId(i)) << " val: " << values[i] << "\n";
                     }
-                    myfile << "\n\n";
 
+                    myfile << "\n\n";
                                                                     
+                    res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().printToStream(myfile);
 
                     STORM_LOG_INFO(beliefIdToMdpStateMap);
                     STORM_LOG_INFO(exploredBeliefIds);

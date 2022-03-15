@@ -674,8 +674,8 @@ namespace storm {
                     myfile << "\n";
 
                     //State frequency in beliefs
-                    //myfile << "State frequency in beliefs:\n\n";
-                    //std::map<int, int> statecnt;
+                    myfile << "State frequency in beliefs:\n\n";
+                    std::map<int, int> statecnt;
 
 
                     myfile << "\n\n";
@@ -683,22 +683,22 @@ namespace storm {
 
 
 
-                    STORM_LOG_INFO(values);
+                    // STORM_LOG_INFO(values);
 
-                    STORM_LOG_INFO(getBeliefManager().getNumberOfBeliefIds());
+                    // STORM_LOG_INFO(getBeliefManager().getNumberOfBeliefIds());
 
-                    for (MdpStateType i = beliefIdToMdpStateMap[0]; i < getCurrentNumberOfMdpStates(); i++)
-                    {
-                        //STORM_LOG_INFO(getBeliefManager().toString(i));
-                        myfile << "state " <<  i << " belief: " << getBeliefManager().toString(getBeliefId(i)) << " val: " << values[i] << "\n";
-                    }
+                    // for (MdpStateType i = beliefIdToMdpStateMap[0]; i < getCurrentNumberOfMdpStates(); i++)
+                    // {
+                    //     //STORM_LOG_INFO(getBeliefManager().toString(i));
+                    //     myfile << "state " <<  i << " belief: " << getBeliefManager().toString(getBeliefId(i)) << " val: " << values[i] << "\n";
+                    // }
 
-                    myfile << "\n\n";
+                    // myfile << "\n\n";
                                                                     
-                    res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().printToStream(myfile);
+                    // res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().printToStream(myfile);
 
-                    STORM_LOG_INFO(beliefIdToMdpStateMap);
-                    STORM_LOG_INFO(exploredBeliefIds);
+                    // STORM_LOG_INFO(beliefIdToMdpStateMap);
+                    // STORM_LOG_INFO(exploredBeliefIds);
 
                     myfile.close();
                 }

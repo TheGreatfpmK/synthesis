@@ -648,7 +648,7 @@ namespace storm {
                         myfile << "observation: " << it->first << "\tcount: " << it->second << "\n";
                     }
 
-                    myfile << "\n";
+                    myfile << "\n" << "------------------------------------------" << "\n\n";
 
                     //Action frequency for observation
                     myfile << "Action frequency for observation:\n\n";
@@ -668,14 +668,46 @@ namespace storm {
                         {
                             myfile << "\t" << "action: " << it2->first << "\tcount: " << it2->second << "\n";
                         }
-                        //myfile << "\n";
+                        myfile << "\n";
                     }
 
-                    myfile << "\n";
+                    myfile << "\n" << "------------------------------------------" << "\n\n";
 
                     //State frequency in beliefs
                     myfile << "State frequency in beliefs:\n\n";
                     std::map<int, int> statecnt;
+
+                    for (MdpStateType i = beliefIdToMdpStateMap[0]; i < getCurrentNumberOfMdpStates(); i++)
+                    {
+                        if (subsystem[i])
+                        {
+                            auto belief = beliefManager->getBelief(getBeliefId(i));
+                            for (auto const &entry : belief)
+                            {
+                                statecnt[entry.first]++;
+                            }
+                        }
+                    }
+
+                    for(auto it = statecnt.cbegin(); it != statecnt.cend(); ++it)
+                    {
+                        myfile << "state: " << it->first << "\tcount: " << it->second << "\n";
+                    }
+
+                    myfile << "\n" << "------------------------------------------" << "\n\n";
+
+                    //Observation value
+                    myfile << "Observation value:\n\n";
+
+                    for (MdpStateType i = beliefIdToMdpStateMap[0]; i < getCurrentNumberOfMdpStates(); i++)
+                    {
+                        if (subsystem[i])
+                        {
+                            myfile << "belief: " << getBeliefManager().toString(getBeliefId(i)) << "\n\tval: " << values[i] << "\n\n";
+                        }
+                    }
+
+                    myfile << "\n" << "------------------------------------------" << "\n\n";
 
 
                     myfile << "\n\n";

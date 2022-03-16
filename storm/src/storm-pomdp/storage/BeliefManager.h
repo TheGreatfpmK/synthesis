@@ -69,6 +69,8 @@ namespace storm {
 
             std::vector<std::pair<BeliefId, ValueType>> expand(BeliefId const &beliefId, uint64_t actionIndex);
 
+            BeliefType const &getBelief(BeliefId const &id) const;
+
         private:
 
             struct BeliefHash {
@@ -83,7 +85,7 @@ namespace storm {
                 bool operator>(FreudenthalDiff const &other) const;
             };
 
-            BeliefType const &getBelief(BeliefId const &id) const;
+            //BeliefType const &getBelief(BeliefId const &id) const;
 
             BeliefId getId(BeliefType const &belief) const;
 

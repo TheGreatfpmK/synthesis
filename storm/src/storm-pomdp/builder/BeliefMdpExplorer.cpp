@@ -597,7 +597,7 @@ namespace storm {
                     storm::storage::BitVector allStates(idk.getNumberOfStates(), true);
                     auto subsystem = storm::utility::graph::getReachableStates(idk.getTransitionMatrix(), idk.getInitialStates(), allStates, 
                                                                                storm::storage::BitVector(allStates.size(), false), false, 0, actionSelection);
-                    STORM_LOG_INFO(subsystem);
+                    //STORM_LOG_INFO(subsystem);
 
                     for (MdpStateType i = beliefIdToMdpStateMap[0]; i < getCurrentNumberOfMdpStates(); i++)
                     {
@@ -626,9 +626,9 @@ namespace storm {
                         }
                     }
 
-                    idk.applyScheduler(res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler())->writeDotToStream(mydot);
-                    mydot.close();
-                    STORM_LOG_INFO(idk.getChoiceLabeling());
+                    //idk.applyScheduler(res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler())->writeDotToStream(mydot);
+                    //mydot.close();
+                    //STORM_LOG_INFO(idk.getChoiceLabeling());
 
                     
 
@@ -637,7 +637,7 @@ namespace storm {
                     std::map<int, int> obscnt;
                     for (MdpStateType i = beliefIdToMdpStateMap[0]; i < getCurrentNumberOfMdpStates(); i++)
                     {
-                        if (subsystem[i])
+                        //if (subsystem[i])
                         {
                             obscnt[beliefManager->getBeliefObservation(getBeliefId(i))]++;
                         }
@@ -655,7 +655,7 @@ namespace storm {
                     std::map<int, std::map<int, int>> actcnt;
                     for (MdpStateType i = beliefIdToMdpStateMap[0]; i < getCurrentNumberOfMdpStates(); i++)
                     {
-                        if (subsystem[i])
+                        //if (subsystem[i])
                         {
                             actcnt[beliefManager->getBeliefObservation(getBeliefId(i))][res->asExplicitQuantitativeCheckResult<ValueType>().getScheduler().getChoice(i).getDeterministicChoice()]++;
                         }
@@ -679,7 +679,7 @@ namespace storm {
 
                     for (MdpStateType i = beliefIdToMdpStateMap[0]; i < getCurrentNumberOfMdpStates(); i++)
                     {
-                        if (subsystem[i])
+                        //if (subsystem[i])
                         {
                             auto belief = beliefManager->getBelief(getBeliefId(i));
                             for (auto const &entry : belief)
@@ -697,20 +697,20 @@ namespace storm {
                     myfile << "\n" << "------------------------------------------" << "\n\n";
 
                     //Observation value
-                    myfile << "Observation value:\n\n";
+                    // myfile << "Observation value:\n\n";
 
-                    for (MdpStateType i = beliefIdToMdpStateMap[0]; i < getCurrentNumberOfMdpStates(); i++)
-                    {
-                        if (subsystem[i])
-                        {
-                            myfile << "belief: " << getBeliefManager().toString(getBeliefId(i)) << "\n\tval: " << values[i] << "\n\n";
-                        }
-                    }
+                    // for (MdpStateType i = beliefIdToMdpStateMap[0]; i < getCurrentNumberOfMdpStates(); i++)
+                    // {
+                        // //if (subsystem[i])
+                        // {
+                            // myfile << "belief: " << getBeliefManager().toString(getBeliefId(i)) << "\n\tval: " << values[i] << "\n\n";
+                        // }
+                    // }
 
-                    myfile << "\n" << "------------------------------------------" << "\n\n";
+                    // myfile << "\n" << "------------------------------------------" << "\n\n";
 
 
-                    myfile << "\n\n";
+                    // myfile << "\n\n";
 
 
 

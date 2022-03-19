@@ -9,10 +9,10 @@ from ..profiler import Timer,Profiler
 from ..sketch.holes import Holes,DesignSpace
 
 #For parallel storm calls
-import os
-import subprocess
-import time
-import signal
+#import os
+#import subprocess
+#import time
+#import signal
 
 import math
 from collections import defaultdict
@@ -129,6 +129,9 @@ class SynthesizerPOMDP():
             # use inconsistencies to break symmetry
             family = self.sketch.quotient.break_symmetry_3(self.sketch.design_space, action_inconsistencies, memory_inconsistencies)
 
+            # use underapproximation result from storm to reduce family size
+            family = self.sketch.quotient.reduce_family_based_on_beliefs(family)
+
             # solve MDP that corresponds to this restricted family
             mdp,spec,selection,choice_values,expected_visits,hole_scores = self.solve_mdp(family)
             
@@ -141,7 +144,7 @@ class SynthesizerPOMDP():
             synthesized_assignment = self.synthesize(family)
 
             #test parallel storm call
-            belief_check = ParallelStorm()
+            #belief_check = ParallelStorm()
             #belief_check.check_model()
             #belief_check.get_result()
             #print(self.sketch.quotient.pomdp)
@@ -285,32 +288,32 @@ class SynthesizerPOMDP():
         self.strategy_expected()
 
 
-class ParallelStorm():
-
-    proc = None
-    current_result = None
-    
-    def __init__(self):
-        pass
-
-    def check_model(self):
-        self.proc = subprocess.Popen(["./storm/build/bin/storm-pomdp", "--prism", "./test/workspace/examples/pomdp/grid/avoid/sketch.templ", 
-                                     "--prop", "./test/workspace/examples/pomdp/grid/avoid/sketch.props", "--belief-exploration", "unfold",
-                                     "--refine", "0", "--timeout", "60", "--gap-threshold", "0", "--size-threshold", "0", "2", "--signal-timeout", "600"]
-                                     , stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-
-
-    def get_result(self):
-        time.sleep(5)
-
-        self.proc.send_signal(signal.SIGINT)
-        self.proc.wait()
-
-        self.current_result = self.proc.stdout.readlines()
-
-        print(self.current_result[-2].decode('UTF-8'))
-
-        return self.current_result
+#class ParallelStorm():
+#
+#    proc = None
+#    current_result = None
+#    
+#    def __init__(self):
+#        pass
+#
+#    def check_model(self):
+#        self.proc = subprocess.Popen(["./storm/build/bin/storm-pomdp", "--prism", "./test/workspace/examples/pomdp/grid/avoid/sketch.templ", 
+#                                     "--prop", "./test/workspace/examples/pomdp/grid/avoid/sketch.props", "--belief-exploration", "unfold",
+#                                     "--refine", "0", "--timeout", "60", "--gap-threshold", "0", "--size-threshold", "0", "2", "--signal-timeout", "600"]
+#                                     , stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+#
+#
+#    def get_result(self):
+#        time.sleep(5)
+#
+#        self.proc.send_signal(signal.SIGINT)
+#        self.proc.wait()
+#
+#        self.current_result = self.proc.stdout.readlines()
+#
+#        print(self.current_result[-2].decode('UTF-8'))
+#
+#        return self.current_result
 
 
 

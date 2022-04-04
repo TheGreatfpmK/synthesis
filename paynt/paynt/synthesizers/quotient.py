@@ -994,7 +994,7 @@ class POMDPQuotientContainer(QuotientContainer):
                         options.append(action * num_updates + update)
                 restricted_family[hole].assume_options(options)
 
-        print(restricted_family)
+        #print(restricted_family)
         logger.debug("Symmetry breaking: reduced design space from {} to {}".format(family.size, restricted_family.size))
 
         return restricted_family
@@ -1008,7 +1008,7 @@ class POMDPQuotientContainer(QuotientContainer):
         current_observation = -1
 
         # TODO: Make separete function for parsing maybe?
-        storm_result_file = open("test/model-info/results/rocks-12.txt", "r")
+        storm_result_file = open("test/test.txt", "r")
         parse_segment = 0
         for line in storm_result_file:
             line = line.rstrip()
@@ -1074,7 +1074,7 @@ class POMDPQuotientContainer(QuotientContainer):
             selected_updates = [all_updates.copy() for hole in obs_holes]
 
             if obs not in observation_action_dict.keys():
-                selected_actions = [all_actions for hole in obs_holes]
+                selected_actions = [[0] for hole in obs_holes]
                 pass
             else:
                 selected_actions = [observation_action_dict[obs].keys() for hole in obs_holes]

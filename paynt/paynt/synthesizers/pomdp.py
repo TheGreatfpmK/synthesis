@@ -270,7 +270,7 @@ class SynthesizerPOMDP():
                 opt = round(self.sketch.specification.optimality.optimum,3)
             elapsed = round(fsc_synthesis_timer.read(),1)
             logger.info("FSC synthesis: elapsed {} s, opt = {}, injections: {}.".format(elapsed, opt, memory_injections))
-            logger.info("FSC: {}".format(best_assignment))
+            #logger.info("FSC: {}".format(best_assignment))
 
             # inject memory and continue
             self.sketch.quotient.pomdp_manager.inject_memory(selected_observation)

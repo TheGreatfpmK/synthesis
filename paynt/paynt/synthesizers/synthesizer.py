@@ -13,7 +13,7 @@ class Synthesizer:
 
     # synthesis escape criterion
     use_optimum_update_timeout = False
-    optimum_update_iters_limit = 100000
+    optimum_update_iters_limit = 10000
     
     def __init__(self, sketch):
         self.sketch = sketch

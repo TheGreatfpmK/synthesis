@@ -51,14 +51,17 @@ def setup_logger(log_path = None):
 @click.option("--fsc-synthesis", is_flag=True, default=False, help="enable incremental synthesis of FSCs for a POMDP")
 @click.option("--pomdp-memory-size", default=1, help="implicit memory size for POMDP FSCs")
 
+@click.option("--storm-result-file", default="", help="storm underapproximation result file to help pomdp synthesis")
+
 def paynt(
-        project, sketch, properties, constants, method, export_jani, incomplete_search, fsc_synthesis, pomdp_memory_size, 
+        project, sketch, properties, constants, method, export_jani, incomplete_search, fsc_synthesis, pomdp_memory_size, storm_result_file
 ):
     logger.info("This is Paynt version {}.".format(version()))
 
     Sketch.export_jani = export_jani
     Synthesizer.incomplete_search = incomplete_search
     POMDPQuotientContainer.pomdp_memory_size = pomdp_memory_size
+    POMDPQuotientContainer.storm_file = storm_result_file
 
     # parse sketch
     if not os.path.isdir(project):

@@ -119,6 +119,9 @@ class SynthesizerPOMDP():
             # use inconsistencies to break symmetry
             family = self.sketch.quotient.break_symmetry_3(self.sketch.design_space, action_inconsistencies, memory_inconsistencies)
 
+            # use underapproximation result from storm to reduce family size
+            family = self.sketch.quotient.reduce_family_based_on_beliefs(family)
+
             # solve MDP that corresponds to this restricted family
             mdp,spec,selection,choice_values,expected_visits,hole_scores = self.solve_mdp(family)
             

@@ -547,6 +547,9 @@ class POMDPQuotientContainer(QuotientContainer):
 
     # implicit size for POMDP unfolding
     pomdp_memory_size = 1
+
+    # storm underapproximation file
+    storm_file = "" 
     
     def __init__(self, *args):
         super().__init__(*args)
@@ -1002,6 +1005,104 @@ class POMDPQuotientContainer(QuotientContainer):
 
         return restricted_family
 
+    # uses storm underapproximations on belief MDP to reduce family size
+    def reduce_family_based_on_beliefs(self, family):
+        if self.storm_file == "":
+            return family
+
+        logger.debug("Reducing family size based on underapproximation result from storm")
+
+        observation_action_dict = {}
+        action_count_dict = {}
+        current_observation = -1
+
+        # TODO: Make separete function for parsing maybe?
+        storm_result_file = open(self.storm_file, "r")
+        parse_segment = 0
+        for line in storm_result_file:
+            line = line.rstrip()
+            if line == "":
+                continue
+
+            if parse_segment == 0:
+                # get info about what part of the file is being parsed
+                if line == "Number of states representing given observation:":
+                    parse_segment = 1
+                elif line == "Action frequency for observation:":
+                    parse_segment = 2
+                elif line == "State frequency in beliefs:":
+                    parse_segment = 3
+                elif line == "Observation value:":
+                    parse_segment = 4
+                else:
+                    parse_segment = 0
+                
+                continue
+
+            if line == "------------------------------------------":
+                if parse_segment == 2:
+                    observation_action_dict[current_observation] = action_count_dict
+                    action_count_dict = {}
+
+                parse_segment = 0
+                continue
+
+            if parse_segment == 2:
+                if line.startswith("observation"):
+                    if len(action_count_dict) != 0:
+                        observation_action_dict[current_observation] = action_count_dict
+                        action_count_dict = {}
+
+                    current_observation = int(line.split()[1])
+                    continue
+                
+                line = line.split()
+                action_count_dict[int(line[1])] = int(line[3])
+
+        #DEBUG
+        # print(observation_action_dict)
+
+
+        # reduce family size
+        reduced_family = family.copy()
+
+        for obs in range(self.observations):
+
+
+            num_actions = self.actions_at_observation[obs]
+            num_updates = self.pomdp_manager.max_successor_memory_size[obs]
+
+            obs_holes = self.obs_to_holes[obs]
+            num_holes = len(obs_holes)
+
+
+            all_actions = [action for action in range(num_actions)]
+            selected_actions = [all_actions.copy() for hole in obs_holes]
+            
+            all_updates = [update for update in range(num_updates)]
+            selected_updates = [all_updates.copy() for hole in obs_holes]
+
+            if obs not in observation_action_dict.keys():
+                selected_actions = [[0] for hole in obs_holes]
+                pass
+            else:
+                selected_actions = [observation_action_dict[obs].keys() for hole in obs_holes]
+                pass
+    
+            # create options for each hole
+            for index in range(num_holes):
+                hole = obs_holes[index]
+                actions = selected_actions[index]
+                updates = selected_updates[index]
+                options = []
+                for action in actions:
+                    for update in updates:
+                        options.append(action * num_updates + update)
+                reduced_family[hole].assume_options(options)
+
+        logger.debug("Using information from storm: reduced design space from {} to {}".format(family.size, reduced_family.size))
+        
+        return reduced_family
 
 
 

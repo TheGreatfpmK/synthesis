@@ -1,0 +1,282 @@
+2022-04-10 10:38:08,067 - cli.py - This is Paynt version 0.1.0.
+2022-04-10 10:38:08,069 - sketch.py - Loading sketch from /mnt/d/src/PP/synthesis/workspace/storm-experiments/models/grid-avoid-4-0.1/sketch.templ...
+2022-04-10 10:38:08,069 - sketch.py - Attempting to parse model in explicit format ...
+ERROR (DirectEncodingParser.cpp:125): Could not parse line 'pomdp'.
+2022-04-10 10:38:08,072 - sketch.py - Assuming a sketch in a PRISM format ...
+2022-04-10 10:38:08,084 - sketch.py - Sketch does not contain any hole definitions.
+2022-04-10 10:38:08,084 - sketch.py - Loading properties from /mnt/d/src/PP/synthesis/workspace/storm-experiments/models/grid-avoid-4-0.1/sketch.props ...
+2022-04-10 10:38:08,088 - sketch.py - Found the following specification: constraints: none, optimality objective: Pmax=? [(!"bad") U "goal"] 
+2022-04-10 10:38:08,088 - sketch.py - Initializing the quotient ...
+2022-04-10 10:38:08,096 - quotient.py - Constructed POMDP having 4 observations.
+2022-04-10 10:38:08,097 - quotient.py - Constructed quotient MDP having 17 states and 59 actions.
+2022-04-10 10:38:08,097 - sketch.py - Sketch parsing complete.
+
+------------------------------------------------------------
+
+2022-04-10 10:38:08,097 - quotient.py - Constructed quotient MDP having 17 states and 59 actions.
+A([o=1],0): {{'east'},{'west'},{'north'},{'south'}}
+2022-04-10 10:38:08,097 - quotient.py - Symmetry breaking: reduced design space from 4 to 4
+2022-04-10 10:38:08,097 - synthesizer.py - Synthesis initiated.
+2022-04-10 10:38:08,098 - property.py - New opt = 0.2142857142857143.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? [(!"bad") U "goal"] 
+
+method: AR, synthesis time: 0.0 s
+number of holes: 1, family size: 4, super quotient: 17 states / 59 actions
+explored: 100 %
+AR stats: avg MDP size: 17, iterations: 5
+
+optimal: 0.214286
+--------------------
+
+2022-04-10 10:38:08,099 - pomdp.py - FSC synthesis: elapsed 0.0 s, opt = 0.214, injections: 0.
+2022-04-10 10:38:08,099 - pomdp.py - FSC: A([o=1],0)={'south'}
+2022-04-10 10:38:08,099 - pomdp.py - Injected memory into observation 0.
+
+------------------------------------------------------------
+
+2022-04-10 10:38:08,099 - quotient.py - Constructed quotient MDP having 31 states and 228 actions.
+AM([o=1],0): {{'west'}+0,{'west'}+1,{'east'}+0,{'east'}+1,{'south'}+0,{'south'}+1}, AM([o=1],1): {{'west'}+0,{'west'}+1,{'north'}+0,{'north'}+1}, M([],0): {0,1}
+2022-04-10 10:38:08,099 - quotient.py - Symmetry breaking: reduced design space from 128 to 48
+2022-04-10 10:38:08,099 - synthesizer.py - Synthesis initiated.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? [(!"bad") U "goal"] 
+
+method: AR, synthesis time: 0.0 s
+number of holes: 3, family size: 128, super quotient: 31 states / 228 actions
+explored: 37 %
+AR stats: avg MDP size: 31, iterations: 8
+
+optimal: 0.214286
+--------------------
+
+2022-04-10 10:38:08,101 - pomdp.py - FSC synthesis: elapsed 0.0 s, opt = 0.214, injections: 1.
+2022-04-10 10:38:08,101 - pomdp.py - FSC: A([o=1],0)={'south'}
+2022-04-10 10:38:08,101 - pomdp.py - Injected memory into observation 0.
+
+------------------------------------------------------------
+
+2022-04-10 10:38:08,101 - quotient.py - Constructed quotient MDP having 45 states and 509 actions.
+AM([o=1],0): {{'west'}+0,{'west'}+1,{'west'}+2,{'east'}+0,{'east'}+1,{'east'}+2}, AM([o=1],1): {{'west'}+0,{'west'}+1,{'west'}+2,{'north'}+0,{'north'}+1,{'north'}+2}, AM([o=1],2): {{'west'}+0,{'west'}+1,{'west'}+2,{'south'}+0,{'south'}+1,{'south'}+2}, M([],0): {0,1,2}
+2022-04-10 10:38:08,101 - quotient.py - Symmetry breaking: reduced design space from 5184 to 648
+2022-04-10 10:38:08,101 - synthesizer.py - Synthesis initiated.
+2022-04-10 10:38:08,103 - property.py - New opt = 0.8517763228507026.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? [(!"bad") U "goal"] 
+
+method: AR, synthesis time: 0.01 s
+number of holes: 4, family size: 5184, super quotient: 45 states / 509 actions
+explored: 12 %
+AR stats: avg MDP size: 45, iterations: 58
+
+optimal: 0.851776
+--------------------
+
+2022-04-10 10:38:08,112 - pomdp.py - FSC synthesis: elapsed 0.0 s, opt = 0.852, injections: 2.
+2022-04-10 10:38:08,112 - pomdp.py - FSC: AM([o=1],0)={'east'}+2, AM([o=1],1)={'north'}+1, AM([o=1],2)={'south'}+0, M([],0)=0
+2022-04-10 10:38:08,112 - pomdp.py - Injected memory into observation 0.
+
+------------------------------------------------------------
+
+2022-04-10 10:38:08,112 - quotient.py - Constructed quotient MDP having 59 states and 902 actions.
+AM([o=1],0): {{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3}, AM([o=1],1): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3}, AM([o=1],2): {{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3}, AM([o=1],3): {{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3}, M([],0): {0,1,2,3}
+2022-04-10 10:38:08,113 - quotient.py - Symmetry breaking: reduced design space from 262144 to 1024
+2022-04-10 10:38:08,113 - synthesizer.py - Synthesis initiated.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? [(!"bad") U "goal"] 
+
+method: AR, synthesis time: 0.03 s
+number of holes: 5, family size: 262144, super quotient: 59 states / 902 actions
+explored: 0 %
+AR stats: avg MDP size: 59, iterations: 153
+
+optimal: 0.851776
+--------------------
+
+2022-04-10 10:38:08,145 - pomdp.py - FSC synthesis: elapsed 0.0 s, opt = 0.852, injections: 3.
+2022-04-10 10:38:08,145 - pomdp.py - FSC: AM([o=1],0)={'east'}+2, AM([o=1],1)={'north'}+1, AM([o=1],2)={'south'}+0, M([],0)=0
+2022-04-10 10:38:08,145 - pomdp.py - Injected memory into observation 0.
+
+------------------------------------------------------------
+
+2022-04-10 10:38:08,145 - quotient.py - Constructed quotient MDP having 73 states and 1407 actions.
+AM([o=1],0): {{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'east'}+4}, AM([o=1],1): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'west'}+4}, AM([o=1],2): {{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3,{'north'}+4}, AM([o=1],3): {{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'south'}+4}, AM([o=1],4): {{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'east'}+4}, M([],0): {0,1,2,3,4}
+2022-04-10 10:38:08,146 - quotient.py - Symmetry breaking: reduced design space from 16000000 to 15625
+2022-04-10 10:38:08,146 - synthesizer.py - Synthesis initiated.
+2022-04-10 10:38:08,150 - property.py - New opt = 0.9145164752602765.
+2022-04-10 10:38:08,151 - property.py - New opt = 0.9161186638528226.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? [(!"bad") U "goal"] 
+
+method: AR, synthesis time: 0.37 s
+number of holes: 6, family size: 16000000, super quotient: 73 states / 1407 actions
+explored: 0 %
+AR stats: avg MDP size: 73, iterations: 1538
+
+optimal: 0.916119
+--------------------
+
+2022-04-10 10:38:08,521 - pomdp.py - FSC synthesis: elapsed 0.4 s, opt = 0.916, injections: 4.
+2022-04-10 10:38:08,521 - pomdp.py - FSC: AM([o=1],0)={'east'}+3, AM([o=1],1)={'west'}+2, AM([o=1],2)={'north'}+4, AM([o=1],3)={'south'}+4, AM([o=1],4)={'east'}+0, M([],0)=4
+2022-04-10 10:38:08,521 - pomdp.py - Injected memory into observation 0.
+
+------------------------------------------------------------
+
+2022-04-10 10:38:08,521 - quotient.py - Constructed quotient MDP having 87 states and 2024 actions.
+AM([o=1],0): {{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'east'}+4,{'east'}+5}, AM([o=1],1): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'west'}+4,{'west'}+5}, AM([o=1],2): {{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3,{'north'}+4,{'north'}+5}, AM([o=1],3): {{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'south'}+4,{'south'}+5}, AM([o=1],4): {{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'east'}+4,{'east'}+5}, AM([o=1],5): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'west'}+4,{'west'}+5}, M([],0): {0,1,2,3,4,5}
+2022-04-10 10:38:08,522 - quotient.py - Symmetry breaking: reduced design space from 1146617856 to 279936
+2022-04-10 10:38:08,523 - synthesizer.py - Synthesis initiated.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? [(!"bad") U "goal"] 
+
+method: AR, synthesis time: 2.5 s
+number of holes: 7, family size: 1146617856, super quotient: 87 states / 2024 actions
+explored: 0 %
+AR stats: avg MDP size: 87, iterations: 9036
+
+optimal: 0.916119
+--------------------
+
+2022-04-10 10:38:11,025 - pomdp.py - FSC synthesis: elapsed 2.9 s, opt = 0.916, injections: 5.
+2022-04-10 10:38:11,025 - pomdp.py - FSC: AM([o=1],0)={'east'}+3, AM([o=1],1)={'west'}+2, AM([o=1],2)={'north'}+4, AM([o=1],3)={'south'}+4, AM([o=1],4)={'east'}+0, M([],0)=4
+2022-04-10 10:38:11,025 - pomdp.py - Injected memory into observation 0.
+
+------------------------------------------------------------
+
+2022-04-10 10:38:11,025 - quotient.py - Constructed quotient MDP having 101 states and 2753 actions.
+AM([o=1],0): {{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'east'}+4,{'east'}+5,{'east'}+6}, AM([o=1],1): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'west'}+4,{'west'}+5,{'west'}+6}, AM([o=1],2): {{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3,{'north'}+4,{'north'}+5,{'north'}+6}, AM([o=1],3): {{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'south'}+4,{'south'}+5,{'south'}+6}, AM([o=1],4): {{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'east'}+4,{'east'}+5,{'east'}+6}, AM([o=1],5): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'west'}+4,{'west'}+5,{'west'}+6}, AM([o=1],6): {{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3,{'north'}+4,{'north'}+5,{'north'}+6}, M([],0): {0,1,2,3,4,5,6}
+2022-04-10 10:38:11,027 - quotient.py - Symmetry breaking: reduced design space from 94450499584 to 5764801
+2022-04-10 10:38:11,028 - synthesizer.py - Synthesis initiated.
+> Progress 0.0002%, elapsed 3.0 s, iters = (8318, 0), opt = 0.916
+> Progress 0.0005%, elapsed 6.0 s, iters = (17166, 0), opt = 0.916
+> Progress 0.0007%, elapsed 9.0 s, iters = (25860, 0), opt = 0.916
+> Progress 0.0013%, elapsed 12.0 s, iters = (34785, 0), opt = 0.916
+> Progress 0.0016%, elapsed 15.0 s, iters = (43829, 0), opt = 0.916
+> Progress 0.0022%, elapsed 18.0 s, iters = (53486, 0), opt = 0.916
+> Progress 0.0028%, elapsed 21.0 s, iters = (63069, 0), opt = 0.916
+> Progress 0.0033%, elapsed 24.0 s, iters = (71737, 0), opt = 0.916
+> Progress 0.0035%, elapsed 27.0 s, iters = (79991, 0), opt = 0.916
+> Progress 0.004%, elapsed 30.0 s, iters = (88491, 0), opt = 0.916
+> Progress 0.0043%, elapsed 33.0 s, iters = (97116, 0), opt = 0.916
+> Progress 0.0048%, elapsed 36.0 s, iters = (106330, 0), opt = 0.916
+> Progress 0.005%, elapsed 39.0 s, iters = (114892, 0), opt = 0.916
+> Progress 0.0055%, elapsed 42.0 s, iters = (123258, 0), opt = 0.916
+> Progress 0.0057%, elapsed 45.0 s, iters = (131899, 0), opt = 0.916
+> Progress 0.006%, elapsed 48.0 s, iters = (141239, 0), opt = 0.916
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? [(!"bad") U "goal"] 
+
+method: AR, synthesis time: 48.01 s
+number of holes: 8, family size: 94450499584, super quotient: 101 states / 2753 actions
+explored: 0 %
+AR stats: avg MDP size: 101, iterations: 141258
+
+optimal: 0.916119
+--------------------
+
+2022-04-10 10:38:59,037 - pomdp.py - FSC synthesis: elapsed 50.9 s, opt = 0.916, injections: 6.
+2022-04-10 10:38:59,037 - pomdp.py - FSC: AM([o=1],0)={'east'}+3, AM([o=1],1)={'west'}+2, AM([o=1],2)={'north'}+4, AM([o=1],3)={'south'}+4, AM([o=1],4)={'east'}+0, M([],0)=4
+2022-04-10 10:38:59,037 - pomdp.py - Injected memory into observation 0.
+
+------------------------------------------------------------
+
+2022-04-10 10:38:59,038 - quotient.py - Constructed quotient MDP having 115 states and 3594 actions.
+AM([o=1],0): {{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'east'}+4,{'east'}+5,{'east'}+6,{'east'}+7}, AM([o=1],1): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'west'}+4,{'west'}+5,{'west'}+6,{'west'}+7}, AM([o=1],2): {{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3,{'north'}+4,{'north'}+5,{'north'}+6,{'north'}+7}, AM([o=1],3): {{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'south'}+4,{'south'}+5,{'south'}+6,{'south'}+7}, AM([o=1],4): {{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'east'}+4,{'east'}+5,{'east'}+6,{'east'}+7}, AM([o=1],5): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'west'}+4,{'west'}+5,{'west'}+6,{'west'}+7}, AM([o=1],6): {{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3,{'north'}+4,{'north'}+5,{'north'}+6,{'north'}+7}, AM([o=1],7): {{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'south'}+4,{'south'}+5,{'south'}+6,{'south'}+7}, M([],0): {0,1,2,3,4,5,6,7}
+2022-04-10 10:38:59,039 - quotient.py - Symmetry breaking: reduced design space from 8796093022208 to 134217728
+2022-04-10 10:38:59,040 - synthesizer.py - Synthesis initiated.
+> Progress 0.0%, elapsed 3.0 s, iters = (8597, 0), opt = 0.916
+> Progress 0.0%, elapsed 6.0 s, iters = (17766, 0), opt = 0.916
+> Progress 0.0%, elapsed 9.0 s, iters = (26148, 0), opt = 0.916
+> Progress 0.0%, elapsed 12.0 s, iters = (34678, 0), opt = 0.916
+> Progress 0.0%, elapsed 15.0 s, iters = (42644, 0), opt = 0.916
+> Progress 0.0%, elapsed 18.0 s, iters = (50056, 0), opt = 0.916
+> Progress 0.0%, elapsed 21.0 s, iters = (58235, 0), opt = 0.916
+> Progress 0.0%, elapsed 24.0 s, iters = (66595, 0), opt = 0.916
+> Progress 0.0%, elapsed 27.0 s, iters = (75488, 0), opt = 0.916
+> Progress 0.0%, elapsed 30.0 s, iters = (84084, 0), opt = 0.916
+> Progress 0.0%, elapsed 33.0 s, iters = (92072, 0), opt = 0.916
+> Progress 0.0%, elapsed 36.0 s, iters = (100300, 0), opt = 0.916
+> Progress 0.0%, elapsed 39.0 s, iters = (108724, 0), opt = 0.916
+> Progress 0.0%, elapsed 42.0 s, iters = (117523, 0), opt = 0.916
+> Progress 0.0%, elapsed 45.0 s, iters = (125692, 0), opt = 0.916
+> Progress 0.0%, elapsed 48.0 s, iters = (133912, 0), opt = 0.916
+> Progress 0.0%, elapsed 51.0 s, iters = (142069, 0), opt = 0.916
+> Progress 0.0%, elapsed 54.0 s, iters = (150349, 0), opt = 0.916
+> Progress 0.0%, elapsed 57.0 s, iters = (159414, 0), opt = 0.916
+> Progress 0.0%, elapsed 60.0 s, iters = (168247, 0), opt = 0.916
+> Progress 0.0%, elapsed 63.0 s, iters = (176773, 0), opt = 0.916
+> Progress 0.0%, elapsed 66.0 s, iters = (184945, 0), opt = 0.916
+> Progress 0.0001%, elapsed 69.0 s, iters = (193076, 0), opt = 0.916
+> Progress 0.0001%, elapsed 72.0 s, iters = (201852, 0), opt = 0.916
+> Progress 0.0001%, elapsed 75.0 s, iters = (209472, 0), opt = 0.916
+> Progress 0.0001%, elapsed 78.0 s, iters = (216809, 0), opt = 0.916
+> Progress 0.0001%, elapsed 81.0 s, iters = (224009, 0), opt = 0.916
+> Progress 0.0001%, elapsed 84.0 s, iters = (232060, 0), opt = 0.916
+> Progress 0.0001%, elapsed 87.0 s, iters = (239710, 0), opt = 0.916
+> Progress 0.0001%, elapsed 90.0 s, iters = (247831, 0), opt = 0.916
+> Progress 0.0001%, elapsed 93.0 s, iters = (255930, 0), opt = 0.916
+> Progress 0.0001%, elapsed 96.0 s, iters = (263736, 0), opt = 0.916
+> Progress 0.0001%, elapsed 99.0 s, iters = (271640, 0), opt = 0.916
+> Progress 0.0001%, elapsed 102.0 s, iters = (279851, 0), opt = 0.916
+> Progress 0.0001%, elapsed 105.0 s, iters = (288036, 0), opt = 0.916
+> Progress 0.0001%, elapsed 108.0 s, iters = (296328, 0), opt = 0.916
+> Progress 0.0001%, elapsed 111.0 s, iters = (304085, 0), opt = 0.916
+> Progress 0.0001%, elapsed 114.0 s, iters = (311864, 0), opt = 0.916
+> Progress 0.0001%, elapsed 117.0 s, iters = (320201, 0), opt = 0.916
+> Progress 0.0001%, elapsed 120.0 s, iters = (328017, 0), opt = 0.916
+> Progress 0.0001%, elapsed 123.0 s, iters = (336364, 0), opt = 0.916
+> Progress 0.0001%, elapsed 126.0 s, iters = (344184, 0), opt = 0.916
+> Progress 0.0001%, elapsed 129.0 s, iters = (351900, 0), opt = 0.916
+> Progress 0.0001%, elapsed 132.0 s, iters = (360543, 0), opt = 0.916
+> Progress 0.0002%, elapsed 135.0 s, iters = (368053, 0), opt = 0.916
+> Progress 0.0002%, elapsed 138.0 s, iters = (375140, 0), opt = 0.916
+> Progress 0.0002%, elapsed 141.0 s, iters = (384034, 0), opt = 0.916
+> Progress 0.0002%, elapsed 144.0 s, iters = (392353, 0), opt = 0.916
+> Progress 0.0002%, elapsed 147.0 s, iters = (400285, 0), opt = 0.916
+> Progress 0.0002%, elapsed 150.0 s, iters = (408370, 0), opt = 0.916
+> Progress 0.0002%, elapsed 153.0 s, iters = (416611, 0), opt = 0.916
+> Progress 0.0002%, elapsed 156.0 s, iters = (424008, 0), opt = 0.916
+> Progress 0.0002%, elapsed 159.0 s, iters = (431754, 0), opt = 0.916
+> Progress 0.0002%, elapsed 162.0 s, iters = (439659, 0), opt = 0.916
+> Progress 0.0002%, elapsed 165.0 s, iters = (447466, 0), opt = 0.916
+> Progress 0.0002%, elapsed 168.0 s, iters = (455346, 0), opt = 0.916
+> Progress 0.0002%, elapsed 171.0 s, iters = (463630, 0), opt = 0.916
+> Progress 0.0002%, elapsed 174.0 s, iters = (471422, 0), opt = 0.916
+> Progress 0.0002%, elapsed 177.0 s, iters = (479467, 0), opt = 0.916
+> Progress 0.0002%, elapsed 180.0 s, iters = (487801, 0), opt = 0.916
+> Progress 0.0003%, elapsed 183.0 s, iters = (497021, 0), opt = 0.916
+> Progress 0.0003%, elapsed 186.0 s, iters = (506761, 0), opt = 0.916
+> Progress 0.0003%, elapsed 189.0 s, iters = (516249, 0), opt = 0.916
+> Progress 0.0003%, elapsed 192.0 s, iters = (524624, 0), opt = 0.916
+> Progress 0.0003%, elapsed 195.0 s, iters = (532687, 0), opt = 0.916
+> Progress 0.0003%, elapsed 198.0 s, iters = (540705, 0), opt = 0.916
+> Progress 0.0003%, elapsed 201.0 s, iters = (548641, 0), opt = 0.916
+> Progress 0.0003%, elapsed 204.0 s, iters = (556768, 0), opt = 0.916
+> Progress 0.0003%, elapsed 207.0 s, iters = (565092, 0), opt = 0.916
+> Progress 0.0003%, elapsed 210.0 s, iters = (573609, 0), opt = 0.916
+> Progress 0.0003%, elapsed 213.0 s, iters = (580970, 0), opt = 0.916
+> Progress 0.0003%, elapsed 216.0 s, iters = (588674, 0), opt = 0.916
+> Progress 0.0003%, elapsed 219.0 s, iters = (597757, 0), opt = 0.916
+> Progress 0.0003%, elapsed 222.0 s, iters = (606638, 0), opt = 0.916
+> Progress 0.0003%, elapsed 225.0 s, iters = (615329, 0), opt = 0.916
+> Progress 0.0004%, elapsed 228.0 s, iters = (624121, 0), opt = 0.916
+> Progress 0.0004%, elapsed 231.0 s, iters = (632864, 0), opt = 0.916
+> Progress 0.0004%, elapsed 234.0 s, iters = (642194, 0), opt = 0.916
+> Progress 0.0004%, elapsed 237.0 s, iters = (650856, 0), opt = 0.916
+> Progress 0.0004%, elapsed 240.0 s, iters = (659904, 0), opt = 0.916
+> Progress 0.0004%, elapsed 243.0 s, iters = (669440, 0), opt = 0.916
+> Progress 0.0004%, elapsed 246.0 s, iters = (678667, 0), opt = 0.916

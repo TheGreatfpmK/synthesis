@@ -1067,6 +1067,7 @@ class POMDPQuotientContainer(QuotientContainer):
         reduced_family = family.copy()
 
         for obs in range(self.observations):
+            #print(obs)
 
 
             num_actions = self.actions_at_observation[obs]
@@ -1084,10 +1085,13 @@ class POMDPQuotientContainer(QuotientContainer):
 
             if obs not in observation_action_dict.keys():
                 selected_actions = [[0] for hole in obs_holes]
-                pass
             else:
-                selected_actions = [observation_action_dict[obs].keys() for hole in obs_holes]
-                pass
+                selected_actions = [list(observation_action_dict[obs].keys()) for hole in obs_holes]
+
+            #print(obs_holes)
+            #print(all_actions)
+            #print(selected_actions)
+            #print(all_updates)
     
             # create options for each hole
             for index in range(num_holes):

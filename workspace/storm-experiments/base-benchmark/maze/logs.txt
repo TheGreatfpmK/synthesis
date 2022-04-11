@@ -1,0 +1,489 @@
+2022-04-10 10:53:08,093 - cli.py - This is Paynt version 0.1.0.
+2022-04-10 10:53:08,094 - sketch.py - Loading sketch from /mnt/d/src/PP/synthesis/workspace/storm-experiments/models/maze/sketch.templ...
+2022-04-10 10:53:08,094 - sketch.py - Attempting to parse model in explicit format ...
+ERROR (DirectEncodingParser.cpp:125): Could not parse line 'pomdp'.
+2022-04-10 10:53:08,096 - sketch.py - Assuming a sketch in a PRISM format ...
+2022-04-10 10:53:08,116 - sketch.py - Sketch does not contain any hole definitions.
+2022-04-10 10:53:08,116 - sketch.py - Loading properties from /mnt/d/src/PP/synthesis/workspace/storm-experiments/models/maze/sketch.props ...
+2022-04-10 10:53:08,118 - sketch.py - Found the following specification: constraints: none, optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+2022-04-10 10:53:08,118 - sketch.py - Initializing the quotient ...
+2022-04-10 10:53:08,126 - quotient.py - Constructed POMDP having 8 observations.
+2022-04-10 10:53:08,127 - quotient.py - Constructed quotient MDP having 15 states and 54 actions.
+2022-04-10 10:53:08,127 - sketch.py - Sketch parsing complete.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:08,127 - quotient.py - Constructed quotient MDP having 15 states and 54 actions.
+A([l=1 & r=1],0): {{'up'},{'right'},{'down'},{'left'}}, A([d=1 & l=1],0): {{'up'},{'right'},{'down'},{'left'}}, A([d=1 & l=1 & r=1],0): {{'up'},{'right'},{'down'},{'left'}}, A([d=1 & u=1],0): {{'up'},{'right'},{'down'},{'left'}}, A([bad=1 & u=1],0): {{'up'},{'right'},{'down'},{'left'}}, A([d=1 & r=1],0): {{'up'},{'right'},{'down'},{'left'}}
+2022-04-10 10:53:08,127 - quotient.py - Symmetry breaking: reduced design space from 4096 to 4096
+2022-04-10 10:53:08,128 - synthesizer.py - Synthesis initiated.
+2022-04-10 10:53:08,129 - property.py - New opt = 1443.6860033476264.
+2022-04-10 10:53:08,130 - property.py - New opt = 118.56544642857023.
+2022-04-10 10:53:08,133 - property.py - New opt = 74.83214285714259.
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 0.01 s
+number of holes: 6, family size: 4096, super quotient: 15 states / 54 actions
+explored: 100 %
+AR stats: avg MDP size: 15, iterations: 13
+
+optimal: 74.832143
+--------------------
+
+2022-04-10 10:53:08,133 - pomdp.py - FSC synthesis: elapsed 0.0 s, opt = 74.832, injections: 0.
+2022-04-10 10:53:08,133 - pomdp.py - FSC: A([l=1 & r=1],0)={'up'}, A([d=1 & l=1],0)={'left'}, A([d=1 & l=1 & r=1],0)={'down'}, A([d=1 & u=1],0)={'right'}, A([bad=1 & u=1],0)={'up'}, A([d=1 & r=1],0)={'right'}
+2022-04-10 10:53:08,133 - pomdp.py - Injected memory into observation 3.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:08,133 - quotient.py - Constructed quotient MDP having 21 states and 147 actions.
+A([l=1 & r=1],0): {{'up'},{'right'},{'down'},{'left'}}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'right'}+0,{'right'}+1,{'down'}+0,{'down'}+1,{'left'}+0,{'left'}+1}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'right'}+0,{'right'}+1,{'down'}+0,{'down'}+1,{'left'}+0,{'left'}+1}, AM([d=1 & u=1],0): {{'right'}+0,{'right'}+1,{'left'}+0,{'left'}+1,{'up'}+0,{'up'}+1}, AM([d=1 & u=1],1): {{'right'}+0,{'right'}+1,{'left'}+0,{'left'}+1,{'down'}+0,{'down'}+1}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'right'}+0,{'right'}+1,{'down'}+0,{'down'}+1,{'left'}+0,{'left'}+1}, M([bad=1],0): {0,1}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'right'}+0,{'right'}+1,{'down'}+0,{'down'}+1,{'left'}+0,{'left'}+1}
+2022-04-10 10:53:08,134 - quotient.py - Symmetry breaking: reduced design space from 2097152 to 1179648
+2022-04-10 10:53:08,134 - synthesizer.py - Synthesis initiated.
+2022-04-10 10:53:08,138 - property.py - New opt = 30.03647181162301.
+2022-04-10 10:53:08,143 - property.py - New opt = 18.378580990493496.
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 0.01 s
+number of holes: 8, family size: 2097152, super quotient: 21 states / 147 actions
+explored: 56 %
+AR stats: avg MDP size: 21, iterations: 37
+
+optimal: 18.378581
+--------------------
+
+2022-04-10 10:53:08,145 - pomdp.py - FSC synthesis: elapsed 0.0 s, opt = 18.379, injections: 1.
+2022-04-10 10:53:08,145 - pomdp.py - FSC: A([l=1 & r=1],0)={'up'}, AM([d=1 & l=1],0)={'left'}+0, AM([d=1 & l=1 & r=1],0)={'down'}+1, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'down'}+1, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:53:08,145 - pomdp.py - Injected memory into observation 0.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:08,145 - quotient.py - Constructed quotient MDP having 23 states and 171 actions.
+AM([l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'down'}+0,{'down'}+1,{'right'}+0,{'right'}+1}, AM([l=1 & r=1],1): {{'up'}+0,{'up'}+1,{'down'}+0,{'down'}+1,{'left'}+0,{'left'}+1}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'right'}+0,{'right'}+1,{'down'}+0,{'down'}+1,{'left'}+0,{'left'}+1}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'right'}+0,{'right'}+1,{'down'}+0,{'down'}+1,{'left'}+0,{'left'}+1}, AM([d=1 & u=1],0): {{'right'}+0,{'right'}+1,{'left'}+0,{'left'}+1,{'up'}+0,{'up'}+1}, AM([d=1 & u=1],1): {{'right'}+0,{'right'}+1,{'left'}+0,{'left'}+1,{'down'}+0,{'down'}+1}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'right'}+0,{'right'}+1,{'down'}+0,{'down'}+1,{'left'}+0,{'left'}+1}, M([bad=1],0): {0,1}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'right'}+0,{'right'}+1,{'down'}+0,{'down'}+1,{'left'}+0,{'left'}+1}
+2022-04-10 10:53:08,145 - quotient.py - Symmetry breaking: reduced design space from 33554432 to 10616832
+2022-04-10 10:53:08,146 - synthesizer.py - Synthesis initiated.
+2022-04-10 10:53:08,148 - property.py - New opt = 7.552867316350278.
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 0.0 s
+number of holes: 9, family size: 33554432, super quotient: 23 states / 171 actions
+explored: 31 %
+AR stats: avg MDP size: 23, iterations: 19
+
+optimal: 7.552867
+--------------------
+
+2022-04-10 10:53:08,150 - pomdp.py - FSC synthesis: elapsed 0.0 s, opt = 7.553, injections: 2.
+2022-04-10 10:53:08,150 - pomdp.py - FSC: AM([l=1 & r=1],0)={'right'}+0, AM([l=1 & r=1],1)={'left'}+1, AM([d=1 & l=1],0)={'left'}+1, AM([d=1 & l=1 & r=1],0)={'down'}+1, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'down'}+1, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:53:08,150 - pomdp.py - Injected memory into observation 3.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:08,150 - quotient.py - Constructed quotient MDP having 29 states and 312 actions.
+AM([l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'down'}+0,{'down'}+1,{'right'}+0,{'right'}+1}, AM([l=1 & r=1],1): {{'up'}+0,{'up'}+1,{'down'}+0,{'down'}+1,{'left'}+0,{'left'}+1}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'right'}+0,{'right'}+1,{'right'}+2,{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'right'}+0,{'right'}+1,{'right'}+2,{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & u=1],0): {{'left'}+0,{'left'}+1,{'left'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([d=1 & u=1],1): {{'left'}+0,{'left'}+1,{'left'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([d=1 & u=1],2): {{'left'}+0,{'left'}+1,{'left'}+2,{'down'}+0,{'down'}+1,{'down'}+2}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'right'}+0,{'right'}+1,{'right'}+2,{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, M([bad=1],0): {0,1,2}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'right'}+0,{'right'}+1,{'right'}+2,{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}
+2022-04-10 10:53:08,150 - quotient.py - Symmetry breaking: reduced design space from 6879707136 to 483729408
+2022-04-10 10:53:08,151 - synthesizer.py - Synthesis initiated.
+2022-04-10 10:53:08,154 - property.py - New opt = 7.418970005658791.
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 0.01 s
+number of holes: 10, family size: 6879707136, super quotient: 29 states / 312 actions
+explored: 7 %
+AR stats: avg MDP size: 29, iterations: 43
+
+optimal: 7.41897
+--------------------
+
+2022-04-10 10:53:08,162 - pomdp.py - FSC synthesis: elapsed 0.0 s, opt = 7.419, injections: 3.
+2022-04-10 10:53:08,162 - pomdp.py - FSC: AM([l=1 & r=1],0)={'right'}+0, AM([l=1 & r=1],1)={'left'}+1, AM([d=1 & l=1],0)={'left'}+1, AM([d=1 & l=1 & r=1],0)={'down'}+2, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'right'}+0, AM([d=1 & u=1],2)={'down'}+2, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:53:08,162 - pomdp.py - Injected memory into observation 0.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:08,162 - quotient.py - Constructed quotient MDP having 31 states and 352 actions.
+AM([l=1 & r=1],0): {{'down'}+0,{'down'}+1,{'down'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([l=1 & r=1],1): {{'down'}+0,{'down'}+1,{'down'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([l=1 & r=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'right'}+0,{'right'}+1,{'right'}+2,{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'right'}+0,{'right'}+1,{'right'}+2,{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & u=1],0): {{'left'}+0,{'left'}+1,{'left'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([d=1 & u=1],1): {{'left'}+0,{'left'}+1,{'left'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([d=1 & u=1],2): {{'left'}+0,{'left'}+1,{'left'}+2,{'down'}+0,{'down'}+1,{'down'}+2}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'right'}+0,{'right'}+1,{'right'}+2,{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, M([bad=1],0): {0,1,2}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'right'}+0,{'right'}+1,{'right'}+2,{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}
+2022-04-10 10:53:08,162 - quotient.py - Symmetry breaking: reduced design space from 185752092672 to 2902376448
+2022-04-10 10:53:08,162 - synthesizer.py - Synthesis initiated.
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 0.0 s
+number of holes: 11, family size: 185752092672, super quotient: 31 states / 352 actions
+explored: 1 %
+AR stats: avg MDP size: 31, iterations: 16
+
+optimal: 7.41897
+--------------------
+
+2022-04-10 10:53:08,166 - pomdp.py - FSC synthesis: elapsed 0.0 s, opt = 7.419, injections: 4.
+2022-04-10 10:53:08,166 - pomdp.py - FSC: AM([l=1 & r=1],0)={'right'}+0, AM([l=1 & r=1],1)={'left'}+1, AM([d=1 & l=1],0)={'left'}+1, AM([d=1 & l=1 & r=1],0)={'down'}+2, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'right'}+0, AM([d=1 & u=1],2)={'down'}+2, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:53:08,166 - pomdp.py - Injected memory into observation 3.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:08,166 - quotient.py - Constructed quotient MDP having 37 states and 541 actions.
+AM([l=1 & r=1],0): {{'down'}+0,{'down'}+1,{'down'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([l=1 & r=1],1): {{'down'}+0,{'down'}+1,{'down'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([l=1 & r=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3}, AM([d=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3}, AM([d=1 & u=1],1): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3}, AM([d=1 & u=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3}, AM([d=1 & u=1],3): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3}, M([bad=1],0): {0,1,2,3}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3}
+2022-04-10 10:53:08,167 - quotient.py - Symmetry breaking: reduced design space from 29686813949952 to 14495514624
+2022-04-10 10:53:08,167 - synthesizer.py - Synthesis initiated.
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 0.01 s
+number of holes: 12, family size: 29686813949952, super quotient: 37 states / 541 actions
+explored: 0 %
+AR stats: avg MDP size: 37, iterations: 28
+
+optimal: 7.41897
+--------------------
+
+2022-04-10 10:53:08,174 - pomdp.py - FSC synthesis: elapsed 0.0 s, opt = 7.419, injections: 5.
+2022-04-10 10:53:08,175 - pomdp.py - FSC: AM([l=1 & r=1],0)={'right'}+0, AM([l=1 & r=1],1)={'left'}+1, AM([d=1 & l=1],0)={'left'}+1, AM([d=1 & l=1 & r=1],0)={'down'}+2, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'right'}+0, AM([d=1 & u=1],2)={'down'}+2, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:53:08,175 - pomdp.py - Injected memory into observation 3.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:08,175 - quotient.py - Constructed quotient MDP having 43 states and 778 actions.
+AM([l=1 & r=1],0): {{'down'}+0,{'down'}+1,{'down'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([l=1 & r=1],1): {{'down'}+0,{'down'}+1,{'down'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([l=1 & r=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4}, AM([d=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4}, AM([d=1 & u=1],1): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4}, AM([d=1 & u=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4}, AM([d=1 & u=1],3): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4}, AM([d=1 & u=1],4): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4}, M([bad=1],0): {0,1,2,3,4}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4}
+2022-04-10 10:53:08,175 - quotient.py - Symmetry breaking: reduced design space from 4423680000000000 to 540000000000
+2022-04-10 10:53:08,176 - synthesizer.py - Synthesis initiated.
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 0.04 s
+number of holes: 13, family size: 4423680000000000, super quotient: 43 states / 778 actions
+explored: 0 %
+AR stats: avg MDP size: 43, iterations: 136
+
+optimal: 7.41897
+--------------------
+
+2022-04-10 10:53:08,215 - pomdp.py - FSC synthesis: elapsed 0.1 s, opt = 7.419, injections: 6.
+2022-04-10 10:53:08,215 - pomdp.py - FSC: AM([l=1 & r=1],0)={'right'}+0, AM([l=1 & r=1],1)={'left'}+1, AM([d=1 & l=1],0)={'left'}+1, AM([d=1 & l=1 & r=1],0)={'down'}+2, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'right'}+0, AM([d=1 & u=1],2)={'down'}+2, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:53:08,215 - pomdp.py - Injected memory into observation 3.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:08,215 - quotient.py - Constructed quotient MDP having 49 states and 1063 actions.
+AM([l=1 & r=1],0): {{'down'}+0,{'down'}+1,{'down'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([l=1 & r=1],1): {{'down'}+0,{'down'}+1,{'down'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([l=1 & r=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5}, AM([d=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5}, AM([d=1 & u=1],1): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5}, AM([d=1 & u=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5}, AM([d=1 & u=1],3): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5}, AM([d=1 & u=1],4): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5}, AM([d=1 & u=1],5): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5}, M([bad=1],0): {0,1,2,3,4,5}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5}
+2022-04-10 10:53:08,216 - quotient.py - Symmetry breaking: reduced design space from 657366253849018368 to 20061226008576
+2022-04-10 10:53:08,217 - synthesizer.py - Synthesis initiated.
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 0.05 s
+number of holes: 14, family size: 657366253849018368, super quotient: 49 states / 1063 actions
+explored: 0 %
+AR stats: avg MDP size: 49, iterations: 163
+
+optimal: 7.41897
+--------------------
+
+2022-04-10 10:53:08,271 - pomdp.py - FSC synthesis: elapsed 0.1 s, opt = 7.419, injections: 7.
+2022-04-10 10:53:08,271 - pomdp.py - FSC: AM([l=1 & r=1],0)={'right'}+0, AM([l=1 & r=1],1)={'left'}+1, AM([d=1 & l=1],0)={'left'}+1, AM([d=1 & l=1 & r=1],0)={'down'}+2, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'right'}+0, AM([d=1 & u=1],2)={'down'}+2, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:53:08,271 - pomdp.py - Injected memory into observation 3.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:08,272 - quotient.py - Constructed quotient MDP having 55 states and 1396 actions.
+AM([l=1 & r=1],0): {{'down'}+0,{'down'}+1,{'down'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([l=1 & r=1],1): {{'down'}+0,{'down'}+1,{'down'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([l=1 & r=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6}, AM([d=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6}, AM([d=1 & u=1],1): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6}, AM([d=1 & u=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6}, AM([d=1 & u=1],3): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6}, AM([d=1 & u=1],4): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6}, AM([d=1 & u=1],5): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6}, AM([d=1 & u=1],6): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6}, M([bad=1],0): {0,1,2,3,4,5,6}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6}
+2022-04-10 10:53:08,272 - quotient.py - Symmetry breaking: reduced design space from 100318290518539763712 to 765367817066496
+2022-04-10 10:53:08,273 - synthesizer.py - Synthesis initiated.
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 0.5 s
+number of holes: 15, family size: 100318290518539763712, super quotient: 55 states / 1396 actions
+explored: 0 %
+AR stats: avg MDP size: 55, iterations: 1261
+
+optimal: 7.41897
+--------------------
+
+2022-04-10 10:53:08,771 - pomdp.py - FSC synthesis: elapsed 0.6 s, opt = 7.419, injections: 8.
+2022-04-10 10:53:08,771 - pomdp.py - FSC: AM([l=1 & r=1],0)={'right'}+0, AM([l=1 & r=1],1)={'left'}+1, AM([d=1 & l=1],0)={'left'}+1, AM([d=1 & l=1 & r=1],0)={'down'}+2, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'right'}+0, AM([d=1 & u=1],2)={'down'}+2, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:53:08,771 - pomdp.py - Injected memory into observation 3.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:08,771 - quotient.py - Constructed quotient MDP having 61 states and 1777 actions.
+AM([l=1 & r=1],0): {{'down'}+0,{'down'}+1,{'down'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([l=1 & r=1],1): {{'down'}+0,{'down'}+1,{'down'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([l=1 & r=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7}, AM([d=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7}, AM([d=1 & u=1],1): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7}, AM([d=1 & u=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7}, AM([d=1 & u=1],3): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7}, AM([d=1 & u=1],4): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7}, AM([d=1 & u=1],5): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7}, AM([d=1 & u=1],6): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7}, AM([d=1 & u=1],7): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7}, M([bad=1],0): {0,1,2,3,4,5,6,7}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7}
+2022-04-10 10:53:08,772 - quotient.py - Symmetry breaking: reduced design space from 15937986879685052596224 to 30399297484750848
+2022-04-10 10:53:08,772 - synthesizer.py - Synthesis initiated.
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 0.53 s
+number of holes: 16, family size: 15937986879685052596224, super quotient: 61 states / 1777 actions
+explored: 0 %
+AR stats: avg MDP size: 61, iterations: 1261
+
+optimal: 7.41897
+--------------------
+
+2022-04-10 10:53:09,303 - pomdp.py - FSC synthesis: elapsed 1.2 s, opt = 7.419, injections: 9.
+2022-04-10 10:53:09,303 - pomdp.py - FSC: AM([l=1 & r=1],0)={'right'}+0, AM([l=1 & r=1],1)={'left'}+1, AM([d=1 & l=1],0)={'left'}+1, AM([d=1 & l=1 & r=1],0)={'down'}+2, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'right'}+0, AM([d=1 & u=1],2)={'down'}+2, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:53:09,303 - pomdp.py - Injected memory into observation 3.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:09,303 - quotient.py - Constructed quotient MDP having 67 states and 2206 actions.
+AM([l=1 & r=1],0): {{'down'}+0,{'down'}+1,{'down'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([l=1 & r=1],1): {{'down'}+0,{'down'}+1,{'down'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([l=1 & r=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8}, AM([d=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8}, AM([d=1 & u=1],1): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8}, AM([d=1 & u=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8}, AM([d=1 & u=1],3): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8}, AM([d=1 & u=1],4): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8}, AM([d=1 & u=1],5): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8}, AM([d=1 & u=1],6): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8}, AM([d=1 & u=1],7): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8}, AM([d=1 & u=1],8): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8}, M([bad=1],0): {0,1,2,3,4,5,6,7,8}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8}
+2022-04-10 10:53:09,304 - quotient.py - Symmetry breaking: reduced design space from 2652887036648800294797312 to 1264995115589523456
+2022-04-10 10:53:09,305 - synthesizer.py - Synthesis initiated.
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 2.39 s
+number of holes: 17, family size: 2652887036648800294797312, super quotient: 67 states / 2206 actions
+explored: 0 %
+AR stats: avg MDP size: 67, iterations: 4915
+
+optimal: 7.41897
+--------------------
+
+2022-04-10 10:53:11,692 - pomdp.py - FSC synthesis: elapsed 3.6 s, opt = 7.419, injections: 10.
+2022-04-10 10:53:11,692 - pomdp.py - FSC: AM([l=1 & r=1],0)={'right'}+0, AM([l=1 & r=1],1)={'left'}+1, AM([d=1 & l=1],0)={'left'}+1, AM([d=1 & l=1 & r=1],0)={'down'}+2, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'right'}+0, AM([d=1 & u=1],2)={'down'}+2, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:53:11,692 - pomdp.py - Injected memory into observation 3.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:11,693 - quotient.py - Constructed quotient MDP having 73 states and 2683 actions.
+AM([l=1 & r=1],0): {{'down'}+0,{'down'}+1,{'down'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([l=1 & r=1],1): {{'down'}+0,{'down'}+1,{'down'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([l=1 & r=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9}, AM([d=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9}, AM([d=1 & u=1],1): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9}, AM([d=1 & u=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9}, AM([d=1 & u=1],3): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9}, AM([d=1 & u=1],4): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9}, AM([d=1 & u=1],5): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9}, AM([d=1 & u=1],6): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9}, AM([d=1 & u=1],7): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9}, AM([d=1 & u=1],8): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9}, AM([d=1 & u=1],9): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9}, M([bad=1],0): {0,1,2,3,4,5,6,7,8,9}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9}
+2022-04-10 10:53:11,695 - quotient.py - Symmetry breaking: reduced design space from 463856467968000000000000000 to 55296000000000000000
+2022-04-10 10:53:11,696 - synthesizer.py - Synthesis initiated.
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 2.76 s
+number of holes: 18, family size: 463856467968000000000000000, super quotient: 73 states / 2683 actions
+explored: 0 %
+AR stats: avg MDP size: 73, iterations: 4915
+
+optimal: 7.41897
+--------------------
+
+2022-04-10 10:53:14,460 - pomdp.py - FSC synthesis: elapsed 6.3 s, opt = 7.419, injections: 11.
+2022-04-10 10:53:14,460 - pomdp.py - FSC: AM([l=1 & r=1],0)={'right'}+0, AM([l=1 & r=1],1)={'left'}+1, AM([d=1 & l=1],0)={'left'}+1, AM([d=1 & l=1 & r=1],0)={'down'}+2, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'right'}+0, AM([d=1 & u=1],2)={'down'}+2, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:53:14,460 - pomdp.py - Injected memory into observation 3.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:14,460 - quotient.py - Constructed quotient MDP having 79 states and 3208 actions.
+AM([l=1 & r=1],0): {{'down'}+0,{'down'}+1,{'down'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([l=1 & r=1],1): {{'down'}+0,{'down'}+1,{'down'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([l=1 & r=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10}, AM([d=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10}, AM([d=1 & u=1],1): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10}, AM([d=1 & u=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10}, AM([d=1 & u=1],3): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10}, AM([d=1 & u=1],4): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10}, AM([d=1 & u=1],5): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10}, AM([d=1 & u=1],6): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10}, AM([d=1 & u=1],7): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10}, AM([d=1 & u=1],8): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10}, AM([d=1 & u=1],9): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10}, AM([d=1 & u=1],10): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10}, M([bad=1],0): {0,1,2,3,4,5,6,7,8,9,10}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10}
+2022-04-10 10:53:14,463 - quotient.py - Symmetry breaking: reduced design space from 85256317594401252435812155392 to 2540836262536086214656
+2022-04-10 10:53:14,464 - synthesizer.py - Synthesis initiated.
+> Progress 0.0%, elapsed 3.0 s, iters = (4928, 0), opt = 7.419
+> Progress 0.0%, elapsed 6.0 s, iters = (10368, 0), opt = 7.419
+> Progress 0.0%, elapsed 9.0 s, iters = (15563, 0), opt = 7.419
+> Progress 0.0%, elapsed 12.0 s, iters = (20714, 0), opt = 7.419
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 12.08 s
+number of holes: 19, family size: 85256317594401252435812155392, super quotient: 79 states / 3208 actions
+explored: 0 %
+AR stats: avg MDP size: 79, iterations: 20824
+
+optimal: 7.41897
+--------------------
+
+2022-04-10 10:53:26,543 - pomdp.py - FSC synthesis: elapsed 18.4 s, opt = 7.419, injections: 12.
+2022-04-10 10:53:26,543 - pomdp.py - FSC: AM([l=1 & r=1],0)={'right'}+0, AM([l=1 & r=1],1)={'left'}+1, AM([d=1 & l=1],0)={'left'}+1, AM([d=1 & l=1 & r=1],0)={'down'}+2, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'right'}+0, AM([d=1 & u=1],2)={'down'}+2, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:53:26,543 - pomdp.py - Injected memory into observation 3.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:26,544 - quotient.py - Constructed quotient MDP having 85 states and 3781 actions.
+AM([l=1 & r=1],0): {{'down'}+0,{'down'}+1,{'down'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([l=1 & r=1],1): {{'down'}+0,{'down'}+1,{'down'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([l=1 & r=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11}, AM([d=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11}, AM([d=1 & u=1],1): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11}, AM([d=1 & u=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11}, AM([d=1 & u=1],3): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11}, AM([d=1 & u=1],4): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11}, AM([d=1 & u=1],5): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11}, AM([d=1 & u=1],6): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11}, AM([d=1 & u=1],7): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11}, AM([d=1 & u=1],8): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11}, AM([d=1 & u=1],9): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11}, AM([d=1 & u=1],10): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11}, AM([d=1 & u=1],11): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11}, M([bad=1],0): {0,1,2,3,4,5,6,7,8,9,10,11}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11}
+2022-04-10 10:53:26,545 - quotient.py - Symmetry breaking: reduced design space from 16465873788275112647519524356096 to 122680319758319203909632
+2022-04-10 10:53:26,546 - synthesizer.py - Synthesis initiated.
+> Progress 0.0%, elapsed 3.0 s, iters = (4523, 0), opt = 7.419
+> Progress 0.0%, elapsed 6.0 s, iters = (9235, 0), opt = 7.419
+> Progress 0.0%, elapsed 9.0 s, iters = (13873, 0), opt = 7.419
+> Progress 0.0%, elapsed 12.0 s, iters = (18623, 0), opt = 7.419
+> Progress 0.0%, elapsed 15.0 s, iters = (23452, 0), opt = 7.419
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 15.66 s
+number of holes: 20, family size: 16465873788275112647519524356096, super quotient: 85 states / 3781 actions
+explored: 0 %
+AR stats: avg MDP size: 85, iterations: 24469
+
+optimal: 7.41897
+--------------------
+
+2022-04-10 10:53:42,210 - pomdp.py - FSC synthesis: elapsed 34.1 s, opt = 7.419, injections: 13.
+2022-04-10 10:53:42,210 - pomdp.py - FSC: AM([l=1 & r=1],0)={'right'}+0, AM([l=1 & r=1],1)={'left'}+1, AM([d=1 & l=1],0)={'left'}+1, AM([d=1 & l=1 & r=1],0)={'down'}+2, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'right'}+0, AM([d=1 & u=1],2)={'down'}+2, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:53:42,210 - pomdp.py - Injected memory into observation 3.
+
+------------------------------------------------------------
+
+2022-04-10 10:53:42,210 - quotient.py - Constructed quotient MDP having 91 states and 4402 actions.
+AM([l=1 & r=1],0): {{'down'}+0,{'down'}+1,{'down'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([l=1 & r=1],1): {{'down'}+0,{'down'}+1,{'down'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([l=1 & r=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12}, AM([d=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12}, AM([d=1 & u=1],1): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12}, AM([d=1 & u=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12}, AM([d=1 & u=1],3): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12}, AM([d=1 & u=1],4): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12}, AM([d=1 & u=1],5): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12}, AM([d=1 & u=1],6): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12}, AM([d=1 & u=1],7): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12}, AM([d=1 & u=1],8): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12}, AM([d=1 & u=1],9): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12}, AM([d=1 & u=1],10): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12}, AM([d=1 & u=1],11): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12}, AM([d=1 & u=1],12): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12}, M([bad=1],0): {0,1,2,3,4,5,6,7,8,9,10,11,12}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12}
+2022-04-10 10:53:42,212 - quotient.py - Symmetry breaking: reduced design space from 3338442743848897858613937394679808 to 6218334182815436010461184
+2022-04-10 10:53:42,213 - synthesizer.py - Synthesis initiated.
+> Progress 0.0%, elapsed 3.0 s, iters = (4530, 0), opt = 7.419
+> Progress 0.0%, elapsed 6.0 s, iters = (9627, 0), opt = 7.419
+> Progress 0.0%, elapsed 9.0 s, iters = (13635, 0), opt = 7.419
+> Progress 0.0%, elapsed 12.0 s, iters = (17636, 0), opt = 7.419
+> Progress 0.0%, elapsed 15.0 s, iters = (21822, 0), opt = 7.419
+> Progress 0.0%, elapsed 18.0 s, iters = (26090, 0), opt = 7.419
+> Progress 0.0%, elapsed 21.0 s, iters = (30589, 0), opt = 7.419
+> Progress 0.0%, elapsed 24.0 s, iters = (35112, 0), opt = 7.419
+> Progress 0.0%, elapsed 27.0 s, iters = (39556, 0), opt = 7.419
+> Progress 0.0%, elapsed 30.0 s, iters = (44022, 0), opt = 7.419
+> Progress 0.0%, elapsed 33.0 s, iters = (48472, 0), opt = 7.419
+> Progress 0.0%, elapsed 36.0 s, iters = (52864, 0), opt = 7.419
+> Progress 0.0%, elapsed 39.0 s, iters = (57284, 0), opt = 7.419
+> Progress 0.0%, elapsed 42.0 s, iters = (61705, 0), opt = 7.419
+> Progress 0.0%, elapsed 45.0 s, iters = (66275, 0), opt = 7.419
+> Progress 0.0%, elapsed 48.0 s, iters = (70712, 0), opt = 7.419
+> Progress 0.0%, elapsed 51.0 s, iters = (75194, 0), opt = 7.419
+> Progress 0.0%, elapsed 54.0 s, iters = (79211, 0), opt = 7.419
+> Progress 0.0%, elapsed 57.0 s, iters = (83579, 0), opt = 7.419
+> Progress 0.0%, elapsed 60.0 s, iters = (87994, 0), opt = 7.419
+> Progress 0.0%, elapsed 63.0 s, iters = (92463, 0), opt = 7.419
+> Progress 0.0%, elapsed 66.0 s, iters = (96862, 0), opt = 7.419
+> Progress 0.0%, elapsed 69.0 s, iters = (101276, 0), opt = 7.419
+> Progress 0.0%, elapsed 72.0 s, iters = (105891, 0), opt = 7.419
+> Progress 0.0%, elapsed 75.0 s, iters = (110338, 0), opt = 7.419
+> Progress 0.0%, elapsed 78.0 s, iters = (114755, 0), opt = 7.419
+> Progress 0.0%, elapsed 81.0 s, iters = (119167, 0), opt = 7.419
+> Progress 0.0%, elapsed 84.0 s, iters = (123652, 0), opt = 7.419
+> Progress 0.0%, elapsed 87.0 s, iters = (128124, 0), opt = 7.419
+> Progress 0.0%, elapsed 90.0 s, iters = (132498, 0), opt = 7.419
+> Progress 0.0%, elapsed 93.0 s, iters = (136876, 0), opt = 7.419
+> Progress 0.0%, elapsed 96.0 s, iters = (141377, 0), opt = 7.419
+> Progress 0.0%, elapsed 99.0 s, iters = (145719, 0), opt = 7.419
+> Progress 0.0%, elapsed 102.0 s, iters = (150400, 0), opt = 7.419
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 104.52 s
+number of holes: 21, family size: 3338442743848897858613937394679808, super quotient: 91 states / 4402 actions
+explored: 0 %
+AR stats: avg MDP size: 91, iterations: 154607
+
+optimal: 7.41897
+--------------------
+
+2022-04-10 10:55:26,737 - pomdp.py - FSC synthesis: elapsed 138.6 s, opt = 7.419, injections: 14.
+2022-04-10 10:55:26,737 - pomdp.py - FSC: AM([l=1 & r=1],0)={'right'}+0, AM([l=1 & r=1],1)={'left'}+1, AM([d=1 & l=1],0)={'left'}+1, AM([d=1 & l=1 & r=1],0)={'down'}+2, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'right'}+0, AM([d=1 & u=1],2)={'down'}+2, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:55:26,737 - pomdp.py - Injected memory into observation 3.
+
+------------------------------------------------------------
+
+2022-04-10 10:55:26,738 - quotient.py - Constructed quotient MDP having 97 states and 5071 actions.
+AM([l=1 & r=1],0): {{'down'}+0,{'down'}+1,{'down'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([l=1 & r=1],1): {{'down'}+0,{'down'}+1,{'down'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([l=1 & r=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12,{'left'}+13}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12,{'left'}+13}, AM([d=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13}, AM([d=1 & u=1],1): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13}, AM([d=1 & u=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13}, AM([d=1 & u=1],3): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12,{'left'}+13}, AM([d=1 & u=1],4): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13}, AM([d=1 & u=1],5): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13}, AM([d=1 & u=1],6): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13}, AM([d=1 & u=1],7): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12,{'left'}+13}, AM([d=1 & u=1],8): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13}, AM([d=1 & u=1],9): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13}, AM([d=1 & u=1],10): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13}, AM([d=1 & u=1],11): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12,{'left'}+13}, AM([d=1 & u=1],12): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13}, AM([d=1 & u=1],13): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12,{'left'}+13}, M([bad=1],0): {0,1,2,3,4,5,6,7,8,9,10,11,12,13}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12,{'left'}+13}
+2022-04-10 10:55:26,749 - quotient.py - Symmetry breaking: reduced design space from 709669694950711986694593056102940672 to 330465703714039170506686464
+2022-04-10 10:55:26,751 - synthesizer.py - Synthesis initiated.
+> Progress 0.0%, elapsed 3.0 s, iters = (3624, 0), opt = 7.419
+> Progress 0.0%, elapsed 6.0 s, iters = (7402, 0), opt = 7.419
+> Progress 0.0%, elapsed 9.0 s, iters = (11766, 0), opt = 7.419
+> Progress 0.0%, elapsed 12.0 s, iters = (16522, 0), opt = 7.419
+> Progress 0.0%, elapsed 15.0 s, iters = (21546, 0), opt = 7.419
+> Progress 0.0%, elapsed 18.0 s, iters = (26502, 0), opt = 7.419
+> Progress 0.0%, elapsed 21.0 s, iters = (30945, 0), opt = 7.419
+> Progress 0.0%, elapsed 24.0 s, iters = (35006, 0), opt = 7.419
+> Progress 0.0%, elapsed 27.0 s, iters = (38795, 0), opt = 7.419
+> Progress 0.0%, elapsed 30.0 s, iters = (42670, 0), opt = 7.419
+> Progress 0.0%, elapsed 33.0 s, iters = (46653, 0), opt = 7.419
+> Progress 0.0%, elapsed 36.0 s, iters = (50735, 0), opt = 7.419
+> Progress 0.0%, elapsed 39.0 s, iters = (54852, 0), opt = 7.419
+> Progress 0.0%, elapsed 42.0 s, iters = (58865, 0), opt = 7.419
+> Progress 0.0%, elapsed 45.0 s, iters = (62878, 0), opt = 7.419
+> Progress 0.0%, elapsed 48.0 s, iters = (66913, 0), opt = 7.419
+> Progress 0.0%, elapsed 51.0 s, iters = (70931, 0), opt = 7.419
+> Progress 0.0%, elapsed 54.0 s, iters = (74940, 0), opt = 7.419
+> Progress 0.0%, elapsed 57.0 s, iters = (79085, 0), opt = 7.419
+> Progress 0.0%, elapsed 60.0 s, iters = (83105, 0), opt = 7.419
+> Progress 0.0%, elapsed 63.0 s, iters = (87168, 0), opt = 7.419
+> Progress 0.0%, elapsed 66.0 s, iters = (91182, 0), opt = 7.419
+> Progress 0.0%, elapsed 69.0 s, iters = (95123, 0), opt = 7.419
+> Progress 0.0%, elapsed 72.0 s, iters = (99167, 0), opt = 7.419
+> Progress 0.0%, elapsed 75.0 s, iters = (103249, 0), opt = 7.419
+> Progress 0.0%, elapsed 78.0 s, iters = (107323, 0), opt = 7.419
+> Progress 0.0%, elapsed 81.0 s, iters = (111302, 0), opt = 7.419
+> Progress 0.0%, elapsed 84.0 s, iters = (115387, 0), opt = 7.419
+> Progress 0.0%, elapsed 87.0 s, iters = (119463, 0), opt = 7.419
+> Progress 0.0%, elapsed 90.0 s, iters = (123538, 0), opt = 7.419
+> Progress 0.0%, elapsed 93.0 s, iters = (127606, 0), opt = 7.419
+> Progress 0.0%, elapsed 96.0 s, iters = (131719, 0), opt = 7.419
+> Progress 0.0%, elapsed 99.0 s, iters = (135793, 0), opt = 7.419
+> Progress 0.0%, elapsed 102.0 s, iters = (139810, 0), opt = 7.419
+> Progress 0.0%, elapsed 105.0 s, iters = (143941, 0), opt = 7.419
+> Progress 0.0%, elapsed 108.0 s, iters = (148098, 0), opt = 7.419
+> Progress 0.0%, elapsed 111.0 s, iters = (152168, 0), opt = 7.419
+> Progress 0.0%, elapsed 114.0 s, iters = (156173, 0), opt = 7.419
+> Progress 0.0%, elapsed 117.0 s, iters = (159763, 0), opt = 7.419
+> Progress 0.0%, elapsed 120.0 s, iters = (164122, 0), opt = 7.419
+> Progress 0.0%, elapsed 123.0 s, iters = (168718, 0), opt = 7.419
+> Progress 0.0%, elapsed 126.0 s, iters = (173361, 0), opt = 7.419
+> Progress 0.0%, elapsed 129.0 s, iters = (178110, 0), opt = 7.419
+> Progress 0.0%, elapsed 132.0 s, iters = (182998, 0), opt = 7.419
+--------------------
+Synthesis summary
+
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: AR, synthesis time: 134.77 s
+number of holes: 22, family size: 709669694950711986694593056102940672, super quotient: 97 states / 5071 actions
+explored: 0 %
+AR stats: avg MDP size: 97, iterations: 187173
+
+optimal: 7.41897
+--------------------
+
+2022-04-10 10:57:41,522 - pomdp.py - FSC synthesis: elapsed 273.4 s, opt = 7.419, injections: 15.
+2022-04-10 10:57:41,522 - pomdp.py - FSC: AM([l=1 & r=1],0)={'right'}+0, AM([l=1 & r=1],1)={'left'}+1, AM([d=1 & l=1],0)={'left'}+1, AM([d=1 & l=1 & r=1],0)={'down'}+2, AM([d=1 & u=1],0)={'up'}+0, AM([d=1 & u=1],1)={'right'}+0, AM([d=1 & u=1],2)={'down'}+2, AM([bad=1 & u=1],0)={'up'}+0, M([bad=1],0)=0, AM([d=1 & r=1],0)={'right'}+0
+2022-04-10 10:57:41,522 - pomdp.py - Injected memory into observation 3.
+
+------------------------------------------------------------
+
+2022-04-10 10:57:41,522 - quotient.py - Constructed quotient MDP having 103 states and 5788 actions.
+AM([l=1 & r=1],0): {{'down'}+0,{'down'}+1,{'down'}+2,{'up'}+0,{'up'}+1,{'up'}+2}, AM([l=1 & r=1],1): {{'down'}+0,{'down'}+1,{'down'}+2,{'right'}+0,{'right'}+1,{'right'}+2}, AM([l=1 & r=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'left'}+0,{'left'}+1,{'left'}+2}, AM([d=1 & l=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13,{'up'}+14,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13,{'right'}+14,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13,{'down'}+14,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12,{'left'}+13,{'left'}+14}, AM([d=1 & l=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13,{'up'}+14,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13,{'right'}+14,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13,{'down'}+14,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12,{'left'}+13,{'left'}+14}, AM([d=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13,{'up'}+14}, AM([d=1 & u=1],1): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13,{'right'}+14}, AM([d=1 & u=1],2): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13,{'down'}+14}, AM([d=1 & u=1],3): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12,{'left'}+13,{'left'}+14}, AM([d=1 & u=1],4): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13,{'up'}+14}, AM([d=1 & u=1],5): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13,{'right'}+14}, AM([d=1 & u=1],6): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13,{'down'}+14}, AM([d=1 & u=1],7): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12,{'left'}+13,{'left'}+14}, AM([d=1 & u=1],8): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13,{'up'}+14}, AM([d=1 & u=1],9): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13,{'right'}+14}, AM([d=1 & u=1],10): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13,{'down'}+14}, AM([d=1 & u=1],11): {{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12,{'left'}+13,{'left'}+14}, AM([d=1 & u=1],12): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13,{'up'}+14}, AM([d=1 & u=1],13): {{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13,{'right'}+14}, AM([d=1 & u=1],14): {{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13,{'down'}+14}, AM([bad=1 & u=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13,{'up'}+14,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13,{'right'}+14,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13,{'down'}+14,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12,{'left'}+13,{'left'}+14}, M([bad=1],0): {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14}, AM([d=1 & r=1],0): {{'up'}+0,{'up'}+1,{'up'}+2,{'up'}+3,{'up'}+4,{'up'}+5,{'up'}+6,{'up'}+7,{'up'}+8,{'up'}+9,{'up'}+10,{'up'}+11,{'up'}+12,{'up'}+13,{'up'}+14,{'right'}+0,{'right'}+1,{'right'}+2,{'right'}+3,{'right'}+4,{'right'}+5,{'right'}+6,{'right'}+7,{'right'}+8,{'right'}+9,{'right'}+10,{'right'}+11,{'right'}+12,{'right'}+13,{'right'}+14,{'down'}+0,{'down'}+1,{'down'}+2,{'down'}+3,{'down'}+4,{'down'}+5,{'down'}+6,{'down'}+7,{'down'}+8,{'down'}+9,{'down'}+10,{'down'}+11,{'down'}+12,{'down'}+13,{'down'}+14,{'left'}+0,{'left'}+1,{'left'}+2,{'left'}+3,{'left'}+4,{'left'}+5,{'left'}+6,{'left'}+7,{'left'}+8,{'left'}+9,{'left'}+10,{'left'}+11,{'left'}+12,{'left'}+13,{'left'}+14}
+2022-04-10 10:57:41,524 - quotient.py - Symmetry breaking: reduced design space from 157946044610720563200000000000000000000 to 18387339614648437500000000000
+2022-04-10 10:57:41,526 - synthesizer.py - Synthesis initiated.
+> Progress 0.0%, elapsed 3.0 s, iters = (4221, 0), opt = 7.419
+> Progress 0.0%, elapsed 6.0 s, iters = (7881, 0), opt = 7.419
+> Progress 0.0%, elapsed 9.0 s, iters = (12185, 0), opt = 7.419
+> Progress 0.0%, elapsed 12.0 s, iters = (16316, 0), opt = 7.419
+> Progress 0.0%, elapsed 15.0 s, iters = (20663, 0), opt = 7.419
+> Progress 0.0%, elapsed 18.0 s, iters = (24808, 0), opt = 7.419
+> Progress 0.0%, elapsed 21.0 s, iters = (29355, 0), opt = 7.419
+> Progress 0.0%, elapsed 24.0 s, iters = (33711, 0), opt = 7.419

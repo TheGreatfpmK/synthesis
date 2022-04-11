@@ -1,0 +1,261 @@
+2022-04-10 11:28:08,501 - cli.py - This is Paynt version 0.1.0.
+2022-04-10 11:28:08,502 - sketch.py - Loading sketch from /mnt/d/src/PP/synthesis/workspace/storm-experiments/models/refuel-06/sketch.templ...
+2022-04-10 11:28:08,502 - sketch.py - Attempting to parse model in explicit format ...
+ERROR (DirectEncodingParser.cpp:125): Could not parse line 'pomdp'.
+2022-04-10 11:28:08,505 - sketch.py - Assuming a sketch in a PRISM format ...
+2022-04-10 11:28:08,515 - sketch.py - Sketch does not contain any hole definitions.
+2022-04-10 11:28:08,515 - sketch.py - Loading properties from /mnt/d/src/PP/synthesis/workspace/storm-experiments/models/refuel-06/sketch.props ...
+2022-04-10 11:28:08,518 - sketch.py - Found the following specification: constraints: none, optimality objective: Pmax=? ["notbad" U "goal"] 
+2022-04-10 11:28:08,518 - sketch.py - Initializing the quotient ...
+2022-04-10 11:28:08,527 - quotient.py - Constructed POMDP having 50 observations.
+2022-04-10 11:28:08,528 - quotient.py - Constructed quotient MDP having 208 states and 565 actions.
+2022-04-10 11:28:08,529 - sketch.py - Sketch parsing complete.
+
+------------------------------------------------------------
+
+2022-04-10 11:28:08,529 - quotient.py - Constructed quotient MDP having 208 states and 565 actions.
+A([start & fuel=2 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1],0): {{'south'},{'west'}}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=3 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, A([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, A([start & fuel=4 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=2 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1],0): {{'south'},{'west'}}, A([start & fuel=5 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, A([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=2 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'}}, A([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=5 & cangoeast=1 & cangosouth=1],0): {{'south'},{'east'}}, A([start & fuel=4 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}
+2022-04-10 11:28:08,530 - quotient.py - Symmetry breaking: reduced design space from 1410554953728 to 1410554953728
+2022-04-10 11:28:08,531 - synthesizer.py - Synthesis initiated.
+2022-04-10 11:28:08,535 - property.py - New opt = 0.0.
+2022-04-10 11:28:08,540 - property.py - New opt = 0.023347058823529464.
+2022-04-10 11:28:08,579 - property.py - New opt = 0.2021953221173568.
+2022-04-10 11:28:09,133 - property.py - New opt = 0.26766859.
+2022-04-10 11:28:09,258 - property.py - New opt = 0.35002591509999986.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? ["notbad" U "goal"] 
+
+method: AR, synthesis time: 1.02 s
+number of holes: 26, family size: 1410554953728, super quotient: 208 states / 565 actions
+explored: 100 %
+AR stats: avg MDP size: 170, iterations: 2542
+
+optimal: 0.350026
+--------------------
+
+2022-04-10 11:28:09,551 - pomdp.py - FSC synthesis: elapsed 1.0 s, opt = 0.35, injections: 0.
+2022-04-10 11:28:09,551 - pomdp.py - FSC: A([start & fuel=2 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'south'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'west'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1],0)={'south'}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}, A([start & fuel=3 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'north'}, A([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'south'}, A([start & fuel=4 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'south'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=1 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'south'}, A([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=2 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1],0)={'south'}, A([start & fuel=5 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'south'}, A([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=2 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}, A([start & fuel=5 & cangoeast=1 & cangosouth=1],0)={'south'}, A([start & fuel=4 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}
+2022-04-10 11:28:09,551 - pomdp.py - Injected memory into observation 18.
+
+------------------------------------------------------------
+
+2022-04-10 11:28:09,551 - quotient.py - Constructed quotient MDP having 212 states and 623 actions.
+A([start & fuel=2 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1],0): {{'south'},{'west'}}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=3 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}, AM([start & fuel=4 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],1): {{'south'},{'east'},{'north'}}, A([start & fuel=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=2 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1],0): {{'south'},{'west'}}, A([start & fuel=5 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, A([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=2 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'}}, A([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=5 & cangoeast=1 & cangosouth=1],0): {{'south'},{'east'}}, A([start & fuel=4 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}
+2022-04-10 11:28:09,553 - quotient.py - Symmetry breaking: reduced design space from 16926659444736 to 16926659444736
+2022-04-10 11:28:09,554 - synthesizer.py - Synthesis initiated.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? ["notbad" U "goal"] 
+
+method: AR, synthesis time: 1.58 s
+number of holes: 27, family size: 16926659444736, super quotient: 212 states / 623 actions
+explored: 100 %
+AR stats: avg MDP size: 185, iterations: 3574
+
+optimal: 0.350026
+--------------------
+
+2022-04-10 11:28:11,138 - pomdp.py - FSC synthesis: elapsed 2.6 s, opt = 0.35, injections: 1.
+2022-04-10 11:28:11,138 - pomdp.py - FSC: A([start & fuel=2 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'south'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'west'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1],0)={'south'}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}, A([start & fuel=3 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'north'}, A([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'south'}, A([start & fuel=4 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'south'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=1 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'south'}, A([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=2 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1],0)={'south'}, A([start & fuel=5 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'south'}, A([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=2 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}, A([start & fuel=5 & cangoeast=1 & cangosouth=1],0)={'south'}, A([start & fuel=4 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}
+2022-04-10 11:28:11,138 - pomdp.py - Injected memory into observation 6.
+
+------------------------------------------------------------
+
+2022-04-10 11:28:11,138 - quotient.py - Constructed quotient MDP having 232 states and 715 actions.
+A([start & fuel=2 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1],0): {{'south'},{'west'}}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'west'},{'east'}}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1): {{'south'},{'west'},{'north'}}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=3 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}, AM([start & fuel=4 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],1): {{'south'},{'east'},{'north'}}, A([start & fuel=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=2 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1],0): {{'south'},{'west'}}, A([start & fuel=5 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}, A([start & fuel=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=2 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'west'}+0,{'west'}+1}, A([start & fuel=5 & cangoeast=1 & cangosouth=1],0): {{'south'},{'east'}}, AM([start & fuel=4 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}
+2022-04-10 11:28:11,139 - quotient.py - Symmetry breaking: reduced design space from 541653102231552 to 304679870005248
+2022-04-10 11:28:11,140 - synthesizer.py - Synthesis initiated.
+2022-04-10 11:28:11,465 - property.py - New opt = 0.43838999999999945.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? ["notbad" U "goal"] 
+
+method: AR, synthesis time: 2.75 s
+number of holes: 28, family size: 541653102231552, super quotient: 232 states / 715 actions
+explored: 56 %
+AR stats: avg MDP size: 190, iterations: 6194
+
+optimal: 0.43839
+--------------------
+
+2022-04-10 11:28:13,888 - pomdp.py - FSC synthesis: elapsed 5.4 s, opt = 0.438, injections: 2.
+2022-04-10 11:28:13,888 - pomdp.py - FSC: A([start & fuel=2 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'north'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1],0)={'south'}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'west'}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1)={'south'}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}, A([start & fuel=3 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'south'}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}+1, AM([start & fuel=4 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'east'}+0, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'west'}, A([start & fuel=1 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'north'}, A([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'south'}, A([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],1)={'south'}, A([start & fuel=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}, A([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=2 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1],0)={'south'}, A([start & fuel=5 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}+0, A([start & fuel=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=2 & cangosouth=1 & cangowest=1],0)={'east'}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}+0, A([start & fuel=5 & cangoeast=1 & cangosouth=1],0)={'south'}, AM([start & fuel=4 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}+0
+2022-04-10 11:28:13,888 - pomdp.py - Injected memory into observation 16.
+
+------------------------------------------------------------
+
+2022-04-10 11:28:13,888 - quotient.py - Constructed quotient MDP having 254 states and 1023 actions.
+A([start & fuel=2 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1],0): {{'south'},{'west'}}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'west'}+0,{'west'}+1,{'east'}+0,{'east'}+1}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1): {{'south'}+0,{'south'}+1,{'west'}+0,{'west'}+1,{'north'}+0,{'north'}+1}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'west'}+0,{'west'}+1}, AM([start & fuel=3 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}, AM([start & fuel=4 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1): {{'south'},{'east'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, AM([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1}, AM([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],1): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1}, A([start & fuel=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}, A([start & fuel=2 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1],0): {{'south'},{'west'}}, A([start & fuel=5 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}, A([start & fuel=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=2 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'west'}+0,{'west'}+1}, A([start & fuel=5 & cangoeast=1 & cangosouth=1],0): {{'south'},{'east'}}, AM([start & fuel=4 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}
+2022-04-10 11:28:13,890 - quotient.py - Symmetry breaking: reduced design space from 277326388342554624 to 87747802561511424
+2022-04-10 11:28:13,891 - synthesizer.py - Synthesis initiated.
+> Progress 1.137%, elapsed 3.0 s, iters = (6206, 0), opt = 0.438
+2022-04-10 11:28:17,194 - property.py - New opt = 0.4636692307692293.
+2022-04-10 11:28:17,331 - property.py - New opt = 0.6280899999999995.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? ["notbad" U "goal"] 
+
+method: AR, synthesis time: 5.43 s
+number of holes: 29, family size: 277326388342554624, super quotient: 254 states / 1023 actions
+explored: 31 %
+AR stats: avg MDP size: 191, iterations: 10902
+
+optimal: 0.62809
+--------------------
+
+2022-04-10 11:28:19,321 - pomdp.py - FSC synthesis: elapsed 10.8 s, opt = 0.628, injections: 3.
+2022-04-10 11:28:19,321 - pomdp.py - FSC: A([start & fuel=2 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'north'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1],0)={'south'}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'west'}+0, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1)={'south'}+1, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}+0, AM([start & fuel=3 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}+0, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'west'}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}+1, AM([start & fuel=4 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'east'}+0, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'north'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1)={'south'}, A([start & fuel=1 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'north'}, AM([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'south'}+0, AM([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],1)={'south'}+0, A([start & fuel=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'west'}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}+0, A([start & fuel=2 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1],0)={'south'}, A([start & fuel=5 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}+0, A([start & fuel=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=2 & cangosouth=1 & cangowest=1],0)={'east'}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}+0, A([start & fuel=5 & cangoeast=1 & cangosouth=1],0)={'south'}, AM([start & fuel=4 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}+0
+2022-04-10 11:28:19,321 - pomdp.py - Injected memory into observation 6.
+
+------------------------------------------------------------
+
+2022-04-10 11:28:19,322 - quotient.py - Constructed quotient MDP having 274 states and 1241 actions.
+A([start & fuel=2 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1],0): {{'south'},{'west'}}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'west'}+0,{'west'}+1,{'east'}+0,{'east'}+1}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1): {{'south'}+0,{'south'}+1,{'west'}+0,{'west'}+1,{'north'}+0,{'north'}+1}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],2): {{'south'}+0,{'south'}+1,{'west'}+0,{'west'}+1,{'east'}+0,{'east'}+1}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'west'}+0,{'west'}+1}, AM([start & fuel=3 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'south'}+2,{'east'}+0,{'east'}+1,{'east'}+2,{'north'}+0,{'north'}+1,{'north'}+2,{'west'}+0,{'west'}+1,{'west'}+2}, AM([start & fuel=4 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'south'}+2,{'east'}+0,{'east'}+1,{'east'}+2,{'north'}+0,{'north'}+1,{'north'}+2}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1): {{'south'},{'east'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, AM([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1}, AM([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],1): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1}, A([start & fuel=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}, A([start & fuel=2 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1],0): {{'south'},{'west'}}, A([start & fuel=5 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'south'}+2,{'north'}+0,{'north'}+1,{'north'}+2,{'west'}+0,{'west'}+1,{'west'}+2}, A([start & fuel=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=2 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'}+0,{'south'}+1,{'south'}+2,{'east'}+0,{'east'}+1,{'east'}+2,{'west'}+0,{'west'}+1,{'west'}+2}, A([start & fuel=5 & cangoeast=1 & cangosouth=1],0): {{'south'},{'east'}}, AM([start & fuel=4 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'}+0,{'east'}+1,{'east'}+2,{'north'}+0,{'north'}+1,{'north'}+2,{'west'}+0,{'west'}+1,{'west'}+2}
+2022-04-10 11:28:19,323 - quotient.py - Symmetry breaking: reduced design space from 16847578091810193408 to 3998009254208864256
+2022-04-10 11:28:19,325 - synthesizer.py - Synthesis initiated.
+> Progress 6.7016%, elapsed 3.0 s, iters = (5459, 0), opt = 0.628
+> Progress 12.0529%, elapsed 6.0 s, iters = (10669, 0), opt = 0.628
+> Progress 15.1241%, elapsed 9.0 s, iters = (16210, 0), opt = 0.628
+> Progress 20.0447%, elapsed 12.0 s, iters = (21321, 0), opt = 0.628
+> Progress 20.7409%, elapsed 15.0 s, iters = (26088, 0), opt = 0.628
+> Progress 22.0841%, elapsed 18.0 s, iters = (31217, 0), opt = 0.628
+> Progress 23.4439%, elapsed 21.0 s, iters = (36398, 0), opt = 0.628
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? ["notbad" U "goal"] 
+
+method: AR, synthesis time: 22.77 s
+number of holes: 30, family size: 16847578091810193408, super quotient: 274 states / 1241 actions
+explored: 23 %
+AR stats: avg MDP size: 230, iterations: 39379
+
+optimal: 0.62809
+--------------------
+
+2022-04-10 11:28:42,094 - pomdp.py - FSC synthesis: elapsed 33.6 s, opt = 0.628, injections: 4.
+2022-04-10 11:28:42,094 - pomdp.py - FSC: A([start & fuel=2 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'north'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1],0)={'south'}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'west'}+0, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1)={'south'}+1, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}+0, AM([start & fuel=3 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}+0, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'west'}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}+1, AM([start & fuel=4 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'east'}+0, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'north'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1)={'south'}, A([start & fuel=1 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'north'}, AM([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'south'}+0, AM([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],1)={'south'}+0, A([start & fuel=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'west'}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}+0, A([start & fuel=2 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1],0)={'south'}, A([start & fuel=5 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}+0, A([start & fuel=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=2 & cangosouth=1 & cangowest=1],0)={'east'}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}+0, A([start & fuel=5 & cangoeast=1 & cangosouth=1],0)={'south'}, AM([start & fuel=4 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}+0
+2022-04-10 11:28:42,094 - pomdp.py - Injected memory into observation 6.
+
+------------------------------------------------------------
+
+2022-04-10 11:28:42,095 - quotient.py - Constructed quotient MDP having 294 states and 1459 actions.
+A([start & fuel=2 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1],0): {{'south'},{'west'}}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1): {{'south'}+0,{'south'}+1,{'north'}+0,{'north'}+1}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],2): {{'south'}+0,{'south'}+1,{'west'}+0,{'west'}+1}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],3): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'west'}+0,{'west'}+1}, AM([start & fuel=3 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3,{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3}, AM([start & fuel=4 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1): {{'south'},{'east'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, AM([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1}, AM([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],1): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1}, A([start & fuel=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}, A([start & fuel=2 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1],0): {{'south'},{'west'}}, A([start & fuel=5 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3,{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3}, A([start & fuel=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=2 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3}, A([start & fuel=5 & cangoeast=1 & cangosouth=1],0): {{'south'},{'east'}}, AM([start & fuel=4 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3,{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3}
+2022-04-10 11:28:42,096 - quotient.py - Symmetry breaking: reduced design space from 567964443325551869952 to 19967499960663932928
+2022-04-10 11:28:42,097 - synthesizer.py - Synthesis initiated.
+> Progress 1.845%, elapsed 3.0 s, iters = (4810, 0), opt = 0.628
+> Progress 2.2561%, elapsed 6.0 s, iters = (9951, 0), opt = 0.628
+> Progress 2.2777%, elapsed 9.0 s, iters = (14682, 0), opt = 0.628
+> Progress 2.2924%, elapsed 12.0 s, iters = (19798, 0), opt = 0.628
+> Progress 2.3011%, elapsed 15.0 s, iters = (24999, 0), opt = 0.628
+> Progress 2.3129%, elapsed 18.0 s, iters = (30102, 0), opt = 0.628
+> Progress 2.3561%, elapsed 21.0 s, iters = (35122, 0), opt = 0.628
+> Progress 2.3933%, elapsed 24.0 s, iters = (39993, 0), opt = 0.628
+> Progress 3.0767%, elapsed 27.0 s, iters = (44864, 0), opt = 0.628
+> Progress 3.3469%, elapsed 30.0 s, iters = (49483, 0), opt = 0.628
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? ["notbad" U "goal"] 
+
+method: AR, synthesis time: 31.17 s
+number of holes: 31, family size: 567964443325551869952, super quotient: 294 states / 1459 actions
+explored: 3 %
+AR stats: avg MDP size: 244, iterations: 51315
+
+optimal: 0.62809
+--------------------
+
+2022-04-10 11:29:13,268 - pomdp.py - FSC synthesis: elapsed 64.7 s, opt = 0.628, injections: 5.
+2022-04-10 11:29:13,268 - pomdp.py - FSC: A([start & fuel=2 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'north'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1],0)={'south'}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'west'}+0, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1)={'south'}+1, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}+0, AM([start & fuel=3 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}+0, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'west'}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}+1, AM([start & fuel=4 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'east'}+0, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'north'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1)={'south'}, A([start & fuel=1 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'north'}, AM([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],0)={'south'}+0, AM([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],1)={'south'}+0, A([start & fuel=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'west'}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}+0, A([start & fuel=2 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}, A([start & fuel=2 & cangoeast=1 & cangonorth=1],0)={'south'}, A([start & fuel=5 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangowest=1],0)={'south'}+0, A([start & fuel=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}, A([start & fuel=2 & cangosouth=1 & cangowest=1],0)={'east'}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1],0)={'south'}+0, A([start & fuel=5 & cangoeast=1 & cangosouth=1],0)={'south'}, AM([start & fuel=4 & cangonorth=1 & cangosouth=1 & cangowest=1],0)={'east'}+0
+2022-04-10 11:29:13,268 - pomdp.py - Injected memory into observation 13.
+
+------------------------------------------------------------
+
+2022-04-10 11:29:13,268 - quotient.py - Constructed quotient MDP having 304 states and 1627 actions.
+A([start & fuel=2 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1],0): {{'south'},{'west'}}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1): {{'south'}+0,{'south'}+1,{'north'}+0,{'north'}+1}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],2): {{'south'}+0,{'south'}+1,{'west'}+0,{'west'}+1}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],3): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'west'}+0,{'west'}+1}, AM([start & fuel=3 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'},{'west'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3}, AM([start & fuel=4 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],1): {{'south'},{'east'},{'west'}}, A([start & fuel=1 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'},{'east'},{'north'}}, AM([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1}, AM([start & fuel=3 & cangoeast=1 & cangosouth=1 & cangowest=1],1): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1}, A([start & fuel=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'}}, A([start & fuel=1 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'},{'east'},{'west'}}, AM([start & fuel=3 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}, A([start & fuel=2 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'},{'north'},{'west'}}, A([start & fuel=2 & cangoeast=1 & cangonorth=1],0): {{'south'},{'west'}}, AM([start & fuel=5 & cangoeast=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'east'}+0,{'east'}+1,{'north'}+0,{'north'}+1,{'west'}+0,{'west'}+1}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangowest=1],0): {{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3,{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3}, A([start & fuel=1 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'},{'west'}}, A([start & fuel=2 & cangosouth=1 & cangowest=1],0): {{'east'},{'north'}}, AM([start & fuel=4 & cangoeast=1 & cangonorth=1 & cangosouth=1],0): {{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3}, A([start & fuel=5 & cangoeast=1 & cangosouth=1],0): {{'south'},{'east'}}, AM([start & fuel=4 & cangonorth=1 & cangosouth=1 & cangowest=1],0): {{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3,{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3}
+2022-04-10 11:29:13,270 - quotient.py - Symmetry breaking: reduced design space from 18174862186417659838464 to 239609999527967195136
+2022-04-10 11:29:13,271 - synthesizer.py - Synthesis initiated.
+> Progress 0.0222%, elapsed 3.0 s, iters = (4437, 0), opt = 0.628
+> Progress 0.0412%, elapsed 6.0 s, iters = (8987, 0), opt = 0.628
+> Progress 0.052%, elapsed 9.0 s, iters = (13216, 0), opt = 0.628
+> Progress 0.0603%, elapsed 12.0 s, iters = (17291, 0), opt = 0.628
+> Progress 0.0631%, elapsed 15.0 s, iters = (21747, 0), opt = 0.628
+> Progress 0.0655%, elapsed 18.0 s, iters = (26303, 0), opt = 0.628
+> Progress 0.0658%, elapsed 21.0 s, iters = (30828, 0), opt = 0.628
+> Progress 0.0661%, elapsed 24.0 s, iters = (35587, 0), opt = 0.628
+> Progress 0.0672%, elapsed 27.0 s, iters = (40200, 0), opt = 0.628
+> Progress 0.0684%, elapsed 30.0 s, iters = (44877, 0), opt = 0.628
+> Progress 0.0709%, elapsed 33.0 s, iters = (49784, 0), opt = 0.628
+> Progress 0.0727%, elapsed 36.0 s, iters = (54401, 0), opt = 0.628
+> Progress 0.0767%, elapsed 39.0 s, iters = (59075, 0), opt = 0.628
+> Progress 0.081%, elapsed 42.0 s, iters = (63573, 0), opt = 0.628
+> Progress 0.0862%, elapsed 45.0 s, iters = (68312, 0), opt = 0.628
+> Progress 0.0869%, elapsed 48.0 s, iters = (73073, 0), opt = 0.628
+> Progress 0.0876%, elapsed 51.0 s, iters = (77757, 0), opt = 0.628
+> Progress 0.0897%, elapsed 54.0 s, iters = (82415, 0), opt = 0.628
+> Progress 0.0916%, elapsed 57.0 s, iters = (87226, 0), opt = 0.628
+> Progress 0.0926%, elapsed 60.0 s, iters = (92149, 0), opt = 0.628
+> Progress 0.0937%, elapsed 63.0 s, iters = (96949, 0), opt = 0.628
+> Progress 0.0955%, elapsed 66.0 s, iters = (101706, 0), opt = 0.628
+> Progress 0.098%, elapsed 69.0 s, iters = (106689, 0), opt = 0.628
+> Progress 0.108%, elapsed 72.0 s, iters = (111255, 0), opt = 0.628
+> Progress 0.1281%, elapsed 75.0 s, iters = (116038, 0), opt = 0.628
+> Progress 0.1714%, elapsed 78.0 s, iters = (121152, 0), opt = 0.628
+> Progress 0.1771%, elapsed 81.0 s, iters = (126299, 0), opt = 0.628
+> Progress 0.1791%, elapsed 84.0 s, iters = (131153, 0), opt = 0.628
+> Progress 0.1863%, elapsed 87.0 s, iters = (136817, 0), opt = 0.628
+> Progress 0.1892%, elapsed 90.0 s, iters = (143052, 0), opt = 0.628
+> Progress 0.196%, elapsed 93.0 s, iters = (148552, 0), opt = 0.628
+> Progress 0.2016%, elapsed 96.0 s, iters = (153345, 0), opt = 0.628
+> Progress 0.2041%, elapsed 99.0 s, iters = (158042, 0), opt = 0.628
+> Progress 0.2079%, elapsed 102.0 s, iters = (162755, 0), opt = 0.628
+> Progress 0.2291%, elapsed 105.0 s, iters = (168321, 0), opt = 0.628
+> Progress 0.2303%, elapsed 108.0 s, iters = (172809, 0), opt = 0.628
+> Progress 0.2317%, elapsed 111.0 s, iters = (176957, 0), opt = 0.628
+> Progress 0.2324%, elapsed 114.0 s, iters = (181193, 0), opt = 0.628
+> Progress 0.2337%, elapsed 117.0 s, iters = (185882, 0), opt = 0.628
+> Progress 0.235%, elapsed 120.0 s, iters = (190530, 0), opt = 0.628
+> Progress 0.2357%, elapsed 123.0 s, iters = (195167, 0), opt = 0.628
+> Progress 0.2366%, elapsed 126.0 s, iters = (199779, 0), opt = 0.628
+> Progress 0.2377%, elapsed 129.0 s, iters = (204464, 0), opt = 0.628
+> Progress 0.2391%, elapsed 132.0 s, iters = (209011, 0), opt = 0.628
+> Progress 0.2427%, elapsed 135.0 s, iters = (214150, 0), opt = 0.628
+> Progress 0.2456%, elapsed 138.0 s, iters = (219560, 0), opt = 0.628
+> Progress 0.2574%, elapsed 141.0 s, iters = (225352, 0), opt = 0.628
+> Progress 0.2694%, elapsed 144.0 s, iters = (230016, 0), opt = 0.628
+> Progress 0.2732%, elapsed 147.0 s, iters = (234992, 0), opt = 0.628
+> Progress 0.2882%, elapsed 150.0 s, iters = (239724, 0), opt = 0.628
+> Progress 0.2944%, elapsed 153.0 s, iters = (244414, 0), opt = 0.628
+> Progress 0.2986%, elapsed 156.0 s, iters = (249134, 0), opt = 0.628
+> Progress 0.3074%, elapsed 159.0 s, iters = (253992, 0), opt = 0.628
+> Progress 0.3126%, elapsed 162.0 s, iters = (258239, 0), opt = 0.628
+> Progress 0.3139%, elapsed 165.0 s, iters = (262392, 0), opt = 0.628
+> Progress 0.3148%, elapsed 168.0 s, iters = (266571, 0), opt = 0.628
+> Progress 0.3159%, elapsed 171.0 s, iters = (270989, 0), opt = 0.628
+> Progress 0.3169%, elapsed 174.0 s, iters = (275633, 0), opt = 0.628
+> Progress 0.318%, elapsed 177.0 s, iters = (280412, 0), opt = 0.628
+> Progress 0.3189%, elapsed 180.0 s, iters = (285104, 0), opt = 0.628
+> Progress 0.3198%, elapsed 183.0 s, iters = (289940, 0), opt = 0.628
+> Progress 0.3211%, elapsed 186.0 s, iters = (294819, 0), opt = 0.628
+> Progress 0.325%, elapsed 189.0 s, iters = (300007, 0), opt = 0.628
+> Progress 0.328%, elapsed 192.0 s, iters = (305596, 0), opt = 0.628
+> Progress 0.3421%, elapsed 195.0 s, iters = (311021, 0), opt = 0.628
+> Progress 0.3442%, elapsed 198.0 s, iters = (315861, 0), opt = 0.628
+> Progress 0.3455%, elapsed 201.0 s, iters = (320883, 0), opt = 0.628
+> Progress 0.3471%, elapsed 204.0 s, iters = (325900, 0), opt = 0.628
+> Progress 0.3478%, elapsed 207.0 s, iters = (330852, 0), opt = 0.628
+> Progress 0.3507%, elapsed 210.0 s, iters = (336419, 0), opt = 0.628
+> Progress 0.3548%, elapsed 213.0 s, iters = (342199, 0), opt = 0.628
+> Progress 0.4058%, elapsed 216.0 s, iters = (347273, 0), opt = 0.628
+> Progress 0.4121%, elapsed 219.0 s, iters = (351574, 0), opt = 0.628
+> Progress 0.4187%, elapsed 222.0 s, iters = (355848, 0), opt = 0.628
+> Progress 0.4226%, elapsed 225.0 s, iters = (360086, 0), opt = 0.628
+> Progress 0.4273%, elapsed 228.0 s, iters = (364424, 0), opt = 0.628
+> Progress 0.4314%, elapsed 231.0 s, iters = (368765, 0), opt = 0.628
+> Progress 0.437%, elapsed 234.0 s, iters = (373220, 0), opt = 0.628

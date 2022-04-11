@@ -1,0 +1,136 @@
+2022-04-10 10:38:06,398 - cli.py - This is Paynt version 0.1.0.
+2022-04-10 10:38:06,399 - sketch.py - Loading sketch from /mnt/d/src/PP/synthesis/workspace/storm-experiments/models/grid-avoid-4-0/sketch.templ...
+2022-04-10 10:38:06,399 - sketch.py - Attempting to parse model in explicit format ...
+ERROR (DirectEncodingParser.cpp:125): Could not parse line 'pomdp'.
+2022-04-10 10:38:06,402 - sketch.py - Assuming a sketch in a PRISM format ...
+2022-04-10 10:38:06,414 - sketch.py - Sketch does not contain any hole definitions.
+2022-04-10 10:38:06,414 - sketch.py - Loading properties from /mnt/d/src/PP/synthesis/workspace/storm-experiments/models/grid-avoid-4-0/sketch.props ...
+2022-04-10 10:38:06,417 - sketch.py - Found the following specification: constraints: none, optimality objective: Pmax=? [(!"bad") U "goal"] 
+2022-04-10 10:38:06,417 - sketch.py - Initializing the quotient ...
+2022-04-10 10:38:06,426 - quotient.py - Constructed POMDP having 4 observations.
+2022-04-10 10:38:06,426 - quotient.py - Constructed quotient MDP having 17 states and 59 actions.
+2022-04-10 10:38:06,426 - sketch.py - Sketch parsing complete.
+
+------------------------------------------------------------
+
+2022-04-10 10:38:06,426 - quotient.py - Constructed quotient MDP having 17 states and 59 actions.
+A([o=1],0): {{'east'},{'west'},{'north'},{'south'}}
+2022-04-10 10:38:06,426 - quotient.py - Symmetry breaking: reduced design space from 4 to 4
+2022-04-10 10:38:06,427 - synthesizer.py - Synthesis initiated.
+2022-04-10 10:38:06,427 - property.py - New opt = 0.2142857142857143.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? [(!"bad") U "goal"] 
+
+method: AR, synthesis time: 0.0 s
+number of holes: 1, family size: 4, super quotient: 17 states / 59 actions
+explored: 100 %
+AR stats: avg MDP size: 17, iterations: 5
+
+optimal: 0.214286
+--------------------
+
+2022-04-10 10:38:06,428 - pomdp.py - FSC synthesis: elapsed 0.0 s, opt = 0.214, injections: 0.
+2022-04-10 10:38:06,428 - pomdp.py - FSC: A([o=1],0)={'south'}
+2022-04-10 10:38:06,428 - pomdp.py - Injected memory into observation 0.
+
+------------------------------------------------------------
+
+2022-04-10 10:38:06,428 - quotient.py - Constructed quotient MDP having 31 states and 228 actions.
+AM([o=1],0): {{'west'}+0,{'west'}+1,{'east'}+0,{'east'}+1,{'south'}+0,{'south'}+1}, AM([o=1],1): {{'west'}+0,{'west'}+1,{'north'}+0,{'north'}+1}, M([],0): {0,1}
+2022-04-10 10:38:06,428 - quotient.py - Symmetry breaking: reduced design space from 128 to 48
+2022-04-10 10:38:06,428 - synthesizer.py - Synthesis initiated.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? [(!"bad") U "goal"] 
+
+method: AR, synthesis time: 0.0 s
+number of holes: 3, family size: 128, super quotient: 31 states / 228 actions
+explored: 37 %
+AR stats: avg MDP size: 31, iterations: 4
+
+optimal: 0.214286
+--------------------
+
+2022-04-10 10:38:06,429 - pomdp.py - FSC synthesis: elapsed 0.0 s, opt = 0.214, injections: 1.
+2022-04-10 10:38:06,429 - pomdp.py - FSC: A([o=1],0)={'south'}
+2022-04-10 10:38:06,429 - pomdp.py - Injected memory into observation 0.
+
+------------------------------------------------------------
+
+2022-04-10 10:38:06,429 - quotient.py - Constructed quotient MDP having 45 states and 509 actions.
+AM([o=1],0): {{'west'}+0,{'west'}+1,{'west'}+2,{'east'}+0,{'east'}+1,{'east'}+2}, AM([o=1],1): {{'west'}+0,{'west'}+1,{'west'}+2,{'north'}+0,{'north'}+1,{'north'}+2}, AM([o=1],2): {{'west'}+0,{'west'}+1,{'west'}+2,{'south'}+0,{'south'}+1,{'south'}+2}, M([],0): {0,1,2}
+2022-04-10 10:38:06,429 - quotient.py - Symmetry breaking: reduced design space from 5184 to 648
+2022-04-10 10:38:06,430 - synthesizer.py - Synthesis initiated.
+2022-04-10 10:38:06,432 - property.py - New opt = 0.8571428571428569.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? [(!"bad") U "goal"] 
+
+method: AR, synthesis time: 0.01 s
+number of holes: 4, family size: 5184, super quotient: 45 states / 509 actions
+explored: 12 %
+AR stats: avg MDP size: 45, iterations: 64
+
+optimal: 0.857143
+--------------------
+
+2022-04-10 10:38:06,440 - pomdp.py - FSC synthesis: elapsed 0.0 s, opt = 0.857, injections: 2.
+2022-04-10 10:38:06,440 - pomdp.py - FSC: AM([o=1],0)={'east'}+2, AM([o=1],1)={'north'}+1, AM([o=1],2)={'south'}+0, M([],0)=0
+2022-04-10 10:38:06,440 - pomdp.py - Injected memory into observation 0.
+
+------------------------------------------------------------
+
+2022-04-10 10:38:06,440 - quotient.py - Constructed quotient MDP having 59 states and 902 actions.
+AM([o=1],0): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3}, AM([o=1],1): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3}, AM([o=1],2): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3}, AM([o=1],3): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3}, M([],0): {0,1,2,3}
+2022-04-10 10:38:06,441 - quotient.py - Symmetry breaking: reduced design space from 262144 to 16384
+2022-04-10 10:38:06,441 - synthesizer.py - Synthesis initiated.
+2022-04-10 10:38:06,461 - property.py - New opt = 0.9285714285714284.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? [(!"bad") U "goal"] 
+
+method: AR, synthesis time: 0.12 s
+number of holes: 5, family size: 262144, super quotient: 59 states / 902 actions
+explored: 6 %
+AR stats: avg MDP size: 59, iterations: 776
+
+optimal: 0.928571
+--------------------
+
+2022-04-10 10:38:06,564 - pomdp.py - FSC synthesis: elapsed 0.1 s, opt = 0.929, injections: 3.
+2022-04-10 10:38:06,564 - pomdp.py - FSC: AM([o=1],0)={'east'}+2, AM([o=1],1)={'west'}+3, AM([o=1],2)={'south'}+0, AM([o=1],3)={'east'}+0, M([],0)=3
+2022-04-10 10:38:06,564 - pomdp.py - Injected memory into observation 0.
+
+------------------------------------------------------------
+
+2022-04-10 10:38:06,564 - quotient.py - Constructed quotient MDP having 73 states and 1407 actions.
+AM([o=1],0): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'west'}+4,{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'east'}+4}, AM([o=1],1): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'west'}+4,{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3,{'north'}+4}, AM([o=1],2): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'west'}+4,{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'south'}+4}, AM([o=1],3): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'west'}+4,{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'east'}+4}, AM([o=1],4): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'west'}+4,{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3,{'north'}+4}, M([],0): {0,1,2,3,4}
+2022-04-10 10:38:06,565 - quotient.py - Symmetry breaking: reduced design space from 16000000 to 500000
+2022-04-10 10:38:06,565 - synthesizer.py - Synthesis initiated.
+--------------------
+Synthesis summary
+
+optimality objective: Pmax=? [(!"bad") U "goal"] 
+
+method: AR, synthesis time: 1.23 s
+number of holes: 6, family size: 16000000, super quotient: 73 states / 1407 actions
+explored: 3 %
+AR stats: avg MDP size: 73, iterations: 6569
+
+optimal: 0.928571
+--------------------
+
+2022-04-10 10:38:07,791 - pomdp.py - FSC synthesis: elapsed 1.4 s, opt = 0.929, injections: 4.
+2022-04-10 10:38:07,791 - pomdp.py - FSC: AM([o=1],0)={'east'}+2, AM([o=1],1)={'west'}+3, AM([o=1],2)={'south'}+0, AM([o=1],3)={'east'}+0, M([],0)=3
+2022-04-10 10:38:07,791 - pomdp.py - Injected memory into observation 0.
+
+------------------------------------------------------------
+
+2022-04-10 10:38:07,791 - quotient.py - Constructed quotient MDP having 87 states and 2024 actions.
+AM([o=1],0): {{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'east'}+4,{'east'}+5}, AM([o=1],1): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'west'}+4,{'west'}+5}, AM([o=1],2): {{'north'}+0,{'north'}+1,{'north'}+2,{'north'}+3,{'north'}+4,{'north'}+5}, AM([o=1],3): {{'south'}+0,{'south'}+1,{'south'}+2,{'south'}+3,{'south'}+4,{'south'}+5}, AM([o=1],4): {{'east'}+0,{'east'}+1,{'east'}+2,{'east'}+3,{'east'}+4,{'east'}+5}, AM([o=1],5): {{'west'}+0,{'west'}+1,{'west'}+2,{'west'}+3,{'west'}+4,{'west'}+5}, M([],0): {0,1,2,3,4,5}
+2022-04-10 10:38:07,792 - quotient.py - Symmetry breaking: reduced design space from 1146617856 to 279936

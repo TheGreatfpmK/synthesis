@@ -550,6 +550,12 @@ class POMDPQuotientContainer(QuotientContainer):
 
     # storm underapproximation file
     storm_file = "" 
+
+    # parsed storm results
+    observation_action_dict = {}
+
+    #
+    current_selected_actions = {}
     
     def __init__(self, *args):
         super().__init__(*args)
@@ -1000,23 +1006,20 @@ class POMDPQuotientContainer(QuotientContainer):
                         options.append(action * num_updates + update)
                 restricted_family[hole].assume_options(options)
 
-        print(restricted_family)
+            #print(f'{obs}: {selected_actions}')
+            self.current_selected_actions[obs] = selected_actions
+
+        #print(restricted_family)
         logger.debug("Symmetry breaking: reduced design space from {} to {}".format(family.size, restricted_family.size))
 
         return restricted_family
 
-    # uses storm underapproximations on belief MDP to reduce family size
-    def reduce_family_based_on_beliefs(self, family):
-        if self.storm_file == "":
-            return family
 
-        logger.debug("Reducing family size based on underapproximation result from storm")
-
+    def parse_storm_results(self):
         observation_action_dict = {}
         action_count_dict = {}
         current_observation = -1
 
-        # TODO: Make separete function for parsing maybe?
         storm_result_file = open(self.storm_file, "r")
         parse_segment = 0
         for line in storm_result_file:
@@ -1059,6 +1062,13 @@ class POMDPQuotientContainer(QuotientContainer):
                 line = line.split()
                 action_count_dict[int(line[1])] = int(line[3])
 
+        self.observation_action_dict = observation_action_dict
+
+    # uses storm underapproximations on belief MDP to reduce family size
+    def reduce_family_based_on_beliefs(self, family):
+        if self.storm_file == "":
+            return family
+
         #DEBUG
         # print(observation_action_dict)
 
@@ -1083,13 +1093,21 @@ class POMDPQuotientContainer(QuotientContainer):
             all_updates = [update for update in range(num_updates)]
             selected_updates = [all_updates.copy() for hole in obs_holes]
 
-            if obs not in observation_action_dict.keys():
-                selected_actions = [[0] for hole in obs_holes]
+            if obs not in self.observation_action_dict.keys() or len(self.current_selected_actions[obs]) == 0:
+                selected_actions = self.current_selected_actions[obs]
             else:
-                selected_actions = [list(observation_action_dict[obs].keys()) for hole in obs_holes]
+                selected_actions = []
+                for x in self.current_selected_actions[obs]:
+                    obs_actions = list(set(self.observation_action_dict[obs].keys()) & set(x))
+                    if len(obs_actions) != 0:
+                        selected_actions.append(obs_actions)
+                    else:
+                        selected_actions.append(x)
+                #selected_actions = [list(self.observation_action_dict[obs].keys()) for hole in obs_holes] # THE OLD METHOD
 
             #print(obs_holes)
             #print(all_actions)
+            #print(f'{obs}: {selected_actions}')
             #print(selected_actions)
             #print(all_updates)
     
@@ -1105,6 +1123,7 @@ class POMDPQuotientContainer(QuotientContainer):
                 reduced_family[hole].assume_options(options)
 
         logger.debug("Using information from storm: reduced design space from {} to {}".format(family.size, reduced_family.size))
+        self.current_selected_actions = {}
         
         return reduced_family
 

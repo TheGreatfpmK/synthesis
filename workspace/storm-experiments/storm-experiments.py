@@ -4,12 +4,21 @@ import subprocess
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 directory = os.fsencode(dir_path + '/models')
-result_dir = os.fsencode(dir_path + '/results/')
+#result_dir = os.fsencode(dir_path + '/results/')                   # MAIN EXPERIMENT
+#result_dir = os.fsencode(dir_path + '/results-cutoff/')            # CUT-OFFs
+#result_dir = os.fsencode(dir_path + '/results-overapp/')           # OVER-APPROXIMATION
+#result_dir = os.fsencode(dir_path + '/results-clip-noreach/')       # MAIN EXPERIMENT NO REACHABILITY
+#result_dir = os.fsencode(dir_path + '/results-cutoff-noreach/')    # CUT-OFFs NO REACHABILITY
+result_dir = os.fsencode(dir_path + '/results-overapp-noreach/')   # OVER-APPROXIMATION NO REACHABILITY
 logs_dir = os.fsencode(dir_path + '/paynt-logs/')
 models = [ f.path for f in os.scandir(directory) if f.is_dir() ]
 
+os.system('rm -rf {}/paynt-logs/*/stderr*'.format(dir_path))
+
 for model in models:
     model_name = os.path.basename(model).decode("utf-8")
+    #if model_name in ["crypt-4", "maze", "maze-alex", "nrp-8"]:
+    #    continue
     project_name = model.decode("utf-8")
     storm_file = result_dir.decode("utf-8") + model_name + ".txt"
     command = "python3 paynt/paynt.py --project {} --properties sketch.props ar --fsc-synthesis --storm-result-file {}".format(project_name, storm_file)

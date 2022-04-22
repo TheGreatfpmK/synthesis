@@ -51,10 +51,14 @@ def setup_logger(log_path = None):
 @click.option("--fsc-synthesis", is_flag=True, default=False, help="enable incremental synthesis of FSCs for a POMDP")
 @click.option("--pomdp-memory-size", default=1, help="implicit memory size for POMDP FSCs")
 
+@click.option("--hyperproperty", is_flag=True, default=False, help="enable synthesis an MDP scheduler wrt a hyperproperty")
+
 @click.option("--storm-result-file", default="", help="storm underapproximation result file to help pomdp synthesis")
 
 def paynt(
-        project, sketch, properties, constants, method, export_jani, incomplete_search, fsc_synthesis, pomdp_memory_size, storm_result_file
+        project, sketch, properties, constants, method, export_jani,
+        incomplete_search, fsc_synthesis, pomdp_memory_size,
+        hyperproperty, storm_result_file
 ):
     logger.info("This is Paynt version {}.".format(version()))
 
@@ -69,6 +73,7 @@ def paynt(
     sketch_path = os.path.join(project, sketch)
     properties_path = os.path.join(project, properties)
     sketch = Sketch(sketch_path, properties_path, constants)
+    exit()
 
     # choose synthesis method
     if sketch.is_pomdp and fsc_synthesis:

@@ -5,11 +5,11 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 directory = os.fsencode(dir_path + '/models')
 #result_dir = os.fsencode(dir_path + '/results/')                   # MAIN EXPERIMENT
-#result_dir = os.fsencode(dir_path + '/results-cutoff/')            # CUT-OFFs
+result_dir = os.fsencode(dir_path + '/results-cutoff/')            # CUT-OFFs
 #result_dir = os.fsencode(dir_path + '/results-overapp/')           # OVER-APPROXIMATION
 #result_dir = os.fsencode(dir_path + '/results-clip-noreach/')       # MAIN EXPERIMENT NO REACHABILITY
 #result_dir = os.fsencode(dir_path + '/results-cutoff-noreach/')    # CUT-OFFs NO REACHABILITY
-result_dir = os.fsencode(dir_path + '/results-overapp-noreach/')   # OVER-APPROXIMATION NO REACHABILITY
+#result_dir = os.fsencode(dir_path + '/results-overapp-noreach/')   # OVER-APPROXIMATION NO REACHABILITY
 logs_dir = os.fsencode(dir_path + '/paynt-logs/')
 models = [ f.path for f in os.scandir(directory) if f.is_dir() ]
 

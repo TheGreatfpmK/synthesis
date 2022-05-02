@@ -73,7 +73,6 @@ def paynt(
     sketch_path = os.path.join(project, sketch)
     properties_path = os.path.join(project, properties)
     sketch = Sketch(sketch_path, properties_path, constants)
-    exit()
 
     # choose synthesis method
     if sketch.is_pomdp and fsc_synthesis:

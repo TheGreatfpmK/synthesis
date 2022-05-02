@@ -109,15 +109,31 @@ class SynthesizerPOMDP():
         # If storm file was provided add all memory before the start of synthesis
         if self.sketch.quotient.storm_file != "":
             self.sketch.quotient.parse_storm_results()
-            observation_memory = {k:len(v) for k,v in self.sketch.quotient.observation_action_dict.items() if len(v) > 1}
-            print(observation_memory)
+            observation_frequency_memory = {k:v for k,v in self.sketch.quotient.observation_frequency_dict.items() if v > 1}
+            observation_action_memory = {k:len(v) for k,v in self.sketch.quotient.observation_action_dict.items() if len(v) > 1}
+            #print(observation_action_memory)
 
-            for obs, count in observation_memory.items():
+            for obs, count in observation_frequency_memory.items():
+                if obs not in observation_action_memory.keys():
+                    for x in range(count):
+                        # inject memory and continue
+                        self.sketch.quotient.pomdp_manager.inject_memory(obs)
+                        memory_injections += 1
+                        logger.info("Injected memory into observation {}.".format(obs))
+                        count -= 1
+                        break
+
+            for obs, count in observation_action_memory.items():
                 for x in range(count-1):
                     # inject memory and continue
                     self.sketch.quotient.pomdp_manager.inject_memory(obs)
                     memory_injections += 1
                     logger.info("Injected memory into observation {}.".format(obs))
+
+        #for i in [0,3]:
+        #    self.sketch.quotient.pomdp_manager.inject_memory(i)
+        #    memory_injections += 1
+        #    logger.info("Injected memory into observation {}.".format(i))
 
         while True:
         # for iteration in range(100):
@@ -128,9 +144,11 @@ class SynthesizerPOMDP():
 
             # construct the quotient
             self.sketch.quotient.unfold_memory()
+
+            family = self.sketch.design_space
             
             # use inconsistencies to break symmetry
-            family = self.sketch.quotient.break_symmetry_3(self.sketch.design_space, action_inconsistencies, memory_inconsistencies)
+            family = self.sketch.quotient.break_symmetry_3(family, action_inconsistencies, memory_inconsistencies)
 
             # use underapproximation result from storm to reduce family size
             family = self.sketch.quotient.reduce_family_based_on_beliefs(family)
@@ -244,10 +262,19 @@ class SynthesizerPOMDP():
             # selected_hole = holes_to_inject[0]
             selected_options = selection[selected_hole]
             
-            # print()
-            # print("hole scores: ", hole_scores)
-            # print("selected hole: ", selected_hole)
-            # print("hole has options: ", selected_options)
+            print()
+            print("hole scores: ", hole_scores)
+            print("selected hole: ", selected_hole)
+            print("hole has options: ", selected_options)
+            # DEBUG
+            print(self.sketch.quotient.obs_to_holes)
+            #debug_dict = {}
+            #for h,v in hole_scores.items():
+            #    for obs in range(self.sketch.quotient.observations):
+            #        if h in self.sketch.quotient.obs_to_holes[obs]:
+            #            debug_dict[h] = v
+            #            break
+            #print(debug_dict)
 
             # identify observation having this hole
             for obs in range(self.sketch.quotient.observations):
@@ -255,19 +282,33 @@ class SynthesizerPOMDP():
                     selected_observation = obs
                     break
 
+
+
             # USING STORM RESULT FOR CHOOSING MEMORY INJECTION
 
-            #if len(observation_memory) != 0:
-            #    for key, value in hole_scores.items():
-            #        for obs in range(self.sketch.quotient.observations):
-            #            if key in self.sketch.quotient.obs_to_holes[obs]:
-            #                if obs in observation_memory.keys():
-            #                    selected_hole = key
-            #                    selected_observation = obs
-            #                    observation_memory[obs] -= 1
-            #                    if observation_memory[obs] <= 1:
-            #                        observation_memory.pop(obs, None)
-            #                    break
+            #if self.sketch.quotient.storm_file != "":
+            #    if len(observation_action_memory) != 0:
+            #        for key, value in hole_scores.items():
+            #            for obs in range(self.sketch.quotient.observations):
+            #                if key in self.sketch.quotient.obs_to_holes[obs]:
+            #                    if obs in observation_action_memory.keys():
+            #                        selected_hole = key
+            #                        selected_observation = obs
+            #                        observation_action_memory[obs] -= 1
+            #                        if observation_action_memory[obs] <= 1:
+            #                            observation_action_memory.pop(obs, None)
+            #                        break
+
+            if self.sketch.quotient.storm_file != "":
+                for obs, count in observation_frequency_memory.items():
+                    if obs not in observation_action_memory.keys():
+                        for x in range(count):
+                            # inject memory and continue
+                            self.sketch.quotient.pomdp_manager.inject_memory(obs)
+                            memory_injections += 1
+                            logger.info("Injected memory into observation {}.".format(obs))
+                            count -= 1
+                            break
 
             if len(selected_options) > 1:
                 # identify whether this hole is inconsistent in actions or updates

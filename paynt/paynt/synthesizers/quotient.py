@@ -552,6 +552,7 @@ class POMDPQuotientContainer(QuotientContainer):
     storm_file = "" 
 
     # parsed storm results
+    observation_frequency_dict = {}
     observation_action_dict = {}
 
     #
@@ -1006,7 +1007,7 @@ class POMDPQuotientContainer(QuotientContainer):
                         options.append(action * num_updates + update)
                 restricted_family[hole].assume_options(options)
 
-            #print(f'{obs}: {selected_actions}')
+            print(f'{obs}: {selected_actions}')
             self.current_selected_actions[obs] = selected_actions
 
         #print(restricted_family)
@@ -1016,6 +1017,7 @@ class POMDPQuotientContainer(QuotientContainer):
 
 
     def parse_storm_results(self):
+        observation_frequency_dict = {}
         observation_action_dict = {}
         action_count_dict = {}
         current_observation = -1
@@ -1050,6 +1052,11 @@ class POMDPQuotientContainer(QuotientContainer):
                 parse_segment = 0
                 continue
 
+            if parse_segment == 1:
+                if line.startswith("observation"):
+                    line = line.split()
+                    observation_frequency_dict[int(line[1])] = int(line[3])
+
             if parse_segment == 2:
                 if line.startswith("observation"):
                     if len(action_count_dict) != 0:
@@ -1062,6 +1069,7 @@ class POMDPQuotientContainer(QuotientContainer):
                 line = line.split()
                 action_count_dict[int(line[1])] = int(line[3])
 
+        self.observation_frequency_dict = observation_frequency_dict
         self.observation_action_dict = observation_action_dict
 
     # uses storm underapproximations on belief MDP to reduce family size
@@ -1094,16 +1102,17 @@ class POMDPQuotientContainer(QuotientContainer):
             selected_updates = [all_updates.copy() for hole in obs_holes]
 
             if obs not in self.observation_action_dict.keys() or len(self.current_selected_actions[obs]) == 0:
-                selected_actions = self.current_selected_actions[obs]
+                #selected_actions = self.current_selected_actions[obs]
+                selected_actions = [[0] for hole in obs_holes]                                          # THE OLD METHOD
             else:
-                selected_actions = []
-                for x in self.current_selected_actions[obs]:
-                    obs_actions = list(set(self.observation_action_dict[obs].keys()) & set(x))
-                    if len(obs_actions) != 0:
-                        selected_actions.append(obs_actions)
-                    else:
-                        selected_actions.append(x)
-                #selected_actions = [list(self.observation_action_dict[obs].keys()) for hole in obs_holes] # THE OLD METHOD
+                #selected_actions = []
+                #for x in self.current_selected_actions[obs]:
+                #    obs_actions = list(set(self.observation_action_dict[obs].keys()) & set(x))
+                #    if len(obs_actions) != 0:
+                #        selected_actions.append(obs_actions)
+                #    else:
+                #        selected_actions.append(x)
+                selected_actions = [list(self.observation_action_dict[obs].keys()) for hole in obs_holes] # THE OLD METHOD
 
             #print(obs_holes)
             #print(all_actions)

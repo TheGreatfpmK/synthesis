@@ -76,23 +76,37 @@ def paynt(
     sketch = Sketch(sketch_path, properties_path, constants)
 
     # choose synthesis method
-    if sketch.is_pomdp and fsc_synthesis:
-        synthesizer = SynthesizerPOMDP(sketch, method)
-    elif method == "onebyone":
-        synthesizer = Synthesizer1By1(sketch)
-    elif method == "cegis":
-        synthesizer = SynthesizerCEGIS(sketch)
-    elif method == "ar":
-        synthesizer = SynthesizerAR(sketch)
-    elif method == "hybrid":
-        synthesizer = SynthesizerHybrid(sketch)
-    elif method == "evo":
-        raise NotImplementedError
-    else:
-        assert None
+    if sketch.is_pomdp and fsc_synthesis and storm_result_file != "":
+        sketch_paynt_storm = Sketch(sketch_path, properties_path, constants)
+        synthesizer_paynt = SynthesizerPOMDP(sketch, method)
+        synthesizer_paynt_storm = SynthesizerPOMDP(sketch_paynt_storm, method, 1)
 
-    # run synthesis
-    synthesizer.run()
+        logger.info("Running basic PAYNT pomdp synthesis.")
+        synthesizer_paynt.run()
+        logger.info("Switching to PAYNT+Storm synthesis.")
+        synthesizer_paynt_storm.run()
+
+        logger.info(f'PAYNT result: {synthesizer_paynt.opt}, FSC: {synthesizer_paynt.fsc}')
+        logger.info(f'PAYNT+Storm result: {synthesizer_paynt_storm.opt}, FSC: {synthesizer_paynt_storm.fsc}')
+
+    else:
+        if sketch.is_pomdp and fsc_synthesis:
+            synthesizer = SynthesizerPOMDP(sketch, method)
+        elif method == "onebyone":
+            synthesizer = Synthesizer1By1(sketch)
+        elif method == "cegis":
+            synthesizer = SynthesizerCEGIS(sketch)
+        elif method == "ar":
+            synthesizer = SynthesizerAR(sketch)
+        elif method == "hybrid":
+            synthesizer = SynthesizerHybrid(sketch)
+        elif method == "evo":
+            raise NotImplementedError
+        else:
+            assert None
+
+        # run synthesis
+        synthesizer.run()
 
 
 def main():

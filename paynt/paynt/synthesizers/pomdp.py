@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 class SynthesizerPOMDP():
 
-    def __init__(self, sketch, method):
+    def __init__(self, sketch, method, mode=0, Paynt_data={}, Paynt_Storm_data={}):
         assert sketch.is_pomdp
         self.sketch = sketch
         self.synthesizer = None
@@ -26,6 +26,11 @@ class SynthesizerPOMDP():
         elif method == "hybrid":
             self.synthesizer = SynthesizerHybrid
         self.total_iters = 0
+        self.mode = mode
+        self.Paynt_data = Paynt_data
+        self.Paynt_Storm_data = Paynt_Storm_data
+        self.fsc = None
+        self.opt = "-"
         Profiler.initialize()
 
     def print_stats(self):
@@ -35,11 +40,11 @@ class SynthesizerPOMDP():
         self.sketch.quotient.discarded = 0
         synthesizer = self.synthesizer(self.sketch)
         family.property_indices = self.sketch.design_space.property_indices
-        assignment = synthesizer.synthesize(family)
+        assignment, flag = synthesizer.synthesize(family)
         if print_stats:
             synthesizer.print_stats()
         self.total_iters += synthesizer.stat.iterations_mdp
-        return assignment
+        return assignment, flag
 
 
     def strategy_full(self):
@@ -107,7 +112,7 @@ class SynthesizerPOMDP():
         fsc_synthesis_timer.start()
 
         # If storm file was provided add all memory before the start of synthesis
-        if self.sketch.quotient.storm_file != "":
+        if self.mode == 1 and self.sketch.quotient.storm_file != "":
             self.sketch.quotient.parse_storm_results()
             observation_frequency_memory = {k:v for k,v in self.sketch.quotient.observation_frequency_dict.items() if v > 1}
             observation_action_memory = {k:len(v) for k,v in self.sketch.quotient.observation_action_dict.items() if len(v) > 1}
@@ -130,7 +135,7 @@ class SynthesizerPOMDP():
                     memory_injections += 1
                     logger.info("Injected memory into observation {}.".format(obs))
 
-        #for i in [0,3]:
+        #for i in [285,1285,1456]:
         #    self.sketch.quotient.pomdp_manager.inject_memory(i)
         #    memory_injections += 1
         #    logger.info("Injected memory into observation {}.".format(i))
@@ -151,7 +156,8 @@ class SynthesizerPOMDP():
             family = self.sketch.quotient.break_symmetry_3(family, action_inconsistencies, memory_inconsistencies)
 
             # use underapproximation result from storm to reduce family size
-            family = self.sketch.quotient.reduce_family_based_on_beliefs(family)
+            if self.mode == 1:
+                family = self.sketch.quotient.reduce_family_based_on_beliefs(family)
 
             # solve MDP that corresponds to this restricted family
             mdp,spec,selection,choice_values,expected_visits,hole_scores = self.solve_mdp(family)
@@ -162,7 +168,7 @@ class SynthesizerPOMDP():
                 break
             
             # synthesize optimal assignment
-            synthesized_assignment = self.synthesize(family)
+            synthesized_assignment, flag = self.synthesize(family)
            
             # identify hole that we want to improve
             selected_hole = None
@@ -262,12 +268,12 @@ class SynthesizerPOMDP():
             # selected_hole = holes_to_inject[0]
             selected_options = selection[selected_hole]
             
-            print()
-            print("hole scores: ", hole_scores)
-            print("selected hole: ", selected_hole)
-            print("hole has options: ", selected_options)
+            #print()
+            #print("hole scores: ", hole_scores)
+            #print("selected hole: ", selected_hole)
+            #print("hole has options: ", selected_options)
             # DEBUG
-            print(self.sketch.quotient.obs_to_holes)
+            #print(self.sketch.quotient.obs_to_holes)
             #debug_dict = {}
             #for h,v in hole_scores.items():
             #    for obs in range(self.sketch.quotient.observations):
@@ -299,16 +305,16 @@ class SynthesizerPOMDP():
             #                            observation_action_memory.pop(obs, None)
             #                        break
 
-            if self.sketch.quotient.storm_file != "":
-                for obs, count in observation_frequency_memory.items():
-                    if obs not in observation_action_memory.keys():
-                        for x in range(count):
-                            # inject memory and continue
-                            self.sketch.quotient.pomdp_manager.inject_memory(obs)
-                            memory_injections += 1
-                            logger.info("Injected memory into observation {}.".format(obs))
-                            count -= 1
-                            break
+            #if self.sketch.quotient.storm_file != "":
+            #    for obs, count in observation_frequency_memory.items():
+            #        if obs not in observation_action_memory.keys():
+            #            for x in range(count):
+            #                # inject memory and continue
+            #                self.sketch.quotient.pomdp_manager.inject_memory(obs)
+            #                memory_injections += 1
+            #                logger.info("Injected memory into observation {}.".format(obs))
+            #                count -= 1
+            #                break
 
             if len(selected_options) > 1:
                 # identify whether this hole is inconsistent in actions or updates
@@ -323,14 +329,29 @@ class SynthesizerPOMDP():
             opt = "-"
             if self.sketch.specification.optimality.optimum is not None:
                 opt = round(self.sketch.specification.optimality.optimum,3)
+                if self.opt == "-":
+                    self.opt = opt
+                    self.fsc = best_assignment
+                elif not self.sketch.specification.optimality.improves_optimum(self.opt):
+                    self.opt = opt
+                    self.fsc = best_assignment
+
             elapsed = round(fsc_synthesis_timer.read(),1)
             logger.info("FSC synthesis: elapsed {} s, opt = {}, injections: {}.".format(elapsed, opt, memory_injections))
             logger.info("FSC: {}".format(best_assignment))
+
 
             # inject memory and continue
             self.sketch.quotient.pomdp_manager.inject_memory(selected_observation)
             memory_injections += 1
             logger.info("Injected memory into observation {}.".format(selected_observation))
+            
+            if flag:
+                if self.mode == 0:
+                    self.Paynt_data['idk'] = [1]
+                elif self.mode == 1:
+                    self.Paynt_Storm_data['idk'] = [1]
+                break
 
 
     def run(self):

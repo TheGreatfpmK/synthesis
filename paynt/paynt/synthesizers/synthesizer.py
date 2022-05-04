@@ -134,6 +134,8 @@ class SynthesizerAR(Synthesizer):
         Profiler.start("synthesis")
         self.stat.start()
 
+        no_optimum_update_limit_reached_flag = False
+
         self.sketch.quotient.discarded = 0
 
         satisfying_assignment = None
@@ -141,6 +143,7 @@ class SynthesizerAR(Synthesizer):
         while families:
 
             if self.no_optimum_update_limit_reached():
+                no_optimum_update_limit_reached_flag = True
                 break
             
             if SynthesizerAR.exploration_order_dfs:
@@ -161,7 +164,7 @@ class SynthesizerAR(Synthesizer):
 
         self.stat.finished(satisfying_assignment)
         Profiler.stop()
-        return satisfying_assignment
+        return satisfying_assignment, no_optimum_update_limit_reached_flag
 
 
 class SynthesizerCEGIS(Synthesizer):

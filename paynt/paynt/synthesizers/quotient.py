@@ -1031,6 +1031,7 @@ class POMDPQuotientContainer(QuotientContainer):
             selected_updates = [all_updates.copy() for hole in obs_holes]
 
             inconsistencies = list(action_inconsistencies[obs])
+            #print(inconsistencies)
             num_inc = len(inconsistencies)
             if num_inc > 1:
                 # action inconsistency: allocate inconsistent actions between holes
@@ -1038,6 +1039,13 @@ class POMDPQuotientContainer(QuotientContainer):
                 selected_actions = [ignored_actions.copy() for hole in obs_holes]
                 for index in range(max(num_holes,num_inc)):
                     selected_actions[index % num_holes].append(inconsistencies[index % num_inc])
+
+                # POSSIBLE NEW WAY
+                #my_actions = [action for action in all_actions if action in inconsistencies]
+                #ignored_actions = [action for action in all_actions if action not in inconsistencies]
+                #selected_actions = [my_actions.copy() for hole in obs_holes]
+                #for index in range(max(num_holes,len(ignored_actions))):
+                #    selected_actions[index % num_holes].append(ignored_actions[index % len(ignored_actions)])
             else:
                 inconsistencies = list(memory_inconsistencies[obs])
                 num_inc = len(inconsistencies)
@@ -1059,7 +1067,7 @@ class POMDPQuotientContainer(QuotientContainer):
                         options.append(action * num_updates + update)
                 restricted_family[hole].assume_options(options)
 
-            print(f'{obs}: {selected_actions}')
+            #print(f'{obs}: {selected_actions}')
             self.current_selected_actions[obs] = selected_actions
 
         #print(restricted_family)

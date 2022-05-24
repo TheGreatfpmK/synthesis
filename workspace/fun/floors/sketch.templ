@@ -1,0 +1,70 @@
+pomdp
+
+// can go in this direction
+formula inner = x=1 | x=2;
+
+// target cell
+formula edge = (x=3 & y=4) | (x=0 & y=3) | (x=3 & y=2) | (x=0 & y=1) | (x=3 & y=0);
+formula edgegoal = (x=0 & y=4) | (x=3 & y=3) | (x=0 & y=2) | (x=3 & y=1);
+formula goal = x=0 & y=0 & clk=1;
+
+// updates of coordinates (if possible)
+formula r = x<3 ? (x+1) : x;
+formula l = x>0 ? (x-1) : x;
+formula lower = (y-1);
+
+// corresponding observables
+observable "inner" = clk=1 & inner;
+observable "edge" = clk=1 & edge;
+observable "edgegoal" = clk=1 & edgegoal;
+observable "goal" = goal;
+
+
+// modules
+
+module myclock
+    // 0 - init, 1 - drive
+    clk : [0..2] init 0;
+
+    // random placement
+    [placeinit] clk=0 -> (clk'=1);
+
+    [placelower] clk=2 -> (clk'=1);
+    
+    // drive
+    [right] 	clk=1 -> true;
+    [left] 	    clk=1 -> true;
+    [random] 	clk=1 -> true;
+
+    [edgeg]		clk=1 -> 1: (clk'=2);
+endmodule
+
+module test
+
+    x : [0..3] init 0;
+    y : [0..4] init 0;
+    
+    // initialisation
+    [placeinit] true ->
+          1/2 :    (x'=1) & (y'=4)
+        + 1/2 :    (x'=2) & (y'=4);
+
+    // move floor
+    [placelower] edgegoal -> 
+          1/2 :    (x'=1) & (y'=lower)
+        + 1/2 :    (x'=2) & (y'=lower);
+    
+    [right]   !edgegoal -> 1: (x'=r);
+    [left]    !edgegoal -> 1: (x'=l);
+    [random]  !edgegoal -> 0.5: (x'=r) + 0.5: (x'=l);
+
+    [edgeg]	edgegoal -> true;
+    
+endmodule
+
+// rewards
+
+rewards "steps"
+    clk=1: 1;
+endrewards
+

@@ -998,9 +998,17 @@ class POMDPQuotientContainer(QuotientContainer):
         actions = set()
         updates = set()
         num_updates = self.hole_num_updates[hole]
+        print(self.hole_num_updates)
+        
         for option in options:
             actions.add(option // num_updates)
             updates.add(option %  num_updates)
+
+        #num_actions = self.hole_num_actions[hole]
+        #for option in options:
+        #    actions.add(option % num_actions)
+        #    updates.add(option % num_updates)
+        print(actions)
         return actions,updates
 
     def disable_action(self, family, hole, action):
@@ -1065,9 +1073,10 @@ class POMDPQuotientContainer(QuotientContainer):
                 for action in actions:
                     for update in updates:
                         options.append(action * num_updates + update)
+                print(options)
                 restricted_family[hole].assume_options(options)
 
-            #print(f'{obs}: {selected_actions}')
+            print(f'{obs}: {selected_actions}')
             self.current_selected_actions[obs] = selected_actions
 
         #print(restricted_family)

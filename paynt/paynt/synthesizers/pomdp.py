@@ -135,10 +135,10 @@ class SynthesizerPOMDP():
                     memory_injections += 1
                     logger.info("Injected memory into observation {}.".format(obs))
 
-        #for i in [285,1285,1456]:
-        #    self.sketch.quotient.pomdp_manager.inject_memory(i)
-        #    memory_injections += 1
-        #    logger.info("Injected memory into observation {}.".format(i))
+        for i in [0,0,3]:
+            self.sketch.quotient.pomdp_manager.inject_memory(i)
+            memory_injections += 1
+            logger.info("Injected memory into observation {}.".format(i))
 
         while True:
         # for iteration in range(100):
@@ -166,6 +166,8 @@ class SynthesizerPOMDP():
             if not spec.optimality_result.can_improve:
                 logger.info("Optimum matches the upper bound of a symmetry-free MDP.")
                 break
+
+            print("MDP SCORES: ", hole_scores)
             
             # synthesize optimal assignment
             synthesized_assignment, flag = self.synthesize(family)
@@ -269,9 +271,10 @@ class SynthesizerPOMDP():
             selected_options = selection[selected_hole]
             
             #print()
-            #print("hole scores: ", hole_scores)
-            #print("selected hole: ", selected_hole)
-            #print("hole has options: ", selected_options)
+            print("hole scores: ", hole_scores)
+            print("selected hole: ", selected_hole)
+            print("hole has options: ", selected_options)
+            print("selection: ", selection)
             # DEBUG
             #print(self.sketch.quotient.obs_to_holes)
             #debug_dict = {}
@@ -288,7 +291,8 @@ class SynthesizerPOMDP():
                     selected_observation = obs
                     break
 
-
+            #if selected_observation == 0:
+            #    selected_options = [self.sketch.quotient.hole_num_updates[selected_hole],self.sketch.quotient.hole_num_updates[selected_hole]*3]
 
             # USING STORM RESULT FOR CHOOSING MEMORY INJECTION
 
@@ -346,12 +350,12 @@ class SynthesizerPOMDP():
             memory_injections += 1
             logger.info("Injected memory into observation {}.".format(selected_observation))
             
-            if flag:
-                if self.mode == 0:
-                    self.Paynt_data['idk'] = [1]
-                elif self.mode == 1:
-                    self.Paynt_Storm_data['idk'] = [1]
-                break
+            #if flag:
+            #    if self.mode == 0:
+            #        self.Paynt_data['idk'] = [1]
+            #    elif self.mode == 1:
+            #        self.Paynt_Storm_data['idk'] = [1]
+            #    break
 
 
     def run(self):

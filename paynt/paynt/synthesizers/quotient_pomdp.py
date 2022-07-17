@@ -24,6 +24,8 @@ class POMDPQuotientContainer(QuotientContainer):
     # TODO
     current_family_index = None
 
+    storm_file = None
+
     # if True, action-memory hole pairs will be merged into a single hole
     use_simplified_coloring = False
     # use_simplified_coloring = True
@@ -49,6 +51,9 @@ class POMDPQuotientContainer(QuotientContainer):
         self.action_hole_prototypes = None
         # for each observation, number of states associated with it
         self.observation_states = None
+
+        self.observation_frequency_dict = {}
+        self.observation_action_dict = {}
         
         # attributes associated with an unfolded quotient MDP
         
@@ -125,6 +130,9 @@ class POMDPQuotientContainer(QuotientContainer):
         # do initial unfolding
         self.set_imperfect_memory_size(POMDPQuotientContainer.initial_memory_size)
         # self.set_global_memory_size(POMDPQuotientContainer.initial_memory_size)
+
+        if self.storm_file is not None:
+            self.parse_storm_results()
         
         
 
@@ -588,3 +596,173 @@ class POMDPQuotientContainer(QuotientContainer):
 
         return restricted_family
 
+    def parse_storm_results(self):
+        observation_frequency_dict = {}
+        observation_action_dict = {}
+        action_count_dict = {}
+        current_observation = -1
+
+        storm_result_file = open(self.storm_file, "r")
+        parse_segment = 0
+        for line in storm_result_file:
+            line = line.rstrip()
+            if line == "":
+                continue
+
+            if parse_segment == 0:
+                # get info about what part of the file is being parsed
+                if line == "Number of states representing given observation:":
+                    parse_segment = 1
+                elif line == "Action frequency for observation:":
+                    parse_segment = 2
+                elif line == "State frequency in beliefs:":
+                    parse_segment = 3
+                elif line == "Observation value:":
+                    parse_segment = 4
+                else:
+                    parse_segment = 0
+                
+                continue
+
+            if line == "------------------------------------------":
+                if parse_segment == 2:
+                    observation_action_dict[current_observation] = action_count_dict
+                    action_count_dict = {}
+
+                parse_segment = 0
+                continue
+
+            if parse_segment == 1:
+                if line.startswith("observation"):
+                    line = line.split()
+                    observation_frequency_dict[int(line[1])] = int(line[3])
+
+            if parse_segment == 2:
+                if line.startswith("observation"):
+                    if len(action_count_dict) != 0:
+                        observation_action_dict[current_observation] = action_count_dict
+                        action_count_dict = {}
+
+                    current_observation = int(line.split()[1])
+                    continue
+                
+                line = line.split()
+                action_count_dict[int(line[1])] = int(line[3])
+
+        self.observation_frequency_dict = observation_frequency_dict
+        self.observation_action_dict = observation_action_dict
+
+    def get_restrictions(self):
+
+        if self.storm_file is None:
+            return []
+
+        return self.observation_action_dict
+
+    def get_restricted_family(self, family):
+
+        # go through each observation of interest and break symmetry
+        restricted_family = family.copy()
+        for obs in range(self.observations):
+      
+            num_actions = self.actions_at_observation[obs]
+            num_updates = self.pomdp_manager.max_successor_memory_size[obs]
+
+            act_obs_holes = self.observation_action_holes[obs]
+            mem_obs_holes = self.observation_memory_holes[obs]
+            act_num_holes = len(act_obs_holes)
+            mem_num_holes = len(mem_obs_holes)
+
+            all_actions = [action for action in range(num_actions)]
+            selected_actions = [all_actions.copy() for _ in act_obs_holes]
+            
+            all_updates = [update for update in range(num_updates)]
+            selected_updates = [all_updates.copy() for _ in mem_obs_holes]
+
+            # Action/Memory restriction
+            if obs not in self.observation_action_dict.keys():
+                selected_actions = [[0] for _ in act_obs_holes]
+            else:
+                selected_actions = [list(self.observation_action_dict[obs].keys()) for _ in act_obs_holes]
+
+            #selected_updates = [[0] for hole in mem_obs_holes]
+
+            # Apply action restrictions
+            for index in range(act_num_holes):
+                hole = act_obs_holes[index]
+                actions = selected_actions[index]
+                options = []
+                for action in actions:
+                    options.append(action)
+                restricted_family[hole].assume_options(options)
+
+            # Apply memory restrictions
+            for index in range(mem_num_holes):
+                hole = mem_obs_holes[index]
+                updates = selected_updates[index]
+                options = []
+                for update in updates:
+                    options.append(update)
+                restricted_family[hole].assume_options(options)
+
+        print(restricted_family)
+        logger.debug("Action and Memory restrictions: reduced design space from {} to {}".format(family.size, restricted_family.size))
+
+        return restricted_family
+
+
+    def get_restricted_subfamilies(self, family):
+
+        subfamilies = []
+
+        for obs in self.observation_action_dict.keys():
+
+            subfamily = family.copy()
+            
+            num_actions = self.actions_at_observation[obs]
+            num_updates = self.pomdp_manager.max_successor_memory_size[obs]
+
+            act_obs_holes = self.observation_action_holes[obs]
+            mem_obs_holes = self.observation_memory_holes[obs]
+            act_num_holes = len(act_obs_holes)
+            mem_num_holes = len(mem_obs_holes)
+
+            if act_num_holes == 0:
+                continue
+
+            all_actions = [action for action in range(num_actions)]
+            selected_actions = [all_actions.copy() for _ in act_obs_holes]
+
+            all_updates = [update for update in range(num_updates)]
+            selected_updates = [all_updates.copy() for _ in mem_obs_holes]
+
+            # Action/Memory restriction
+            res_actions = [action for action in all_actions if action not in list(self.observation_action_dict[obs].keys())]
+            if len(res_actions) == 0:
+                continue
+            selected_actions = [res_actions for _ in act_obs_holes]
+            #selected_updates = [[0] for hole in mem_obs_holes]
+
+            # Apply action restrictions
+            for index in range(act_num_holes):
+                hole = act_obs_holes[index]
+                actions = selected_actions[index]
+                options = []
+                for action in actions:
+                    options.append(action)
+                subfamily[hole].assume_options(options)
+
+            # Apply memory restrictions
+            for index in range(mem_num_holes):
+                hole = mem_obs_holes[index]
+                updates = selected_updates[index]
+                options = []
+                for update in updates:
+                    options.append(update)
+                subfamily[hole].assume_options(options)
+
+            subfamilies.append({"family": subfamily, "obs": obs, "res": self.observation_action_dict[obs]})
+            #print(obs, subfamily.size, subfamily)
+
+        #print(subfamilies)
+        return subfamilies

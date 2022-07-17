@@ -118,16 +118,27 @@ class SynthesizerAR(Synthesizer):
         self.stat.iteration_mdp(family.mdp.states)
 
         res = family.mdp.check_specification(self.sketch.specification, property_indices = family.property_indices, short_evaluation = True)
+        #print(res.optimality_result.primary)
         family.analysis_result = res
         Profiler.resume()
 
+        #print(res)
         improving_assignment,improving_value,can_improve = res.improving(family)
-        # print(improving_value, can_improve)
+        #print(improving_assignment)
+        #print(improving_value, can_improve)
         if improving_value is not None:
             self.sketch.specification.optimality.update_optimum(improving_value)
             self.since_last_optimum_update = 0
         # print(res, can_improve)
         # print(res.optimality_result.primary.result.get_values())
+
+        #print(res.optimality_result.primary)
+        #print(res.optimality_result.secondary)
+
+        #if res.optimality_result.primary.value < 0.9:
+        #    print(can_improve)
+        #    print("lul")
+        #    can_improve = False
 
         return can_improve, improving_assignment
 
@@ -155,6 +166,8 @@ class SynthesizerAR(Synthesizer):
             else:
                 family = families.pop(0)
 
+            #print(family)
+
             # simulate sequential
             family.parent_info = None
 
@@ -165,9 +178,148 @@ class SynthesizerAR(Synthesizer):
                 self.explore(family)
                 continue
 
+            #print("split", family)
             # undecided
             subfamilies = self.sketch.quotient.split(family, Synthesizer.incomplete_search)
             families = families + subfamilies
+
+        self.stat.finished(satisfying_assignment)
+        Profiler.stop()
+
+        # if satisfying_assignment is not None:
+        #     dtmc = self.sketch.quotient.build_chain(satisfying_assignment)
+        #     spec = dtmc.check_specification(self.sketch.specification)
+        #     logger.info("Double-checking specification satisfiability: {}".format(spec))
+        return satisfying_assignment
+
+class SynthesizerARStorm(Synthesizer):
+
+    # family exploration order: True = DFS, False = BFS
+    exploration_order_dfs = True
+
+    # buffer containing subfamilies to be checked after the main restricted family
+    subfamilies_buffer = []
+
+    @property
+    def method_name(self):
+        return "AR"
+
+
+    def analyze_family_ar(self, family):
+        """
+        :return (1) family feasibility (True/False/None)
+        :return (2) new satisfying assignment (or None)
+        """
+        # logger.debug("analyzing family {}".format(family))
+        Profiler.start("synthesizer::analyze_family_ar")
+        
+        self.sketch.quotient.build(family)
+        self.stat.iteration_mdp(family.mdp.states)
+
+        res = family.mdp.check_specification(self.sketch.specification, property_indices = family.property_indices, short_evaluation = True)
+        #print(res.optimality_result.primary)
+        family.analysis_result = res
+        Profiler.resume()
+
+        #print(res)
+        improving_assignment,improving_value,can_improve = res.improving(family)
+        #print(improving_assignment)
+        #print(improving_value, can_improve)
+        if improving_value is not None:
+            self.sketch.specification.optimality.update_optimum(improving_value)
+            self.since_last_optimum_update = 0
+        # print(res, can_improve)
+        # print(res.optimality_result.primary.result.get_values())
+
+        #print(res.optimality_result.primary)
+        #print(res.optimality_result.secondary)
+
+        #if res.optimality_result.primary.value < 0.9:
+        #    print(can_improve)
+        #    print("lul")
+        #    can_improve = False
+
+        return can_improve, improving_assignment
+
+
+    
+    def synthesize(self, family):
+
+        logger.info("Synthesis initiated. Storm AR.")
+        
+        Profiler.start("synthesis")
+        self.stat.start()
+
+        self.sketch.quotient.discarded = 0
+
+        satisfying_assignment = None
+        families = [family]
+
+        while families:
+
+            if self.no_optimum_update_limit_reached():
+                break
+
+            if SynthesizerARStorm.exploration_order_dfs:
+                family = families.pop(-1)
+            else:
+                family = families.pop(0)
+
+            #print(family)
+
+            # simulate sequential
+            family.parent_info = None
+
+            can_improve,improving_assignment = self.analyze_family_ar(family)
+            if improving_assignment is not None:
+                satisfying_assignment = improving_assignment
+            if can_improve == False:
+                self.explore(family)
+                continue
+
+            #print("split", family)
+            # undecided
+            subfamilies = self.sketch.quotient.split(family, Synthesizer.incomplete_search)
+            families = families + subfamilies
+
+        print("Main resticted family synthesis done")
+        #self.stat.print()
+
+        while self.subfamilies_buffer:
+
+            subfamily = self.subfamilies_buffer.pop(0)
+
+            families = [subfamily["family"]]
+
+
+            print(subfamily["obs"], len(families))
+
+            while families:
+
+                if self.no_optimum_update_limit_reached():
+                    break
+
+                if SynthesizerARStorm.exploration_order_dfs:
+                    family = families.pop(-1)
+                else:
+                    family = families.pop(0)
+
+                #print(family)
+
+                # simulate sequential
+                family.parent_info = None
+
+                can_improve,improving_assignment = self.analyze_family_ar(family)
+                if improving_assignment is not None:
+                    satisfying_assignment = improving_assignment
+                if can_improve == False:
+                    self.explore(family)
+                    continue
+
+                #print("split", family)
+                # undecided
+                subfamilies = self.sketch.quotient.split(family, Synthesizer.incomplete_search)
+                families = families + subfamilies
 
         self.stat.finished(satisfying_assignment)
         Profiler.stop()

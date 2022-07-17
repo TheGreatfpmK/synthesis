@@ -377,13 +377,18 @@ class QuotientContainer:
         
         splitters = self.holes_with_max_score(scores)
         splitter = splitters[0]
+
+        #print(splitter)
+
         if len(hole_assignments[splitter]) > 1:
             core_suboptions,other_suboptions = self.suboptions_enumerate(mdp, splitter, hole_assignments[splitter])
         else:
             assert len(mdp.design_space[splitter].options) > 1
             core_suboptions = self.suboptions_half(mdp, splitter)
             other_suboptions = []
-        # print(mdp.design_space[splitter], core_suboptions, other_suboptions)
+        #print(mdp.design_space[splitter], core_suboptions, other_suboptions)
+
+        #print(core_suboptions, other_suboptions)
 
         new_design_space, suboptions = self.discard(mdp, hole_assignments, core_suboptions, other_suboptions, incomplete_search)
         
@@ -397,6 +402,8 @@ class QuotientContainer:
             design_subspace = DesignSpace(subholes, parent_info)
             design_subspace.assume_hole_options(splitter, suboption)
             design_subspaces.append(design_subspace)
+
+            #print(design_subspace)
 
         return design_subspaces
 

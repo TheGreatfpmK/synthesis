@@ -661,6 +661,9 @@ class POMDPQuotientContainer(QuotientContainer):
 
     def get_restricted_family(self, family):
 
+        if self.storm_file is None:
+            return family
+
         # go through each observation of interest and break symmetry
         restricted_family = family.copy()
         for obs in range(self.observations):
@@ -672,6 +675,9 @@ class POMDPQuotientContainer(QuotientContainer):
             mem_obs_holes = self.observation_memory_holes[obs]
             act_num_holes = len(act_obs_holes)
             mem_num_holes = len(mem_obs_holes)
+
+            if act_num_holes == 0:
+                continue
 
             all_actions = [action for action in range(num_actions)]
             selected_actions = [all_actions.copy() for _ in act_obs_holes]
@@ -713,56 +719,121 @@ class POMDPQuotientContainer(QuotientContainer):
 
     def get_restricted_subfamilies(self, family):
 
-        subfamilies = []
+        if self.storm_file is None:
+            return []
 
-        for obs in self.observation_action_dict.keys():
+        subfamilies = []
+        
+        obs_list = []
+
+        # for obs in self.observation_action_dict.keys():
+
+        #     subfamily = family.copy()
+            
+        #     num_actions = self.actions_at_observation[obs]
+        #     num_updates = self.pomdp_manager.max_successor_memory_size[obs]
+
+        #     act_obs_holes = self.observation_action_holes[obs]
+        #     mem_obs_holes = self.observation_memory_holes[obs]
+        #     act_num_holes = len(act_obs_holes)
+        #     mem_num_holes = len(mem_obs_holes)
+
+        #     if act_num_holes == 0:
+        #         continue
+
+        #     all_actions = [action for action in range(num_actions)]
+        #     selected_actions = [all_actions.copy() for _ in act_obs_holes]
+
+        #     all_updates = [update for update in range(num_updates)]
+        #     selected_updates = [all_updates.copy() for _ in mem_obs_holes]
+
+        #     # Action/Memory restriction
+        #     res_actions = [action for action in all_actions if action not in list(self.observation_action_dict[obs].keys())]
+        #     if len(res_actions) == 0:
+        #         continue
+        #     selected_actions = [res_actions for _ in act_obs_holes]
+        #     #selected_updates = [[0] for hole in mem_obs_holes]
+
+        #     # Apply action restrictions
+        #     for index in range(act_num_holes):
+        #         hole = act_obs_holes[index]
+        #         actions = selected_actions[index]
+        #         options = []
+        #         for action in actions:
+        #             options.append(action)
+        #         subfamily[hole].assume_options(options)
+
+        #     # Apply memory restrictions
+        #     for index in range(mem_num_holes):
+        #         hole = mem_obs_holes[index]
+        #         updates = selected_updates[index]
+        #         options = []
+        #         for update in updates:
+        #             options.append(update)
+        #         subfamily[hole].assume_options(options)
+
+        #     subfamilies.append({"family": subfamily, "obs": obs, "res": self.observation_action_dict[obs]})
+        #     print(obs, subfamily.size, subfamily)
+
+        for observ in self.observation_action_dict.keys():
+
+            act_obs_holes = self.observation_action_holes[observ]
+            if len(act_obs_holes) == 0:
+                continue
+
+            obs_list.append(observ)
 
             subfamily = family.copy()
-            
-            num_actions = self.actions_at_observation[obs]
-            num_updates = self.pomdp_manager.max_successor_memory_size[obs]
 
-            act_obs_holes = self.observation_action_holes[obs]
-            mem_obs_holes = self.observation_memory_holes[obs]
-            act_num_holes = len(act_obs_holes)
-            mem_num_holes = len(mem_obs_holes)
+            for obs in obs_list:
 
-            if act_num_holes == 0:
-                continue
+                num_actions = self.actions_at_observation[obs]
+                num_updates = self.pomdp_manager.max_successor_memory_size[obs]
 
-            all_actions = [action for action in range(num_actions)]
-            selected_actions = [all_actions.copy() for _ in act_obs_holes]
+                act_obs_holes = self.observation_action_holes[obs]
+                mem_obs_holes = self.observation_memory_holes[obs]
+                act_num_holes = len(act_obs_holes)
+                mem_num_holes = len(mem_obs_holes)
 
-            all_updates = [update for update in range(num_updates)]
-            selected_updates = [all_updates.copy() for _ in mem_obs_holes]
+                if act_num_holes == 0:
+                    continue
 
-            # Action/Memory restriction
-            res_actions = [action for action in all_actions if action not in list(self.observation_action_dict[obs].keys())]
-            if len(res_actions) == 0:
-                continue
-            selected_actions = [res_actions for _ in act_obs_holes]
-            #selected_updates = [[0] for hole in mem_obs_holes]
+                all_actions = [action for action in range(num_actions)]
+                selected_actions = [all_actions.copy() for _ in act_obs_holes]
 
-            # Apply action restrictions
-            for index in range(act_num_holes):
-                hole = act_obs_holes[index]
-                actions = selected_actions[index]
-                options = []
-                for action in actions:
-                    options.append(action)
-                subfamily[hole].assume_options(options)
+                all_updates = [update for update in range(num_updates)]
+                selected_updates = [all_updates.copy() for _ in mem_obs_holes]
 
-            # Apply memory restrictions
-            for index in range(mem_num_holes):
-                hole = mem_obs_holes[index]
-                updates = selected_updates[index]
-                options = []
-                for update in updates:
-                    options.append(update)
-                subfamily[hole].assume_options(options)
+                # Action/Memory restriction
+                if obs == observ:
+                    res_actions = [action for action in all_actions if action not in list(self.observation_action_dict[obs].keys())]
+                else:
+                    res_actions = list(self.observation_action_dict[obs].keys())
+                if len(res_actions) == 0:
+                    continue
+                selected_actions = [res_actions for _ in act_obs_holes]
+                #selected_updates = [[0] for hole in mem_obs_holes]
 
-            subfamilies.append({"family": subfamily, "obs": obs, "res": self.observation_action_dict[obs]})
-            #print(obs, subfamily.size, subfamily)
+                # Apply action restrictions
+                for index in range(act_num_holes):
+                    hole = act_obs_holes[index]
+                    actions = selected_actions[index]
+                    options = []
+                    for action in actions:
+                        options.append(action)
+                    subfamily[hole].assume_options(options)
+
+                # Apply memory restrictions
+                for index in range(mem_num_holes):
+                    hole = mem_obs_holes[index]
+                    updates = selected_updates[index]
+                    options = []
+                    for update in updates:
+                        options.append(update)
+                    subfamily[hole].assume_options(options)
+
+            subfamilies.append({"family": subfamily, "obs": observ, "res": self.observation_action_dict[observ]})
+            print(observ, subfamily.size, subfamily)
 
         #print(subfamilies)
         return subfamilies

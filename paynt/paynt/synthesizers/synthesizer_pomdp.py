@@ -116,6 +116,8 @@ class SynthesizerPOMDP:
             # self.sketch.quotient.design_space_counter()
             self.synthesize(restricted_family)
             mem_size += 1
+            
+            #break
 
 
     

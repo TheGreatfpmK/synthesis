@@ -234,9 +234,7 @@ class SynthesizerARStorm(Synthesizer):
         #print(res.optimality_result.primary)
         #print(res.optimality_result.secondary)
 
-        #if res.optimality_result.primary.value < 0.9:
-        #    print(can_improve)
-        #    print("lul")
+        #if res.optimality_result.primary.value > 20:
         #    can_improve = False
 
         return can_improve, improving_assignment

@@ -18,7 +18,6 @@ from collections import defaultdict
 import logging
 logger = logging.getLogger(__name__)
 
-
 class HoleTree:
 
     def __init__(self, options):
@@ -91,6 +90,15 @@ class SynthesizerPOMDP:
         mem_size = POMDPQuotientContainer.initial_memory_size
         while True:
         # for x in range(2):
+        
+            #print(self.sketch.specification.stormpy_properties)
+            formulae = self.sketch.specification.stormpy_formulae()
+            env = stormpy.Environment()
+            #print(formulae[0])
+            task = stormpy.core.CheckTask(formulae[0], only_initial_states=False)
+            result = stormpy.pomdp.underapproximate_with_cutoffs(env, self.sketch.quotient.pomdp, task, 1)
+
+            print(result)
             
             POMDPQuotientContainer.current_family_index = mem_size
             logger.info("Synthesizing optimal k={} controller ...".format(mem_size) )
@@ -103,6 +111,8 @@ class SynthesizerPOMDP:
             # self.sketch.quotient.design_space_counter()
             self.synthesize(self.sketch.design_space)
             mem_size += 1
+
+            break
 
     
     def solve_mdp(self, family):

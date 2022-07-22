@@ -4,7 +4,7 @@
 # compilation parameters
 
 # multi-core compilation
-export COMPILE_JOBS=$(nproc)
+export COMPILE_JOBS=4
 # single-core compilation:
 # export COMPILE_JOBS=1 
 
@@ -153,7 +153,7 @@ synthesis-install() {
     # download prerequisites
     prerequisites-download
     # download synthesis versions of storm & stormpy
-    storm-download
+    #storm-download
     # setup python environment
     python-environment
     

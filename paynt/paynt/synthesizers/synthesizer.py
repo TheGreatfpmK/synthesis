@@ -280,17 +280,20 @@ class SynthesizerARStorm(Synthesizer):
             subfamilies = self.sketch.quotient.split(family, Synthesizer.incomplete_search)
             families = families + subfamilies
 
-        print("Main resticted family synthesis done")
+        logger.info("Main family synthesis done")
+        logger.info(f"Subfamilies buffer contains: {len(self.subfamilies_buffer)} families")
         #self.stat.print()
 
         while self.subfamilies_buffer:
+
+            logger.info(f"{len(self.subfamilies_buffer)} families remaining")
 
             subfamily = self.subfamilies_buffer.pop(0)
 
             families = [subfamily["family"]]
 
 
-            print(subfamily["obs"], len(families))
+            #print(subfamily["obs"], len(families))
 
             while families:
 

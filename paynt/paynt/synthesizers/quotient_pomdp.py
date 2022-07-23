@@ -723,117 +723,53 @@ class POMDPQuotientContainer(QuotientContainer):
             return []
 
         subfamilies = []
-        
-        obs_list = []
 
-        # for obs in self.observation_action_dict.keys():
-
-        #     subfamily = family.copy()
-            
-        #     num_actions = self.actions_at_observation[obs]
-        #     num_updates = self.pomdp_manager.max_successor_memory_size[obs]
-
-        #     act_obs_holes = self.observation_action_holes[obs]
-        #     mem_obs_holes = self.observation_memory_holes[obs]
-        #     act_num_holes = len(act_obs_holes)
-        #     mem_num_holes = len(mem_obs_holes)
-
-        #     if act_num_holes == 0:
-        #         continue
-
-        #     all_actions = [action for action in range(num_actions)]
-        #     selected_actions = [all_actions.copy() for _ in act_obs_holes]
-
-        #     all_updates = [update for update in range(num_updates)]
-        #     selected_updates = [all_updates.copy() for _ in mem_obs_holes]
-
-        #     # Action/Memory restriction
-        #     res_actions = [action for action in all_actions if action not in list(self.observation_action_dict[obs].keys())]
-        #     if len(res_actions) == 0:
-        #         continue
-        #     selected_actions = [res_actions for _ in act_obs_holes]
-        #     #selected_updates = [[0] for hole in mem_obs_holes]
-
-        #     # Apply action restrictions
-        #     for index in range(act_num_holes):
-        #         hole = act_obs_holes[index]
-        #         actions = selected_actions[index]
-        #         options = []
-        #         for action in actions:
-        #             options.append(action)
-        #         subfamily[hole].assume_options(options)
-
-        #     # Apply memory restrictions
-        #     for index in range(mem_num_holes):
-        #         hole = mem_obs_holes[index]
-        #         updates = selected_updates[index]
-        #         options = []
-        #         for update in updates:
-        #             options.append(update)
-        #         subfamily[hole].assume_options(options)
-
-        #     subfamilies.append({"family": subfamily, "obs": obs, "res": self.observation_action_dict[obs]})
-        #     print(obs, subfamily.size, subfamily)
+        restricted_holes_list = []
 
         for observ in self.observation_action_dict.keys():
 
             act_obs_holes = self.observation_action_holes[observ]
-            if len(act_obs_holes) == 0:
-                continue
+            restricted_holes_list.extend(act_obs_holes)
+        
+        explored_hole_list = []
 
-            obs_list.append(observ)
+        # DEBUG
+        subfamilies_size = 0
+
+        for hole in restricted_holes_list:
+
+            explored_hole_list.append(hole)
 
             subfamily = family.copy()
 
-            for obs in obs_list:
+            for exp_hole in explored_hole_list:
 
-                num_actions = self.actions_at_observation[obs]
-                num_updates = self.pomdp_manager.max_successor_memory_size[obs]
+                obs = -1
 
-                act_obs_holes = self.observation_action_holes[obs]
-                mem_obs_holes = self.observation_memory_holes[obs]
-                act_num_holes = len(act_obs_holes)
-                mem_num_holes = len(mem_obs_holes)
+                for obs_holes, index in zip(self.observation_action_holes, range(len(self.observation_action_holes))):
+                    if exp_hole in obs_holes:
+                        obs = index
 
-                if act_num_holes == 0:
+                if obs == -1:
                     continue
 
-                all_actions = [action for action in range(num_actions)]
-                selected_actions = [all_actions.copy() for _ in act_obs_holes]
-
-                all_updates = [update for update in range(num_updates)]
-                selected_updates = [all_updates.copy() for _ in mem_obs_holes]
-
-                # Action/Memory restriction
-                if obs == observ:
-                    res_actions = [action for action in all_actions if action not in list(self.observation_action_dict[obs].keys())]
+                if exp_hole == hole:
+                    selected_actions = [action for action in subfamily[exp_hole].options if action not in list(self.observation_action_dict[obs].keys())]
                 else:
-                    res_actions = list(self.observation_action_dict[obs].keys())
-                if len(res_actions) == 0:
+                    selected_actions = list(self.observation_action_dict[obs].keys())
+
+                if len(selected_actions) == 0:
                     continue
-                selected_actions = [res_actions for _ in act_obs_holes]
-                #selected_updates = [[0] for hole in mem_obs_holes]
 
-                # Apply action restrictions
-                for index in range(act_num_holes):
-                    hole = act_obs_holes[index]
-                    actions = selected_actions[index]
-                    options = []
-                    for action in actions:
-                        options.append(action)
-                    subfamily[hole].assume_options(options)
+                subfamily[exp_hole].assume_options(selected_actions)
 
-                # Apply memory restrictions
-                for index in range(mem_num_holes):
-                    hole = mem_obs_holes[index]
-                    updates = selected_updates[index]
-                    options = []
-                    for update in updates:
-                        options.append(update)
-                    subfamily[hole].assume_options(options)
+            subfamilies.append({"family": subfamily, "obs": obs, "res": self.observation_action_dict[obs]})
 
-            subfamilies.append({"family": subfamily, "obs": observ, "res": self.observation_action_dict[observ]})
-            print(observ, subfamily.size, subfamily)
+            # DEBUG
+            print(obs, subfamily.size, subfamily)
+            subfamilies_size += subfamily.size
 
-        #print(subfamilies)
+        # DEBUG
+        print(subfamilies_size)
+
         return subfamilies

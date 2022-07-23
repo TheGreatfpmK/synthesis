@@ -91,12 +91,12 @@ class SynthesizerPOMDP:
         while True:
         # for x in range(2):
         
-            #print(self.sketch.specification.stormpy_properties)
+            env = MarkovChain.environment
             formulae = self.sketch.specification.stormpy_formulae()
-            env = stormpy.Environment()
-            #print(formulae[0])
             task = stormpy.core.CheckTask(formulae[0], only_initial_states=False)
-            result = stormpy.pomdp.underapproximate_with_cutoffs(env, self.sketch.quotient.pomdp, task, 1)
+            #print(dir(env.solver_environment))
+            #print(formulae[0])
+            result = stormpy.pomdp.underapproximate_with_cutoffs(env, self.sketch.quotient.pomdp, task, 10)
 
             print(result)
             

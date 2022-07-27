@@ -110,7 +110,11 @@ class SynthesizerPOMDP:
             restricted_family = self.sketch.quotient.get_restricted_family(family)
             restricted_subfamilies = self.sketch.quotient.get_restricted_subfamilies(family)
 
+            print(restricted_subfamilies)
+
             self.synthesizer.subfamilies_buffer = restricted_subfamilies
+            self.synthesizer.unresticted_family = family
+            self.synthesizer.explored_restrictions = []
             
             # self.sketch.quotient.remove_simpler_controllers(mem_size)
             # self.sketch.quotient.design_space_counter()

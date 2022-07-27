@@ -731,45 +731,24 @@ class POMDPQuotientContainer(QuotientContainer):
             act_obs_holes = self.observation_action_holes[observ]
             restricted_holes_list.extend(act_obs_holes)
         
-        explored_hole_list = []
+        #explored_hole_list = []
 
         # DEBUG
-        subfamilies_size = 0
+        #subfamilies_size = 0
 
         for hole in restricted_holes_list:
 
-            explored_hole_list.append(hole)
+            for obs_holes, index in zip(self.observation_action_holes, range(len(self.observation_action_holes))):
+                if hole in obs_holes:
+                    obs = index
 
-            subfamily = family.copy()
-
-            for exp_hole in explored_hole_list:
-
-                obs = -1
-
-                for obs_holes, index in zip(self.observation_action_holes, range(len(self.observation_action_holes))):
-                    if exp_hole in obs_holes:
-                        obs = index
-
-                if obs == -1:
-                    continue
-
-                if exp_hole == hole:
-                    selected_actions = [action for action in subfamily[exp_hole].options if action not in list(self.observation_action_dict[obs].keys())]
-                else:
-                    selected_actions = list(self.observation_action_dict[obs].keys())
-
-                if len(selected_actions) == 0:
-                    continue
-
-                subfamily[exp_hole].assume_options(selected_actions)
-
-            subfamilies.append({"family": subfamily, "obs": obs, "res": self.observation_action_dict[obs]})
+            subfamilies.append({"hole": hole, "res": self.observation_action_dict[obs]})
 
             # DEBUG
-            print(obs, subfamily.size, subfamily)
-            subfamilies_size += subfamily.size
+            #print(obs, subfamily.size, subfamily)
+            #subfamilies_size += subfamily.size
 
         # DEBUG
-        print(subfamilies_size)
+        #print(subfamilies_size)
 
         return subfamilies

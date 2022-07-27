@@ -200,9 +200,31 @@ class SynthesizerARStorm(Synthesizer):
     # buffer containing subfamilies to be checked after the main restricted family
     subfamilies_buffer = []
 
+    unresticted_family = []
+
+    explored_restrictions = []
+
     @property
     def method_name(self):
         return "AR"
+
+    def create_subfamily(self, hole):
+
+        subfamily = self.unresticted_family.copy()
+
+        for exp_hole in self.explored_restrictions:
+
+            if exp_hole["hole"] == hole:
+                selected_actions = [action for action in subfamily[exp_hole["hole"]].options if action not in list(exp_hole["res"].keys())]
+            else:
+                selected_actions = list(exp_hole["res"].keys())
+
+            if len(selected_actions) == 0:
+                continue
+
+            subfamily[exp_hole["hole"]].assume_options(selected_actions)
+
+        return subfamily
 
 
     def analyze_family_ar(self, family):
@@ -288,12 +310,15 @@ class SynthesizerARStorm(Synthesizer):
 
             logger.info(f"{len(self.subfamilies_buffer)} families remaining")
 
-            subfamily = self.subfamilies_buffer.pop(0)
+            subfamily_restriction = self.subfamilies_buffer.pop(0)
 
-            families = [subfamily["family"]]
+            self.explored_restrictions.append(subfamily_restriction)
 
+            subfamily = self.create_subfamily(subfamily_restriction["hole"])
 
-            #print(subfamily["obs"], len(families))
+            families = [subfamily]
+
+            #print(subfamily, len(families))
 
             while families:
 

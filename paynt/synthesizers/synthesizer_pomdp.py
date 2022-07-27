@@ -87,18 +87,25 @@ class SynthesizerPOMDP:
         '''
         @param unfold_imperfect_only if True, only imperfect observations will be unfolded
         '''
+
+        env = MarkovChain.environment
+        formulae = self.sketch.specification.stormpy_formulae()
+        task = stormpy.core.CheckTask(formulae[0], only_initial_states=False)
+        options = stormpy.pomdp.BeliefExplorationModelCheckerOptionsdouble(False, True)
+        options.use_explicit_cutoff = True
+        options.size_threshold_init = 10
+        options.use_grid_clipping = False
+        options.exploration_time_limit = 30
+        #print(dir(env.solver_environment))
+        #print(formulae[0])
+        result = stormpy.pomdp.underapproximate_with_cutoffs(env, self.sketch.quotient.pomdp, task, 1, options)
+
+        print(result)
+
         mem_size = POMDPQuotientContainer.initial_memory_size
         while True:
         # for x in range(2):
         
-            env = MarkovChain.environment
-            formulae = self.sketch.specification.stormpy_formulae()
-            task = stormpy.core.CheckTask(formulae[0], only_initial_states=False)
-            #print(dir(env.solver_environment))
-            #print(formulae[0])
-            result = stormpy.pomdp.underapproximate_with_cutoffs(env, self.sketch.quotient.pomdp, task, 10)
-
-            print(result)
             
             POMDPQuotientContainer.current_family_index = mem_size
             logger.info("Synthesizing optimal k={} controller ...".format(mem_size) )

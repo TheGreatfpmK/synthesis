@@ -94,11 +94,11 @@ class SynthesizerPOMDP:
         options = stormpy.pomdp.BeliefExplorationModelCheckerOptionsdouble(False, True)
         options.use_explicit_cutoff = True
         options.size_threshold_init = 10
-        options.use_grid_clipping = False
-        options.exploration_time_limit = 30
+        #options.use_grid_clipping = False
+        #options.exploration_time_limit = 30
         #print(dir(env.solver_environment))
         #print(formulae[0])
-        result = stormpy.pomdp.underapproximate_with_cutoffs(env, self.sketch.quotient.pomdp, task, 1, options)
+        result = stormpy.pomdp.underapproximate_with_cutoffs_double(env, self.sketch.quotient.pomdp, task, 10, options)
 
         print(result)
 

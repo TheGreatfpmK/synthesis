@@ -88,19 +88,32 @@ class SynthesizerPOMDP:
         @param unfold_imperfect_only if True, only imperfect observations will be unfolded
         '''
 
-        env = MarkovChain.environment
         formulae = self.sketch.specification.stormpy_formulae()
-        task = stormpy.core.CheckTask(formulae[0], only_initial_states=False)
-        options = stormpy.pomdp.BeliefExplorationModelCheckerOptionsdouble(False, True)
+        options = stormpy.pomdp.BeliefExplorationModelCheckerOptionsDouble(False, True)
         options.use_explicit_cutoff = True
         options.size_threshold_init = 10
         #options.use_grid_clipping = False
         #options.exploration_time_limit = 30
         #print(dir(env.solver_environment))
+        belmc = stormpy.pomdp.BeliefExplorationModelCheckerDouble(self.sketch.quotient.pomdp, options)
+        print(self.sketch.quotient.pomdp)
         #print(formulae[0])
-        result = stormpy.pomdp.underapproximate_with_cutoffs_double(env, self.sketch.quotient.pomdp, task, 10, options)
+        result = belmc.check(formulae[0], [])
 
-        print(result)
+        print(result.lower_bound)
+        print(result.upper_bound)
+        print(result.induced_mc_from_scheduler)
+        print(dir(result.induced_mc_from_scheduler.choice_labeling))
+        print(result.induced_mc_from_scheduler.choice_labeling.get_choices)
+
+        for state in result.induced_mc_from_scheduler.states:
+            print(dir(state))
+            print(state.id)
+            print(state.labels)
+            print(result.induced_mc_from_scheduler.choice_labeling.get_labels_of_choice(state.id))
+
+        print(len(result.cutoff_schedulers))
+        print(result.cutoff_schedulers[0])
 
         mem_size = POMDPQuotientContainer.initial_memory_size
         while True:

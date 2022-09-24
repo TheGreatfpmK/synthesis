@@ -74,8 +74,9 @@ class SynthesizerPOMDP:
         synthesizer = self.synthesizer(self.quotient)
         family.property_indices = self.quotient.design_space.property_indices
         assignment = synthesizer.synthesize(family)
-        if print_stats:
-            synthesizer.print_stats()
+        #if print_stats:
+        #    synthesizer.print_stats()
+        print(self.quotient.specification.optimality.optimum)
         print(assignment)
         self.total_iters += synthesizer.stat.iterations_mdp
         return assignment
@@ -95,11 +96,24 @@ class SynthesizerPOMDP:
                 self.quotient.set_imperfect_memory_size(mem_size)
             else:
                 self.quotient.set_global_memory_size(mem_size)
+
+            #family = self.quotient.restrict_family(self.quotient.design_space, {})
+            family = self.quotient.design_space
+
+            #for i in range(self.quotient.actions_at_observation[0]):
+            #    for j in range(self.quotient.actions_at_observation[0]):
+            #        self.quotient.specification.optimality.optimum = None
+            #        family[0].assume_options([i])
+            #        family[1].assume_options([j])
+            #        print(i,j)
+            #        self.synthesize(family)
             
             # self.quotient.remove_simpler_controllers(mem_size)
             # self.quotient.design_space_counter()
-            self.synthesize(self.quotient.design_space)
+            self.synthesize(family)
             mem_size += 1
+
+            break
 
     
     def solve_mdp(self, family):

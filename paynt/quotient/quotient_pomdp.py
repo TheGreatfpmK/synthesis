@@ -571,3 +571,58 @@ class POMDPQuotientContainer(QuotientContainer):
         logger.info("Exporting optimal DTMC to {}".format(dtmc_path))
         stormpy.export_to_drn(dtmc.model, dtmc_path)
 
+
+    def restrict_family(self, family, restrictions):
+
+        # go through each observation of interest
+        restricted_family = family.copy()
+        for obs in range(self.observations):
+      
+            num_actions = self.actions_at_observation[obs]
+            num_updates = self.pomdp_manager.max_successor_memory_size[obs]
+
+            act_obs_holes = self.observation_action_holes[obs]
+            mem_obs_holes = self.observation_memory_holes[obs]
+            act_num_holes = len(act_obs_holes)
+            mem_num_holes = len(mem_obs_holes)
+
+            if act_num_holes == 0:
+                continue
+
+            all_actions = [action for action in range(num_actions)]
+            selected_actions = [all_actions.copy() for _ in act_obs_holes]
+            
+            all_updates = [update for update in range(num_updates)]
+            selected_updates = [all_updates.copy() for _ in mem_obs_holes]
+
+            # Action restriction
+            if obs not in restrictions.keys():
+                selected_actions = [[0] for _ in act_obs_holes]
+            else:
+                selected_actions = [restrictions[obs] for _ in act_obs_holes]
+
+            #selected_updates = [[0] for hole in mem_obs_holes]
+
+            # Apply action restrictions
+            for index in range(act_num_holes):
+                hole = act_obs_holes[index]
+                actions = selected_actions[index]
+                options = []
+                for action in actions:
+                    options.append(action)
+                restricted_family[hole].assume_options(options)
+
+            # Apply memory restrictions
+            for index in range(mem_num_holes):
+                hole = mem_obs_holes[index]
+                updates = selected_updates[index]
+                options = []
+                for update in updates:
+                    options.append(update)
+                restricted_family[hole].assume_options(options)
+
+        #print(restricted_family)
+        logger.debug("Main family based on data from Storm: reduced design space from {} to {}".format(family.size, restricted_family.size))
+
+        return restricted_family
+

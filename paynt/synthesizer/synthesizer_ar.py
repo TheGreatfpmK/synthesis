@@ -74,7 +74,7 @@ class SynthesizerAR(Synthesizer):
             subfamilies = self.quotient.split(family, Synthesizer.incomplete_search)
             families = families + subfamilies
 
-        self.stat.finished(satisfying_assignment)
+        #self.stat.finished(satisfying_assignment)
 
         # if satisfying_assignment is not None:
         #     dtmc = self.quotient.build_chain(satisfying_assignment)

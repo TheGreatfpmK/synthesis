@@ -53,6 +53,18 @@ class SynthesizerAR(Synthesizer):
             can_improve,improving_assignment = self.analyze_family(family)
             if improving_assignment is not None:
                 satisfying_assignment = improving_assignment
+                # SARSOP export
+                if self.quotient.alpha_vector_export is not None:
+                    alpha_vectors = self.quotient.extract_policy_sarsop(satisfying_assignment)
+                    f = open(self.quotient.alpha_vector_export, "w")
+                    for action, vector in alpha_vectors.items():
+                        f.write(str(action[0]))
+                        f.write(': ')
+                        for value in vector:
+                            f.write(str(value))
+                            f.write(' ')
+                        f.write('\n')
+                    f.close()
             if can_improve == False:
                 self.explore(family)
                 continue

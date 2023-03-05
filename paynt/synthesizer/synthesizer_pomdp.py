@@ -96,13 +96,15 @@ class SynthesizerPOMDP:
         assignment = synthesizer.synthesize(family)
         if print_stats:
             synthesizer.print_stats()
-        #print(assignment)
+        print(assignment)
         self.total_iters += synthesizer.stat.iterations_mdp
 
         # Print extract list for every iteration optimum
-        if assignment:
-            extracted_result = self.quotient.extract_policy(assignment)
+        #if assignment:
+            #extracted_result = self.quotient.extract_policy(assignment)
             #print(extracted_result)
+            #extracted_result_sarsop = self.quotient.extract_policy_sarsop(assignment)
+            #print(extracted_result_sarsop)
 
         return assignment
 
@@ -400,10 +402,14 @@ class SynthesizerPOMDP:
                 self.quotient.set_global_memory_size(mem_size)
             
             # self.quotient.design_space_counter()
-            self.synthesize(self.quotient.design_space)
+            assignment = self.synthesize(self.quotient.design_space)
 
             opt_old = opt
             opt = self.quotient.specification.optimality.optimum
+
+            #if assignment is not None:
+            #    paynt_export = self.quotient.extract_policy(assignment)
+            #    print(paynt_export)
 
             # finish if optimum has not been improved
             # if opt_old == opt and opt is not None:

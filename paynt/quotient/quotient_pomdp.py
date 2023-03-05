@@ -405,6 +405,8 @@ class POMDPQuotientContainer(QuotientContainer):
         self.coloring = MdpColoring(self.quotient_mdp, all_holes, action_to_hole_options)
         self.design_space = DesignSpace(all_holes)
 
+        self.compute_min_values()
+
     
 
     
@@ -616,6 +618,80 @@ class POMDPQuotientContainer(QuotientContainer):
             policy[observation][memory_node][pomdp_state] = value
 
         return policy
+    
+    def collect_policy_sarsop(self, dtmc, mc_result):
+        # assuming single optimizing property
+        assert self.specification.num_properties == 1 and self.specification.has_optimality
+        dtmc_state_value = mc_result.optimality_result.result.get_values()
+
+        # TODO check if this is correct
+        mem_count = max(self.observation_memory_size)
+        action_count = len(self.quotient_mdp.states[1].actions) // mem_count
+
+        alpha_vector_size = len(self.pomdp.labeling.get_labels()) - 2
+        alpha_vectors = {}
+        print(self.pomdp.labeling.get_labels())
+        for x in range(action_count):
+            for y in range(mem_count):
+                alpha_vectors[(x,y)] = [None for _ in range(alpha_vector_size)]
+
+        #print(alpha_vectors)
+
+        reward_model_name = list(self.quotient_mdp.reward_models.keys())[0]
+        reward_counter = 0
+        cassandra_state_list = []
+
+        for state in range(self.quotient_mdp.nr_states):
+            if len(self.quotient_mdp.states[state].labels) != 1:
+                reward_counter += len(self.quotient_mdp.states[state].actions)
+                continue
+
+            # getting first element of set
+            for x in self.quotient_mdp.states[state].labels:
+                break
+            cassandra_state = int(x)
+
+            if cassandra_state in cassandra_state_list:
+                continue
+
+            cassandra_state_list.append(cassandra_state)
+
+            #print("state_id:", self.quotient_mdp.states[state].id)
+            #print("cassandra:", cassandra_state)
+
+            for action in self.quotient_mdp.states[state].actions:
+                action_index = action.id // mem_count
+                memory_update = action.id % mem_count
+                transitions = self.parse_transitions_string(action.transitions)
+                value = 0.0
+                for next_mdp_state, transition_prob in transitions.items():
+                    if next_mdp_state in dtmc.quotient_state_map:
+                        dtmc_state = dtmc.quotient_state_map.index(next_mdp_state)
+                        value += transition_prob * dtmc_state_value[dtmc_state]
+                    else:
+                        value += transition_prob * self.min_values[next_mdp_state]
+
+                reward = self.quotient_mdp.get_reward_model(reward_model_name).get_state_action_reward(reward_counter)
+                reward_counter += 1
+
+                value += reward
+
+                #print(state, action_index, memory_update, cassandra_state, value)
+                alpha_vectors[(action_index, memory_update)][cassandra_state] = value
+
+
+        return alpha_vectors
+    
+    def parse_transitions_string(self, transitions):
+        help_parse = str(transitions).split('), ')[:-1]
+        result = {}
+        for x in help_parse:
+            help_str = x.strip('(')
+            help_str = help_str.split(', ')
+            # print(int(help_str[0]), float(help_str[1]))
+            result[int(help_str[0])] = float(help_str[1])
+        
+        return result
 
     def export_policy(self, dtmc, mc_result):
 
@@ -651,7 +727,17 @@ class POMDPQuotientContainer(QuotientContainer):
         mc_result = dtmc.check_specification(self.specification)
         policy = self.collect_policy(dtmc, mc_result)
         return policy
+    
+    def extract_policy_sarsop(self, assignment):
+        dtmc = self.build_chain(assignment)
+        mc_result = dtmc.check_specification(self.specification)
+        policy = self.collect_policy_sarsop(dtmc, mc_result)
+        return policy
 
+    def compute_min_values(self):
+        prop = stormpy.parse_properties_without_context("R[exp]{\"reward\"}min=? [F \"discount_sink\"]")
+        min_result = stormpy.check_model_sparse(self.quotient_mdp, prop[0].raw_formula)
+        self.min_values = min_result.get_values()
     
     def policy_size(self, assignment):
         '''

@@ -127,6 +127,9 @@ def setup_logger(log_path = None):
 @click.option("--profiling", is_flag=True, default=False,
     help="run profiling")
 
+@click.option("--alpha-vector-export", type=click.Path(), default=None,
+    help="path to file where alpha vectors should be exported to")
+
 def paynt(
         project, sketch, props, constants, relative_error,
         filetype, export,
@@ -138,7 +141,8 @@ def paynt(
         use_storm_cutoffs, unfold_strategy_storm,
         ce_generator,
         pomcp,
-        profiling
+        profiling,
+        alpha_vector_export
 ):
     logger.info("This is Paynt version {}.".format(version()))
 
@@ -148,6 +152,7 @@ def paynt(
     POMDPQuotientContainer.initial_memory_size = pomdp_memory_size
     POMDPQuotientContainer.export_optimal_result = fsc_export_result
     POMDPQuotientContainer.posterior_aware = posterior_aware
+    POMDPQuotientContainer.alpha_vector_export = alpha_vector_export
 
     # check paths of input files
     sketch_path = os.path.join(project, sketch)

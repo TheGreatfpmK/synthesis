@@ -86,6 +86,17 @@ observations: {}
                     action_index_str = action_index if not trivial_action else "*"
                     desc += f"T: {action_index_str} : {state} : {entry.column} {entry.value()}\n"
                 action_index += 1
+            # TODO is putting self loops like this safe?
+            if not trivial_action:
+                while (action_index < max_num_choices):
+                    #SELF LOOP
+                    #desc += f"T: {action_index} : {state} : {state} {1.0}\n"
+                    #action_index += 1
+
+                    #SAME BEHAVIOUR
+                    for entry in tm.get_row(row_index):
+                        desc += f"T: {action_index} : {state} : {entry.column} {entry.value()}\n"
+                    action_index += 1
 
         # observations
         desc += "\n# observations\n\n"

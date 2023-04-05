@@ -57,13 +57,15 @@ class SynthesizerAR(Synthesizer):
                 if self.quotient.alpha_vector_export is not None:
                     alpha_vectors = self.quotient.extract_policy_sarsop(satisfying_assignment)
                     f = open(self.quotient.alpha_vector_export, "w")
+                    f.write("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<Policy version=\"0.1\" type=\"value\" model=\"paynt-export\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"policyx.xsd\">\n")
+                    f.write("<AlphaVector vectorLength=\"{}\" numObsValue=\"1\" numVectors=\"{}\">\n".format(len(alpha_vectors[list(alpha_vectors.keys())[0]]), len(alpha_vectors)))
                     for action, vector in alpha_vectors.items():
-                        f.write(str(action[0]))
-                        f.write(': ')
+                        f.write("<Vector action=\"{}\" obsValue=\"0\">".format(str(action[0])))
                         for value in vector:
                             f.write(str(value))
                             f.write(' ')
-                        f.write('\n')
+                        f.write('</Vector>\n')
+                    f.write("</AlphaVector>\n</Policy>\n")
                     f.close()
             if can_improve == False:
                 self.explore(family)

@@ -13,6 +13,8 @@ from .synthesizer.synthesizer_multicore_ar import SynthesizerMultiCoreAR
 
 from .quotient.storm_pomdp_control import StormPOMDPControl
 
+from .utils.alpha_vector_analysis import AlphaVectorAnalyzer
+
 from .utils.storm_parallel import ParallelControl
 # TODO remove?
 from multiprocessing import Manager
@@ -129,6 +131,8 @@ def setup_logger(log_path = None):
 
 @click.option("--alpha-vector-export", type=click.Path(), default=None,
     help="path to file where alpha vectors should be exported to")
+@click.option("--alpha-vector-analysis", type=click.Path(), default=None,
+    help="computes the value of the strategy encoded as a set of alpha vectors")
 
 def paynt(
         project, sketch, props, constants, relative_error,
@@ -142,7 +146,7 @@ def paynt(
         ce_generator,
         pomcp,
         profiling,
-        alpha_vector_export
+        alpha_vector_export, alpha_vector_analysis
 ):
     logger.info("This is Paynt version {}.".format(version()))
 
@@ -212,6 +216,11 @@ def paynt(
             synthesizer.unfold_storm = False
         elif unfold_strategy_storm == "cutoff":
             synthesizer.unfold_cutoff = True
+
+    if alpha_vector_analysis:
+        analyzer = AlphaVectorAnalyzer(synthesizer, alpha_vector_analysis)
+        analyzer.analyse()
+        return
 
     if not profiling:
         synthesizer.run()

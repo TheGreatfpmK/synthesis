@@ -405,7 +405,9 @@ class POMDPQuotientContainer(QuotientContainer):
         self.coloring = MdpColoring(self.quotient_mdp, all_holes, action_to_hole_options)
         self.design_space = DesignSpace(all_holes)
 
-        self.compute_min_values()
+
+        if self.alpha_vector_export is not None:
+            self.compute_min_values()
 
     
 
@@ -630,7 +632,7 @@ class POMDPQuotientContainer(QuotientContainer):
 
         alpha_vector_size = len(self.pomdp.labeling.get_labels()) - 2
         alpha_vectors = {}
-        print(self.pomdp.labeling.get_labels())
+        #print(self.pomdp.labeling.get_labels())
         for x in range(action_count):
             for y in range(mem_count):
                 alpha_vectors[(x,y)] = [None for _ in range(alpha_vector_size)]

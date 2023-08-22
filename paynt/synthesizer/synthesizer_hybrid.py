@@ -21,16 +21,22 @@ class StageControl:
     only_ar = False
     # whether 1 AR followed by only CEGIS is performed
     only_cegis = False
+    # whether adaptive hybrid is enabled
+    adaptive_hybrid = True
 
-    def __init__(self):
+    def __init__(self, family_size):
         # timings
         self.timer_ar = Timer()
         self.timer_cegis = Timer()
+
+        self.family_size = family_size
+        self.pruned_ar = 0
+        self.pruned_cegis = 0
         
         # multiplier to derive time allocated for cegis
         # time_ar * factor = time_cegis
         # =1 is fair, >1 favours cegis, <1 favours ar
-        self.cegis_efficiency = 1
+        self.cegis_efficiency = 50
 
     def start_ar(self):
         self.timer_cegis.stop()
@@ -39,6 +45,12 @@ class StageControl:
     def start_cegis(self):
         self.timer_ar.stop()
         self.timer_cegis.start()
+
+    def prune_ar(self, pruned):
+        self.pruned_ar += pruned / self.family_size
+
+    def prune_cegis(self, pruned):
+        self.pruned_cegis += pruned / self.family_size
 
     def cegis_has_time(self):
         """
@@ -59,6 +71,20 @@ class StageControl:
 
         # stop CEGIS
         self.timer_cegis.stop()
+
+        if self.adaptive_hybrid:
+            if self.pruned_ar == 0 and self.pruned_cegis == 0:
+                self.cegis_efficiency = 1
+            elif self.pruned_ar == 0 and self.pruned_cegis > 0:
+                self.cegis_efficiency = 2
+            elif self.pruned_ar > 0 and self.pruned_cegis == 0:
+                self.cegis_efficiency = 0.5
+            else:
+                success_rate_cegis = self.pruned_cegis / self.timer_cegis.read()
+                success_rate_ar = self.pruned_ar / self.timer_ar.read()
+                self.cegis_efficiency = success_rate_cegis / success_rate_ar
+
+
         return False
 
 
@@ -76,8 +102,11 @@ class SynthesizerHybrid(SynthesizerAR, SynthesizerCEGIS):
         # AR-CEGIS loop
         satisfying_assignment = None
         families = [family]
-        self.stage_control = StageControl()
+        self.stage_control = StageControl(family.size)
         while families:
+
+            # debug
+            #print(self.stage_control.cegis_efficiency)
 
             # initiate AR analysis
             self.stage_control.start_ar()
@@ -95,13 +124,17 @@ class SynthesizerHybrid(SynthesizerAR, SynthesizerCEGIS):
                 satisfying_assignment = family.analysis_result.improving_assignment
             if family.analysis_result.can_improve == False:
                 self.explore(family)
+                self.stage_control.prune_ar(family.size)
                 continue
 
             # undecided: initiate CEGIS analysis
             self.stage_control.start_cegis()
 
             # construct priority subfamily that corresponds to primary scheduler
-            scheduler_selection = family.analysis_result.optimality_result.primary_selection
+            if family.analysis_result.optimality_result is not None:
+                scheduler_selection = family.analysis_result.optimality_result.primary_selection
+            else:
+                scheduler_selection = family.analysis_result.constraints_result.results[0].primary_selection
             priority_subfamily = family.copy()
             priority_subfamily.assume_options(scheduler_selection)
 
@@ -122,6 +155,7 @@ class SynthesizerHybrid(SynthesizerAR, SynthesizerCEGIS):
                 conflicts, accepting_assignment = self.analyze_family_assignment_cegis(family, assignment)
                 pruned = smt_solver.exclude_conflicts(family, assignment, conflicts)
                 self.explored += pruned
+                self.stage_control.prune_cegis(pruned)
 
                 if accepting_assignment is not None:
                     satisfying_assignment = accepting_assignment

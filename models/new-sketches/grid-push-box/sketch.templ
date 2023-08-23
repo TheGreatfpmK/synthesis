@@ -1,0 +1,70 @@
+
+dtmc
+
+
+const double sl=0.1;
+
+//
+// 4-FSC
+//
+// holes
+hole int M_0_1 in {0,1,2,3};
+hole int M_1_1 in {0,1,2,3};
+hole int M_2_1 in {0,1,2,3};
+hole int M_3_1 in {0,1,2,3};
+hole int P_0_1 in {1,2,3,4};
+hole int P_1_1 in {1,2,3,4};
+hole int P_2_1 in {1,2,3,4};
+hole int P_3_1 in {1,2,3,4};
+
+module strategy
+	pick : [0..4] init 0;
+	mem : [0..3] init 0;
+	[p] pick = 0 & mem = 0 & o = 1 -> (mem'=M_0_1) & (pick'=P_0_1);
+	[p] pick = 0 & mem = 1 & o = 1 -> (mem'=M_1_1) & (pick'=P_1_1);
+	[p] pick = 0 & mem = 2 & o = 1 -> (mem'=M_2_1) & (pick'=P_2_1);
+	[p] pick = 0 & mem = 3 & o = 1 -> (mem'=M_3_1) & (pick'=P_3_1);
+	[north] pick=1 -> (pick'=0);
+	[east] pick=2 -> (pick'=0);
+	[south] pick=3 -> (pick'=0);
+	[west] pick=4 -> (pick'=0);
+endmodule
+
+
+
+module clock
+
+
+endmodule
+
+
+module grid
+	
+	xa1 : [0..3]; // agent1 x coordinate
+	ya1 : [0..3]; // agent1 y coordinate
+	ra1 : [0..3]; // agent1 rotation  0 - up, 1 - right, 2 - down, 3 - left
+
+	xa2 : [0..3]; // agent2 x coordinate
+	ya2 : [0..3]; // agent2 y coordinate
+	ra2 : [0..3]; // agent2 rotation  0 - up, 1 - right, 2 - down, 3 - left
+
+	yb1 : [0..4];
+	yb2 : [0..4];
+	yb3 : [0..4];
+
+	
+	
+	
+endmodule
+
+// reward structure for number of steps to reach the target
+rewards "steps"
+        [east] true : 1;
+        [west] true : 1;
+        [north] true : 1;
+        [south] true : 1;
+endrewards
+
+// target observation
+label "goal" = yb1=4 & yb2=4 & yb3=4;
+

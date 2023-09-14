@@ -1,0 +1,73 @@
+pomdp
+
+
+// 3 |   A
+// 2 | x x
+// 1 | x   
+// 0 | x B  
+// y _____
+//   x 0 1
+
+formula u1 = (x1=0 & y1<2) | (x1=1 & y1=2);
+formula r1 = x1=0 & y1!=1;
+formula d1 = (x1=0 & y1>0) | (x1=1 & y1=3);
+formula l1 = x1=1 & (y1!=1 | y1!=3);
+
+// updates of coordinates (if possible)
+formula y1u = u1 ? (y1+1) : y1;
+formula x1r = r1 ? (x1+1) : x1;
+formula y1d = d1 ? (y1-1) : y1;
+formula x1l = l1 ? (x1-1) : x1;
+
+
+formula u2 = x2=0 & y2<2 | (x2=1 & y2=2);
+formula r2 = x2=0 & y2!=1;
+formula d2 = x2=0 & y2>0 | (x2=1 & y2=3);
+formula l2 = x2=1 & (y2!=1 | y2!=3);
+
+// updates of coordinates (if possible)
+formula y2u = u2 ? (y2+1) : y2;
+formula x2r = r2 ? (x2+1) : x2;
+formula y2d = d2 ? (y2-1) : y2;
+formula x2l = l2 ? (x2-1) : x2;
+
+formula goal = (x1=x2) & (y1=y2);
+
+observable "z1" = r1;
+observable "z2" = l2;
+observable "goal" = goal;
+
+module grid
+
+    x1 : [0..1] init 1;
+    y1 : [0..3] init 3;
+
+    x2 : [0..1] init 1;
+    y2 : [0..3] init 0;
+
+    [up_up]           true -> 1 : (y1'=y1u) & (y2'=y2u);
+    [up_right]        true -> 1 : (y1'=y1u) & (x2'=x2r);
+    [up_down]         true -> 1 : (y1'=y1u) & (y2'=y2d);
+    [up_left]         true -> 1 : (y1'=y1u) & (x2'=x2l);
+
+    [right_up]        true -> 1 : (x1'=x1r) & (y2'=y2u);
+    [right_right]     true -> 1 : (x1'=x1r) & (x2'=x2r);
+    [right_down]      true -> 1 : (x1'=x1r) & (y2'=y2d);
+    [right_left]      true -> 1 : (x1'=x1r) & (x2'=x2l);
+
+    [down_up]         true -> 1 : (y1'=y1d) & (y2'=y2u);
+    [down_right]      true -> 1 : (y1'=y1d) & (x2'=x2r);
+    [down_down]       true -> 1 : (y1'=y1d) & (y2'=y2d);
+    [down_left]       true -> 1 : (y1'=y1d) & (x2'=x2l);
+
+    [left_up]         true -> 1 : (x1'=x1l) & (y2'=y2u);
+    [left_right]      true -> 1 : (x1'=x1l) & (x2'=x2r);
+    [left_down]       true -> 1 : (x1'=x1l) & (y2'=y2d);
+    [left_left]       true -> 1 : (x1'=x1l) & (x2'=x2l);
+    
+endmodule
+
+rewards "steps"
+    true : 1;
+endrewards
+

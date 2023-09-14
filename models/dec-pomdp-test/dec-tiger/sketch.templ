@@ -1,0 +1,271 @@
+dtmc
+
+
+const double d = 0.9;
+formula goal = sink;
+
+
+//agent 1
+hole int M1_0_0 in {0,1,2,3,4,5};
+hole int M1_0_1 in {0,1,2,3,4,5};
+hole int M1_0_2 in {0,1,2,3,4,5};
+hole int M1_1_0 in {0,1,2,3,4,5};
+hole int M1_1_1 in {0,1,2,3,4,5};
+hole int M1_1_2 in {0,1,2,3,4,5};
+hole int M1_2_0 in {0,1,2,3,4,5};
+hole int M1_2_1 in {0,1,2,3,4,5};
+hole int M1_2_2 in {0,1,2,3,4,5};
+hole int M1_3_0 in {0,1,2,3,4,5};
+hole int M1_3_1 in {0,1,2,3,4,5};
+hole int M1_3_2 in {0,1,2,3,4,5};
+hole int M1_4_0 in {0,1,2,3,4,5};
+hole int M1_4_1 in {0,1,2,3,4,5};
+hole int M1_4_2 in {0,1,2,3,4,5};
+hole int M1_5_0 in {0,1,2,3,4,5};
+hole int M1_5_1 in {0,1,2,3,4,5};
+hole int M1_5_2 in {0,1,2,3,4,5};
+
+hole int A1_0_0 in {0,1,2};
+hole int A1_0_1 in {0,1,2};
+hole int A1_0_2 in {0,1,2};
+hole int A1_1_0 in {0,1,2};
+hole int A1_1_1 in {0,1,2};
+hole int A1_1_2 in {0,1,2};
+hole int A1_2_0 in {0,1,2};
+hole int A1_2_1 in {0,1,2};
+hole int A1_2_2 in {0,1,2};
+hole int A1_3_0 in {0,1,2};
+hole int A1_3_1 in {0,1,2};
+hole int A1_3_2 in {0,1,2};
+hole int A1_4_0 in {0,1,2};
+hole int A1_4_1 in {0,1,2};
+hole int A1_4_2 in {0,1,2};
+hole int A1_5_0 in {0,1,2};
+hole int A1_5_1 in {0,1,2};
+hole int A1_5_2 in {0,1,2};
+
+
+//agent 2
+hole int M2_0_0 in {0,1,2,3,4,5};
+hole int M2_0_1 in {0,1,2,3,4,5};
+hole int M2_0_2 in {0,1,2,3,4,5};
+hole int M2_1_0 in {0,1,2,3,4,5};
+hole int M2_1_1 in {0,1,2,3,4,5};
+hole int M2_1_2 in {0,1,2,3,4,5};
+hole int M2_2_0 in {0,1,2,3,4,5};
+hole int M2_2_1 in {0,1,2,3,4,5};
+hole int M2_2_2 in {0,1,2,3,4,5};
+hole int M2_3_0 in {0,1,2,3,4,5};
+hole int M2_3_1 in {0,1,2,3,4,5};
+hole int M2_3_2 in {0,1,2,3,4,5};
+hole int M2_4_0 in {0,1,2,3,4,5};
+hole int M2_4_1 in {0,1,2,3,4,5};
+hole int M2_4_2 in {0,1,2,3,4,5};
+hole int M2_5_0 in {0,1,2,3,4,5};
+hole int M2_5_1 in {0,1,2,3,4,5};
+hole int M2_5_2 in {0,1,2,3,4,5};
+
+hole int A2_0_0 in {0,1,2};
+hole int A2_0_1 in {0,1,2};
+hole int A2_0_2 in {0,1,2};
+hole int A2_1_0 in {0,1,2};
+hole int A2_1_1 in {0,1,2};
+hole int A2_1_2 in {0,1,2};
+hole int A2_2_0 in {0,1,2};
+hole int A2_2_1 in {0,1,2};
+hole int A2_2_2 in {0,1,2};
+hole int A2_3_0 in {0,1,2};
+hole int A2_3_1 in {0,1,2};
+hole int A2_3_2 in {0,1,2};
+hole int A2_4_0 in {0,1,2};
+hole int A2_4_1 in {0,1,2};
+hole int A2_4_2 in {0,1,2};
+hole int A2_5_0 in {0,1,2};
+hole int A2_5_1 in {0,1,2};
+hole int A2_5_2 in {0,1,2};
+
+module discount
+
+    sink : bool init false;
+
+    [action] !sink -> 1-d : (sink'=true) + d : true;
+    [action] sink -> true;
+
+endmodule
+
+module clk
+
+    c : [0..2] init 0;
+
+    [place] c=0 -> (c'=1);
+    [choose] c=1 -> (c'=2);
+    [action] c=2 & p1=2 & p1=p2 -> (c'=1);
+    [action] c=2 & !(p1=2 & p1=p2) -> (c'=0);
+
+endmodule
+
+
+module tiger
+
+    t : [0..1] init 0;
+
+    [place] true -> 1/2 : (t'=0) + 1/2 : (t'=1);
+
+
+endmodule
+
+
+module strategy1
+
+    mem1 : [0..5] init 0;
+
+    [place] true -> (mem1'=0);
+
+    [choose] mem1=0 & z1=2 -> (mem1'=M1_0_2);
+    [choose] mem1=0 & z1=1 -> (mem1'=M1_0_1);
+    [choose] mem1=0 & z1=0 -> (mem1'=M1_0_0);
+
+    [choose] mem1=1 & z1=2 -> (mem1'=M1_1_2);
+    [choose] mem1=1 & z1=1 -> (mem1'=M1_1_1);
+    [choose] mem1=1 & z1=0 -> (mem1'=M1_1_0);
+
+    [choose] mem1=2 & z1=2 -> (mem1'=M1_2_2);
+    [choose] mem1=2 & z1=1 -> (mem1'=M1_2_1);
+    [choose] mem1=2 & z1=0 -> (mem1'=M1_2_0);
+
+    [choose] mem1=3 & z1=2 -> (mem1'=M1_3_2);
+    [choose] mem1=3 & z1=1 -> (mem1'=M1_3_1);
+    [choose] mem1=3 & z1=0 -> (mem1'=M1_3_0);
+
+    [choose] mem1=4 & z1=2 -> (mem1'=M1_4_2);
+    [choose] mem1=4 & z1=1 -> (mem1'=M1_4_1);
+    [choose] mem1=4 & z1=0 -> (mem1'=M1_4_0);
+
+    [choose] mem1=5 & z1=2 -> (mem1'=M1_5_2);
+    [choose] mem1=5 & z1=1 -> (mem1'=M1_5_1);
+    [choose] mem1=5 & z1=0 -> (mem1'=M1_5_0);
+
+endmodule
+
+module agent1
+
+    z1 : [0..2] init 2;
+    p1 : [0..2] init 0;
+
+    [place] true -> (z1'=2) & (p1'=0);
+
+    [choose] mem1=0 & z1=2 -> (p1'=A1_0_2);
+    [choose] mem1=0 & z1=1 -> (p1'=A1_0_1);
+    [choose] mem1=0 & z1=0 -> (p1'=A1_0_0);
+
+    [choose] mem1=1 & z1=2 -> (p1'=A1_1_2);
+    [choose] mem1=1 & z1=1 -> (p1'=A1_1_1);
+    [choose] mem1=1 & z1=0 -> (p1'=A1_1_0);
+
+    [choose] mem1=2 & z1=2 -> (p1'=A1_2_2);
+    [choose] mem1=2 & z1=1 -> (p1'=A1_2_1);
+    [choose] mem1=2 & z1=0 -> (p1'=A1_2_0);
+
+    [choose] mem1=3 & z1=2 -> (p1'=A1_3_2);
+    [choose] mem1=3 & z1=1 -> (p1'=A1_3_1);
+    [choose] mem1=3 & z1=0 -> (p1'=A1_3_0);
+
+    [choose] mem1=4 & z1=2 -> (p1'=A1_4_2);
+    [choose] mem1=4 & z1=1 -> (p1'=A1_4_1);
+    [choose] mem1=4 & z1=0 -> (p1'=A1_4_0);
+
+    [choose] mem1=5 & z1=2 -> (p1'=A1_5_2);
+    [choose] mem1=5 & z1=1 -> (p1'=A1_5_1);
+    [choose] mem1=5 & z1=0 -> (p1'=A1_5_0);
+
+    [action]  p1=0 -> true;
+    [action]  p1=1 -> true;
+    [action]  p1=2 -> 0.85 : (z1'=t) + 0.15 : (z1'=1-t);
+
+endmodule
+
+
+
+module strategy2
+
+    mem2 : [0..5] init 0;
+
+    [place] true -> (mem2'=0);
+
+    [choose] mem2=0 & z2=2 -> (mem2'=M2_0_2);
+    [choose] mem2=0 & z2=1 -> (mem2'=M2_0_1);
+    [choose] mem2=0 & z2=0 -> (mem2'=M2_0_0);
+
+    [choose] mem2=1 & z2=2 -> (mem2'=M2_1_2);
+    [choose] mem2=1 & z2=1 -> (mem2'=M2_1_1);
+    [choose] mem2=1 & z2=0 -> (mem2'=M2_1_0);
+
+    [choose] mem2=2 & z2=2 -> (mem2'=M2_2_2);
+    [choose] mem2=2 & z2=1 -> (mem2'=M2_2_1);
+    [choose] mem2=2 & z2=0 -> (mem2'=M2_2_0);
+
+    [choose] mem2=3 & z2=2 -> (mem2'=M2_3_2);
+    [choose] mem2=3 & z2=1 -> (mem2'=M2_3_1);
+    [choose] mem2=3 & z2=0 -> (mem2'=M2_3_0);
+
+    [choose] mem2=4 & z2=2 -> (mem2'=M2_4_2);
+    [choose] mem2=4 & z2=1 -> (mem2'=M2_4_1);
+    [choose] mem2=4 & z2=0 -> (mem2'=M2_4_0);
+
+    [choose] mem2=5 & z2=2 -> (mem2'=M2_5_2);
+    [choose] mem2=5 & z2=1 -> (mem2'=M2_5_1);
+    [choose] mem2=5 & z2=0 -> (mem2'=M2_5_0);
+
+endmodule
+
+module agent2
+
+    z2 : [0..2] init 2;
+    p2 : [0..2] init 0;
+
+    [place] true -> (z2'=2) & (p2'=0);
+
+    [choose] mem2=0 & z2=2 -> (p2'=A2_0_2);
+    [choose] mem2=0 & z2=1 -> (p2'=A2_0_1);
+    [choose] mem2=0 & z2=0 -> (p2'=A2_0_0);
+
+    [choose] mem2=1 & z2=2 -> (p2'=A2_1_2);
+    [choose] mem2=1 & z2=1 -> (p2'=A2_1_1);
+    [choose] mem2=1 & z2=0 -> (p2'=A2_1_0);
+
+    [choose] mem2=2 & z2=2 -> (p2'=A2_2_2);
+    [choose] mem2=2 & z2=1 -> (p2'=A2_2_1);
+    [choose] mem2=2 & z2=0 -> (p2'=A2_2_0);
+
+    [choose] mem2=3 & z2=2 -> (p2'=A2_3_2);
+    [choose] mem2=3 & z2=1 -> (p2'=A2_3_1);
+    [choose] mem2=3 & z2=0 -> (p2'=A2_3_0);
+
+    [choose] mem2=4 & z2=2 -> (p2'=A2_4_2);
+    [choose] mem2=4 & z2=1 -> (p2'=A2_4_1);
+    [choose] mem2=4 & z2=0 -> (p2'=A2_4_0);
+
+    [choose] mem2=5 & z2=2 -> (p2'=A2_5_2);
+    [choose] mem2=5 & z2=1 -> (p2'=A2_5_1);
+    [choose] mem2=5 & z2=0 -> (p2'=A2_5_0);
+
+    [action]  p2=0 -> true;
+    [action]  p2=1 -> true;
+    [action]  p2=2 -> 0.85 : (z2'=t) + 0.15 : (z2'=1-t);
+
+endmodule
+
+
+
+rewards "rew"
+
+    [action] p1=2 & p2=2 : -2;
+    [action] p1=2 & p2=t : -101;
+    [action] p1=2 & p2=1-t : 9;
+    [action] p1=t & p2=2 : -101;
+    [action] p1=1-t & p2=2 : 9;
+    [action] p1=1-p2 : -100;
+    [action] p1=p2 & p1=t : -50;
+    [action] p1=p2 & p1=1-t : 20;
+
+endrewards

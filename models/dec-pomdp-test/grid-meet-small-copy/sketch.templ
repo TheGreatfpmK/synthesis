@@ -1,0 +1,161 @@
+
+dtmc
+
+// 1 | x x   
+// 0 | x x   
+// y ______
+//   x 0 1 
+
+
+// agent1 can go in this direction
+formula u1 = y1<1;
+formula r1 = x1<1;
+formula d1 = y1>0;
+formula l1 = x1>0;
+
+// updates of coordinates (if possible)
+formula y1u = u1 ? (y1+1) : y1;
+formula x1r = r1 ? (x1+1) : x1;
+formula y1d = d1 ? (y1-1) : y1;
+formula x1l = l1 ? (x1-1) : x1;
+
+
+// agent2 can go in this direction
+formula u2 = y2<1;
+formula r2 = x2<1;
+formula d2 = y2>0;
+formula l2 = x2>0;
+
+// updates of coordinates (if possible)
+formula y2u = u2 ? (y2+1) : y2;
+formula x2r = r2 ? (x2+1) : x2;
+formula y2d = d2 ? (y2-1) : y2;
+formula x2l = l2 ? (x2-1) : x2;
+
+
+const double sl=0.1;
+
+
+// agent 2 holes
+hole int M2_0_0 in {0,1};
+hole int M2_0_1 in {0,1};
+hole int M2_1_0 in {0,1};
+hole int M2_1_1 in {0,1};
+hole int M2_2_0 in {0,1};
+hole int M2_2_1 in {0,1};
+hole int M2_3_0 in {0,1};
+hole int M2_3_1 in {0,1};
+
+hole int P2_0_0 in {1,2,3,4,5};
+hole int P2_0_1 in {1,2,3,4,5};
+hole int P2_1_0 in {1,2,3,4,5};
+hole int P2_1_1 in {1,2,3,4,5};
+hole int P2_2_0 in {1,2,3,4,5};
+hole int P2_2_1 in {1,2,3,4,5};
+hole int P2_3_0 in {1,2,3,4,5};
+hole int P2_3_1 in {1,2,3,4,5};
+
+
+
+
+module grid1
+
+	x1 : [0..1] init 0; // agent1 x coordinate
+	y1 : [0..1] init 1; // agent1 y coordinate
+
+endmodule
+
+
+module strategy2
+	mem2 : [0..1] init 0;
+
+    [move] mem2=0 & !l2 -> (mem2'=M2_0_0);
+	[move] mem2=0 & l2  -> (mem2'=M2_0_1);
+	[move] mem2=1 & !l2 -> (mem2'=M2_1_0);
+	[move] mem2=1 & l2  -> (mem2'=M2_1_1);
+	[move] mem2=2 & !l2 -> (mem2'=M2_2_0);
+	[move] mem2=2 & l2  -> (mem2'=M2_2_1);
+	[move] mem2=3 & !l2 -> (mem2'=M2_3_0);
+	[move] mem2=3 & l2  -> (mem2'=M2_3_1);
+
+endmodule
+
+
+module grid2
+
+	x2 : [0..1] init 1; // agent2 x coordinate
+	y2 : [0..1] init 1; // agent2 y coordinate
+
+	[move] mem2=0 & !l2 & P2_0_0=1 -> 0.6: (y2'=y2u) + 0.1: true + 0.1: (x2'=x2r) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=0 & !l2 & P2_0_0=2 -> 0.6: (x2'=x2r) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=0 & !l2 & P2_0_0=3 -> 0.6: (y2'=y2d) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (x2'=x2l);
+	[move] mem2=0 & !l2 & P2_0_0=4 -> 0.6: (x2'=x2l) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (y2'=y2d);
+	[move] mem2=0 & !l2 & P2_0_0=5 -> true;
+
+	[move] mem2=0 & l2 & P2_0_1=1  -> 0.6: (y2'=y2u) + 0.1: true + 0.1: (x2'=x2r) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=0 & l2 & P2_0_1=2  -> 0.6: (x2'=x2r) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=0 & l2 & P2_0_1=3  -> 0.6: (y2'=y2d) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (x2'=x2l);
+	[move] mem2=0 & l2 & P2_0_1=4  -> 0.6: (x2'=x2l) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (y2'=y2d);
+	[move] mem2=0 & l2 & P2_0_1=5  -> true;
+
+	[move] mem2=1 & !l2 & P2_1_0=1 -> 0.6: (y2'=y2u) + 0.1: true + 0.1: (x2'=x2r) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=1 & !l2 & P2_1_0=2 -> 0.6: (x2'=x2r) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=1 & !l2 & P2_1_0=3 -> 0.6: (y2'=y2d) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (x2'=x2l);
+	[move] mem2=1 & !l2 & P2_1_0=4 -> 0.6: (x2'=x2l) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (y2'=y2d);
+	[move] mem2=1 & !l2 & P2_1_0=5 -> true;
+	
+	[move] mem2=1 & l2 & P2_1_1=1  -> 0.6: (y2'=y2u) + 0.1: true + 0.1: (x2'=x2r) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=1 & l2 & P2_1_1=2  -> 0.6: (x2'=x2r) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=1 & l2 & P2_1_1=3  -> 0.6: (y2'=y2d) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (x2'=x2l);
+	[move] mem2=1 & l2 & P2_1_1=4  -> 0.6: (x2'=x2l) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (y2'=y2d);
+	[move] mem2=1 & l2 & P2_1_1=5  -> true;
+
+	[move] mem2=2 & !l2 & P2_2_0=1 -> 0.6: (y2'=y2u) + 0.1: true + 0.1: (x2'=x2r) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=2 & !l2 & P2_2_0=2 -> 0.6: (x2'=x2r) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=2 & !l2 & P2_2_0=3 -> 0.6: (y2'=y2d) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (x2'=x2l);
+	[move] mem2=2 & !l2 & P2_2_0=4 -> 0.6: (x2'=x2l) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (y2'=y2d);
+	[move] mem2=2 & !l2 & P2_2_0=5 -> true;
+	
+	[move] mem2=2 & l2 & P2_2_1=1  -> 0.6: (y2'=y2u) + 0.1: true + 0.1: (x2'=x2r) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=2 & l2 & P2_2_1=2  -> 0.6: (x2'=x2r) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=2 & l2 & P2_2_1=3  -> 0.6: (y2'=y2d) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (x2'=x2l);
+	[move] mem2=2 & l2 & P2_2_1=4  -> 0.6: (x2'=x2l) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (y2'=y2d);
+	[move] mem2=2 & l2 & P2_2_1=5  -> true;
+
+	[move] mem2=3 & !l2 & P2_3_0=1 -> 0.6: (y2'=y2u) + 0.1: true + 0.1: (x2'=x2r) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=3 & !l2 & P2_3_0=2 -> 0.6: (x2'=x2r) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=3 & !l2 & P2_3_0=3 -> 0.6: (y2'=y2d) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (x2'=x2l);
+	[move] mem2=3 & !l2 & P2_3_0=4 -> 0.6: (x2'=x2l) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (y2'=y2d);
+	[move] mem2=3 & !l2 & P2_3_0=5 -> true;
+	
+	[move] mem2=3 & l2 & P2_3_1=1  -> 0.6: (y2'=y2u) + 0.1: true + 0.1: (x2'=x2r) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=3 & l2 & P2_3_1=2  -> 0.6: (x2'=x2r) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (y2'=y2d) + 0.1: (x2'=x2l);
+	[move] mem2=3 & l2 & P2_3_1=3  -> 0.6: (y2'=y2d) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (x2'=x2l);
+	[move] mem2=3 & l2 & P2_3_1=4  -> 0.6: (x2'=x2l) + 0.1: true + 0.1: (y2'=y2u) + 0.1: (x2'=x2r) + 0.1: (y2'=y2d);
+	[move] mem2=3 & l2 & P2_3_1=5  -> true;
+endmodule
+
+
+module counter
+
+    c : [0..100] init 0;
+
+    [move] true -> (c'=c+1);
+
+endmodule
+
+
+
+// reward
+rewards "moves"
+	true: 1;
+endrewards
+
+rewards "meet"
+    (x1=x2) & (y1=y2) : 1;
+endrewards
+
+// target
+label "goal" = c=9;
+label "mgoal" = (x1=x2) & (y1=y2);
+

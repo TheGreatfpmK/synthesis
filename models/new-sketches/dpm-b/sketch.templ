@@ -198,7 +198,7 @@ module BAT
 
 	[] bat=0 -> (bat'=0); // loop when battery empty
 
-	[tick2] bat=1 -> 0.02 : (bat'=0) + 0.98 : (bat'=1);
+	[tick2] bat=1 -> 0.001 : (bat'=0) + 0.999 : (bat'=1);
 
 endmodule
 
@@ -224,6 +224,13 @@ endrewards
 
 rewards "lostL"
 
+	[tick2] qL=CMAX & sr=2 & sp!=1 : 1;
+
+endrewards
+
+rewards "lost"
+
+	[tick2] q=CMAX & sr=1 & sp!=0 : 1;
 	[tick2] qL=CMAX & sr=2 & sp!=1 : 1;
 
 endrewards

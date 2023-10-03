@@ -29,6 +29,8 @@ class Synthesizer:
         logger.info("synthesis initiated, design space: {}".format(family.size))
         
         assignment = self.synthesize_assignment(family)
+        # families = self.synthesize_families(family)
+        # assignment = None if not families else families[0].pick_any()
 
         self.stat.finished(assignment)
         return assignment
@@ -36,13 +38,19 @@ class Synthesizer:
     
     def synthesize_assignment(self,family):
         pass
+
+    def synthesize_families(self,family):
+        pass
     
+    def explore(self, family):
+        self.explored += family.size
+
     def print_stats(self):
         self.stat.print()
     
     def run(self):
         # self.quotient.specification.optimality.update_optimum(0.9)
-        self.quotient.design_space.property_indices = self.quotient.specification.all_constraint_indices()
+        self.quotient.design_space.constraint_indices = self.quotient.specification.all_constraint_indices()
         assignment = self.synthesize(self.quotient.design_space)
 
         print("")
@@ -57,6 +65,5 @@ class Synthesizer:
         
         self.print_stats()
     
-    def explore(self, family):
-        self.explored += family.size
+    
 

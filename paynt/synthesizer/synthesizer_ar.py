@@ -2,10 +2,6 @@ from .synthesizer import Synthesizer
 
 import paynt
 
-import logging
-logger = logging.getLogger(__name__)
-
-
 class SynthesizerAR(Synthesizer):
 
     @property
@@ -17,7 +13,9 @@ class SynthesizerAR(Synthesizer):
         self.quotient.build(family)
         self.stat.iteration_mdp(family.mdp.states)
         res = family.mdp.check_specification(
-            self.quotient.specification, property_indices = family.property_indices, short_evaluation = True)
+            self.quotient.specification, constraint_indices = family.constraint_indices, short_evaluation = True)
+        if res.improving_assignment == "any":
+            res.improving_assignment = family
         family.analysis_result = res
 
     
@@ -48,9 +46,6 @@ class SynthesizerAR(Synthesizer):
             self.update_optimum(family)
             if family.analysis_result.improving_assignment is not None:
                 satisfying_assignment = family.analysis_result.improving_assignment
-                # if self.stat.synthesis_time.read()>1:
-                    # print("synthesis timeout");
-                    # break
             if family.analysis_result.can_improve == False:
                 self.explore(family)
                 continue
@@ -60,6 +55,32 @@ class SynthesizerAR(Synthesizer):
             families = families + subfamilies
 
         return satisfying_assignment
+
+    def synthesize_families(self, family):
+        assert not self.quotient.specification.has_optimality
+        self.quotient.discarded = 0
+
+        satisfying_families = []
+        families = [family]
+
+        while families:
+
+            family = families.pop(-1)
+
+            self.verify_family(family)
+            self.update_optimum(family)
+            if family.analysis_result.improving_assignment is not None:
+                satisfying_families.append(family)
+                # print("found shield of size ", family.size)
+            if family.analysis_result.can_improve == False:
+                self.explore(family)
+                continue
+
+            # undecided
+            subfamilies = self.quotient.split(family, Synthesizer.incomplete_search)
+            families = families + subfamilies
+
+        return satisfying_families
 
 
     def family_value(self, family):

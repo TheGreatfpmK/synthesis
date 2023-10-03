@@ -62,8 +62,8 @@ def setup_logger(log_path = None):
     help="discount factor")
 
 @click.option("--export",
-    type=click.Choice(['drn', 'pomdp']),
-    help="export the model to *.drn/*.pomdp and abort")
+    type=click.Choice(['jani', 'drn', 'pomdp']),
+    help="export the model to specified format and abort")
 
 @click.option("--method",
     type=click.Choice(['onebyone', 'ar', 'cegis', 'hybrid', 'ar_multicore']),
@@ -180,7 +180,7 @@ def paynt_run(
         storm_control.export_fsc_storm = export_fsc_storm
         storm_control.export_fsc_paynt = export_fsc_paynt
 
-    if isinstance(quotient, paynt.quotient.quotient_pomdp_family.PomdpFamilyQuotientContainer):
+    if isinstance(quotient, paynt.quotient.pomdp_family.PomdpFamilyQuotientContainer):
         logger.info("nothing to do with the POMDP sketch, aborting...")
         exit(0)
 

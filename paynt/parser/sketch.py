@@ -5,7 +5,8 @@ from paynt.parser.pomdp_parser import PomdpParser
 from paynt.quotient.quotient import *
 from paynt.quotient.quotient_pomdp import POMDPQuotientContainer
 from paynt.quotient.quotient_decpomdp import DecPomdpQuotientContainer
-from paynt.quotient.quotient_pomdp_family import PomdpFamilyQuotientContainer
+
+import paynt.quotient.pomdp_family
 from paynt.verification.property import Specification, construct_reward_property
 
 import logging
@@ -13,6 +14,13 @@ logger = logging.getLogger(__name__)
 
 import os
 
+
+def substitute_suffix(string, delimiter, replacer):
+    '''Subsitute the suffix behind the last delimiter.'''
+    output_string = string.split(delimiter)
+    output_string[-1] = str(replacer)
+    output_string = delimiter.join(output_string)
+    return output_string
 
 def make_rewards_action_based(model):
 
@@ -43,17 +51,9 @@ def make_rewards_action_based(model):
 
 class Sketch:
 
-    @classmethod
-    def substitute_suffix(cls, string, delimiter, replacer):
-        '''Subsitute the suffix behind the last delimiter.'''
-        output_string = string.split(delimiter)
-        output_string[-1] = str(replacer)
-        output_string = delimiter.join(output_string)
-        return output_string
-
 
     @classmethod
-    def load_sketch(self, sketch_path, properties_path,
+    def load_sketch(cls, sketch_path, properties_path,
         export=None, relative_error=0, discount_factor=1):
 
         assert discount_factor>0 and discount_factor<=1, "discount factor must be in the interval (0,1]"
@@ -63,6 +63,7 @@ class Sketch:
         coloring = None
         jani_unfolder = None
         decpomdp_manager = None
+        obs_evaluator = None
 
         # check path
         if not os.path.isfile(sketch_path):
@@ -138,31 +139,43 @@ class Sketch:
         logger.info(f"found the following specification {specification}")
 
         if export is not None:
-            if export == "jani":
-                assert jani_unfolder is not None, "jani unfolder was not used"
-                jani_unfolder.write_jani(sketch_path)
-            if export == "drn":
-                output_path = Sketch.substitute_suffix(sketch_path, '.', 'drn')
-                stormpy.export_to_drn(explicit_quotient, output_path)
-            if export == "pomdp":
-                assert explicit_quotient.is_nondeterministic_model and explicit_quotient.is_partially_observable, \
-                    "cannot '--export pomdp' with non-POMDP sketches"
-                output_path = Sketch.substitute_suffix(sketch_path, '.', 'pomdp')
-                property_path = Sketch.substitute_suffix(sketch_path, '/', 'props.pomdp')
-                PomdpParser.write_model_in_pomdp_solve_format(explicit_quotient, output_path, property_path)
+            Sketch.export(export, sketch_path, jani_unfolder, explicit_quotient)
+            logger.info("export OK, aborting...")
             exit(0)
 
-        quotient_container = None
+        return Sketch.build_quotient_container(jani_unfolder, explicit_quotient, coloring, specification, obs_evaluator, decpomdp_manager)
+
+    
+    @classmethod
+    def export(cls, export, sketch_path, jani_unfolder, explicit_quotient):
+        if export == "jani":
+            assert jani_unfolder is not None, "jani unfolder was not used"
+            output_path = substitute_suffix(sketch_path, '.', 'jani')
+            jani_unfolder.write_jani(output_path)
+        if export == "drn":
+            output_path = substitute_suffix(sketch_path, '.', 'drn')
+            stormpy.export_to_drn(explicit_quotient, output_path)
+        if export == "pomdp":
+            assert explicit_quotient.is_nondeterministic_model and explicit_quotient.is_partially_observable, \
+                "cannot '--export pomdp' with non-POMDP sketches"
+            output_path = substitute_suffix(sketch_path, '.', 'pomdp')
+            property_path = substitute_suffix(sketch_path, '/', 'props.pomdp')
+            PomdpParser.write_model_in_pomdp_solve_format(explicit_quotient, output_path, property_path)
+
+
+    @classmethod
+    def build_quotient_container(cls, jani_unfolder, explicit_quotient, coloring, specification, obs_evaluator, decpomdp_manager):
         if jani_unfolder is not None:
             if obs_evaluator is None:
                 quotient_container = DTMCQuotientContainer(explicit_quotient, coloring, specification)
             else:
-                quotient_container = PomdpFamilyQuotientContainer(explicit_quotient, coloring, specification, obs_evaluator)
+                quotient_container = paynt.quotient.pomdp_family.PomdpFamilyQuotientContainer(explicit_quotient, coloring, specification, obs_evaluator)
         else:
             assert explicit_quotient.is_nondeterministic_model
             if decpomdp_manager is not None and decpomdp_manager.num_agents > 1:
                 quotient_container = DecPomdpQuotientContainer(decpomdp_manager, specification)
             else:
-                quotient_container = POMDPQuotientContainer(explicit_quotient, specification)
+                quotient_container = POMDPQuotientContainer(explicit_quotient, specification, decpomdp_manager)
         return quotient_container
+
 

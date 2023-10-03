@@ -6,6 +6,7 @@ from paynt.quotient.quotient import *
 from paynt.quotient.quotient_pomdp import POMDPQuotientContainer
 from paynt.quotient.quotient_decpomdp import DecPomdpQuotientContainer
 from paynt.quotient.quotient_pomdp_family import PomdpFamilyQuotientContainer
+from paynt.verification.property import Specification, construct_reward_property
 
 import logging
 logger = logging.getLogger(__name__)
@@ -93,11 +94,11 @@ class Sketch:
                 logger.info("applying discount factor transformation...")
                 decpomdp_manager.apply_discount_factor_transformation()
                 explicit_quotient = decpomdp_manager.construct_pomdp()
-                optimality = paynt.verification.property.construct_reward_property(
+                optimality = construct_reward_property(
                     decpomdp_manager.reward_model_name,
                     decpomdp_manager.reward_minimizing,
                     decpomdp_manager.discount_sink_label)
-                specification = paynt.verification.property.Specification([],optimality)
+                specification = Specification([],optimality)
                 filetype = "cassandra"
             except SyntaxError:
                 pass

@@ -6,6 +6,7 @@ from .models import MarkovChain,MDP,DTMC
 from .holes import Hole,Holes,DesignSpace
 from .quotient import QuotientContainer
 from .coloring import MdpColoring
+from .pomdp_family import FSC
 
 import math
 import re
@@ -127,6 +128,8 @@ class POMDPQuotientContainer(QuotientContainer):
         for state in range(self.pomdp.nr_states):
             obs = self.pomdp.observations[state]
             self.observation_states[obs] += 1
+
+        print(self.observation_labels)
 
         # initialize POMDP manager
         if not self.posterior_aware:
@@ -412,7 +415,34 @@ class POMDPQuotientContainer(QuotientContainer):
         self.coloring = MdpColoring(self.quotient_mdp, all_holes, action_to_hole_options)
         self.design_space = DesignSpace(all_holes)
 
-    
+    def unfold_from_fsc(self, fsc):
+        # TODO not sure about this
+        memory_list = []
+        for ind in range(len(self.observation_labels)):
+            count = 0
+            for x in fsc.action_function:
+                if x[ind] is not None:
+                    count += 1
+            memory_list.append(count)
+
+        self.observation_memory_size = memory_list
+        self.set_manager_memory_vector()
+
+        self.unfold_memory()
+        logger.info("memory unfolded")
+
+        fsc_fam = self.design_space.copy()
+        for obs in range(self.observations):
+            for act_hole, index in zip(self.observation_action_holes[obs], range(len(self.observation_action_holes[obs]))):
+                fsc_fam[act_hole].assume_options([fsc.action_function[index][obs]])
+            for mem_holes, index in zip(self.observation_memory_holes[obs], range(len(self.observation_memory_holes[obs]))):
+                fsc_fam[mem_holes].assume_options([fsc.update_function[index][obs]])
+
+        self.build(fsc_fam)
+        res = fsc_fam.mdp.check_specification(self.specification, short_evaluation=True)
+        fsc_fam.analysis_result = res
+        print(fsc_fam.analysis_result.improving_value)
+
 
     
     def estimate_scheduler_difference(self, mdp, inconsistent_assignments, choice_values, expected_visits):

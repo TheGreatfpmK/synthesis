@@ -1,6 +1,7 @@
 from . import version
 
 import paynt.parser.sketch
+import paynt.parser.fsc_parser
 
 from .quotient.quotient_pomdp import POMDPQuotientContainer
 
@@ -111,6 +112,9 @@ def setup_logger(log_path = None):
 @click.option("--export-fsc-paynt", type=click.Path(), default=None,
     help="path to output file for SAYNT inductive FSC")
 
+@click.option("--evaluate-fsc", type=click.Path(), default=None,
+    help="path to FSC file")
+
 #@click.option("--storm-parallel", is_flag=True, default=False,
 #    help="run storm analysis in parallel (can only be used together with --storm-pomdp-analysis flag)")
 
@@ -138,7 +142,8 @@ def paynt_run(
     ce_generator,
     pomcp,
     profiling,
-    export_fsc_storm, export_fsc_paynt
+    export_fsc_storm, export_fsc_paynt,
+    evaluate_fsc
 ):
     logger.info("This is Paynt version {}.".format(version()))
 
@@ -154,6 +159,18 @@ def paynt_run(
     properties_path = os.path.join(project, props)
 
     quotient = paynt.parser.sketch.Sketch.load_sketch(sketch_path, properties_path, export, relative_error, discount_factor)
+
+    if evaluate_fsc:
+        if not isinstance(quotient, POMDPQuotientContainer):
+            logger.info("FSC evaluation expects POMDP input!")
+            exit(1)
+
+        fsc = paynt.parser.fsc_parser.FSCParser.read_fsc_my_format(evaluate_fsc, quotient.observation_labels, quotient.action_labels_at_observation)
+        #print(fsc)
+
+        quotient.unfold_from_fsc(fsc)        
+
+        exit()
 
     if pomcp:
         from paynt.simulation.pomcp import POMCP

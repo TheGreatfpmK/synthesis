@@ -130,6 +130,9 @@ def setup_logger(log_path = None):
 @click.option("--profiling", is_flag=True, default=False,
     help="run profiling")
 
+@click.option("--multi-mdp", is_flag=True, default=False,
+              help="run multi-property MDP check")
+
 def paynt_run(
     project, sketch, props, relative_error, discount_factor,
     export,
@@ -143,7 +146,7 @@ def paynt_run(
     pomcp,
     profiling,
     export_fsc_storm, export_fsc_paynt,
-    evaluate_fsc
+    evaluate_fsc, multi_mdp
 ):
     logger.info("This is Paynt version {}.".format(version()))
 
@@ -153,12 +156,13 @@ def paynt_run(
     POMDPQuotientContainer.initial_memory_size = pomdp_memory_size
     POMDPQuotientContainer.export_optimal_result = fsc_export_result
     POMDPQuotientContainer.posterior_aware = posterior_aware
+    POMDPQuotientContainer.multi_mdp = multi_mdp
 
     # join paths of input files
     sketch_path = os.path.join(project, sketch)
     properties_path = os.path.join(project, props)
 
-    quotient = paynt.parser.sketch.Sketch.load_sketch(sketch_path, properties_path, export, relative_error, discount_factor)
+    quotient = paynt.parser.sketch.Sketch.load_sketch(sketch_path, properties_path, export, relative_error, discount_factor, multi_mdp=multi_mdp)
 
     if evaluate_fsc:
         if not isinstance(quotient, POMDPQuotientContainer):

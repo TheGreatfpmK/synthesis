@@ -54,7 +54,7 @@ class Sketch:
 
     @classmethod
     def load_sketch(cls, sketch_path, properties_path,
-        export=None, relative_error=0, discount_factor=1):
+        export=None, relative_error=0, discount_factor=1, multi_mdp=False):
 
         assert discount_factor>0 and discount_factor<=1, "discount factor must be in the interval (0,1]"
 
@@ -143,6 +143,9 @@ class Sketch:
             logger.info("export OK, aborting...")
             exit(0)
 
+        if multi_mdp:
+            explicit_quotient = cls.build_pomdp_from_mdp(explicit_quotient)
+
         return Sketch.build_quotient_container(jani_unfolder, explicit_quotient, coloring, specification, obs_evaluator, decpomdp_manager)
 
     
@@ -177,5 +180,22 @@ class Sketch:
             else:
                 quotient_container = POMDPQuotientContainer(explicit_quotient, specification, decpomdp_manager)
         return quotient_container
+    
+    @classmethod
+    def build_pomdp_from_mdp(cls, explicit_mdp_quotient):
+        tm = explicit_mdp_quotient.transition_matrix
+        components = stormpy.storage.SparseModelComponents(tm, explicit_mdp_quotient.labeling, explicit_mdp_quotient.reward_models)
+
+        components.choice_labeling = explicit_mdp_quotient.choice_labeling
+
+        observ_list = []
+        for state in range(explicit_mdp_quotient.nr_states):
+            observ_list.append(state)
+        components.observability_classes = observ_list
+
+        pomdp = stormpy.storage.SparsePomdp(components)
+        pomdp = stormpy.pomdp.make_canonic(pomdp)
+
+        return pomdp
 
 

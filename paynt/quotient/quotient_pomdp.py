@@ -20,6 +20,9 @@ class POMDPQuotientContainer(QuotientContainer):
     # implicit size for POMDP unfolding
     initial_memory_size = 1
 
+    # solving multi property MDPs as POMDPs
+    multi_mdp = False
+
     # TODO
     export_optimal_result = False
 
@@ -138,7 +141,10 @@ class POMDPQuotientContainer(QuotientContainer):
             self.pomdp_manager = stormpy.synthesis.PomdpManagerAposteriori(self.pomdp)
 
         # do initial unfolding
-        self.set_imperfect_memory_size(POMDPQuotientContainer.initial_memory_size)
+        if self.multi_mdp:
+            self.set_global_memory_size(POMDPQuotientContainer.initial_memory_size)
+        else:
+            self.set_imperfect_memory_size(POMDPQuotientContainer.initial_memory_size)
         # self.set_global_memory_size(POMDPQuotientContainer.initial_memory_size)
 
     

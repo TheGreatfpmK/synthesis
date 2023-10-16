@@ -415,7 +415,7 @@ class QuotientContainer:
         assert not mdp.is_dtmc
 
         # split family wrt last undecided result
-        results = [result for result in family.analysis_result.constraints_result.results]
+        results = [result for result, index in zip(family.analysis_result.constraints_result.results, range(len(family.analysis_result.constraints_result.results))) if index in family.constraint_indices]
 
         hole_assignments = [res.primary_selection for res in results]
         scores = {}
@@ -466,6 +466,19 @@ class QuotientContainer:
             return assignment, res.optimality_result.value
         else:
             return None, None
+        
+    def double_check_assignment_multi(self, assignment):
+        '''
+        Double-check whether this assignment truly satisfies all constraints
+        :result if all constraints are sat
+        '''
+        assert assignment.size == 1
+        dtmc = self.build_chain(assignment)
+        res = dtmc.check_specification(self.specification)
+        if res.constraints_result.sat:
+            return res
+        else:
+            return False
 
     
     def sample(self):

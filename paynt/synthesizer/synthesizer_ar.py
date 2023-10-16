@@ -17,9 +17,6 @@ class SynthesizerAR(Synthesizer):
         if res.improving_assignment == "any":
             res.improving_assignment = family
         family.analysis_result = res
-        if family.analysis_result.constraints_result.results[0] is None:
-            print("xd")
-        #print(family.analysis_result.constraints_result.results[0].primary, family.analysis_result.constraints_result.results[1].primary)
 
     
     def update_optimum(self, family):
@@ -48,6 +45,15 @@ class SynthesizerAR(Synthesizer):
 
             self.verify_family(family)
             self.update_optimum(family)
+            
+            if self.multi_mdp:
+                if family.analysis_result.constraints_result.sat:
+                    double_check_res = self.quotient.double_check_assignment_multi(family.pick_any())
+                    for res in double_check_res.constraints_result.results:
+                        print(res.value)
+                    print("Satisfiable!")
+                    exit()
+
             if family.analysis_result.improving_assignment is not None:
                 satisfying_assignment = family.analysis_result.improving_assignment
             if family.analysis_result.can_improve == False:

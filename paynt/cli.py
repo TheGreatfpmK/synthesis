@@ -211,7 +211,7 @@ def paynt_run(
     elif method == "onebyone":
         synthesizer = SynthesizerOneByOne(quotient)
     elif method == "ar":
-        synthesizer = SynthesizerAR(quotient)
+        synthesizer = SynthesizerAR(quotient, multi_mdp)
     elif method == "cegis":
         synthesizer = SynthesizerCEGIS(quotient)
     elif method == "hybrid":

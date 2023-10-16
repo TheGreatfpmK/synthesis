@@ -9,10 +9,11 @@ class Synthesizer:
     # if True, some subfamilies can be discarded and some holes can be generalized
     incomplete_search = False
     
-    def __init__(self, quotient):
+    def __init__(self, quotient, multi_mdp=False):
         self.quotient = quotient
         self.stat = Statistic(self)
         self.explored = 0
+        self.multi_mdp = multi_mdp
     
     @property
     def method_name(self):

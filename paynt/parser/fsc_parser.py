@@ -59,8 +59,8 @@ class FSCParser:
 
             # init state, no_obs state, sink state
             # TODO not sure about the action and the memory update here for no_obs
-            parsed_fsc.action_function[0][p_obs_labels.index('__init__')] = 0
-            parsed_fsc.update_function[0][p_obs_labels.index('__init__')] = 0
+            parsed_fsc.action_function[0][p_obs_labels.index('init')] = 0
+            parsed_fsc.update_function[0][p_obs_labels.index('init')] = 0
             parsed_fsc.action_function[0][p_obs_labels.index('__no_obs__')] = p_act_labels[0].index(action_labels[int(node_actions[0])])
             parsed_fsc.update_function[0][p_obs_labels.index('__no_obs__')] = 1
             parsed_fsc.action_function[0][p_obs_labels.index('discount_sink')] = 0

@@ -17,6 +17,9 @@ class SynthesizerAR(Synthesizer):
         if res.improving_assignment == "any":
             res.improving_assignment = family
         family.analysis_result = res
+        if family.analysis_result.constraints_result.results[0] is None:
+            print("xd")
+        #print(family.analysis_result.constraints_result.results[0].primary, family.analysis_result.constraints_result.results[1].primary)
 
     
     def update_optimum(self, family):
@@ -41,6 +44,7 @@ class SynthesizerAR(Synthesizer):
         while families:
 
             family = families.pop(-1)
+            #print(family.size)
 
             self.verify_family(family)
             self.update_optimum(family)
@@ -51,7 +55,10 @@ class SynthesizerAR(Synthesizer):
                 continue
 
             # undecided
-            subfamilies = self.quotient.split(family, Synthesizer.incomplete_search)
+            if self.multi_mdp:
+                subfamilies = self.quotient.split_multi_mdp(family, Synthesizer.incomplete_search)
+            else:
+                subfamilies = self.quotient.split(family, Synthesizer.incomplete_search)
             families = families + subfamilies
 
         return satisfying_assignment

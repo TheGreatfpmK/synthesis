@@ -407,6 +407,50 @@ class QuotientContainer:
             design_subspaces.append(design_subspace)
 
         return design_subspaces
+    
+
+    def split_multi_mdp(self, family, incomplete_search):
+
+        mdp = family.mdp
+        assert not mdp.is_dtmc
+
+        # split family wrt last undecided result
+        results = [result for result in family.analysis_result.constraints_result.results]
+
+        hole_assignments = [res.primary_selection for res in results]
+        scores = {}
+        for hole in mdp.design_space.hole_indices:
+            if len(mdp.design_space[hole].options) <= 1:
+                continue
+            different_assignments = []
+            for assignment in hole_assignments:
+                if assignment[hole] not in different_assignments:
+                    different_assignments.append(assignment[hole])
+            scores[hole] = len(different_assignments)
+        
+        splitters = self.holes_with_max_score(scores)
+        splitter = splitters[0]
+        
+        core_suboptions = []
+        for assignment in hole_assignments:
+            core_suboptions.append(assignment[splitter])
+
+        other_suboptions = [option for option in mdp.design_space[splitter].options if [option] not in core_suboptions]
+
+        new_design_space, suboptions = self.discard(mdp, hole_assignments, core_suboptions, other_suboptions, incomplete_search)
+        
+        # construct corresponding design subspaces
+        design_subspaces = []
+        
+        family.splitter = splitter
+        parent_info = family.collect_parent_info(self.specification)
+        for suboption in suboptions:
+            subholes = new_design_space.subholes(splitter, suboption)
+            design_subspace = DesignSpace(subholes, parent_info)
+            design_subspace.assume_hole_options(splitter, suboption)
+            design_subspaces.append(design_subspace)
+
+        return design_subspaces
 
 
     def double_check_assignment(self, assignment):

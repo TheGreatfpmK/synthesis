@@ -132,7 +132,7 @@ class POMDPQuotientContainer(QuotientContainer):
             obs = self.pomdp.observations[state]
             self.observation_states[obs] += 1
 
-        print(self.observation_labels)
+        #print(self.observation_labels)
 
         # initialize POMDP manager
         if not self.posterior_aware:

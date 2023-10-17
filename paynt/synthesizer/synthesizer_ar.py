@@ -17,6 +17,7 @@ class SynthesizerAR(Synthesizer):
         if res.improving_assignment == "any":
             res.improving_assignment = family
         family.analysis_result = res
+        
 
     
     def update_optimum(self, family):
@@ -48,24 +49,23 @@ class SynthesizerAR(Synthesizer):
             
             if self.multi_mdp:
                 if family.analysis_result.constraints_result.sat:
-                    controllers = 1
-                    # all_holes = set()
-                    for state in range(family.mdp.states):
-                        controllers *= family.mdp.model.get_nr_available_actions(state)
-                    #     qmdp_state = family.mdp.quotient_state_map[state]
-                    #     for hole in self.quotient.coloring.state_to_holes[qmdp_state]:
-                    #         if family[hole].size > 1:
-                    #             all_holes.add(hole)
-                    # print(all_holes)
-                    #print(family.mdp.is_dtmc)
-                    res = family.mdp.check_specification(self.quotient.specification, short_evaluation=True)
-                    print(f"Number of controllers: {controllers}\nConstraint bounds: {res.constraints_result}")
-                    # double_check_res = self.quotient.double_check_assignment_multi(family.pick_any())
-                    # for resd in double_check_res.constraints_result.results:
-                    #     print(resd.value)
                     print("Satisfiable!")
+                    #exit()
+                    self.explore(family)
                     continue
                     #exit()
+                # if len(family.analysis_result.constraints_result.undecided_constraints) == 1:
+                #     undecided_ind = family.analysis_result.constraints_result.undecided_constraints[0]
+                #     if self.quotient.specification.constraints[undecided_ind].maximizing:
+                #         if family.analysis_result.constraints_result.results[undecided_ind].primary.value >= self.quotient.specification.constraints[undecided_ind].threshold:
+                #             #print("SAT2!")
+                #             self.explore(family)
+                #             continue
+                #     else:
+                #         if family.analysis_result.constraints_result.results[undecided_ind].primary.value <= self.quotient.specification.constraints[undecided_ind].threshold:
+                #             #print("SAT2!")
+                #             self.explore(family)
+                #             continue
 
             if family.analysis_result.improving_assignment is not None:
                 satisfying_assignment = family.analysis_result.improving_assignment

@@ -415,7 +415,7 @@ class QuotientContainer:
         assert not mdp.is_dtmc
 
         # split family wrt last undecided result
-        results = [result for result, index in zip(family.analysis_result.constraints_result.results, range(len(family.analysis_result.constraints_result.results))) if index in family.constraint_indices]
+        results = [result for index, result in enumerate(family.analysis_result.constraints_result.results) if index in family.constraint_indices]
 
         #hole_assignments = [res.primary_selection for res in results]
         hole_assignments = [self.scheduler_selection(mdp, res.primary.result.scheduler) for res in results]
@@ -431,6 +431,44 @@ class QuotientContainer:
         
         splitters = self.holes_with_max_score(scores)
         splitter = splitters[0]
+
+        if scores[splitter] == 1:
+            solution_family = family.copy()
+            assignment = hole_assignments[0]
+            for hole in mdp.design_space.hole_indices:
+                if len(family[hole].options) > 1:
+                    if len(assignment[hole]) > 0:
+                        solution_family[hole].assume_options(assignment[hole])
+
+            # family.splitter = splitter
+            #parent_info = family.collect_parent_info(self.specification)
+            #solution_family.refinement_depth = parent_info.refinement_depth + 1
+            solution_family.constraint_indices = family.constraint_indices
+            solution_family.parent_info = None
+
+            subfamilies = []
+            for hole in mdp.design_space.hole_indices:
+                if len(family[hole].options) > 1 and len(assignment[hole]) > 0:
+                    subfamily = family.copy()
+                    hole_opt = [opt for opt in family[hole].options if opt not in assignment[hole]]
+                    assert len(hole_opt) > 0
+                    subfamily[hole].assume_options(hole_opt)
+                    for hole2 in range(hole):
+                        if len(family[hole2].options) > 1:
+                            if len(assignment[hole2]) > 0:
+                                subfamily[hole2].assume_options(assignment[hole2])
+                    # subfamily.refinement_depth = parent_info.refinement_depth + 1
+                    subfamily.constraint_indices = family.constraint_indices
+                    subfamily.parent_info = None
+                    subfamilies.append(subfamily)
+
+            subfamilies.reverse()
+            subfamilies.append(solution_family)
+
+            return subfamilies
+
+
+
         
         core_suboptions = []
         for assignment in hole_assignments:

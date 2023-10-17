@@ -70,29 +70,26 @@ rewards "gem"
 endrewards
 
 
-const int REQGOLD;
 module goldcounter
-	cgold : [0..REQGOLD] init REQGOLD;
+	cgold : [0..2] init 2;
 	[right] true -> (cgold' = max(0, cgold - ((left_of_home & gold) ? 1 : 0)));
 	[left] true -> (cgold' = max(0, cgold - ((right_of_home & gold) ? 1 : 0)));
 	[top] true -> (cgold' = max(0, cgold - ((below_of_home & gold) ? 1 : 0)));
 	[down] true -> (cgold' = max(0, cgold - ((above_of_home & gold) ? 1 : 0)));
 endmodule
 
-const int REQGEM;
 module gemcounter
-	cgem : [0..REQGEM] init REQGEM;
+	cgem : [0..1] init 1;
 	[right] true -> (cgem' = max(0, cgem - ((left_of_home & gem) ? 1 : 0)));
 	[left] true -> (cgem' = max(0, cgem - ((right_of_home & gem) ? 1 : 0)));
 	[top] true -> (cgem' = max(0, cgem - ((below_of_home & gem) ? 1 : 0)));
 	[down] true -> (cgem' = max(0, cgem - ((above_of_home & gem) ? 1 : 0)));
 endmodule
 
-const int AVSTEPS;
 module stepcounter
-	csteps : [0..AVSTEPS] init AVSTEPS;
-	[right] AVSTEPS=0 | csteps>0 -> (csteps' = max(0, csteps - 1));
-	[left] AVSTEPS=0 | csteps>0 -> (csteps' = max(0, csteps - 1));
-	[top] AVSTEPS=0 | csteps>0 -> (csteps' = max(0, csteps - 1));
-	[down] AVSTEPS=0 | csteps>0 -> (csteps' = max(0, csteps - 1));
+	csteps : [0..20] init 20;
+	[right] 20=0 | csteps>0 -> (csteps' = max(0, csteps - 1));
+	[left] 20=0 | csteps>0 -> (csteps' = max(0, csteps - 1));
+	[top] 20=0 | csteps>0 -> (csteps' = max(0, csteps - 1));
+	[down] 20=0 | csteps>0 -> (csteps' = max(0, csteps - 1));
 endmodule

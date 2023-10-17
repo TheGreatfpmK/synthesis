@@ -417,14 +417,15 @@ class QuotientContainer:
         # split family wrt last undecided result
         results = [result for result, index in zip(family.analysis_result.constraints_result.results, range(len(family.analysis_result.constraints_result.results))) if index in family.constraint_indices]
 
-        hole_assignments = [res.primary_selection for res in results]
+        #hole_assignments = [res.primary_selection for res in results]
+        hole_assignments = [self.scheduler_selection(mdp, res.primary.result.scheduler) for res in results]
         scores = {}
         for hole in mdp.design_space.hole_indices:
             if len(mdp.design_space[hole].options) <= 1:
                 continue
             different_assignments = []
             for assignment in hole_assignments:
-                if assignment[hole] not in different_assignments:
+                if assignment[hole] not in different_assignments and len(assignment[hole]) > 0:
                     different_assignments.append(assignment[hole])
             scores[hole] = len(different_assignments)
         
@@ -474,6 +475,7 @@ class QuotientContainer:
         '''
         assert assignment.size == 1
         dtmc = self.build_chain(assignment)
+        #print(dtmc.model.nr_states)
         res = dtmc.check_specification(self.specification)
         if res.constraints_result.sat:
             return res

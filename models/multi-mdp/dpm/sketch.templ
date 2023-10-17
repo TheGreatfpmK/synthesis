@@ -1,7 +1,6 @@
 // power manager example
 mdp
 
-const int QMAX; // max queue size
 const double pstop = 0.01; // Probability to stop after a given step. Originally 0.000001
 const double POWERMULTIPLIER = 0.01; 
 
@@ -120,7 +119,7 @@ endmodule
 // SQ
 module SQ
 
-	q : [0..QMAX] init 0;
+	q : [0..2] init 0;
 	
 	// serve if busy
 	[tick2] sr=0 & sp=0 -> (q'=max(q-1,0));
@@ -128,7 +127,7 @@ module SQ
 	
 	// otherwise do nothing
 	[tick2] sr=0 & sp>0 -> (q'=q);
-	[tick2] sr=1 & sp>0 -> (q'=min(q+1,QMAX));
+	[tick2] sr=1 & sp>0 -> (q'=min(q+1,2));
 
 endmodule
 

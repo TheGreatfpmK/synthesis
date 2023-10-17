@@ -1,11 +1,9 @@
-// WLAN PROTOCOL (two stations)
+// WLAN PROTO0 (two stations)
 // discrete time model
 // gxn/jzs 20/02/02
 
 mdp
 
-// COLLISIONS
-const int COL; // maximum number of collisions
 
 // TIMING CONSTRAINTS
 // we have used the FHSS parameters
@@ -38,7 +36,7 @@ formula free = c1=0 & c2=0;
 module medium
 	
 	// number of collisions
-	col : [0..COL+1];
+	col : [0..0+1];
 	
 	// medium status 
 	c1 : [0..2];
@@ -54,8 +52,8 @@ module medium
 	
 	// begin sending message and  something is already being sent
 	// in this case both messages become garbled
-	[send1] c1=0 & c2>0 -> (c1'=2) & (c2'=2) & (col'=min(col+1,COL));
-	[send2] c2=0 & c1>0 -> (c1'=2) & (c2'=2) & (col'=min(col+1,COL));
+	[send1] c1=0 & c2>0 -> (c1'=2) & (c2'=2) & (col'=min(col+1,0));
+	[send2] c2=0 & c1>0 -> (c1'=2) & (c2'=2) & (col'=min(col+1,0));
 	
 	// finish sending message
 	[finish1] c1>0 -> (c1'=0);

@@ -120,6 +120,35 @@ class SynthesizerHybrid(SynthesizerAR, SynthesizerCEGIS):
             # analyze the family
             self.verify_family(family)
             self.update_optimum(family)
+
+            if self.multi_mdp:
+                if family.analysis_result.constraints_result.sat == False:
+                    self.explore(family)
+                    self.stage_control.prune_ar(family.size)
+                    continue
+                sat = False
+                if family.analysis_result.constraints_result.sat:
+                    sat = True
+                elif len(family.analysis_result.constraints_result.undecided_constraints) == 1:
+                    undecided_ind = family.analysis_result.constraints_result.undecided_constraints[0]
+                    if self.quotient.specification.constraints[undecided_ind].maximizing:
+                        if family.analysis_result.constraints_result.results[undecided_ind].primary.value >= self.quotient.specification.constraints[undecided_ind].threshold:
+                            sat = True
+                    else:
+                        if family.analysis_result.constraints_result.results[undecided_ind].primary.value <= self.quotient.specification.constraints[undecided_ind].threshold:
+                            sat = True
+
+                if sat:
+                    print("Satisfiable!")
+                    controllers = 1
+                    for state in range(family.mdp.states):
+                        controllers *= family.mdp.model.get_nr_available_actions(state)
+                    double_check_res = self.quotient.double_check_assignment_multi(family.pick_any())
+                    print(f"Time: {round(self.stat.synthesis_time.read(),3)}s\nFamily size: {controllers}\nAchieved values (one random FSC): {double_check_res.constraints_result}\nIterations: {self.stat.iterations_mdp}")
+                    self.explore(family)
+                    self.stage_control.prune_ar(family.size)
+                    continue
+
             if family.analysis_result.improving_assignment is not None:
                 satisfying_assignment = family.analysis_result.improving_assignment
             if family.analysis_result.can_improve == False:
@@ -167,7 +196,10 @@ class SynthesizerHybrid(SynthesizerAR, SynthesizerCEGIS):
             if family_explored:
                 continue
         
-            subfamilies = self.quotient.split(family, Synthesizer.incomplete_search)
+            if self.multi_mdp:
+                subfamilies = self.quotient.split_multi_mdp(family, Synthesizer.incomplete_search)
+            else:
+                subfamilies = self.quotient.split(family, Synthesizer.incomplete_search)
             families = families + subfamilies
 
         return satisfying_assignment

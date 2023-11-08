@@ -48,6 +48,7 @@ class SynthesizerAR(Synthesizer):
             self.update_optimum(family)
             
             if self.multi_mdp:
+                #print(family.analysis_result.constraints_result)
                 if family.analysis_result.constraints_result.sat == False:
                     self.explore(family)
                     continue
@@ -69,7 +70,7 @@ class SynthesizerAR(Synthesizer):
                     for state in range(family.mdp.states):
                         controllers *= family.mdp.model.get_nr_available_actions(state)
                     double_check_res = self.quotient.double_check_assignment_multi(family.pick_any())
-                    print(f"Time: {round(self.stat.synthesis_time.read(),3)}s\nFamily size: {controllers}\nAchieved values (one random FSC): {double_check_res.constraints_result}\nIterations: {self.stat.iterations_mdp}")
+                    print(f"Time: {round(self.stat.synthesis_time.read(),3)}s\nFamily size: {controllers}\nAchieved values (one random FSC): {double_check_res.constraints_result if double_check_res else False}\nIterations: {self.stat.iterations_mdp}")
                     self.explore(family)
                     continue
                     #exit()

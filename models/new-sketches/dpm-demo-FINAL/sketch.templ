@@ -69,8 +69,8 @@ module SP
     [tick1] sp <= 2 & pm > sp -> (sp'=sp+3);
 
     // waiting states
-    [tick1] sp = 3 -> 0.8 : (sp'=sp-2) + 0.2 : true;
-    [tick1] sp = 4 -> 0.6 : (sp'=sp-2) + 0.4 : true;
+    [tick1] sp = 3 -> 0.9 : (sp'=sp-2) + 0.1 : true;
+    [tick1] sp = 4 -> 0.7 : (sp'=sp-2) + 0.3 : true;
 
 endmodule
 
@@ -107,7 +107,7 @@ endmodule
 module BAT
     bat : [0..1] init 1; // 0 empty, 1 - operational
     [tick1] bat=0 ->true;
-    [tick1] bat=1 -> 0.01 : (bat'=0) + 0.99 : true;
+    [tick1] bat=1 -> 0.001 : (bat'=0) + 0.999 : true;
 endmodule
 
 // ----- rewards ----------------------------------------------------------------
@@ -135,8 +135,23 @@ rewards "requests_lost"
 endrewards
 
 rewards "power"
-    [tick1] sp=2 : 30; // active
-    [tick1] sp=1 : 10; // idle
-    [tick1] sp=3 : 15; // idle to active
-    [tick1] sp=4 : 1; // sleep to idle
+    [tick1] sp=2 : 100 + 10*q; // active
+    [tick1] sp=4 : 10; // idle to active
+    [tick1] sp=3 : 5; // sleep to idle
+endrewards
+
+rewards "idle_steps"
+    [tick1] sp=1 : 1;
+endrewards
+
+rewards "idle_active_steps"
+    [tick1] sp=4 : 1;
+endrewards
+
+rewards "sleep_steps"
+    [tick1] sp=0 : 1;
+endrewards
+
+rewards "active_steps"
+    [tick1] sp=2 : 1;
 endrewards

@@ -16,6 +16,8 @@ class FSCParser:
         p_act_labels = self.transform_act_labels(pomdp_act_labels)
         p_obs_labels = list(pomdp_obs_labels)
 
+        labels_not_available = True
+
         action_labels = []
         observation_labels = []
         node_actions = []
@@ -41,6 +43,16 @@ class FSCParser:
                     node_actions = line[1].strip().split(' ')
                     continue
 
+                for label in action_labels:
+                    if not label.isdigit():
+                        labels_not_available = False
+                        break
+                
+                for label in observation_labels:
+                    if not label.isdigit():
+                        labels_not_available = False
+                        break
+
                 s_init, obs, s_end, _ = line.split()
 
                 if s_init not in fsc_transitions.keys():
@@ -57,24 +69,47 @@ class FSCParser:
 
             parsed_fsc = FSC(len(node_actions)+1, len(pomdp_obs_labels))
 
-            # init state, no_obs state, sink state
-            # TODO not sure about the action and the memory update here for no_obs
-            parsed_fsc.action_function[0][p_obs_labels.index('init')] = 0
-            parsed_fsc.update_function[0][p_obs_labels.index('init')] = 0
-            parsed_fsc.action_function[0][p_obs_labels.index('__no_obs__')] = p_act_labels[0].index(action_labels[int(node_actions[0])])
-            parsed_fsc.update_function[0][p_obs_labels.index('__no_obs__')] = 1
-            parsed_fsc.action_function[0][p_obs_labels.index('discount_sink')] = 0
-            parsed_fsc.update_function[0][p_obs_labels.index('discount_sink')] = 0
+            # TODO I'm not sure that the indeces of the actions/observations in sarsop and here are the same! (SARSOP doesn't support labels in POMDPs right now)
+            if labels_not_available:
 
-            for node_s, node_s_dict in fsc_transitions.items():
-                for obs, node_e in node_s_dict.items():
-                    obs_index = p_obs_labels.index(observation_labels[int(obs)])
-                    act_index = p_act_labels[obs_index].index(action_labels[int(node_actions[int(node_e)-1])])
-                    parsed_fsc.action_function[int(node_s)][obs_index] = act_index
-                    parsed_fsc.update_function[int(node_s)][obs_index] = int(node_e)
+                # init state, no_obs state, sink state
+                # TODO not sure about the action and the memory update here for no_obs
+                parsed_fsc.action_function[0][p_obs_labels.index('init')] = 0
+                parsed_fsc.update_function[0][p_obs_labels.index('init')] = 0
+                parsed_fsc.action_function[0][p_obs_labels.index('__no_obs__')] = int(action_labels[int(node_actions[0])])
+                parsed_fsc.update_function[0][p_obs_labels.index('__no_obs__')] = 1
+                parsed_fsc.action_function[0][p_obs_labels.index('discount_sink')] = 0
+                parsed_fsc.update_function[0][p_obs_labels.index('discount_sink')] = 0
+    
+                for node_s, node_s_dict in fsc_transitions.items():
+                    for obs, node_e in node_s_dict.items():
+                        obs_index = int(observation_labels[int(obs)])
+                        act_index = int(action_labels[int(node_actions[int(node_e)-1])])
+                        parsed_fsc.action_function[int(node_s)][obs_index] = act_index
+                        parsed_fsc.update_function[int(node_s)][obs_index] = int(node_e)
+
+            else:
+
+                # init state, no_obs state, sink state
+                # TODO not sure about the action and the memory update here for no_obs
+                parsed_fsc.action_function[0][p_obs_labels.index('init')] = 0
+                parsed_fsc.update_function[0][p_obs_labels.index('init')] = 0
+                parsed_fsc.action_function[0][p_obs_labels.index('__no_obs__')] = p_act_labels[0].index(action_labels[int(node_actions[0])])
+                parsed_fsc.update_function[0][p_obs_labels.index('__no_obs__')] = 1
+                parsed_fsc.action_function[0][p_obs_labels.index('discount_sink')] = 0
+                parsed_fsc.update_function[0][p_obs_labels.index('discount_sink')] = 0
+    
+                for node_s, node_s_dict in fsc_transitions.items():
+                    for obs, node_e in node_s_dict.items():
+                        obs_index = p_obs_labels.index(observation_labels[int(obs)])
+                        act_index = p_act_labels[obs_index].index(action_labels[int(node_actions[int(node_e)-1])])
+                        parsed_fsc.action_function[int(node_s)][obs_index] = act_index
+                        parsed_fsc.update_function[int(node_s)][obs_index] = int(node_e)
 
         except:
             raise SyntaxError
+        
+        print(parsed_fsc.action_function)
         
         return parsed_fsc
         

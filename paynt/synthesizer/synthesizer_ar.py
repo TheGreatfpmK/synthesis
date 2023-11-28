@@ -16,6 +16,8 @@ class SynthesizerAR(Synthesizer):
             self.quotient.specification, constraint_indices = family.constraint_indices, short_evaluation = True)
         if res.improving_assignment == "any":
             res.improving_assignment = family
+        #print(res)
+        #exit()
         family.analysis_result = res
         
 
@@ -72,8 +74,9 @@ class SynthesizerAR(Synthesizer):
                     double_check_res = self.quotient.double_check_assignment_multi(family.pick_any())
                     print(f"Time: {round(self.stat.synthesis_time.read(),3)}s\nFamily size: {controllers}\nAchieved values (one random FSC): {double_check_res.constraints_result if double_check_res else False}\nIterations: {self.stat.iterations_mdp}")
                     self.explore(family)
-                    continue
-                    #exit()
+                    print(family)
+                    #continue
+                    exit()
                 
 
             if family.analysis_result.improving_assignment is not None:

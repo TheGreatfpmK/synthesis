@@ -1,0 +1,51 @@
+pomdp
+
+// grid dimensions
+const int N = 6;
+const int xMIN = 0;
+const int yMIN = 0;
+const int xMAX = 1;
+const int yMAX = N-1;
+
+// obstacle coordinates
+hole int o1x in {0,1};
+hole int o2x in {0,1};
+
+const int o1y = 1;
+const int o2y = 3;
+
+formula at_o1 = (x = o1x & y = o1y);
+formula at_o2 = (x = o2x & y = o2y);
+formula at_obstacle = at_o1 | at_o2;
+
+// stop conditions
+formula goal = x=xMAX & y=yMAX;
+formula done = goal | crash;
+
+// observations
+observable "goal" = goal;
+observable "crash" = crash;
+
+
+module agent
+    x : [xMIN..xMAX] init 0;
+    y : [yMIN..yMAX] init 0;
+
+    [west]  !done -> 1: (x'=max(x-1,xMIN));
+    [east]  !done -> 1: (x'=min(x+1,xMAX));
+    [north] !done -> 1: (y'=max(y+1,yMIN));
+
+    [fail]  done -> true;
+endmodule
+
+// crash detection is delayed by 1 step to avoid introducing intermediate states
+module crash
+    crash : bool init false;
+    [west]   !at_obstacle -> true;
+    [west]    at_obstacle -> (crash'=true);
+    [east]   !at_obstacle -> true;
+    [east]    at_obstacle -> (crash'=true);
+    [north]  !at_obstacle -> true;
+    [north]   at_obstacle -> (crash'=true);
+endmodule
+

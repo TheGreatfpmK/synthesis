@@ -6,8 +6,12 @@ import paynt.quotient.holes
 import paynt.quotient.quotient
 import paynt.quotient.coloring
 import paynt.quotient.mdp_family
+import paynt.quotient.storm_pomdp_control
 
 import paynt.synthesizer.conflict_generator.storm
+
+from time import sleep
+from threading import Thread
 
 import json
 
@@ -321,3 +325,47 @@ class PomdpFamilyQuotientContainer(paynt.quotient.quotient.QuotientContainer):
                 trace = self.translate_path_to_trace(dtmc_sketch,dtmc,path)
                 traces.append(trace)
         return traces
+    
+
+    def translate_to_family_of_belief_mdps(self):
+
+        control = paynt.quotient.storm_pomdp_control.StormPOMDPControl()
+        options = control.get_cutoff_options()
+
+        for hole_combination in self.design_space.all_combinations():
+            hole_options = [[hole.options[option]] for hole, option in zip(self.design_space,hole_combination)]
+            hole_assignment = self.design_space.assume_options_copy(hole_options)
+            pomdp = self.build_pomdp(hole_assignment)
+
+            belmc = stormpy.pomdp.BeliefExplorationModelCheckerDouble(pomdp.model, options)
+            
+            belmc.check(self.specification.stormpy_formulae()[0], [])
+
+            belief_explorer = belmc.get_belief_explorer()
+            explored_belief_mdp = belief_explorer.get_explored_mdp()
+            belief_manager = belief_explorer.get_belief_manager()
+
+            print(dir(belief_manager))
+
+            for state in explored_belief_mdp.states:
+                print(state)
+
+            # check_thread = Thread(target=belmc.check, args=(self.specification.stormpy_formulae()[0], [],))
+            # check_thread.start()
+
+            # while not belmc.has_converged():
+            #     pass
+
+            #belief_explorer = belmc.get_interactive_belief_explorer()
+            #print(belief_explorer)
+            # belmc.terminate_unfolding()
+            # check_thread.join(1)
+
+            # while (check_thread.is_alive()):
+            #     print("alive")
+            #     check_thread.join(1)
+
+            # belief_explorer = belmc.get_interactive_belief_explorer()
+            # print(belief_explorer)
+
+            print("done")

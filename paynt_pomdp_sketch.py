@@ -58,13 +58,20 @@ def investigate_hole_assignment(pomdp_sketch, hole_assignment):
 paynt.cli.setup_logger()
 
 # load sketch
-project_path="models/pomdp/sketches/obstacles"
+project_path="models/pomdp/sketches/climb"
 # project_path="models/pomdp/sketches/avoid"
 pomdp_sketch = load_sketch(project_path)
 print("specification: ", pomdp_sketch.specification)
 print("design space:\n", pomdp_sketch.design_space)
 print("number of holes: ", pomdp_sketch.design_space.num_holes)
 print("design space size: {} members".format(pomdp_sketch.design_space.size))
+
+
+pomdp_sketch.translate_to_family_of_belief_mdps()
+
+print("continue")
+
+exit()
 
 # fix some hole options
 hole_options = [[hole.options[0]] for hole in pomdp_sketch.design_space]

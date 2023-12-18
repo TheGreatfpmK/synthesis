@@ -28,9 +28,9 @@ download-prerequisites() {
     git clone --depth 1 --branch cvc5-1.0.0 https://github.com/cvc5/cvc5.git cvc5
     cd -
     cd $PAYNT_ROOT
-    git clone https://github.com/moves-rwth/storm.git storm
+    git clone --branch tac-journal https://github.com/TheGreatfpmK/storm.git storm
     # git clone --branch stable https://github.com/moves-rwth/storm.git storm
-    git clone --branch synthesis git@github.com:randriu/stormpy.git stormpy
+    git clone --branch tac-journal https://github.com/TheGreatfpmK/stormpy.git stormpy
     cd -
 }
 
@@ -64,7 +64,7 @@ cvc5-build() {
 storm-build() {
     mkdir -p $PAYNT_ROOT/storm/build
     cd $PAYNT_ROOT/storm/build
-    cmake ..
+    cmake .. -DSTORM_FORCE_SHIPPED_CARL=ON
     make storm-main storm-pomdp --jobs $COMPILE_JOBS
     # make check --jobs $COMPILE_JOBS
     cd -

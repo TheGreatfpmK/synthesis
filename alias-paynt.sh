@@ -37,7 +37,7 @@ download-prerequisites() {
 python-environment() {
     python3 -m venv $PAYNT_ROOT/env
     enva
-    pip3 install pytest pytest-runner pytest-cov numpy scipy pysmt z3-solver click toml Cython scikit-build
+    pip3 install pytest pytest-runner pytest-cov numpy scipy pysmt z3-solver click toml Cython scikit-build importlib-resources
     envd
 }
 
@@ -73,8 +73,8 @@ storm-build() {
 stormpy-build() {
     cd $PAYNT_ROOT/stormpy
     enva
-    python3 setup.py build_ext --jobs $COMPILE_JOBS develop
-    # python3 setup.py build_ext --storm-dir $PAYNT_ROOT/storm/build --jobs $COMPILE_JOBS develop
+    # python3 setup.py build_ext --jobs $COMPILE_JOBS develop
+    python3 setup.py build_ext --storm-dir $PAYNT_ROOT/storm/build --jobs $COMPILE_JOBS develop
     # python3 setup.py test
     envd
     cd -

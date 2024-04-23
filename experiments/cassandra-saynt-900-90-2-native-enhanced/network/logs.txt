@@ -1,0 +1,1018 @@
+2024-04-03 19:19:49,733 - cli.py - This is Paynt version 0.1.0.
+2024-04-03 19:19:49,733 - sketch.py - loading sketch from models/cassandra/pomdp/network.pomdp ...
+2024-04-03 19:19:49,733 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:27): Parsing error at 1:1:  expecting <model type>, here:
+	# Network monitoring problem.
+	^
+
+2024-04-03 19:19:49,734 - sketch.py - assuming sketch in DRN format...
+ERROR (DirectEncodingParser.cpp:124): Could not parse line '# Network monitoring problem.'.
+2024-04-03 19:19:49,734 - sketch.py - assuming sketch in Cassandra format...
+MADP: trying to parse as POMDP...
+MADP: parsing success
+2024-04-03 19:19:49,739 - sketch.py - applying discount factor transformation...
+2024-04-03 19:19:49,740 - sketch.py - sketch parsing OK
+2024-04-03 19:19:49,740 - sketch.py - constructed explicit quotient having 18 states and 69 actions
+2024-04-03 19:19:49,740 - sketch.py - found the following specification optimality: R[exp]{"reward"}max=? [C{9500000000000001/10000000000000000}] 
+2024-04-03 19:19:49,740 - pomdp.py - constructed POMDP having 4 observations.
+2024-04-03 19:19:49,740 - pomdp.py - unfolding 1-FSC template into POMDP ...
+2024-04-03 19:19:49,740 - pomdp.py - constructed quotient MDP having 18 states and 69 actions.
+2024-04-03 19:19:49,740 - pomdp.py - creating coloring ...
+2024-04-03 19:19:49,742 - synthesizer_pomdp.py - Storm POMDP option enabled
+2024-04-03 19:19:49,743 - synthesizer_pomdp.py - Storm settings: iterative - (900, 90, 2), get_storm_result - None, storm_options - cutoff, prune_storm - False, unfold_strategy - (True, False), use_storm_cutoffs - False, enhanced_saynt - 0, saynt_overapprox - False
+2024-04-03 19:19:49,743 - storm_pomdp_control.py - Interactive Storm started
+2024-04-03 19:19:49,743 - storm_pomdp_control.py - starting Storm POMDP analysis
+2024-04-03 19:19:51,755 - storm_pomdp_control.py - Pausing Storm
+Finished exploring under-approximation MDP.
+Start analysis...
+-----------Storm-----------               
+Value = 173.1485037369919 | Time elapsed = 6.5s | FSC size = 837
+
+2024-04-03 19:19:56,998 - pomdp.py - constructed POMDP having 5 observations.
+2024-04-03 19:19:56,999 - pomdp.py - unfolding 1-FSC template into POMDP ...
+2024-04-03 19:19:56,999 - pomdp.py - constructed quotient MDP having 11 states and 41 actions.
+2024-04-03 19:19:56,999 - pomdp.py - creating coloring ...
+2024-04-03 19:19:56,999 - synthesizer_pomdp.py - Synthesizing optimal k=1 controller ...
+2024-04-03 19:19:56,999 - pomdp.py - unfolding 1-FSC template into POMDP ...
+2024-04-03 19:19:56,999 - pomdp.py - constructed quotient MDP having 11 states and 41 actions.
+2024-04-03 19:19:56,999 - pomdp.py - creating coloring ...
+2024-04-03 19:19:56,999 - synthesizer.py - synthesis initiated, design space: 16
+2024-04-03 19:19:57,002 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-04-03 19:19:57,002 - synthesizer.py - A(0,0)=(unrestrict), A(1,0)=(reboot)
+2024-04-03 19:19:57,002 - synthesizer.py - double-checking specification satisfiability:  : 96.12347830264983
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"reward"}max=? [C{9500000000000001/10000000000000000}] 
+
+method: AR, synthesis time: 0.0 s
+number of holes: 2, family size: 16, quotient: 11 states / 41 actions
+explored: 100 %
+MDP stats: avg MDP size: 11, iterations: 17
+
+optimum: 96.123478
+--------------------
+2024-04-03 19:19:57,002 - synthesizer_pomdp.py - Terminate: False
+2024-04-03 19:19:57,003 - pomdp.py - constructed POMDP having 5 observations.
+2024-04-03 19:19:57,003 - synthesizer_pomdp.py - Synthesizing optimal k=2 controller ...
+2024-04-03 19:19:57,003 - pomdp.py - unfolding 1-FSC template into POMDP ...
+2024-04-03 19:19:57,003 - pomdp.py - unfolding 2-FSC template into POMDP ...
+2024-04-03 19:19:57,003 - pomdp.py - constructed quotient MDP having 11 states and 41 actions.
+2024-04-03 19:19:57,003 - pomdp.py - creating coloring ...
+2024-04-03 19:19:57,003 - pomdp.py - constructed quotient MDP having 21 states and 162 actions.
+2024-04-03 19:19:57,004 - synthesizer_pomdp.py - Synthesizing optimal k=1 controller ...
+2024-04-03 19:19:57,004 - synthesizer_pomdp.py - 2 threads for enhanced SAYNT created
+2024-04-03 19:19:57,004 - pomdp.py - creating coloring ...
+2024-04-03 19:19:57,004 - pomdp.py - unfolding 1-FSC template into POMDP ...
+2024-04-03 19:19:57,004 - synthesizer_pomdp.py - number of currently active threads: 3
+2024-04-03 19:19:57,005 - synthesizer.py - synthesis initiated, design space: 8192
+2024-04-03 19:19:57,005 - pomdp.py - constructed quotient MDP having 11 states and 41 actions.
+2024-04-03 19:19:57,005 - pomdp.py - creating coloring ...
+2024-04-03 19:19:57,005 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:19:57,005 - synthesizer_pomdp.py - new synthesis time per thread: 30.0s
+2024-04-03 19:19:57,005 - synthesizer.py - synthesis initiated, design space: 16
+2024-04-03 19:19:57,005 - storm_pomdp_control.py - Main family based on data from Storm: reduced design space from 64 to 6
+2024-04-03 19:19:57,005 - synthesizer_pomdp.py - Timeout for PAYNT started
+2024-04-03 19:19:57,005 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:19:57,005 - synthesizer.py - synthesis initiated, design space: 64
+-----------PAYNT-----------                     
+Value = 21.062043714249135 | Time elapsed = 7.3s | FSC size = 8
+
+-----------PAYNT-----------                     
+Value = 79.56032160460487 | Time elapsed = 7.3s | FSC size = 8
+
+2024-04-03 19:19:57,007 - synthesizer_ar_storm.py - Main family synthesis done
+2024-04-03 19:19:57,007 - synthesizer_ar_storm.py - Subfamilies buffer contains: 3 families
+-----------PAYNT-----------                     
+Value = 80.87111193102257 | Time elapsed = 7.3s | FSC size = 8
+
+-----------PAYNT-----------                     
+Value = 82.97636058132294 | Time elapsed = 7.3s | FSC size = 8
+
+2024-04-03 19:19:57,010 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-04-03 19:19:57,010 - synthesizer.py - A(up,0)=(unrestrict), A(down,0)=(reboot), A(__no_obs__,0)=(steady)
+2024-04-03 19:19:57,010 - synthesizer.py - double-checking specification satisfiability:  : 82.97636058132294
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"reward"}max=? [C{9500000000000001/10000000000000000}] 
+
+method: AR, synthesis time: 0.0 s
+number of holes: 3, family size: 64, quotient: 18 states / 69 actions
+explored: 100 %
+MDP stats: avg MDP size: 18, iterations: 21
+
+optimum: 82.976361
+--------------------
+2024-04-03 19:19:57,010 - synthesizer_pomdp.py - Terminate: False
+2024-04-03 19:19:57,011 - synthesizer_pomdp.py - Added memory nodes for observation based on Storm data
+2024-04-03 19:19:57,011 - pomdp.py - unfolding 3-FSC template into POMDP ...
+2024-04-03 19:19:57,011 - pomdp.py - constructed quotient MDP having 32 states and 373 actions.
+2024-04-03 19:19:57,011 - pomdp.py - creating coloring ...
+2024-04-03 19:19:57,011 - storm_pomdp_control.py - Main family based on data from Storm: reduced design space from 2985984 to 78732
+2024-04-03 19:19:57,011 - synthesizer.py - synthesis initiated, design space: 1e6
+-----------PAYNT-----------                     
+Value = 162.92460647146052 | Time elapsed = 7.3s | FSC size = 14
+
+-----------PAYNT-----------                     
+Value = 172.51367274224782 | Time elapsed = 7.3s | FSC size = 14
+
+-----------PAYNT-----------                     
+Value = 260.23413780647843 | Time elapsed = 7.3s | FSC size = 14
+
+-----------PAYNT-----------                     
+Value = 260.23444900028807 | Time elapsed = 7.3s | FSC size = 14
+
+-----------PAYNT-----------                     
+Value = 260.2371766672977 | Time elapsed = 7.3s | FSC size = 14
+
+-----------PAYNT-----------                     
+Value = 272.79125983956783 | Time elapsed = 7.3s | FSC size = 14
+
+-----------PAYNT-----------                     
+Value = 275.5383761294856 | Time elapsed = 7.3s | FSC size = 14
+
+2024-04-03 19:19:57,279 - synthesizer_ar_storm.py - Main family synthesis done
+2024-04-03 19:19:57,279 - synthesizer_ar_storm.py - Subfamilies buffer contains: 6 families
+-----------PAYNT-----------                     
+Value = 276.70135312851187 | Time elapsed = 7.6s | FSC size = 14
+
+-----------PAYNT-----------                     
+Value = 279.48521330167586 | Time elapsed = 7.6s | FSC size = 14
+
+2024-04-03 19:19:58,414 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-04-03 19:19:58,414 - synthesizer.py - A(up,0)=(steady), A(up,1)=(unrestrict), M(up,0)=1, M(up,1)=1, A(down,0)=(reboot), A(down,1)=(steady), A(down,2)=(restrict), M(down,0)=1, M(down,1)=2, M(down,2)=0, A(__no_obs__,0)=(steady), M(__no_obs__,0)=2
+2024-04-03 19:19:58,415 - synthesizer.py - double-checking specification satisfiability:  : 279.48521330167586
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"reward"}max=? [C{9500000000000001/10000000000000000}] 
+
+method: AR, synthesis time: 1.4 s
+number of holes: 12, family size: 1e6, quotient: 32 states / 373 actions
+explored: 100 %
+MDP stats: avg MDP size: 32, iterations: 4618
+
+optimum: 279.485213
+--------------------
+2024-04-03 19:19:58,415 - synthesizer_pomdp.py - Terminate: False
+2024-04-03 19:19:58,415 - synthesizer_pomdp.py - Increase memory in all imperfect observation
+2024-04-03 19:19:58,415 - pomdp.py - unfolding 4-FSC template into POMDP ...
+2024-04-03 19:19:58,415 - pomdp.py - constructed quotient MDP having 49 states and 770 actions.
+2024-04-03 19:19:58,416 - pomdp.py - creating coloring ...
+2024-04-03 19:19:58,416 - synthesizer.py - synthesis initiated, design space: 1e11
+> progress 2.5%, elapsed 3 s, estimated 119 s, iters = {MDP: 7350}, opt = 279.485
+-----------PAYNT-----------                     
+Value = 280.51248055105685 | Time elapsed = 12.3s | FSC size = 20
+
+-----------PAYNT-----------                     
+Value = 280.5128630241777 | Time elapsed = 12.3s | FSC size = 20
+
+-----------PAYNT-----------                     
+Value = 280.51299954882603 | Time elapsed = 12.3s | FSC size = 20
+
+-----------PAYNT-----------                     
+Value = 280.5133655284371 | Time elapsed = 12.4s | FSC size = 20
+
+> progress 3.721%, elapsed 6 s, estimated 161 s, iters = {MDP: 14570}, opt = 280.513
+> progress 4.45%, elapsed 9 s, estimated 202 s, iters = {MDP: 21172}, opt = 280.513
+> progress 6.798%, elapsed 12 s, estimated 176 s, iters = {MDP: 27601}, opt = 280.513
+> progress 7.647%, elapsed 15 s, estimated 196 s, iters = {MDP: 34337}, opt = 280.513
+> progress 8.26%, elapsed 18 s, estimated 217 s, iters = {MDP: 40280}, opt = 280.513
+-----------PAYNT-----------                     
+Value = 281.34062388931903 | Time elapsed = 28.9s | FSC size = 20
+
+> progress 8.343%, elapsed 21 s, estimated 251 s, iters = {MDP: 48084}, opt = 281.341
+> progress 8.365%, elapsed 24 s, estimated 286 s, iters = {MDP: 56374}, opt = 281.341
+> progress 8.429%, elapsed 27 s, estimated 320 s, iters = {MDP: 64161}, opt = 281.341
+2024-04-03 19:20:27,041 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:20:27,541 - synthesizer_pomdp.py - starting synthesis for obs_0
+2024-04-03 19:20:27,874 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:20:27,875 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+2024-04-03 19:20:27,917 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-04-03 19:20:27,917 - synthesizer.py - A(0,0)=(steady), A(0,1)=(unrestrict), M(0,0)=1, M(0,1)=1, A(1,0)=(reboot), A(1,1)=(restrict), M(1,0)=1, M(1,1)=0, M(4,0)=0
+2024-04-03 19:20:27,917 - synthesizer.py - double-checking specification satisfiability:  : 290.95480866375647
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"reward"}max=? [C{9500000000000001/10000000000000000}] 
+
+method: AR, synthesis time: 0.04 s
+number of holes: 9, family size: 8192, quotient: 21 states / 162 actions
+explored: 100 %
+MDP stats: avg MDP size: 21, iterations: 167
+
+optimum: 290.954809
+--------------------
+2024-04-03 19:20:27,918 - synthesizer_pomdp.py - Terminate: False
+2024-04-03 19:20:27,918 - synthesizer_pomdp.py - Synthesizing optimal k=3 controller ...
+2024-04-03 19:20:27,918 - pomdp.py - unfolding 3-FSC template into POMDP ...
+2024-04-03 19:20:27,918 - pomdp.py - constructed quotient MDP having 31 states and 363 actions.
+2024-04-03 19:20:27,918 - pomdp.py - creating coloring ...
+2024-04-03 19:20:27,918 - synthesizer.py - synthesis initiated, design space: 1e6
+2024-04-03 19:20:29,762 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-04-03 19:20:29,762 - synthesizer.py - A(0,0)=(steady), A(0,1)=(unrestrict), A(0,2)=(steady), M(0,0)=2, M(0,1)=1, M(0,2)=1, A(1,0)=(reboot), A(1,1)=(steady), A(1,2)=(restrict), M(1,0)=1, M(1,1)=2, M(1,2)=0, M(4,0)=0
+2024-04-03 19:20:29,763 - synthesizer.py - double-checking specification satisfiability:  : 306.71160153490206
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"reward"}max=? [C{9500000000000001/10000000000000000}] 
+
+method: AR, synthesis time: 1.84 s
+number of holes: 13, family size: 1e6, quotient: 31 states / 363 actions
+explored: 100 %
+MDP stats: avg MDP size: 31, iterations: 5624
+
+optimum: 306.711602
+--------------------
+2024-04-03 19:20:29,763 - synthesizer_pomdp.py - Terminate: False
+2024-04-03 19:20:29,763 - synthesizer_pomdp.py - Synthesizing optimal k=4 controller ...
+2024-04-03 19:20:29,763 - pomdp.py - unfolding 4-FSC template into POMDP ...
+2024-04-03 19:20:29,763 - pomdp.py - constructed quotient MDP having 41 states and 644 actions.
+2024-04-03 19:20:29,764 - pomdp.py - creating coloring ...
+2024-04-03 19:20:29,766 - synthesizer.py - synthesis initiated, design space: 1e10
+> progress 5.617%, elapsed 3 s, estimated 53 s, iters = {MDP: 7000}, opt = 306.712
+> progress 8.354%, elapsed 6 s, estimated 71 s, iters = {MDP: 14822}, opt = 309.647
+> progress 8.552%, elapsed 9 s, estimated 105 s, iters = {MDP: 23288}, opt = 309.647
+> progress 8.828%, elapsed 12 s, estimated 135 s, iters = {MDP: 31832}, opt = 314.598
+> progress 9.901%, elapsed 15 s, estimated 151 s, iters = {MDP: 40194}, opt = 314.598
+> progress 10.214%, elapsed 18 s, estimated 176 s, iters = {MDP: 48515}, opt = 314.598
+> progress 10.411%, elapsed 21 s, estimated 201 s, iters = {MDP: 57202}, opt = 315.217
+> progress 11.56%, elapsed 24 s, estimated 207 s, iters = {MDP: 65387}, opt = 315.217
+> progress 13.112%, elapsed 27 s, estimated 205 s, iters = {MDP: 73177}, opt = 315.217
+2024-04-03 19:20:57,577 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:20:58,077 - synthesizer_pomdp.py - starting synthesis for obs_1
+2024-04-03 19:20:58,223 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:20:58,223 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+2024-04-03 19:20:58,226 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-04-03 19:20:58,226 - synthesizer.py - A(0,0)=(unrestrict), A(1,0)=(reboot)
+2024-04-03 19:20:58,226 - synthesizer.py - double-checking specification satisfiability:  : 0.19092177660614773
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"reward"}max=? [C{9500000000000001/10000000000000000}] 
+
+method: AR, synthesis time: 0.0 s
+number of holes: 2, family size: 16, quotient: 11 states / 41 actions
+explored: 100 %
+MDP stats: avg MDP size: 11, iterations: 13
+
+optimum: 0.190922
+--------------------
+2024-04-03 19:20:58,226 - synthesizer_pomdp.py - Terminate: False
+2024-04-03 19:20:58,226 - synthesizer_pomdp.py - Synthesizing optimal k=2 controller ...
+2024-04-03 19:20:58,226 - pomdp.py - unfolding 2-FSC template into POMDP ...
+2024-04-03 19:20:58,226 - pomdp.py - constructed quotient MDP having 21 states and 162 actions.
+2024-04-03 19:20:58,226 - pomdp.py - creating coloring ...
+2024-04-03 19:20:58,227 - synthesizer.py - synthesis initiated, design space: 8192
+2024-04-03 19:20:58,269 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-04-03 19:20:58,269 - synthesizer.py - A(0,0)=(unrestrict), A(0,1)=(steady), M(0,0)=0, M(0,1)=0, A(1,0)=(restrict), A(1,1)=(reboot), M(1,0)=1, M(1,1)=0, M(4,0)=0
+2024-04-03 19:20:58,269 - synthesizer.py - double-checking specification satisfiability:  : 270.03915808497584
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"reward"}max=? [C{9500000000000001/10000000000000000}] 
+
+method: AR, synthesis time: 0.04 s
+number of holes: 9, family size: 8192, quotient: 21 states / 162 actions
+explored: 100 %
+MDP stats: avg MDP size: 21, iterations: 179
+
+optimum: 270.039158
+--------------------
+2024-04-03 19:20:58,269 - synthesizer_pomdp.py - Terminate: False
+2024-04-03 19:20:58,270 - synthesizer_pomdp.py - Synthesizing optimal k=3 controller ...
+2024-04-03 19:20:58,270 - pomdp.py - unfolding 3-FSC template into POMDP ...
+2024-04-03 19:20:58,270 - pomdp.py - constructed quotient MDP having 31 states and 363 actions.
+2024-04-03 19:20:58,270 - pomdp.py - creating coloring ...
+2024-04-03 19:20:58,271 - synthesizer.py - synthesis initiated, design space: 1e6
+2024-04-03 19:20:59,353 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-04-03 19:20:59,353 - synthesizer.py - A(0,0)=(unrestrict), A(0,1)=(steady), A(0,2)=(steady), M(0,0)=0, M(0,1)=2, M(0,2)=0, A(1,0)=(steady), A(1,1)=(reboot), A(1,2)=(restrict), M(1,0)=2, M(1,1)=0, M(1,2)=1, M(4,0)=0
+2024-04-03 19:20:59,353 - synthesizer.py - double-checking specification satisfiability:  : 298.95166197528005
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"reward"}max=? [C{9500000000000001/10000000000000000}] 
+
+method: AR, synthesis time: 1.08 s
+number of holes: 13, family size: 1e6, quotient: 31 states / 363 actions
+explored: 100 %
+MDP stats: avg MDP size: 31, iterations: 3539
+
+optimum: 298.951662
+--------------------
+2024-04-03 19:20:59,353 - synthesizer_pomdp.py - Terminate: False
+2024-04-03 19:20:59,353 - synthesizer_pomdp.py - Synthesizing optimal k=4 controller ...
+2024-04-03 19:20:59,354 - pomdp.py - unfolding 4-FSC template into POMDP ...
+2024-04-03 19:20:59,354 - pomdp.py - constructed quotient MDP having 41 states and 644 actions.
+2024-04-03 19:20:59,354 - pomdp.py - creating coloring ...
+2024-04-03 19:20:59,354 - synthesizer.py - synthesis initiated, design space: 1e10
+> progress 27.106%, elapsed 3 s, estimated 11 s, iters = {MDP: 7477}, opt = 298.952
+> progress 27.481%, elapsed 6 s, estimated 21 s, iters = {MDP: 16184}, opt = 298.952
+> progress 28.27%, elapsed 9 s, estimated 31 s, iters = {MDP: 24857}, opt = 304.874
+> progress 28.965%, elapsed 12 s, estimated 41 s, iters = {MDP: 33364}, opt = 304.874
+> progress 29.438%, elapsed 15 s, estimated 50 s, iters = {MDP: 41905}, opt = 304.874
+> progress 30.699%, elapsed 18 s, estimated 58 s, iters = {MDP: 50038}, opt = 304.874
+> progress 31.895%, elapsed 21 s, estimated 65 s, iters = {MDP: 58337}, opt = 304.874
+> progress 32.642%, elapsed 24 s, estimated 73 s, iters = {MDP: 66940}, opt = 304.874
+> progress 34.518%, elapsed 27 s, estimated 78 s, iters = {MDP: 75122}, opt = 304.874
+2024-04-03 19:21:28,114 - synthesizer_ar_storm.py - Pausing synthesis
+
+------------------------------------
+
+PAYNT results: 
+281.34062388931903
+controller size: 20
+
+Storm results: 
+173.1485037369919
+controller size: 837
+
+------------------------------------
+
+used FSCs: {}
+FSCs used count: 0
+2024-04-03 19:21:28,614 - storm_pomdp_control.py - Interactive Storm resumed
+2024-04-03 19:21:28,614 - storm_pomdp_control.py - Updating FSC values in Storm
+2024-04-03 19:21:30,627 - storm_pomdp_control.py - Pausing Storm
+Finished exploring under-approximation MDP.
+Start analysis...
+-----------Storm-----------               
+Value = 288.9783216971633 | Time elapsed = 113.9s | FSC size = 745
+
+2024-04-03 19:21:44,441 - synthesizer_pomdp.py - 0 new threads for enhanced SAYNT created
+2024-04-03 19:21:44,441 - synthesizer_pomdp.py - total number of created threads: 2
+2024-04-03 19:21:44,441 - synthesizer_pomdp.py - number of currently active threads: 3
+2024-04-03 19:21:44,441 - synthesizer_pomdp.py - new synthesis time per thread: 30.0s
+2024-04-03 19:21:44,784 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:21:44,785 - synthesizer_ar_storm.py - Applying family split according to Storm results
+2024-04-03 19:21:44,785 - storm_pomdp_control.py - Main family based on data from Storm: reduced design space from 34359738368 to 113246208
+2024-04-03 19:21:44,785 - storm_pomdp_control.py - Main family based on data from Storm: reduced design space from 34359738368 to 113246208
+2024-04-03 19:21:44,785 - storm_pomdp_control.py - Main family based on data from Storm: reduced design space from 8589934592 to 37748736
+2024-04-03 19:21:44,785 - storm_pomdp_control.py - Main family based on data from Storm: reduced design space from 2147483648 to 12582912
+2024-04-03 19:21:44,785 - storm_pomdp_control.py - Main family based on data from Storm: reduced design space from 536870912 to 4194304
+2024-04-03 19:21:44,785 - storm_pomdp_control.py - Main family based on data from Storm: reduced design space from 33554432 to 1048576
+2024-04-03 19:21:44,786 - storm_pomdp_control.py - Main family based on data from Storm: reduced design space from 2097152 to 131072
+2024-04-03 19:21:44,786 - storm_pomdp_control.py - Main family based on data from Storm: reduced design space from 2097152 to 131072
+2024-04-03 19:21:44,786 - storm_pomdp_control.py - Main family based on data from Storm: reduced design space from 2097152 to 131072
+2024-04-03 19:21:44,786 - storm_pomdp_control.py - Main family based on data from Storm: reduced design space from 524288 to 131072
+2024-04-03 19:21:44,786 - synthesizer_ar_storm.py - State after Storm splitting: Main families - 10, Subfamilies - 57
+-----------PAYNT-----------                     
+Value = 282.05838614175246 | Time elapsed = 115.6s | FSC size = 20
+
+-----------PAYNT-----------                     
+Value = 282.0589101571064 | Time elapsed = 115.6s | FSC size = 20
+
+-----------PAYNT-----------                     
+Value = 283.3361487528589 | Time elapsed = 116.0s | FSC size = 20
+
+-----------PAYNT-----------                     
+Value = 283.3366782932574 | Time elapsed = 116.0s | FSC size = 20
+
+-----------PAYNT-----------                     
+Value = 285.0854105287057 | Time elapsed = 116.0s | FSC size = 20
+
+-----------PAYNT-----------                     
+Value = 285.08594809033946 | Time elapsed = 116.0s | FSC size = 20
+
+-----------PAYNT-----------                     
+Value = 286.0881057669048 | Time elapsed = 116.1s | FSC size = 20
+
+-----------PAYNT-----------                     
+Value = 286.0886549731759 | Time elapsed = 116.1s | FSC size = 20
+
+> progress 8.439%, elapsed 30 s, estimated 355 s, iters = {MDP: 72169}, opt = 286.089
+-----------PAYNT-----------                     
+Value = 286.7102565187111 | Time elapsed = 117.8s | FSC size = 20
+
+-----------PAYNT-----------                     
+Value = 286.71080702515087 | Time elapsed = 117.8s | FSC size = 20
+
+> progress 8.463%, elapsed 33 s, estimated 389 s, iters = {MDP: 80339}, opt = 286.711
+> progress 8.475%, elapsed 36 s, estimated 424 s, iters = {MDP: 88161}, opt = 286.711
+> progress 8.5%, elapsed 39 s, estimated 458 s, iters = {MDP: 96067}, opt = 286.711
+> progress 8.54%, elapsed 42 s, estimated 491 s, iters = {MDP: 103067}, opt = 286.711
+> progress 8.582%, elapsed 45 s, estimated 524 s, iters = {MDP: 110874}, opt = 286.711
+2024-04-03 19:22:04,124 - synthesizer_ar_storm.py - Main family synthesis done
+2024-04-03 19:22:04,124 - synthesizer_ar_storm.py - Subfamilies buffer contains: 57 families
+> progress 8.641%, elapsed 48 s, estimated 555 s, iters = {MDP: 118531}, opt = 286.711
+> progress 8.659%, elapsed 51 s, estimated 589 s, iters = {MDP: 126541}, opt = 286.711
+> progress 8.806%, elapsed 54 s, estimated 613 s, iters = {MDP: 134481}, opt = 286.711
+> progress 8.827%, elapsed 57 s, estimated 645 s, iters = {MDP: 142243}, opt = 286.711
+2024-04-03 19:22:14,475 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:22:14,975 - synthesizer_pomdp.py - starting synthesis for obs_0
+2024-04-03 19:22:15,280 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:22:15,280 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 14.685%, elapsed 30 s, estimated 204 s, iters = {MDP: 81587}, opt = 315.217
+> progress 15.07%, elapsed 33 s, estimated 218 s, iters = {MDP: 90264}, opt = 315.217
+> progress 15.847%, elapsed 36 s, estimated 227 s, iters = {MDP: 98697}, opt = 315.217
+> progress 16.266%, elapsed 39 s, estimated 239 s, iters = {MDP: 107291}, opt = 315.217
+> progress 16.634%, elapsed 42 s, estimated 252 s, iters = {MDP: 115284}, opt = 315.217
+> progress 17.626%, elapsed 45 s, estimated 255 s, iters = {MDP: 123827}, opt = 315.217
+> progress 18.22%, elapsed 48 s, estimated 263 s, iters = {MDP: 132183}, opt = 315.217
+> progress 21.158%, elapsed 51 s, estimated 241 s, iters = {MDP: 140344}, opt = 315.217
+> progress 22.426%, elapsed 54 s, estimated 240 s, iters = {MDP: 148682}, opt = 315.217
+> progress 23.275%, elapsed 57 s, estimated 244 s, iters = {MDP: 157164}, opt = 315.217
+2024-04-03 19:22:45,006 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:22:45,506 - synthesizer_pomdp.py - starting synthesis for obs_1
+2024-04-03 19:22:45,812 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:22:45,812 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 37.903%, elapsed 30 s, estimated 79 s, iters = {MDP: 82748}, opt = 304.874
+> progress 38.419%, elapsed 33 s, estimated 85 s, iters = {MDP: 91423}, opt = 304.874
+> progress 38.898%, elapsed 36 s, estimated 92 s, iters = {MDP: 99381}, opt = 304.874
+> progress 40.69%, elapsed 39 s, estimated 95 s, iters = {MDP: 107057}, opt = 304.874
+> progress 42.347%, elapsed 42 s, estimated 99 s, iters = {MDP: 114977}, opt = 304.874
+> progress 44.767%, elapsed 45 s, estimated 100 s, iters = {MDP: 123005}, opt = 304.874
+> progress 47.126%, elapsed 48 s, estimated 101 s, iters = {MDP: 130701}, opt = 304.874
+> progress 52.111%, elapsed 51 s, estimated 97 s, iters = {MDP: 138661}, opt = 304.96
+> progress 52.574%, elapsed 54 s, estimated 102 s, iters = {MDP: 147053}, opt = 309.492
+> progress 53.71%, elapsed 57 s, estimated 106 s, iters = {MDP: 155248}, opt = 309.492
+2024-04-03 19:23:15,542 - synthesizer_ar_storm.py - Pausing synthesis
+
+------------------------------------
+
+PAYNT results: 
+286.71080702515087
+controller size: 20
+
+Storm results: 
+288.9783216971633
+controller size: 745
+
+------------------------------------
+
+used FSCs: {1: 168}
+FSCs used count: 168
+2024-04-03 19:23:16,043 - storm_pomdp_control.py - Interactive Storm resumed
+2024-04-03 19:23:16,043 - storm_pomdp_control.py - Updating FSC values in Storm
+2024-04-03 19:23:18,055 - storm_pomdp_control.py - Pausing Storm
+Finished exploring under-approximation MDP.
+Start analysis...
+-----------Storm-----------               
+Value = 288.9787987803254 | Time elapsed = 222.3s | FSC size = 745
+
+2024-04-03 19:23:33,186 - synthesizer_pomdp.py - 0 new threads for enhanced SAYNT created
+2024-04-03 19:23:33,186 - synthesizer_pomdp.py - total number of created threads: 2
+2024-04-03 19:23:33,186 - synthesizer_pomdp.py - number of currently active threads: 3
+2024-04-03 19:23:33,186 - synthesizer_pomdp.py - new synthesis time per thread: 30.0s
+2024-04-03 19:23:33,214 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:23:33,215 - synthesizer_ar_storm.py - Applying family split according to Storm results
+2024-04-03 19:23:33,215 - synthesizer_ar_storm.py - State after Storm splitting: Main families - 0, Subfamilies - 49
+> progress 8.866%, elapsed 60 s, estimated 676 s, iters = {MDP: 149755}, opt = 286.711
+> progress 9.116%, elapsed 63 s, estimated 691 s, iters = {MDP: 156993}, opt = 286.711
+> progress 9.349%, elapsed 66 s, estimated 706 s, iters = {MDP: 163458}, opt = 286.711
+> progress 9.441%, elapsed 69 s, estimated 730 s, iters = {MDP: 171031}, opt = 286.711
+> progress 9.592%, elapsed 72 s, estimated 750 s, iters = {MDP: 177927}, opt = 286.711
+> progress 9.601%, elapsed 75 s, estimated 781 s, iters = {MDP: 185910}, opt = 286.711
+> progress 9.655%, elapsed 78 s, estimated 807 s, iters = {MDP: 193656}, opt = 286.711
+> progress 9.669%, elapsed 81 s, estimated 837 s, iters = {MDP: 201362}, opt = 286.711
+> progress 9.69%, elapsed 84 s, estimated 866 s, iters = {MDP: 208166}, opt = 286.711
+> progress 9.701%, elapsed 87 s, estimated 896 s, iters = {MDP: 215242}, opt = 286.711
+2024-04-03 19:24:03,227 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:24:03,727 - synthesizer_pomdp.py - starting synthesis for obs_0
+2024-04-03 19:24:04,222 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:24:04,222 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 26.699%, elapsed 60 s, estimated 224 s, iters = {MDP: 164869}, opt = 315.217
+> progress 27.545%, elapsed 63 s, estimated 228 s, iters = {MDP: 173394}, opt = 315.217
+> progress 28.741%, elapsed 66 s, estimated 229 s, iters = {MDP: 182044}, opt = 315.217
+> progress 29.459%, elapsed 69 s, estimated 234 s, iters = {MDP: 190515}, opt = 315.217
+> progress 31.418%, elapsed 72 s, estimated 229 s, iters = {MDP: 198698}, opt = 315.217
+> progress 32.189%, elapsed 75 s, estimated 233 s, iters = {MDP: 207074}, opt = 315.217
+> progress 32.968%, elapsed 78 s, estimated 236 s, iters = {MDP: 215153}, opt = 315.217
+> progress 34.628%, elapsed 81 s, estimated 233 s, iters = {MDP: 223821}, opt = 315.217
+> progress 38.117%, elapsed 84 s, estimated 220 s, iters = {MDP: 231918}, opt = 315.217
+> progress 38.828%, elapsed 87 s, estimated 224 s, iters = {MDP: 240318}, opt = 315.217
+2024-04-03 19:24:33,759 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:24:34,259 - synthesizer_pomdp.py - starting synthesis for obs_1
+2024-04-03 19:24:34,264 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:24:34,264 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 54.18%, elapsed 60 s, estimated 110 s, iters = {MDP: 163780}, opt = 309.492
+> progress 55.698%, elapsed 63 s, estimated 113 s, iters = {MDP: 171762}, opt = 309.492
+> progress 56.916%, elapsed 66 s, estimated 115 s, iters = {MDP: 180192}, opt = 309.492
+> progress 57.649%, elapsed 69 s, estimated 119 s, iters = {MDP: 189002}, opt = 309.492
+> progress 59.524%, elapsed 72 s, estimated 120 s, iters = {MDP: 197471}, opt = 309.492
+> progress 62.951%, elapsed 75 s, estimated 119 s, iters = {MDP: 206353}, opt = 309.492
+> progress 63.489%, elapsed 78 s, estimated 122 s, iters = {MDP: 215001}, opt = 309.492
+> progress 64.268%, elapsed 81 s, estimated 126 s, iters = {MDP: 223334}, opt = 309.492
+> progress 65.878%, elapsed 84 s, estimated 127 s, iters = {MDP: 231747}, opt = 309.492
+> progress 69.687%, elapsed 87 s, estimated 124 s, iters = {MDP: 239478}, opt = 309.492
+2024-04-03 19:25:04,294 - synthesizer_ar_storm.py - Pausing synthesis
+
+------------------------------------
+
+PAYNT results: 
+286.71080702515087
+controller size: 20
+
+Storm results: 
+288.9787987803254
+controller size: 745
+
+------------------------------------
+
+used FSCs: {0: 168}
+FSCs used count: 168
+2024-04-03 19:25:04,795 - storm_pomdp_control.py - Interactive Storm resumed
+2024-04-03 19:25:04,796 - storm_pomdp_control.py - Updating FSC values in Storm
+2024-04-03 19:25:06,808 - storm_pomdp_control.py - Pausing Storm
+Finished exploring under-approximation MDP.
+Start analysis...
+-----------Storm-----------               
+Value = 288.9787987803254 | Time elapsed = 332.1s | FSC size = 745
+
+2024-04-03 19:25:22,599 - synthesizer_pomdp.py - 0 new threads for enhanced SAYNT created
+2024-04-03 19:25:22,599 - synthesizer_pomdp.py - total number of created threads: 2
+2024-04-03 19:25:22,599 - synthesizer_pomdp.py - number of currently active threads: 3
+2024-04-03 19:25:22,599 - synthesizer_pomdp.py - new synthesis time per thread: 30.0s
+2024-04-03 19:25:22,958 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:25:22,958 - synthesizer_ar_storm.py - Applying family split according to Storm results
+2024-04-03 19:25:22,958 - synthesizer_ar_storm.py - State after Storm splitting: Main families - 0, Subfamilies - 41
+> progress 9.733%, elapsed 90 s, estimated 924 s, iters = {MDP: 223003}, opt = 286.711
+> progress 9.811%, elapsed 93 s, estimated 948 s, iters = {MDP: 230073}, opt = 286.711
+> progress 10.098%, elapsed 96 s, estimated 950 s, iters = {MDP: 237055}, opt = 286.711
+> progress 10.624%, elapsed 99 s, estimated 931 s, iters = {MDP: 244293}, opt = 286.711
+> progress 11.298%, elapsed 102 s, estimated 902 s, iters = {MDP: 251812}, opt = 286.711
+> progress 11.707%, elapsed 105 s, estimated 896 s, iters = {MDP: 259211}, opt = 286.711
+> progress 11.966%, elapsed 108 s, estimated 902 s, iters = {MDP: 266652}, opt = 286.711
+> progress 12.135%, elapsed 111 s, estimated 914 s, iters = {MDP: 274544}, opt = 286.711
+> progress 12.436%, elapsed 114 s, estimated 916 s, iters = {MDP: 281984}, opt = 286.711
+> progress 12.73%, elapsed 117 s, estimated 919 s, iters = {MDP: 289359}, opt = 286.711
+2024-04-03 19:25:52,635 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:25:53,135 - synthesizer_pomdp.py - starting synthesis for obs_0
+2024-04-03 19:25:53,459 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:25:53,459 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 40.759%, elapsed 90 s, estimated 220 s, iters = {MDP: 248990}, opt = 315.217
+> progress 43.914%, elapsed 93 s, estimated 211 s, iters = {MDP: 257524}, opt = 315.217
+> progress 45.448%, elapsed 96 s, estimated 211 s, iters = {MDP: 265139}, opt = 315.217
+> progress 50.888%, elapsed 99 s, estimated 194 s, iters = {MDP: 273165}, opt = 315.217
+> progress 52.479%, elapsed 102 s, estimated 194 s, iters = {MDP: 281162}, opt = 315.217
+> progress 53.652%, elapsed 105 s, estimated 195 s, iters = {MDP: 289245}, opt = 315.217
+> progress 54.334%, elapsed 108 s, estimated 198 s, iters = {MDP: 297918}, opt = 315.217
+> progress 56.134%, elapsed 111 s, estimated 197 s, iters = {MDP: 306041}, opt = 315.217
+> progress 57.184%, elapsed 114 s, estimated 199 s, iters = {MDP: 314644}, opt = 315.217
+2024-04-03 19:26:23,171 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:26:23,671 - synthesizer_pomdp.py - starting synthesis for obs_1
+2024-04-03 19:26:23,994 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:26:23,994 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 72.112%, elapsed 90 s, estimated 124 s, iters = {MDP: 247800}, opt = 309.492
+> progress 78.665%, elapsed 93 s, estimated 118 s, iters = {MDP: 254804}, opt = 309.492
+> progress 82.208%, elapsed 96 s, estimated 116 s, iters = {MDP: 262090}, opt = 309.492
+> progress 88.439%, elapsed 99 s, estimated 111 s, iters = {MDP: 269630}, opt = 309.492
+> progress 98.664%, elapsed 102 s, estimated 103 s, iters = {MDP: 277343}, opt = 309.492
+2024-04-03 19:26:37,514 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-04-03 19:26:37,514 - synthesizer.py - A(0,0)=(unrestrict), A(0,1)=(steady), A(0,2)=(steady), A(0,3)=(steady), M(0,0)=0, M(0,1)=3, M(0,2)=3, M(0,3)=0, A(1,0)=(steady), A(1,1)=(restrict), A(1,2)=(reboot), A(1,3)=(steady), M(1,0)=1, M(1,1)=2, M(1,2)=0, M(1,3)=1, M(4,0)=0
+2024-04-03 19:26:37,514 - synthesizer.py - double-checking specification satisfiability:  : 309.4918391348687
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"reward"}max=? [C{9500000000000001/10000000000000000}] 
+
+method: AR, synthesis time: 102.04 s
+number of holes: 17, family size: 1e10, quotient: 41 states / 644 actions
+explored: 100 %
+MDP stats: avg MDP size: 41, iterations: 277409
+
+optimum: 309.491839
+--------------------
+2024-04-03 19:26:37,514 - synthesizer_pomdp.py - Terminate: False
+2024-04-03 19:26:37,515 - synthesizer_pomdp.py - Synthesizing optimal k=5 controller ...
+2024-04-03 19:26:37,515 - pomdp.py - unfolding 5-FSC template into POMDP ...
+2024-04-03 19:26:37,515 - pomdp.py - constructed quotient MDP having 51 states and 1005 actions.
+2024-04-03 19:26:37,515 - pomdp.py - creating coloring ...
+2024-04-03 19:26:37,517 - synthesizer.py - synthesis initiated, design space: 1e13
+> progress 9.897%, elapsed 3 s, estimated 30 s, iters = {MDP: 4425}, opt = 309.492
+> progress 15.338%, elapsed 6 s, estimated 39 s, iters = {MDP: 9153}, opt = 309.492
+> progress 25.128%, elapsed 9 s, estimated 35 s, iters = {MDP: 13642}, opt = 309.492
+> progress 25.454%, elapsed 12 s, estimated 47 s, iters = {MDP: 19182}, opt = 309.492
+> progress 25.522%, elapsed 15 s, estimated 58 s, iters = {MDP: 25135}, opt = 309.492
+2024-04-03 19:26:53,707 - synthesizer_ar_storm.py - Pausing synthesis
+
+------------------------------------
+
+PAYNT results: 
+286.71080702515087
+controller size: 20
+
+Storm results: 
+288.9787987803254
+controller size: 745
+
+------------------------------------
+
+used FSCs: {0: 168}
+FSCs used count: 168
+2024-04-03 19:26:54,208 - storm_pomdp_control.py - Interactive Storm resumed
+2024-04-03 19:26:54,208 - storm_pomdp_control.py - Updating FSC values in Storm
+2024-04-03 19:26:56,220 - storm_pomdp_control.py - Pausing Storm
+Finished exploring under-approximation MDP.
+Start analysis...
+-----------Storm-----------               
+Value = 288.9787987803254 | Time elapsed = 442.5s | FSC size = 745
+
+2024-04-03 19:27:13,028 - synthesizer_pomdp.py - 0 new threads for enhanced SAYNT created
+2024-04-03 19:27:13,028 - synthesizer_pomdp.py - total number of created threads: 2
+2024-04-03 19:27:13,028 - synthesizer_pomdp.py - number of currently active threads: 3
+2024-04-03 19:27:13,028 - synthesizer_pomdp.py - new synthesis time per thread: 30.0s
+2024-04-03 19:27:13,346 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:27:13,346 - synthesizer_ar_storm.py - Applying family split according to Storm results
+2024-04-03 19:27:13,346 - synthesizer_ar_storm.py - State after Storm splitting: Main families - 0, Subfamilies - 39
+> progress 12.74%, elapsed 120 s, estimated 941 s, iters = {MDP: 297729}, opt = 286.711
+> progress 12.759%, elapsed 123 s, estimated 964 s, iters = {MDP: 305691}, opt = 286.711
+> progress 12.769%, elapsed 126 s, estimated 986 s, iters = {MDP: 314045}, opt = 286.711
+> progress 12.892%, elapsed 129 s, estimated 1000 s, iters = {MDP: 321885}, opt = 286.711
+> progress 12.939%, elapsed 132 s, estimated 1020 s, iters = {MDP: 329385}, opt = 286.711
+> progress 12.952%, elapsed 135 s, estimated 1042 s, iters = {MDP: 337104}, opt = 286.711
+> progress 12.977%, elapsed 138 s, estimated 1063 s, iters = {MDP: 345337}, opt = 286.711
+> progress 12.991%, elapsed 141 s, estimated 1085 s, iters = {MDP: 353283}, opt = 286.711
+> progress 13.05%, elapsed 144 s, estimated 1103 s, iters = {MDP: 361171}, opt = 286.711
+> progress 13.062%, elapsed 147 s, estimated 1125 s, iters = {MDP: 369361}, opt = 286.711
+2024-04-03 19:27:43,058 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:27:43,558 - synthesizer_pomdp.py - starting synthesis for obs_0
+2024-04-03 19:27:43,875 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:27:43,875 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 57.971%, elapsed 117 s, estimated 201 s, iters = {MDP: 323506}, opt = 315.217
+> progress 60.992%, elapsed 120 s, estimated 196 s, iters = {MDP: 332547}, opt = 315.217
+> progress 63.136%, elapsed 123 s, estimated 194 s, iters = {MDP: 341407}, opt = 315.217
+> progress 64.121%, elapsed 126 s, estimated 196 s, iters = {MDP: 349885}, opt = 315.217
+> progress 65.784%, elapsed 129 s, estimated 196 s, iters = {MDP: 358481}, opt = 315.217
+> progress 69.366%, elapsed 132 s, estimated 190 s, iters = {MDP: 366621}, opt = 315.217
+> progress 72.012%, elapsed 135 s, estimated 187 s, iters = {MDP: 374856}, opt = 315.217
+> progress 77.294%, elapsed 138 s, estimated 178 s, iters = {MDP: 383194}, opt = 315.217
+> progress 78.955%, elapsed 141 s, estimated 178 s, iters = {MDP: 391515}, opt = 315.217
+> progress 81.389%, elapsed 144 s, estimated 176 s, iters = {MDP: 399315}, opt = 315.217
+2024-04-03 19:28:13,595 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:28:14,094 - synthesizer_pomdp.py - starting synthesis for obs_1
+2024-04-03 19:28:14,409 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:28:14,409 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 25.527%, elapsed 18 s, estimated 70 s, iters = {MDP: 31857}, opt = 309.492
+> progress 25.544%, elapsed 21 s, estimated 82 s, iters = {MDP: 38018}, opt = 309.492
+> progress 25.546%, elapsed 24 s, estimated 93 s, iters = {MDP: 45061}, opt = 309.492
+> progress 25.552%, elapsed 27 s, estimated 105 s, iters = {MDP: 51482}, opt = 309.492
+> progress 25.618%, elapsed 30 s, estimated 117 s, iters = {MDP: 57173}, opt = 309.492
+> progress 25.622%, elapsed 33 s, estimated 128 s, iters = {MDP: 63799}, opt = 309.492
+> progress 25.625%, elapsed 36 s, estimated 140 s, iters = {MDP: 70561}, opt = 309.492
+> progress 25.641%, elapsed 39 s, estimated 152 s, iters = {MDP: 77171}, opt = 309.492
+> progress 25.646%, elapsed 42 s, estimated 163 s, iters = {MDP: 83695}, opt = 309.492
+> progress 25.7%, elapsed 45 s, estimated 175 s, iters = {MDP: 90167}, opt = 309.492
+2024-04-03 19:28:44,130 - synthesizer_ar_storm.py - Pausing synthesis
+
+------------------------------------
+
+PAYNT results: 
+286.71080702515087
+controller size: 20
+
+Storm results: 
+288.9787987803254
+controller size: 745
+
+------------------------------------
+
+used FSCs: {0: 168}
+FSCs used count: 168
+2024-04-03 19:28:44,631 - storm_pomdp_control.py - Interactive Storm resumed
+2024-04-03 19:28:44,631 - storm_pomdp_control.py - Updating FSC values in Storm
+2024-04-03 19:28:46,643 - storm_pomdp_control.py - Pausing Storm
+Finished exploring under-approximation MDP.
+Start analysis...
+-----------Storm-----------               
+Value = 288.9787987803254 | Time elapsed = 553.9s | FSC size = 745
+
+2024-04-03 19:29:04,619 - synthesizer_pomdp.py - 0 new threads for enhanced SAYNT created
+2024-04-03 19:29:04,619 - synthesizer_pomdp.py - total number of created threads: 2
+2024-04-03 19:29:04,619 - synthesizer_pomdp.py - number of currently active threads: 3
+2024-04-03 19:29:04,619 - synthesizer_pomdp.py - new synthesis time per thread: 30.0s
+2024-04-03 19:29:04,764 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:29:04,764 - synthesizer_ar_storm.py - Applying family split according to Storm results
+2024-04-03 19:29:04,765 - synthesizer_ar_storm.py - State after Storm splitting: Main families - 0, Subfamilies - 37
+> progress 13.086%, elapsed 150 s, estimated 1146 s, iters = {MDP: 377351}, opt = 286.711
+> progress 13.103%, elapsed 153 s, estimated 1167 s, iters = {MDP: 384945}, opt = 286.711
+> progress 13.184%, elapsed 156 s, estimated 1183 s, iters = {MDP: 392732}, opt = 286.711
+> progress 13.227%, elapsed 159 s, estimated 1202 s, iters = {MDP: 400383}, opt = 286.711
+> progress 13.32%, elapsed 162 s, estimated 1216 s, iters = {MDP: 407948}, opt = 286.711
+> progress 13.356%, elapsed 165 s, estimated 1235 s, iters = {MDP: 415899}, opt = 286.711
+> progress 13.387%, elapsed 168 s, estimated 1255 s, iters = {MDP: 423497}, opt = 286.711
+> progress 13.676%, elapsed 171 s, estimated 1250 s, iters = {MDP: 430447}, opt = 286.711
+> progress 13.857%, elapsed 174 s, estimated 1255 s, iters = {MDP: 437353}, opt = 286.711
+> progress 14.113%, elapsed 177 s, estimated 1254 s, iters = {MDP: 444380}, opt = 286.711
+2024-04-03 19:29:34,655 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:29:35,155 - synthesizer_pomdp.py - starting synthesis for obs_0
+2024-04-03 19:29:35,308 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:29:35,308 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 82.949%, elapsed 147 s, estimated 177 s, iters = {MDP: 407751}, opt = 315.217
+> progress 88.048%, elapsed 150 s, estimated 170 s, iters = {MDP: 416440}, opt = 315.217
+> progress 89.361%, elapsed 153 s, estimated 171 s, iters = {MDP: 424928}, opt = 315.217
+> progress 95.475%, elapsed 156 s, estimated 163 s, iters = {MDP: 433259}, opt = 315.217
+2024-04-03 19:29:45,938 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-04-03 19:29:45,938 - synthesizer.py - A(0,0)=(steady), A(0,1)=(unrestrict), A(0,2)=(steady), A(0,3)=(steady), M(0,0)=3, M(0,1)=1, M(0,2)=3, M(0,3)=1, A(1,0)=(reboot), A(1,1)=(steady), A(1,2)=(restrict), A(1,3)=(steady), M(1,0)=1, M(1,1)=2, M(1,2)=0, M(1,3)=2, M(4,0)=0
+2024-04-03 19:29:45,938 - synthesizer.py - double-checking specification satisfiability:  : 315.2167536287917
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"reward"}max=? [C{9500000000000001/10000000000000000}] 
+
+method: AR, synthesis time: 157.14 s
+number of holes: 17, family size: 1e10, quotient: 41 states / 644 actions
+explored: 100 %
+MDP stats: avg MDP size: 41, iterations: 435843
+
+optimum: 315.216754
+--------------------
+2024-04-03 19:29:45,939 - synthesizer_pomdp.py - Terminate: False
+2024-04-03 19:29:45,939 - synthesizer_pomdp.py - Synthesizing optimal k=5 controller ...
+2024-04-03 19:29:45,939 - pomdp.py - unfolding 5-FSC template into POMDP ...
+2024-04-03 19:29:45,940 - pomdp.py - constructed quotient MDP having 51 states and 1005 actions.
+2024-04-03 19:29:45,941 - pomdp.py - creating coloring ...
+2024-04-03 19:29:45,943 - synthesizer.py - synthesis initiated, design space: 1e13
+> progress 0.715%, elapsed 3 s, estimated 419 s, iters = {MDP: 5639}, opt = 315.217
+> progress 1.107%, elapsed 6 s, estimated 541 s, iters = {MDP: 11508}, opt = 315.217
+> progress 1.716%, elapsed 9 s, estimated 524 s, iters = {MDP: 17421}, opt = 315.217
+> progress 2.01%, elapsed 12 s, estimated 597 s, iters = {MDP: 23172}, opt = 315.217
+> progress 2.084%, elapsed 15 s, estimated 719 s, iters = {MDP: 28656}, opt = 315.217
+> progress 2.088%, elapsed 18 s, estimated 861 s, iters = {MDP: 34649}, opt = 315.217
+2024-04-03 19:30:05,191 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:30:05,691 - synthesizer_pomdp.py - starting synthesis for obs_1
+2024-04-03 19:30:05,835 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:30:05,835 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 25.74%, elapsed 48 s, estimated 186 s, iters = {MDP: 96229}, opt = 309.492
+> progress 25.837%, elapsed 51 s, estimated 197 s, iters = {MDP: 102191}, opt = 309.492
+> progress 25.911%, elapsed 54 s, estimated 208 s, iters = {MDP: 107923}, opt = 309.492
+> progress 25.917%, elapsed 57 s, estimated 219 s, iters = {MDP: 114331}, opt = 309.492
+> progress 25.918%, elapsed 60 s, estimated 231 s, iters = {MDP: 120808}, opt = 309.492
+> progress 25.935%, elapsed 63 s, estimated 242 s, iters = {MDP: 127213}, opt = 309.492
+> progress 25.94%, elapsed 66 s, estimated 254 s, iters = {MDP: 133431}, opt = 309.492
+> progress 25.984%, elapsed 69 s, estimated 265 s, iters = {MDP: 139521}, opt = 309.492
+> progress 26.008%, elapsed 72 s, estimated 276 s, iters = {MDP: 145654}, opt = 309.492
+> progress 26.011%, elapsed 75 s, estimated 288 s, iters = {MDP: 152817}, opt = 309.492
+2024-04-03 19:30:35,727 - synthesizer_ar_storm.py - Pausing synthesis
+
+------------------------------------
+
+PAYNT results: 
+286.71080702515087
+controller size: 20
+
+Storm results: 
+288.9787987803254
+controller size: 745
+
+------------------------------------
+
+used FSCs: {0: 168}
+FSCs used count: 168
+2024-04-03 19:30:36,228 - storm_pomdp_control.py - Interactive Storm resumed
+2024-04-03 19:30:36,228 - storm_pomdp_control.py - Updating FSC values in Storm
+2024-04-03 19:30:38,240 - storm_pomdp_control.py - Pausing Storm
+Finished exploring under-approximation MDP.
+Start analysis...
+-----------Storm-----------               
+Value = 288.9787987803254 | Time elapsed = 666.5s | FSC size = 745
+
+2024-04-03 19:30:57,179 - synthesizer_pomdp.py - 0 new threads for enhanced SAYNT created
+2024-04-03 19:30:57,179 - synthesizer_pomdp.py - total number of created threads: 2
+2024-04-03 19:30:57,179 - synthesizer_pomdp.py - number of currently active threads: 3
+2024-04-03 19:30:57,179 - synthesizer_pomdp.py - new synthesis time per thread: 30.0s
+2024-04-03 19:30:57,398 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:30:57,399 - synthesizer_ar_storm.py - Applying family split according to Storm results
+2024-04-03 19:30:57,399 - synthesizer_ar_storm.py - State after Storm splitting: Main families - 0, Subfamilies - 35
+> progress 14.912%, elapsed 180 s, estimated 1207 s, iters = {MDP: 450865}, opt = 286.711
+> progress 15.219%, elapsed 183 s, estimated 1202 s, iters = {MDP: 457419}, opt = 286.711
+> progress 15.556%, elapsed 186 s, estimated 1195 s, iters = {MDP: 463972}, opt = 286.711
+> progress 17.063%, elapsed 189 s, estimated 1107 s, iters = {MDP: 470959}, opt = 286.711
+> progress 17.671%, elapsed 192 s, estimated 1086 s, iters = {MDP: 478310}, opt = 286.711
+> progress 18.254%, elapsed 195 s, estimated 1068 s, iters = {MDP: 485418}, opt = 286.711
+> progress 20.719%, elapsed 198 s, estimated 955 s, iters = {MDP: 491510}, opt = 286.711
+> progress 21.078%, elapsed 201 s, estimated 953 s, iters = {MDP: 498699}, opt = 286.711
+> progress 21.27%, elapsed 204 s, estimated 959 s, iters = {MDP: 505791}, opt = 286.711
+> progress 21.483%, elapsed 207 s, estimated 963 s, iters = {MDP: 512717}, opt = 286.711
+2024-04-03 19:31:27,215 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:31:27,715 - synthesizer_pomdp.py - starting synthesis for obs_0
+2024-04-03 19:31:27,903 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:31:27,903 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 2.09%, elapsed 21 s, estimated 1004 s, iters = {MDP: 40950}, opt = 315.217
+> progress 2.102%, elapsed 24 s, estimated 1141 s, iters = {MDP: 47491}, opt = 315.217
+> progress 2.108%, elapsed 27 s, estimated 1280 s, iters = {MDP: 54119}, opt = 315.217
+> progress 2.11%, elapsed 30 s, estimated 1421 s, iters = {MDP: 60198}, opt = 315.217
+> progress 2.114%, elapsed 33 s, estimated 1560 s, iters = {MDP: 66502}, opt = 315.217
+> progress 2.164%, elapsed 36 s, estimated 1663 s, iters = {MDP: 72010}, opt = 315.217
+> progress 2.182%, elapsed 39 s, estimated 1787 s, iters = {MDP: 77190}, opt = 315.217
+> progress 2.186%, elapsed 42 s, estimated 1920 s, iters = {MDP: 82479}, opt = 315.217
+> progress 2.188%, elapsed 45 s, estimated 2056 s, iters = {MDP: 88489}, opt = 315.217
+> progress 2.194%, elapsed 48 s, estimated 2187 s, iters = {MDP: 94110}, opt = 315.217
+2024-04-03 19:31:57,751 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:31:58,251 - synthesizer_pomdp.py - starting synthesis for obs_1
+2024-04-03 19:31:58,446 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:31:58,446 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 26.015%, elapsed 78 s, estimated 299 s, iters = {MDP: 159061}, opt = 309.492
+> progress 26.028%, elapsed 81 s, estimated 311 s, iters = {MDP: 165414}, opt = 309.492
+> progress 26.034%, elapsed 84 s, estimated 322 s, iters = {MDP: 171978}, opt = 309.492
+> progress 26.039%, elapsed 87 s, estimated 334 s, iters = {MDP: 178520}, opt = 309.492
+> progress 26.111%, elapsed 90 s, estimated 344 s, iters = {MDP: 184569}, opt = 309.492
+> progress 26.131%, elapsed 93 s, estimated 355 s, iters = {MDP: 190801}, opt = 309.492
+> progress 26.306%, elapsed 96 s, estimated 364 s, iters = {MDP: 196730}, opt = 309.492
+> progress 26.328%, elapsed 99 s, estimated 376 s, iters = {MDP: 203174}, opt = 309.492
+> progress 26.403%, elapsed 102 s, estimated 386 s, iters = {MDP: 209165}, opt = 309.492
+> progress 26.423%, elapsed 105 s, estimated 397 s, iters = {MDP: 215183}, opt = 309.492
+2024-04-03 19:32:28,286 - synthesizer_ar_storm.py - Pausing synthesis
+
+------------------------------------
+
+PAYNT results: 
+286.71080702515087
+controller size: 20
+
+Storm results: 
+288.9787987803254
+controller size: 745
+
+------------------------------------
+
+used FSCs: {0: 168}
+FSCs used count: 168
+2024-04-03 19:32:28,788 - storm_pomdp_control.py - Interactive Storm resumed
+2024-04-03 19:32:28,788 - storm_pomdp_control.py - Updating FSC values in Storm
+2024-04-03 19:32:30,800 - storm_pomdp_control.py - Pausing Storm
+Finished exploring under-approximation MDP.
+Start analysis...
+-----------Storm-----------               
+Value = 288.9787987803254 | Time elapsed = 778.1s | FSC size = 745
+
+2024-04-03 19:32:48,612 - synthesizer_pomdp.py - 0 new threads for enhanced SAYNT created
+2024-04-03 19:32:48,613 - synthesizer_pomdp.py - total number of created threads: 2
+2024-04-03 19:32:48,613 - synthesizer_pomdp.py - number of currently active threads: 3
+2024-04-03 19:32:48,613 - synthesizer_pomdp.py - new synthesis time per thread: 30.0s
+2024-04-03 19:32:48,958 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:32:48,958 - synthesizer_ar_storm.py - Applying family split according to Storm results
+2024-04-03 19:32:48,959 - synthesizer_ar_storm.py - State after Storm splitting: Main families - 0, Subfamilies - 29
+> progress 21.705%, elapsed 210 s, estimated 967 s, iters = {MDP: 520438}, opt = 286.711
+> progress 22.266%, elapsed 213 s, estimated 956 s, iters = {MDP: 527378}, opt = 286.711
+> progress 22.652%, elapsed 216 s, estimated 953 s, iters = {MDP: 534614}, opt = 286.711
+> progress 22.779%, elapsed 219 s, estimated 961 s, iters = {MDP: 542092}, opt = 286.711
+> progress 23.045%, elapsed 222 s, estimated 963 s, iters = {MDP: 549845}, opt = 286.711
+> progress 23.365%, elapsed 225 s, estimated 963 s, iters = {MDP: 557403}, opt = 286.711
+> progress 24.132%, elapsed 228 s, estimated 944 s, iters = {MDP: 563548}, opt = 286.711
+> progress 24.534%, elapsed 231 s, estimated 941 s, iters = {MDP: 570514}, opt = 286.711
+> progress 24.96%, elapsed 234 s, estimated 937 s, iters = {MDP: 577665}, opt = 286.711
+> progress 25.207%, elapsed 237 s, estimated 940 s, iters = {MDP: 584639}, opt = 286.711
+2024-04-03 19:33:18,649 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:33:19,149 - synthesizer_pomdp.py - starting synthesis for obs_0
+2024-04-03 19:33:19,460 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:33:19,460 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 2.205%, elapsed 51 s, estimated 2313 s, iters = {MDP: 99933}, opt = 315.217
+> progress 2.206%, elapsed 54 s, estimated 2447 s, iters = {MDP: 106749}, opt = 315.217
+> progress 2.21%, elapsed 57 s, estimated 2579 s, iters = {MDP: 112882}, opt = 315.217
+> progress 2.212%, elapsed 60 s, estimated 2712 s, iters = {MDP: 119532}, opt = 315.217
+> progress 2.282%, elapsed 63 s, estimated 2759 s, iters = {MDP: 125638}, opt = 315.217
+> progress 2.301%, elapsed 66 s, estimated 2868 s, iters = {MDP: 131903}, opt = 315.217
+> progress 2.309%, elapsed 69 s, estimated 2987 s, iters = {MDP: 138343}, opt = 315.217
+> progress 2.457%, elapsed 72 s, estimated 2930 s, iters = {MDP: 144332}, opt = 315.217
+> progress 2.475%, elapsed 75 s, estimated 3029 s, iters = {MDP: 150800}, opt = 315.217
+> progress 2.48%, elapsed 78 s, estimated 3145 s, iters = {MDP: 157421}, opt = 315.217
+2024-04-03 19:33:49,178 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:33:49,679 - synthesizer_pomdp.py - starting synthesis for obs_1
+2024-04-03 19:33:49,984 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:33:49,984 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 26.524%, elapsed 108 s, estimated 407 s, iters = {MDP: 220994}, opt = 309.492
+> progress 26.693%, elapsed 111 s, estimated 415 s, iters = {MDP: 226971}, opt = 309.492
+> progress 26.698%, elapsed 114 s, estimated 427 s, iters = {MDP: 233319}, opt = 309.492
+> progress 26.701%, elapsed 117 s, estimated 438 s, iters = {MDP: 239216}, opt = 309.492
+> progress 26.717%, elapsed 120 s, estimated 449 s, iters = {MDP: 245673}, opt = 309.492
+> progress 26.723%, elapsed 123 s, estimated 460 s, iters = {MDP: 252314}, opt = 309.492
+> progress 26.772%, elapsed 126 s, estimated 470 s, iters = {MDP: 258050}, opt = 309.492
+> progress 26.792%, elapsed 129 s, estimated 481 s, iters = {MDP: 264111}, opt = 309.492
+> progress 26.796%, elapsed 132 s, estimated 492 s, iters = {MDP: 270200}, opt = 309.492
+> progress 26.798%, elapsed 135 s, estimated 503 s, iters = {MDP: 276736}, opt = 309.492
+2024-04-03 19:34:19,713 - synthesizer_ar_storm.py - Pausing synthesis
+
+------------------------------------
+
+PAYNT results: 
+286.71080702515087
+controller size: 20
+
+Storm results: 
+288.9787987803254
+controller size: 745
+
+------------------------------------
+
+used FSCs: {0: 168}
+FSCs used count: 168
+2024-04-03 19:34:20,214 - storm_pomdp_control.py - Interactive Storm resumed
+2024-04-03 19:34:20,214 - storm_pomdp_control.py - Updating FSC values in Storm
+2024-04-03 19:34:22,226 - storm_pomdp_control.py - Pausing Storm
+Finished exploring under-approximation MDP.
+Start analysis...
+-----------Storm-----------               
+Value = 288.9787987803254 | Time elapsed = 890.5s | FSC size = 745
+
+2024-04-03 19:34:41,062 - synthesizer_pomdp.py - 0 new threads for enhanced SAYNT created
+2024-04-03 19:34:41,062 - synthesizer_pomdp.py - total number of created threads: 2
+2024-04-03 19:34:41,062 - synthesizer_pomdp.py - number of currently active threads: 3
+2024-04-03 19:34:41,062 - synthesizer_pomdp.py - new synthesis time per thread: 30.0s
+2024-04-03 19:34:41,372 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:34:41,372 - synthesizer_ar_storm.py - Applying family split according to Storm results
+2024-04-03 19:34:41,373 - synthesizer_ar_storm.py - State after Storm splitting: Main families - 0, Subfamilies - 25
+> progress 25.226%, elapsed 240 s, estimated 951 s, iters = {MDP: 592551}, opt = 286.711
+> progress 25.242%, elapsed 243 s, estimated 962 s, iters = {MDP: 600826}, opt = 286.711
+> progress 25.277%, elapsed 246 s, estimated 973 s, iters = {MDP: 608393}, opt = 286.711
+> progress 25.36%, elapsed 249 s, estimated 981 s, iters = {MDP: 615506}, opt = 286.711
+> progress 25.538%, elapsed 252 s, estimated 986 s, iters = {MDP: 622082}, opt = 286.711
+> progress 25.581%, elapsed 255 s, estimated 996 s, iters = {MDP: 629737}, opt = 286.711
+> progress 25.614%, elapsed 258 s, estimated 1007 s, iters = {MDP: 637998}, opt = 286.711
+> progress 25.673%, elapsed 261 s, estimated 1016 s, iters = {MDP: 645848}, opt = 286.711
+> progress 25.695%, elapsed 264 s, estimated 1027 s, iters = {MDP: 654279}, opt = 286.711
+2024-04-03 19:35:11,097 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:35:11,597 - synthesizer_pomdp.py - starting synthesis for obs_0
+2024-04-03 19:35:11,900 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:35:11,900 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 2.482%, elapsed 81 s, estimated 3263 s, iters = {MDP: 164128}, opt = 315.217
+> progress 2.496%, elapsed 84 s, estimated 3364 s, iters = {MDP: 169635}, opt = 315.217
+> progress 2.498%, elapsed 87 s, estimated 3481 s, iters = {MDP: 176469}, opt = 315.217
+> progress 2.5%, elapsed 90 s, estimated 3599 s, iters = {MDP: 183683}, opt = 315.217
+> progress 2.504%, elapsed 93 s, estimated 3713 s, iters = {MDP: 190062}, opt = 315.217
+> progress 2.552%, elapsed 96 s, estimated 3761 s, iters = {MDP: 195958}, opt = 315.217
+> progress 2.572%, elapsed 99 s, estimated 3848 s, iters = {MDP: 202622}, opt = 315.217
+> progress 2.574%, elapsed 102 s, estimated 3963 s, iters = {MDP: 209912}, opt = 315.217
+> progress 2.577%, elapsed 105 s, estimated 4073 s, iters = {MDP: 217384}, opt = 315.217
+> progress 2.58%, elapsed 108 s, estimated 4186 s, iters = {MDP: 224145}, opt = 315.217
+2024-04-03 19:35:41,628 - synthesizer_ar_storm.py - Pausing synthesis
+2024-04-03 19:35:42,129 - synthesizer_pomdp.py - starting synthesis for obs_1
+2024-04-03 19:35:42,421 - synthesizer_ar_storm.py - Resuming synthesis
+2024-04-03 19:35:42,421 - synthesizer_ar_storm.py - PAYNT's value is better. Prioritizing synthesis results
+> progress 26.815%, elapsed 138 s, estimated 514 s, iters = {MDP: 283261}, opt = 309.492
+> progress 26.821%, elapsed 141 s, estimated 525 s, iters = {MDP: 289782}, opt = 309.492
+> progress 26.89%, elapsed 144 s, estimated 535 s, iters = {MDP: 295853}, opt = 309.492
+> progress 26.914%, elapsed 147 s, estimated 546 s, iters = {MDP: 301762}, opt = 309.492
+> progress 26.986%, elapsed 150 s, estimated 556 s, iters = {MDP: 307692}, opt = 309.492
+> progress 26.991%, elapsed 153 s, estimated 567 s, iters = {MDP: 314210}, opt = 309.492
+> progress 27.004%, elapsed 156 s, estimated 577 s, iters = {MDP: 320868}, opt = 309.492
+> progress 27.01%, elapsed 159 s, estimated 588 s, iters = {MDP: 327782}, opt = 309.492
+> progress 27.016%, elapsed 162 s, estimated 599 s, iters = {MDP: 334074}, opt = 309.492
+> progress 27.06%, elapsed 165 s, estimated 609 s, iters = {MDP: 340590}, opt = 309.492
+2024-04-03 19:36:12,165 - synthesizer_ar_storm.py - Pausing synthesis
+
+------------------------------------
+
+PAYNT results: 
+286.71080702515087
+controller size: 20
+
+Storm results: 
+288.9787987803254
+controller size: 745
+
+------------------------------------
+
+used FSCs: {0: 168}
+FSCs used count: 168
+2024-04-03 19:36:12,969 - synthesizer_ar_storm.py - Terminating controller synthesis
+2024-04-03 19:36:12,969 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-04-03 19:36:12,969 - synthesizer.py - None
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"reward"}max=? [C{9500000000000001/10000000000000000}] 
+
+method: AR, synthesis time: 108.54 s
+number of holes: 21, family size: 1e13, quotient: 51 states / 1005 actions
+explored: 2 %
+MDP stats: avg MDP size: 51, iterations: 225414
+
+optimum: 315.216754
+--------------------
+2024-04-03 19:36:12,969 - synthesizer_pomdp.py - Terminate: True
+2024-04-03 19:36:13,166 - synthesizer_ar_storm.py - Terminating controller synthesis
+2024-04-03 19:36:13,166 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-04-03 19:36:13,166 - synthesizer.py - None
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"reward"}max=? [C{9500000000000001/10000000000000000}] 
+
+method: AR, synthesis time: 165.12 s
+number of holes: 21, family size: 1e13, quotient: 51 states / 1005 actions
+explored: 27 %
+MDP stats: avg MDP size: 51, iterations: 340726
+
+optimum: 309.491839
+--------------------
+2024-04-03 19:36:13,167 - synthesizer_pomdp.py - Terminate: True
+2024-04-03 19:36:13,316 - synthesizer_ar_storm.py - Terminating controller synthesis
+2024-04-03 19:36:13,316 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-04-03 19:36:13,316 - synthesizer.py - A(up,0)=(steady), A(up,1)=(steady), A(up,2)=(unrestrict), M(up,0)=1, M(up,1)=2, M(up,2)=2, A(down,0)=(reboot), A(down,1)=(steady), A(down,2)=(steady), A(down,3)=(restrict), M(down,0)=2, M(down,1)=3, M(down,2)=3, M(down,3)=0, M(init,0)=0, A(__no_obs__,0)=(steady), A(__no_obs__,1)=(steady), M(__no_obs__,0)=3, M(__no_obs__,1)=2
+2024-04-03 19:36:13,317 - synthesizer.py - double-checking specification satisfiability:  : 286.71080702515087
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"reward"}max=? [C{9500000000000001/10000000000000000}] 
+
+method: AR, synthesis time: 266.84 s
+number of holes: 19, family size: 1e11, quotient: 49 states / 770 actions
+explored: 25 %
+MDP stats: avg MDP size: 49, iterations: 661938
+
+optimum: 286.710807
+--------------------
+2024-04-03 19:36:13,317 - synthesizer_pomdp.py - Terminate: True
+2024-04-03 19:36:13,317 - storm_pomdp_control.py - Storm POMDP analysis completed
+
+------------------------------------
+
+PAYNT results: 
+286.71080702515087
+controller size: 20
+
+Storm results: 
+288.9787987803254
+controller size: 745
+
+------------------------------------
+

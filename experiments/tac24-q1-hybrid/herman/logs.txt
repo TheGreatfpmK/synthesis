@@ -1,0 +1,35 @@
+2024-02-04 00:08:56,962 - cli.py - This is Paynt version 0.1.0.
+2024-02-04 00:08:56,962 - sketch.py - loading sketch from /home/fpmk/research/synthesis/experiments/../models/tac24/herman/sketch.templ ...
+2024-02-04 00:08:56,962 - sketch.py - assuming sketch in PRISM format...
+2024-02-04 00:08:57,005 - prism_parser.py - PRISM model type: DTMC
+2024-02-04 00:08:57,005 - prism_parser.py - processing hole definitions...
+2024-02-04 00:08:57,007 - prism_parser.py - loading properties from /home/fpmk/research/synthesis/experiments/../models/tac24/herman/sketch.props ...
+2024-02-04 00:08:57,008 - prism_parser.py - found the following specification: constraints: R[exp]{"steps"}<=7/2 [F "stable"]; 
+2024-02-04 00:08:57,008 - jani.py - constructing JANI program...
+2024-02-04 00:09:17,498 - jani.py - constructing the quotient...
+2024-02-04 00:09:22,377 - jani.py - associating choices of the quotient with hole assignments...
+2024-02-04 00:09:23,471 - sketch.py - sketch parsing OK
+2024-02-04 00:09:23,476 - sketch.py - converting state rewards 'steps' to state-action rewards
+2024-02-04 00:09:23,546 - sketch.py - constructed explicit quotient having 18753 states and 663489 actions
+2024-02-04 00:09:23,546 - sketch.py - found the following specification constraints: R[exp]{"steps"}<=7/2 [F "stable"]; 
+2024-02-04 00:09:24,215 - synthesizer.py - synthesis initiated, design space: 3125000
+2024-02-04 00:09:24,339 - smt.py - using Python Z3 for SMT solving.
+> progress 24.12%, elapsed 3 s, estimated 12 s, iters = {MDP: 2, DTMC: 137}
+> progress 53.159%, elapsed 6 s, estimated 11 s, iters = {MDP: 6, DTMC: 248}
+> progress 84.7%, elapsed 9 s, estimated 11 s, iters = {MDP: 7, DTMC: 413}
+> progress 86.98%, elapsed 12 s, estimated 14 s, iters = {MDP: 9, DTMC: 470}
+> progress 101.14%, elapsed 15 s, estimated 15 s, iters = {MDP: 11, DTMC: 546}
+2024-02-04 00:09:41,679 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-02-04 00:09:41,679 - synthesizer.py - None
+--------------------
+Synthesis summary:
+constraint 1: R[exp]{"steps"}<=7/2 [F "stable"]
+
+method: hybrid, synthesis time: 17.46 s
+number of holes: 7, family size: 3125000, quotient: 18753 states / 663489 actions
+explored: 108 %
+MDP stats: avg MDP size: 18753, iterations: 11
+DTMC stats: avg DTMC size: 935, iterations: 709
+
+feasible: no
+--------------------

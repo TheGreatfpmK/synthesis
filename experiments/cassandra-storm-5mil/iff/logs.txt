@@ -1,0 +1,30 @@
+2024-03-23 16:03:38,515 - cli.py - This is Paynt version 0.1.0.
+2024-03-23 16:03:38,515 - sketch.py - loading sketch from models/cassandra/pomdp/iff.pomdp ...
+2024-03-23 16:03:38,515 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:27): Parsing error at 1:1:  expecting <model type>, here:
+	discount: 0.999000
+	^
+
+2024-03-23 16:03:38,518 - sketch.py - assuming sketch in DRN format...
+ERROR (DirectEncodingParser.cpp:124): Could not parse line 'discount: 0.999000'.
+2024-03-23 16:03:38,518 - sketch.py - assuming sketch in Cassandra format...
+MADP: trying to parse as POMDP...
+MADP: parsing success
+2024-03-23 16:03:38,578 - sketch.py - applying discount factor transformation...
+2024-03-23 16:03:38,582 - sketch.py - sketch parsing OK
+2024-03-23 16:03:38,582 - sketch.py - constructed explicit quotient having 668 states and 2666 actions
+2024-03-23 16:03:38,582 - sketch.py - found the following specification optimality: R[exp]{"reward"}max=? [F "discount_sink"] 
+2024-03-23 16:03:38,584 - pomdp.py - constructed POMDP having 25 observations.
+2024-03-23 16:03:38,588 - pomdp.py - unfolding 1-FSC template into POMDP ...
+2024-03-23 16:03:38,590 - pomdp.py - constructed quotient MDP having 668 states and 2666 actions.
+2024-03-23 16:03:38,590 - pomdp.py - creating coloring ...
+2024-03-23 16:03:38,597 - synthesizer_pomdp.py - Storm POMDP option enabled
+2024-03-23 16:03:38,597 - synthesizer_pomdp.py - Storm settings: iterative - (None, None, None), get_storm_result - 0, storm_options - 5mil, prune_storm - False, unfold_strategy - (True, False), use_storm_cutoffs - False, enhanced_saynt - None, saynt_overapprox - False
+2024-03-23 16:03:38,597 - storm_pomdp_control.py - starting Storm POMDP analysis
+### 5000019 beliefs in underapproximation MDP ##### 2015619 beliefs queued
+Finished exploring under-approximation MDP.
+Start analysis...
+2024-03-23 16:05:02,480 - storm_pomdp_control.py - Storm POMDP analysis completed
+-----------Storm-----------                 
+Value = -3.1361801006697254 | Time elapsed = 83.9s | FSC size = 77515
+

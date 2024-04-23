@@ -1,0 +1,29 @@
+2024-03-23 16:23:20,719 - cli.py - This is Paynt version 0.1.0.
+2024-03-23 16:23:20,719 - sketch.py - loading sketch from models/cassandra/pomdp/pentagon.pomdp ...
+2024-03-23 16:23:20,719 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:27): Parsing error at 1:1:  expecting <model type>, here:
+	discount: 0.990000
+	^
+
+2024-03-23 16:23:20,729 - sketch.py - assuming sketch in DRN format...
+ERROR (DirectEncodingParser.cpp:124): Could not parse line 'discount: 0.990000'.
+2024-03-23 16:23:20,729 - sketch.py - assuming sketch in Cassandra format...
+MADP: trying to parse as POMDP...
+MADP: parsing success
+2024-03-23 16:23:21,238 - sketch.py - applying discount factor transformation...
+2024-03-23 16:23:21,750 - sketch.py - sketch parsing OK
+2024-03-23 16:23:21,750 - sketch.py - constructed explicit quotient having 5646 states and 22578 actions
+2024-03-23 16:23:21,750 - sketch.py - found the following specification optimality: R[exp]{"reward"}max=? [F "discount_sink"] 
+2024-03-23 16:23:21,774 - pomdp.py - constructed POMDP having 31 observations.
+2024-03-23 16:23:22,007 - pomdp.py - unfolding 1-FSC template into POMDP ...
+2024-03-23 16:23:22,066 - pomdp.py - constructed quotient MDP having 5646 states and 22578 actions.
+2024-03-23 16:23:22,066 - pomdp.py - creating coloring ...
+2024-03-23 16:23:22,095 - synthesizer_pomdp.py - Storm POMDP option enabled
+2024-03-23 16:23:22,095 - synthesizer_pomdp.py - Storm settings: iterative - (None, None, None), get_storm_result - 0, storm_options - 5mil, prune_storm - False, unfold_strategy - (True, False), use_storm_cutoffs - False, enhanced_saynt - None, saynt_overapprox - False
+2024-03-23 16:23:22,095 - storm_pomdp_control.py - starting Storm POMDP analysis
+Finished exploring under-approximation MDP.
+Start analysis...
+2024-03-23 16:24:02,246 - storm_pomdp_control.py - Storm POMDP analysis completed
+-----------Storm-----------                 
+Value = -0.7520065301889678 | Time elapsed = 40.2s | FSC size = 88070
+

@@ -1,0 +1,37 @@
+2024-02-04 00:23:16,258 - cli.py - This is Paynt version 0.1.0.
+2024-02-04 00:23:16,258 - sketch.py - loading sketch from /home/fpmk/research/synthesis/experiments/../models/tac24/grid-10-sl-4fsc/sketch.templ ...
+2024-02-04 00:23:16,258 - sketch.py - assuming sketch in PRISM format...
+2024-02-04 00:23:16,260 - prism_parser.py - PRISM model type: DTMC
+2024-02-04 00:23:16,260 - prism_parser.py - processing hole definitions...
+2024-02-04 00:23:16,260 - prism_parser.py - loading properties from /home/fpmk/research/synthesis/experiments/../models/tac24/grid-10-sl-4fsc/sketch.props ...
+2024-02-04 00:23:16,260 - prism_parser.py - found the following specification: optimality: R[exp]{"steps"}min=? [F "goal"] 
+2024-02-04 00:23:16,261 - jani.py - constructing JANI program...
+2024-02-04 00:23:16,262 - jani.py - constructing the quotient...
+2024-02-04 00:23:16,286 - jani.py - associating choices of the quotient with hole assignments...
+2024-02-04 00:23:16,292 - sketch.py - sketch parsing OK
+2024-02-04 00:23:16,292 - sketch.py - converting state rewards 'steps' to state-action rewards
+2024-02-04 00:23:16,295 - sketch.py - constructed explicit quotient having 2405 states and 9605 actions
+2024-02-04 00:23:16,295 - sketch.py - found the following specification optimality: R[exp]{"steps"}min=? [F "goal"] 
+2024-02-04 00:23:16,306 - synthesizer.py - synthesis initiated, design space: 65536
+2024-02-04 00:23:16,321 - smt.py - using Python Z3 for SMT solving.
+> progress 76.521%, elapsed 3 s, estimated 3 s, iters = {DTMC: 1475}, opt = 1160.364
+> progress 85.449%, elapsed 6 s, estimated 7 s, iters = {DTMC: 2676}, opt = 1160.364
+> progress 90.82%, elapsed 9 s, estimated 9 s, iters = {DTMC: 3796}, opt = 1160.364
+> progress 94.265%, elapsed 12 s, estimated 12 s, iters = {DTMC: 4764}, opt = 1160.364
+> progress 96.994%, elapsed 15 s, estimated 15 s, iters = {DTMC: 5742}, opt = 1160.364
+> progress 98.76%, elapsed 18 s, estimated 18 s, iters = {DTMC: 6615}, opt = 1160.364
+> progress 99.888%, elapsed 21 s, estimated 21 s, iters = {DTMC: 7324}, opt = 1160.364
+2024-02-04 00:23:38,436 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-02-04 00:23:38,436 - synthesizer.py - M_0_1=1, M_1_1=3, M_2_1=0, M_3_1=2, P_0_1=1, P_1_1=2, P_2_1=4, P_3_1=3
+2024-02-04 00:23:38,461 - synthesizer.py - double-checking specification satisfiability:  : 1160.3642313506098
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"steps"}min=? [F "goal"] 
+
+method: CEGIS (DTMC), synthesis time: 22.13 s
+number of holes: 8, family size: 65536, quotient: 2405 states / 9605 actions
+explored: 100 %
+DTMC stats: avg DTMC size: 446, iterations: 7396
+
+optimum: 1160.364231
+--------------------

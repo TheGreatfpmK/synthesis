@@ -1,0 +1,43 @@
+2024-02-04 00:12:37,890 - cli.py - This is Paynt version 0.1.0.
+2024-02-04 00:12:37,890 - sketch.py - loading sketch from /home/fpmk/research/synthesis/experiments/../models/tac24/maze-sl-5/sketch.templ ...
+2024-02-04 00:12:37,890 - sketch.py - assuming sketch in PRISM format...
+2024-02-04 00:12:37,894 - prism_parser.py - PRISM model type: DTMC
+2024-02-04 00:12:37,894 - prism_parser.py - processing hole definitions...
+2024-02-04 00:12:37,895 - prism_parser.py - loading properties from /home/fpmk/research/synthesis/experiments/../models/tac24/maze-sl-5/sketch.props ...
+2024-02-04 00:12:37,895 - prism_parser.py - found the following specification: optimality: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+2024-02-04 00:12:37,895 - jani.py - constructing JANI program...
+2024-02-04 00:12:37,904 - jani.py - constructing the quotient...
+2024-02-04 00:12:37,938 - jani.py - associating choices of the quotient with hole assignments...
+2024-02-04 00:12:37,940 - sketch.py - sketch parsing OK
+2024-02-04 00:12:37,940 - sketch.py - converting state rewards 'steps' to state-action rewards
+2024-02-04 00:12:37,940 - sketch.py - constructed explicit quotient having 424 states and 1348 actions
+2024-02-04 00:12:37,940 - sketch.py - found the following specification optimality: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+2024-02-04 00:12:37,945 - synthesizer.py - synthesis initiated, design space: 79496847203390844133441536
+2024-02-04 00:12:37,947 - smt.py - using Python Z3 for SMT solving.
+> progress 0.131%, elapsed 3 s, estimated 2294 s, iters = {MDP: 120, DTMC: 23}, opt = 3662.185
+> progress 0.508%, elapsed 6 s, estimated 1181 s, iters = {MDP: 253, DTMC: 23}, opt = 3659.532
+> progress 0.621%, elapsed 9 s, estimated 1454 s, iters = {MDP: 405, DTMC: 23}, opt = 3659.532
+> progress 0.703%, elapsed 12 s, estimated 1711 s, iters = {MDP: 568, DTMC: 23}, opt = 2844.366
+> progress 11.951%, elapsed 15 s, estimated 125 s, iters = {MDP: 1054, DTMC: 25}, opt = 15.251
+> progress 20.872%, elapsed 18 s, estimated 86 s, iters = {MDP: 2241, DTMC: 25}, opt = 15.251
+> progress 29.958%, elapsed 21 s, estimated 70 s, iters = {MDP: 3475, DTMC: 25}, opt = 15.251
+> progress 35.204%, elapsed 24 s, estimated 68 s, iters = {MDP: 4498, DTMC: 25}, opt = 15.206
+> progress 36.934%, elapsed 27 s, estimated 73 s, iters = {MDP: 7036, DTMC: 25}, opt = 14.851
+> progress 42.532%, elapsed 30 s, estimated 70 s, iters = {MDP: 8550, DTMC: 25}, opt = 14.851
+> progress 66.736%, elapsed 33 s, estimated 49 s, iters = {MDP: 10162, DTMC: 25}, opt = 14.851
+> progress 89.183%, elapsed 36 s, estimated 40 s, iters = {MDP: 11645, DTMC: 25}, opt = 14.851
+2024-02-04 00:13:15,443 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-02-04 00:13:15,443 - synthesizer.py - M_0_1=2, M_1_1=0, M_2_1=2, M_0_2=2, M_1_2=1, M_2_2=2, M_0_3=2, M_1_3=2, M_2_3=2, M_0_4=1, M_1_4=0, M_2_4=2, M_0_5=1, M_1_5=1, M_2_5=1, M_0_6=0, M_1_6=0, M_2_6=0, M_0_7=0, M_1_7=0, M_2_7=0, M_0_8=0, M_1_8=0, M_2_8=2, P_0_1=1, P_1_1=1, P_2_1=1, P_0_2=3, P_1_2=3, P_2_2=1, P_0_3=2, P_1_3=2, P_2_3=2, P_0_4=4, P_1_4=4, P_2_4=2, P_0_5=3, P_1_5=3, P_2_5=3, P_0_6=4, P_1_6=4, P_2_6=4, P_0_7=1, P_1_7=1, P_2_7=1, P_0_8=1, P_1_8=1, P_2_8=1
+2024-02-04 00:13:15,443 - synthesizer.py - double-checking specification satisfiability:  : 14.850758758446672
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"steps"}min=? [F ((x = 2) & (y = 0))] 
+
+method: hybrid, synthesis time: 37.5 s
+number of holes: 48, family size: 79496847203390844133441536, quotient: 424 states / 1348 actions
+explored: 100 %
+MDP stats: avg MDP size: 279, iterations: 12310
+DTMC stats: avg DTMC size: 108, iterations: 25
+
+optimum: 14.850759
+--------------------

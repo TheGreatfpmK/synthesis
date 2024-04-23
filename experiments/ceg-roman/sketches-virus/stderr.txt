@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "paynt.py", line 4, in <module>
+    paynt.cli.main()
+  File "/home/fpmk/research/synthesis/paynt/cli.py", line 168, in main
+    paynt_run()
+  File "/home/fpmk/research/synthesis/env/lib/python3.8/site-packages/click/core.py", line 1157, in __call__
+    return self.main(*args, **kwargs)
+  File "/home/fpmk/research/synthesis/env/lib/python3.8/site-packages/click/core.py", line 1078, in main
+    rv = self.invoke(ctx)
+  File "/home/fpmk/research/synthesis/env/lib/python3.8/site-packages/click/core.py", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/fpmk/research/synthesis/env/lib/python3.8/site-packages/click/core.py", line 783, in invoke
+    return __callback(*args, **kwargs)
+  File "/home/fpmk/research/synthesis/paynt/cli.py", line 158, in paynt_run
+    synthesizer.run(optimum_threshold)
+  File "/home/fpmk/research/synthesis/paynt/synthesizer/synthesizer.py", line 126, in run
+    self.evaluate()
+  File "/home/fpmk/research/synthesis/paynt/synthesizer/synthesizer.py", line 82, in evaluate
+    family_to_evaluation = self.evaluate_all(family, prop)
+  File "/home/fpmk/research/synthesis/paynt/synthesizer/policy_tree.py", line 889, in evaluate_all
+    unsat, sat, policies, policy_map = self.synthesize_policy_for_family_using_ceg(policy_tree.root.family, prop)
+  File "/home/fpmk/research/synthesis/paynt/synthesizer/policy_tree.py", line 853, in synthesize_policy_for_family_using_ceg
+    dtmc = quotient_container.build_assignment(mdp_subfamily)
+  File "/home/fpmk/research/synthesis/paynt/quotient/quotient.py", line 132, in build_assignment
+    dtmc = Quotient.mdp_to_dtmc(mdp)
+  File "/home/fpmk/research/synthesis/paynt/quotient/quotient.py", line 125, in mdp_to_dtmc
+    dtmc = stormpy.storage.SparseDtmc(components)
+RuntimeError: IllegalArgumentException: Can not create deterministic model: Number of rows of transition matrix does not match state count.

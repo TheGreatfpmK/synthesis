@@ -1,0 +1,48 @@
+2024-01-08 07:09:03,918 - cli.py - This is Paynt version 0.1.0.
+2024-01-08 07:09:03,918 - sketch.py - loading sketch from /home/fpmk/research/synthesis/experiments/../models/mdp/sketches/rocks/6-3/sketch.templ ...
+2024-01-08 07:09:03,918 - sketch.py - assuming sketch in PRISM format...
+2024-01-08 07:09:03,920 - prism_parser.py - PRISM model type: MDP
+2024-01-08 07:09:03,920 - prism_parser.py - processing hole definitions...
+2024-01-08 07:09:03,921 - prism_parser.py - loading properties from /home/fpmk/research/synthesis/experiments/../models/mdp/sketches/rocks/6-3/sketch.props ...
+2024-01-08 07:09:03,921 - prism_parser.py - found the following specification: constraints: P>=1 [F ((visit1 & visit2) & visit3)]; 
+2024-01-08 07:09:03,921 - jani.py - constructing JANI program...
+2024-01-08 07:09:03,923 - jani.py - constructing the quotient...
+2024-01-08 07:09:03,937 - jani.py - associating choices of the quotient with hole assignments...
+2024-01-08 07:09:03,938 - sketch.py - sketch parsing OK
+2024-01-08 07:09:03,939 - sketch.py - constructed explicit quotient having 1035 states and 2655 actions
+2024-01-08 07:09:03,939 - sketch.py - found the following specification constraints: P>=1 [F ((visit1 & visit2) & visit3)]; 
+2024-01-08 07:09:03,939 - mdp_family.py - associating choices with action labels...
+2024-01-08 07:09:03,964 - synthesizer.py - evaluation initiated, design space: 729
+> Progress 91.769%, elapsed 3 s, estimated 3 s, iters = {game: 337, MDP: 1005}
+--------------------
+Policy tree summary:
+found 729 satisfying policies for 729/729 family members (100.0%)
+policy tree has 1093 nodes, 729 of them are leaves:
+	  solvable leaves: 729 (avg.size: 1.0)
+	unsolvable leaves: 0 (avg.size: NA)
+	 singleton leaves: 729
+2024-01-08 07:09:07,217 - policy_tree.py - post-processing the policy tree...
+2024-01-08 07:09:07,217 - policy_tree.py - merging unsat siblings...
+2024-01-08 07:09:07,218 - policy_tree.py - merged 0 pairs
+2024-01-08 07:09:07,218 - policy_tree.py - merging compatible siblings...
+2024-01-08 07:09:07,714 - policy_tree.py - merged 701 pairs
+--------------------
+Policy tree summary:
+found 257 satisfying policies for 729/729 family members (100.0%)
+policy tree has 392 nodes, 257 of them are leaves:
+	  solvable leaves: 257 (avg.size: 2.8)
+	unsolvable leaves: 0 (avg.size: NA)
+	 singleton leaves: 14
+2024-01-08 07:09:07,717 - synthesizer.py - evaluation finished
+--------------------
+Synthesis summary:
+constraint 1: P>=1 [F ((visit1 & visit2) & visit3)]
+
+method: AR (policy tree), synthesis time: 3.75 s
+number of holes: 6, family size: 729, quotient: 1035 states / 2655 actions
+explored: 100 %
+Game stats: avg MDP size: 996, iterations: 364
+MDP stats: avg MDP size: 990, iterations: 1093
+
+satisfied 729/729 members (100%)
+--------------------

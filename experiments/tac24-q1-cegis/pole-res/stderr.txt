@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "paynt.py", line 4, in <module>
+    paynt.cli.main()
+  File "/home/fpmk/research/synthesis/paynt/cli.py", line 193, in main
+    paynt_run()
+  File "/home/fpmk/research/synthesis/prerequisites/venv/lib/python3.8/site-packages/click/core.py", line 1157, in __call__
+    return self.main(*args, **kwargs)
+  File "/home/fpmk/research/synthesis/prerequisites/venv/lib/python3.8/site-packages/click/core.py", line 1078, in main
+    rv = self.invoke(ctx)
+  File "/home/fpmk/research/synthesis/prerequisites/venv/lib/python3.8/site-packages/click/core.py", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/fpmk/research/synthesis/prerequisites/venv/lib/python3.8/site-packages/click/core.py", line 783, in invoke
+    return __callback(*args, **kwargs)
+  File "/home/fpmk/research/synthesis/paynt/cli.py", line 179, in paynt_run
+    synthesizer = paynt.synthesizer.synthesizer.Synthesizer.choose_synthesizer  (quotient, method, fsc_synthesis, storm_control)
+  File "/home/fpmk/research/synthesis/paynt/synthesizer/synthesizer.py", line 50, in choose_synthesizer
+    return paynt.synthesizer.synthesizer_cegis.SynthesizerCEGIS(quotient)
+  File "/home/fpmk/research/synthesis/paynt/synthesizer/synthesizer_cegis.py", line 21, in __init__
+    assert not self.quotient.specification.contains_maximizing_reward_properties, \
+AssertionError: Cannot use CEGIS for maximizing reward formulae -- consider using AR or hybrid methods.

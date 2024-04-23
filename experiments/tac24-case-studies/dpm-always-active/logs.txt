@@ -1,0 +1,29 @@
+2024-02-05 16:50:34,235 - cli.py - This is Paynt version 0.1.0.
+2024-02-05 16:50:34,235 - sketch.py - loading sketch from models/tac24/dpm-demo/sketch.templ ...
+2024-02-05 16:50:34,235 - sketch.py - assuming sketch in PRISM format...
+2024-02-05 16:50:34,237 - prism_parser.py - PRISM model type: DTMC
+2024-02-05 16:50:34,237 - prism_parser.py - processing hole definitions...
+2024-02-05 16:50:34,237 - prism_parser.py - loading properties from models/tac24/dpm-demo/sketch.props ...
+2024-02-05 16:50:34,238 - prism_parser.py - found the following specification: constraints: R[exp]{"requests_lost"}<=1 [F "finished"]; optimality: R[exp]{"power"}min=? [F "finished"] 
+2024-02-05 16:50:34,238 - jani.py - constructing JANI program...
+2024-02-05 16:50:34,242 - jani.py - constructing the quotient...
+2024-02-05 16:50:34,281 - jani.py - associating choices of the quotient with hole assignments...
+2024-02-05 16:50:34,298 - sketch.py - sketch parsing OK
+2024-02-05 16:50:34,298 - sketch.py - constructed explicit quotient having 514 states and 15419 actions
+2024-02-05 16:50:34,299 - sketch.py - found the following specification constraints: R[exp]{"requests_lost"}<=1 [F "finished"]; optimality: R[exp]{"power"}min=? [F "finished"] 
+2024-02-05 16:50:34,305 - synthesizer.py - synthesis initiated, design space: 200
+2024-02-05 16:50:35,672 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-02-05 16:50:35,672 - synthesizer.py - P1=2, P2=2, P3=2, P4=2, T1=0, T2=1/2, T3=9/10, QMAX=3
+2024-02-05 16:50:35,694 - synthesizer.py - double-checking specification satisfiability: 0.5638292616333332 : 101727.345953132
+--------------------
+Synthesis summary:
+constraint 1: R[exp]{"requests_lost"}<=1 [F "finished"]
+optimality objective: R[exp]{"power"}min=? [F "finished"] 
+
+method: AR, synthesis time: 1.37 s
+number of holes: 8, family size: 200, quotient: 514 states / 15419 actions
+explored: 100 %
+MDP stats: avg MDP size: 250, iterations: 32
+
+optimum: 101727.345953
+--------------------

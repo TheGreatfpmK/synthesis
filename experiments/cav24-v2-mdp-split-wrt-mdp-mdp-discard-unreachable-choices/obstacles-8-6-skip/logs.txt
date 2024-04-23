@@ -1,0 +1,66 @@
+2024-01-17 00:24:02,898 - cli.py - This is Paynt version 0.1.0.
+2024-01-17 00:24:02,898 - sketch.py - loading sketch from /home/fpmk/research/synthesis/experiments/../models/mdp/cav24/obstacles-8-6-skip/sketch.templ ...
+2024-01-17 00:24:02,898 - sketch.py - assuming sketch in PRISM format...
+2024-01-17 00:24:02,907 - prism_parser.py - PRISM model type: MDP
+2024-01-17 00:24:02,907 - prism_parser.py - processing hole definitions...
+2024-01-17 00:24:02,908 - prism_parser.py - loading properties from /home/fpmk/research/synthesis/experiments/../models/mdp/cav24/obstacles-8-6-skip/sketch.props ...
+2024-01-17 00:24:02,909 - prism_parser.py - found the following specification: constraints: P>9/10 [F ((x = 8) & (y = 8))]; 
+2024-01-17 00:24:02,909 - jani.py - constructing JANI program...
+2024-01-17 00:24:02,911 - jani.py - constructing the quotient...
+2024-01-17 00:24:02,925 - jani.py - associating choices of the quotient with hole assignments...
+2024-01-17 00:24:02,926 - sketch.py - sketch parsing OK
+2024-01-17 00:24:02,926 - sketch.py - constructed explicit quotient having 480 states and 897 actions
+2024-01-17 00:24:02,926 - sketch.py - found the following specification constraints: P>9/10 [F ((x = 8) & (y = 8))]; 
+2024-01-17 00:24:02,926 - mdp_family.py - associating choices with action labels...
+2024-01-17 00:24:02,931 - synthesizer.py - evaluation initiated, design space: 46656
+> progress 24.609%, elapsed 3 s, estimated 12 s, iters = {game: 1274, MDP: 949}
+> progress 32.175%, elapsed 6 s, estimated 18 s, iters = {game: 2558, MDP: 1895}
+> progress 69.097%, elapsed 9 s, estimated 13 s, iters = {game: 3747, MDP: 2606}
+> progress 74.622%, elapsed 12 s, estimated 16 s, iters = {game: 4924, MDP: 3701}
+> progress 82.677%, elapsed 15 s, estimated 18 s, iters = {game: 6241, MDP: 4634}
+> progress 93.846%, elapsed 18 s, estimated 19 s, iters = {game: 7528, MDP: 5811}
+--------------------
+Policy tree summary:
+found 4393 satisfying policies for 42120/46656 family members (90.0%)
+policy tree has 9375 nodes, 5208 of them are leaves:
+	  solvable leaves: 4393 (avg.size: 9.6)
+	unsolvable leaves: 815 (avg.size: 5.6)
+	 singleton leaves: 1609
+--------------------
+2024-01-17 00:24:21,858 - policy_tree.py - post-processing the policy tree...
+2024-01-17 00:24:21,858 - policy_tree.py - merging SAT siblings solved by non-exclusively compatible policies...
+2024-01-17 00:24:22,575 - policy_tree.py - additional 3585 MDPs were model checked
+2024-01-17 00:24:22,575 - policy_tree.py - removed 256 nodes
+2024-01-17 00:24:22,575 - policy_tree.py - merging all exclusively compatible policies...
+2024-01-17 00:24:28,261 - policy_tree.py - removed 970 policies
+2024-01-17 00:24:28,261 - policy_tree.py - reducing tree height...
+2024-01-17 00:24:28,309 - policy_tree.py - removed 1 nodes
+2024-01-17 00:24:28,309 - policy_tree.py - merging siblings that have the same solution...
+2024-01-17 00:24:28,356 - policy_tree.py - removed 0 nodes
+2024-01-17 00:24:28,356 - policy_tree.py - postprocessing took 6 s
+--------------------
+Policy tree summary:
+found 3167 satisfying policies for 42120/46656 family members (90.0%)
+policy tree has 9118 nodes, 4952 of them are leaves:
+	  solvable leaves: 4137 (avg.size: 10.2)
+	unsolvable leaves: 815 (avg.size: 5.6)
+	 singleton leaves: 1361
+--------------------
+2024-01-17 00:24:28,607 - synthesizer.py - evaluation finished
+--------------------
+Synthesis summary:
+constraint 1: P>9/10 [F ((x = 8) & (y = 8))]
+
+method: AR (policy tree), synthesis time: 25.68 s
+number of holes: 12, family size: 46656, quotient: 480 states / 897 actions
+explored: 100 %
+Game stats: avg MDP size: 439, iterations: 7766
+MDP stats: avg MDP size: 437, iterations: 5934
+
+satisfied 42120/46656 members (90%)
+--------------------
+model info:	states	choices	MDPs	states*MDPs	SAT MDPs	SAT %
+480 897 46656 22394880 42120 90.28
+synthesis info:	time	nodes	nodes (merged)	leaves	leaves (merged)	leaves (merged) / MDPs %	policies	policies (merged)	policies (merged) / SAT %	pp time	pp time %	game iters	MDP iters	iters/MDPs %
+25 9375 9118 5208 4952 10.61 4393 3167 7.52 6 24.0 7766 5934 29.36
+

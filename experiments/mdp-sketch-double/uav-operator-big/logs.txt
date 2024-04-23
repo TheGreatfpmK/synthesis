@@ -1,0 +1,70 @@
+2024-01-08 20:29:19,716 - cli.py - This is Paynt version 0.1.0.
+2024-01-08 20:29:19,716 - sketch.py - loading sketch from /home/fpmk/research/synthesis/experiments/../models/mdp/sketches/uav/operator-big/sketch.templ ...
+2024-01-08 20:29:19,716 - sketch.py - assuming sketch in PRISM format...
+2024-01-08 20:29:19,729 - prism_parser.py - PRISM model type: MDP
+2024-01-08 20:29:19,729 - prism_parser.py - processing hole definitions...
+2024-01-08 20:29:19,730 - prism_parser.py - loading properties from /home/fpmk/research/synthesis/experiments/../models/mdp/sketches/uav/operator-big/sketch.props ...
+2024-01-08 20:29:19,730 - prism_parser.py - found the following specification: constraints: P>=4/5 [F ((w1 & w2) & w6)]; 
+2024-01-08 20:29:19,730 - jani.py - constructing JANI program...
+2024-01-08 20:29:19,777 - jani.py - constructing the quotient...
+2024-01-08 20:29:20,382 - jani.py - associating choices of the quotient with hole assignments...
+2024-01-08 20:29:20,583 - sketch.py - sketch parsing OK
+2024-01-08 20:29:20,584 - sketch.py - constructed explicit quotient having 17927 states and 170585 actions
+2024-01-08 20:29:20,584 - sketch.py - found the following specification constraints: P>=4/5 [F ((w1 & w2) & w6)]; 
+2024-01-08 20:29:20,680 - mdp_family.py - associating choices with action labels...
+2024-01-08 20:29:20,931 - synthesizer.py - evaluation initiated, design space: 40000
+> Progress 19.237%, elapsed 3 s, estimated 15 s, iters = {game: 31, MDP: 38}
+> Progress 19.5%, elapsed 6 s, estimated 31 s, iters = {game: 75, MDP: 94}
+> Progress 19.687%, elapsed 9 s, estimated 46 s, iters = {game: 121, MDP: 150}
+> Progress 19.812%, elapsed 12 s, estimated 61 s, iters = {game: 167, MDP: 211}
+> Progress 23.875%, elapsed 15 s, estimated 63 s, iters = {game: 217, MDP: 266}
+> Progress 24.2%, elapsed 18 s, estimated 74 s, iters = {game: 313, MDP: 400}
+> Progress 24.5%, elapsed 21 s, estimated 86 s, iters = {game: 403, MDP: 532}
+> Progress 28.975%, elapsed 24 s, estimated 83 s, iters = {game: 503, MDP: 667}
+> Progress 30.0%, elapsed 27 s, estimated 91 s, iters = {game: 593, MDP: 792}
+> Progress 54.937%, elapsed 30 s, estimated 55 s, iters = {game: 611, MDP: 810}
+> Progress 55.0%, elapsed 33 s, estimated 61 s, iters = {game: 628, MDP: 837}
+> Progress 59.962%, elapsed 36 s, estimated 61 s, iters = {game: 650, MDP: 863}
+> Progress 64.695%, elapsed 39 s, estimated 61 s, iters = {game: 675, MDP: 894}
+> Progress 64.895%, elapsed 42 s, estimated 66 s, iters = {game: 700, MDP: 931}
+> Progress 64.982%, elapsed 45 s, estimated 70 s, iters = {game: 726, MDP: 965}
+> Progress 69.332%, elapsed 49 s, estimated 70 s, iters = {game: 788, MDP: 1039}
+> Progress 69.52%, elapsed 52 s, estimated 74 s, iters = {game: 854, MDP: 1120}
+> Progress 69.75%, elapsed 55 s, estimated 78 s, iters = {game: 916, MDP: 1195}
+> Progress 80.0%, elapsed 58 s, estimated 72 s, iters = {game: 959, MDP: 1243}
+> Progress 84.625%, elapsed 61 s, estimated 72 s, iters = {game: 993, MDP: 1287}
+> Progress 84.725%, elapsed 64 s, estimated 75 s, iters = {game: 1025, MDP: 1329}
+> Progress 84.875%, elapsed 67 s, estimated 79 s, iters = {game: 1058, MDP: 1372}
+> Progress 84.975%, elapsed 70 s, estimated 82 s, iters = {game: 1091, MDP: 1408}
+--------------------
+Policy tree summary:
+found 370 satisfying policies for 38955/40000 family members (97.0%)
+policy tree has 1417 nodes, 716 of them are leaves:
+	  solvable leaves: 370 (avg.size: 105.3)
+	unsolvable leaves: 346 (avg.size: 3.0)
+	 singleton leaves: 320
+2024-01-08 20:30:32,033 - policy_tree.py - post-processing the policy tree...
+2024-01-08 20:30:32,033 - policy_tree.py - merging unsat siblings...
+2024-01-08 20:30:32,034 - policy_tree.py - merged 0 pairs
+2024-01-08 20:30:32,034 - policy_tree.py - merging compatible siblings...
+2024-01-08 20:30:32,043 - policy_tree.py - merged 7 pairs
+--------------------
+Policy tree summary:
+found 363 satisfying policies for 38955/40000 family members (97.0%)
+policy tree has 1410 nodes, 709 of them are leaves:
+	  solvable leaves: 363 (avg.size: 107.3)
+	unsolvable leaves: 346 (avg.size: 3.0)
+	 singleton leaves: 320
+2024-01-08 20:30:32,049 - synthesizer.py - evaluation finished
+--------------------
+Synthesis summary:
+constraint 1: P>=4/5 [F ((w1 & w2) & w6)]
+
+method: AR (policy tree), synthesis time: 71.12 s
+number of holes: 6, family size: 40000, quotient: 17927 states / 170585 actions
+explored: 100 %
+Game stats: avg MDP size: 2456, iterations: 1097
+MDP stats: avg MDP size: 2061, iterations: 1417
+
+satisfied 38955/40000 members (97%)
+--------------------

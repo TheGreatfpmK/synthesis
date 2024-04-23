@@ -1,0 +1,30 @@
+2024-02-04 18:38:48,925 - cli.py - This is Paynt version 0.1.0.
+2024-02-04 18:38:48,925 - sketch.py - loading sketch from /home/fpmk/research/synthesis/experiments/../models/tac24/case-studies/grid-meet-all-obs-2fsc/sketch.templ ...
+2024-02-04 18:38:48,925 - sketch.py - assuming sketch in PRISM format...
+2024-02-04 18:38:48,936 - prism_parser.py - PRISM model type: DTMC
+2024-02-04 18:38:48,936 - prism_parser.py - processing hole definitions...
+2024-02-04 18:38:48,937 - prism_parser.py - loading properties from /home/fpmk/research/synthesis/experiments/../models/tac24/case-studies/grid-meet-all-obs-2fsc/sketch.props ...
+2024-02-04 18:38:48,938 - prism_parser.py - found the following specification: optimality: R[exp]{"moves"}min=? [F "goal"] 
+2024-02-04 18:38:48,938 - jani.py - constructing JANI program...
+2024-02-04 18:38:48,956 - jani.py - constructing the quotient...
+2024-02-04 18:38:50,245 - jani.py - associating choices of the quotient with hole assignments...
+2024-02-04 18:38:51,278 - sketch.py - sketch parsing OK
+2024-02-04 18:38:51,278 - sketch.py - converting state rewards 'moves' to state-action rewards
+2024-02-04 18:38:51,318 - sketch.py - constructed explicit quotient having 9212 states and 658652 actions
+2024-02-04 18:38:51,318 - sketch.py - found the following specification optimality: R[exp]{"moves"}min=? [F "goal"] 
+2024-02-04 18:38:51,861 - synthesizer.py - synthesis initiated, design space: 1000000000000000000
+> progress 5.2%, elapsed 3 s, estimated 58 s, iters = {MDP: 20}, opt = 7.0
+2024-02-04 18:38:56,712 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-02-04 18:38:56,712 - synthesizer.py - M1_0__0_1_1_1=0, M1_0__1_0_1_1=1, M1_0__1_1_0_1=0, M1_0__1_1_1_0=0, M1_0__1_1_1_1=0, M1_0__1_0_1_0=0, M1_1__1_0_1_1=1, M1_1__1_1_1_0=0, M1_1__1_1_1_1=0, P1_0__0_1_1_1=2, P1_0__1_0_1_1=5, P1_0__1_1_0_1=1, P1_0__1_1_1_0=1, P1_0__1_1_1_1=1, P1_0__1_0_1_0=1, P1_1__1_0_1_1=3, P1_1__1_1_1_0=1, P1_1__1_1_1_1=2, M2_0__0_1_1_1=0, M2_0__1_0_1_1=0, M2_0__1_1_0_1=1, M2_0__1_1_1_0=0, M2_0__1_1_1_1=0, M2_0__1_0_1_0=0, M2_1__1_0_1_1=0, M2_1__1_1_1_0=1, M2_1__1_1_1_1=0, P2_0__0_1_1_1=1, P2_0__1_0_1_1=1, P2_0__1_1_0_1=4, P2_0__1_1_1_0=1, P2_0__1_1_1_1=4, P2_0__1_0_1_0=3, P2_1__1_0_1_1=1, P2_1__1_1_1_0=3, P2_1__1_1_1_1=1
+2024-02-04 18:38:56,721 - synthesizer.py - double-checking specification satisfiability:  : 6.0
+--------------------
+Synthesis summary:
+optimality objective: R[exp]{"moves"}min=? [F "goal"] 
+
+method: AR, synthesis time: 4.85 s
+number of holes: 36, family size: 1000000000000000000, quotient: 9212 states / 658652 actions
+explored: 100 %
+MDP stats: avg MDP size: 7552, iterations: 30
+
+optimum: 6.0
+--------------------

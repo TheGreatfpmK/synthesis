@@ -1,0 +1,31 @@
+2024-02-04 15:38:57,548 - cli.py - This is Paynt version 0.1.0.
+2024-02-04 15:38:57,548 - sketch.py - loading sketch from models/tac24/case-studies/maze-multi/sketch.templ ...
+2024-02-04 15:38:57,549 - sketch.py - assuming sketch in PRISM format...
+2024-02-04 15:38:57,550 - prism_parser.py - PRISM model type: POMDP
+2024-02-04 15:38:57,550 - prism_parser.py - loading properties from models/tac24/case-studies/maze-multi/sketch.props ...
+2024-02-04 15:38:57,551 - prism_parser.py - found the following specification: constraints: R[exp]{"collect"}>=10 [F ((((x = 2) & (y = 0)) & (clk = 1)) | ((((x = 0) | (x = 4)) & (y = 0)) & (clk = 1)))],R[exp]{"faults"}<=7 [F ((((x = 2) & (y = 0)) & (clk = 1)) | ((((x = 0) | (x = 4)) & (y = 0)) & (clk = 1)))]; optimality: Pmax=? [F (((x = 2) & (y = 0)) & (clk = 1))] 
+2024-02-04 15:38:57,561 - sketch.py - sketch parsing OK
+2024-02-04 15:38:57,561 - sketch.py - converting state rewards 'faults' to state-action rewards
+2024-02-04 15:38:57,561 - sketch.py - converting state rewards 'collect' to state-action rewards
+2024-02-04 15:38:57,561 - sketch.py - constructed explicit quotient having 15 states and 48 actions
+2024-02-04 15:38:57,561 - sketch.py - found the following specification constraints: R[exp]{"collect"}>=10 [F ((((x = 2) & (y = 0)) & (clk = 1)) | ((((x = 0) | (x = 4)) & (y = 0)) & (clk = 1)))],R[exp]{"faults"}<=7 [F ((((x = 2) & (y = 0)) & (clk = 1)) | ((((x = 0) | (x = 4)) & (y = 0)) & (clk = 1)))]; optimality: Pmax=? [F (((x = 2) & (y = 0)) & (clk = 1))] 
+2024-02-04 15:38:57,567 - pomdp.py - constructed POMDP having 8 observations.
+2024-02-04 15:38:57,568 - pomdp.py - unfolding POMDP using the following memory allocation vector: [1, 1, 1, 1, 1, 1, 1, 1] ...
+2024-02-04 15:38:57,568 - pomdp.py - constructed quotient MDP having 15 states and 48 actions.
+2024-02-04 15:38:57,570 - synthesizer.py - synthesis initiated, design space: 1024
+2024-02-04 15:38:57,734 - synthesizer.py - synthesis finished, printing synthesized assignment below:
+2024-02-04 15:38:57,734 - synthesizer.py - A([l=1 & r=1],0)={'up'}, A([d=1 & l=1],0)={'up'}, A([d=1 & l=1 & r=1],0)={'left'}, A([d=1 & u=1],0)={'right'}, A([d=1 & r=1],0)={'right'}
+2024-02-04 15:38:57,734 - synthesizer.py - double-checking specification satisfiability: 16.11204161396796,6.974848588737094 : 0.3799397973291421
+--------------------
+Synthesis summary:
+constraint 1: R[exp]{"collect"}>=10 [F ((((x = 2) & (y = 0)) & (clk = 1)) | ((((x = 0) | (x = 4)) & (y = 0)) & (clk = 1)))]
+constraint 2: R[exp]{"faults"}<=7 [F ((((x = 2) & (y = 0)) & (clk = 1)) | ((((x = 0) | (x = 4)) & (y = 0)) & (clk = 1)))]
+optimality objective: Pmax=? [F (((x = 2) & (y = 0)) & (clk = 1))] 
+
+method: 1-by-1, synthesis time: 0.16 s
+number of holes: 5, family size: 1024, quotient: 15 states / 48 actions
+explored: 100 %
+DTMC stats: avg DTMC size: 15, iterations: 1024
+
+optimum: 0.37994
+--------------------

@@ -1,0 +1,51 @@
+2024-01-08 21:17:14,148 - cli.py - This is Paynt version 0.1.0.
+2024-01-08 21:17:14,148 - sketch.py - loading sketch from /home/fpmk/research/synthesis/experiments/../models/mdp/sketches/dpm/switch-big-q10-old/sketch.templ ...
+2024-01-08 21:17:14,148 - sketch.py - assuming sketch in PRISM format...
+2024-01-08 21:17:14,150 - prism_parser.py - PRISM model type: MDP
+2024-01-08 21:17:14,150 - prism_parser.py - processing hole definitions...
+2024-01-08 21:17:14,151 - prism_parser.py - loading properties from /home/fpmk/research/synthesis/experiments/../models/mdp/sketches/dpm/switch-big-q10-old/sketch.props ...
+2024-01-08 21:17:14,151 - prism_parser.py - found the following specification: constraints: P>=9/10 [F ((bat = 0) & (lost = 0))]; 
+2024-01-08 21:17:14,151 - jani.py - constructing JANI program...
+2024-01-08 21:17:14,157 - jani.py - constructing the quotient...
+2024-01-08 21:17:14,358 - jani.py - associating choices of the quotient with hole assignments...
+2024-01-08 21:17:14,432 - sketch.py - sketch parsing OK
+2024-01-08 21:17:14,432 - sketch.py - constructed explicit quotient having 8767 states and 57794 actions
+2024-01-08 21:17:14,433 - sketch.py - found the following specification constraints: P>=9/10 [F ((bat = 0) & (lost = 0))]; 
+2024-01-08 21:17:14,447 - mdp_family.py - associating choices with action labels...
+2024-01-08 21:17:14,531 - synthesizer.py - evaluation initiated, design space: 14580
+> Progress 48.189%, elapsed 3 s, estimated 6 s, iters = {game: 16, MDP: 21}
+> Progress 48.456%, elapsed 6 s, estimated 12 s, iters = {game: 35, MDP: 73}
+> Progress 48.703%, elapsed 9 s, estimated 18 s, iters = {game: 53, MDP: 118}
+> Progress 53.333%, elapsed 12 s, estimated 22 s, iters = {game: 69, MDP: 147}
+--------------------
+Policy tree summary:
+found 90 satisfying policies for 3240/14580 family members (22.0%)
+policy tree has 149 nodes, 99 of them are leaves:
+	  solvable leaves: 90 (avg.size: 36.0)
+	unsolvable leaves: 9 (avg.size: 1260.0)
+	 singleton leaves: 78
+2024-01-08 21:17:27,254 - policy_tree.py - post-processing the policy tree...
+2024-01-08 21:17:27,254 - policy_tree.py - merging unsat siblings...
+2024-01-08 21:17:27,254 - policy_tree.py - merged 4 pairs
+2024-01-08 21:17:27,254 - policy_tree.py - merging compatible siblings...
+2024-01-08 21:17:27,540 - policy_tree.py - merged 130 pairs
+--------------------
+Policy tree summary:
+found 4 satisfying policies for 3240/14580 family members (22.0%)
+policy tree has 15 nodes, 9 of them are leaves:
+	  solvable leaves: 4 (avg.size: 810.0)
+	unsolvable leaves: 5 (avg.size: 2268.0)
+	 singleton leaves: 0
+2024-01-08 21:17:27,543 - synthesizer.py - evaluation finished
+--------------------
+Synthesis summary:
+constraint 1: P>=9/10 [F ((bat = 0) & (lost = 0))]
+
+method: AR (policy tree), synthesis time: 13.01 s
+number of holes: 10, family size: 14580, quotient: 8767 states / 57794 actions
+explored: 100 %
+Game stats: avg MDP size: 8767, iterations: 71
+MDP stats: avg MDP size: 8112, iterations: 149
+
+satisfied 3240/14580 members (22%)
+--------------------

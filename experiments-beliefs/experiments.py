@@ -174,9 +174,10 @@ if __name__ == '__main__':
 
     if experiment == 'default':
         experiment_models = ["drone-4-2", "network", "4x3-95", "query-s3", "milos-aaai97", "network-2-8-20", "refuel-08", "refuel-20"]
+        experiment_models = ["refuel-20"]
 
-        options = "--storm-pomdp --iterative-storm 900 90 2 --enhanced-saynt 0 --saynt-overapprox"
-        logs_string = "uniform-overapp-default-90-2"
+        options = "--storm-pomdp --iterative-storm 900 90 2 --enhanced-saynt 0"
+        logs_string = "uniform-default-90-2"
         timeout = 1200
         run_experiment(options, logs_string, experiment_models, timeout)
 

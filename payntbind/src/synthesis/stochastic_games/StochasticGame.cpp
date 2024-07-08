@@ -35,7 +35,7 @@ namespace synthesis {
     void StochasticGame::checkGame(std::shared_ptr<storm::models::sparse::Smg<double>> const& model) {
         
         std::vector<std::shared_ptr<storm::logic::Formula const>> formulas =
-        storm::api::extractFormulasFromProperties(storm::api::parseProperties("<<1>> R>=0.5 [ S ]"));
+        storm::api::extractFormulasFromProperties(storm::api::parseProperties("<<1>> Rmax=? [ S ]"));
 
         // auto formulas = storm::api::parseProperties("<<1>> Pmax=? [F \"goal\"]");
         auto task = storm::api::createTask<double>(formulas[0], false);

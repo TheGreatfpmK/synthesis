@@ -2,6 +2,7 @@
 
 #include "PomdpManager.h"
 #include "PomdpManagerAposteriori.h"
+#include "PomdpObservations.h"
 
 void bindings_pomdp(py::module& m) {
 
@@ -39,5 +40,9 @@ void bindings_pomdp(py::module& m) {
         .def_property_readonly("update_holes", [](synthesis::PomdpManagerAposteriori<double>& manager) {return manager.update_holes;})
         ;
 
+    py::class_<synthesis::PomdpObservations<double>>(m, "PomdpObservations", "Class for working with underlying MDP and observations")
+        .def(py::init<storm::models::sparse::Pomdp<double> const&>(), "Constructor.")
+        .def_property_readonly("underlying_mdp", [](synthesis::PomdpObservations<double>& pomdpObservations) {return pomdpObservations.underlyingMdp;})
+        ;
 }
 

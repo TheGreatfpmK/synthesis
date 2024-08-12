@@ -6,6 +6,7 @@ import paynt.quotient
 import paynt.quotient.pomdp
 import paynt.quotient.decpomdp
 import paynt.quotient.storm_pomdp_control
+import paynt.quotient.pomdp_observations
 
 import paynt.synthesizer.all_in_one
 import paynt.synthesizer.synthesizer
@@ -181,6 +182,10 @@ def paynt_run(
     properties_path = os.path.join(project, props)
     if all_in_one is None:
         quotient = paynt.parser.sketch.Sketch.load_sketch(sketch_path, properties_path, export, relative_error, precision, constraint_bound)
+        if True and isinstance(quotient, paynt.quotient.pomdp.PomdpQuotient):
+            pomdp_observations = paynt.quotient.pomdp_observations.PomdpObservationClass(quotient.pomdp)
+            pomdp_observations.test()
+            exit()
         synthesizer = paynt.synthesizer.synthesizer.Synthesizer.choose_synthesizer(quotient, method, fsc_synthesis, storm_control)
         synthesizer.run(optimum_threshold, export_evaluation)
     else:

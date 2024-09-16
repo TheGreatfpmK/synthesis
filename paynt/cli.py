@@ -68,7 +68,7 @@ def setup_logger(log_path = None):
     help="export the model to specified format and abort")
 
 @click.option("--method",
-    type=click.Choice(['onebyone', 'ar', 'cegis', 'hybrid', 'ar_multicore']),
+    type=click.Choice(['onebyone', 'ar', 'cegis', 'hybrid', 'ar_multicore', 'ar_sampling']),
     default="ar", show_default=True,
     help="synthesis method"
     )

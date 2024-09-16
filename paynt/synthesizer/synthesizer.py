@@ -28,6 +28,7 @@ class Synthesizer:
         import paynt.synthesizer.synthesizer_cegis
         import paynt.synthesizer.synthesizer_hybrid
         import paynt.synthesizer.synthesizer_multicore_ar
+        import paynt.synthesizer.synthesizer_ar_sampling
         import paynt.synthesizer.synthesizer_pomdp
         import paynt.synthesizer.synthesizer_decpomdp
         import paynt.synthesizer.policy_tree
@@ -62,6 +63,8 @@ class Synthesizer:
             return paynt.synthesizer.synthesizer_hybrid.SynthesizerHybrid(quotient)
         if method == "ar_multicore":
             return paynt.synthesizer.synthesizer_multicore_ar.SynthesizerMultiCoreAR(quotient)
+        if method == "ar_sampling":
+            return paynt.synthesizer.synthesizer_ar_sampling.SynthesizerARSampling(quotient)
         raise ValueError("invalid method name")
 
 

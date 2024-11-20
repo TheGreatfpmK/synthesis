@@ -1,3 +1,5 @@
+import paynt.models
+import paynt.models.models
 import paynt.synthesizer.statistic
 import stormpy
 import payntbind
@@ -286,7 +288,7 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         specification = paynt.verification.property.Specification(properties)
         return specification
 
-    def robust_union_game(self, mdp_family):
+    def get_worst_mdp(self, mdp_family):
         assignments = []
         # print(self.quotient.quotient_mdp)
         for mdp_hole_assignments in mdp_family.all_combinations():
@@ -298,18 +300,12 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         print(f"created {len(mdps)} MDPs")
 
         game_with_decision = payntbind.synthesis.createModelWithInitialDecision(mdps)
-        print(f"constructed union POMDP with {game_with_decision.nr_states} states and {game_with_decision.nr_choices} actions")
+        print(f"constructed an SMG with {game_with_decision.nr_states} states and {game_with_decision.nr_choices} actions")
 
         optimality_specification = self.create_game_optimality_specification()
-
-        print(dir(optimality_specification.optimality))
-        exit()
-        
-        result = payntbind.synthesis.smg_model_checking(game_with_decision, optimality_specification.optimality.formula, only_initial_state=False, set_produce_scheduler=True)
-
-        value = result.at(self.model.initial_states[0])
-
-        print(value)
+        smg = paynt.models.models.Smg(game_with_decision)
+        result = smg.model_check_property(optimality_specification.optimality)
+        print(result)
 
 
     def assignment_to_pomdp(self, assignment):
@@ -369,8 +365,7 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
 
         # self.robust_cegis_policies_ar_mdps(family)
         # self.robust_cegis_policies_1by1_mdps(family)
-        # self.robust_ar_policies_1by1_mdps(family)
-        self.robust_union_game(family)
+        self.robust_ar_policies_1by1_mdps(family)
 
 
 def print_profiler_stats(profiler):

@@ -554,6 +554,157 @@ std::shared_ptr<storm::models::sparse::Model<ValueType>> createModelUnion(
 }
 
 
+// Creates a model that is the union of the given models, however, there's a decision in the initial state as to which model is chosen
+// List of DTMCs leads to an MDP. List of MDPs leads to an SMG. List of POMDPs leads to an POSMG. 
+template<typename ValueType>
+std::shared_ptr<storm::models::sparse::Model<ValueType>> createModelWithInitialDecision(
+    std::vector<std::shared_ptr<storm::models::sparse::Model<ValueType>>> const& models
+) {
+    uint64_t num_models = models.size();
+    STORM_LOG_THROW(num_models > 0, storm::exceptions::InvalidArgumentException, "the list of models is empty");
+
+    uint64_t union_initial_state = 0;
+    uint64_t union_num_states = 1;
+    uint64_t union_num_choices = models.size();
+    std::vector<uint64_t> state_offset;
+    std::vector<uint64_t> choice_offset;
+    for(uint64_t model_index = 0; model_index < num_models; ++model_index) {
+        state_offset.push_back(union_num_states);
+        choice_offset.push_back(union_num_choices);
+        auto model = models[model_index];
+        union_num_states += model->getNumberOfStates();
+        union_num_choices += model->getNumberOfChoices();
+    }
+
+    storm::storage::sparse::ModelComponents<ValueType> components;
+    storm::models::sparse::StateLabeling union_state_labeling(union_num_states);
+    union_state_labeling.addLabel("init");
+    union_state_labeling.addLabelToState("init",union_initial_state);
+    for(uint64_t model_index = 0; model_index < num_models; ++model_index) {
+        auto model = models[model_index];
+        storm::models::sparse::StateLabeling const& state_labeling = model->getStateLabeling();
+        for (auto const& label : state_labeling.getLabels()) {
+            if(not union_state_labeling.containsLabel(label)) {
+                union_state_labeling.addLabel(label);
+            }
+        }
+        for(uint64_t state = 0; state < model->getNumberOfStates(); ++state) {
+            uint64_t union_state = state_offset[model_index] + state;
+            for(std::string const& label: state_labeling.getLabelsOfState(state)) {
+                if(label == "init") {
+                    continue;
+                }
+                union_state_labeling.addLabelToState(label,union_state);
+            }
+        }
+    }
+    components.stateLabeling = union_state_labeling;
+
+    auto model_type = models[0]->getType();
+
+    if(model_type == storm::models::ModelType::Pomdp) {
+        std::vector<uint32_t> state_observation(union_num_states);
+        uint64_t num_observations = 0;
+        for(uint64_t model_index = 0; model_index < num_models; ++model_index) {
+            auto model = models[model_index];
+            auto pomdp = static_cast<storm::models::sparse::Pomdp<ValueType> const&>(*model);
+            if(pomdp.getNrObservations() > num_observations) {
+                num_observations = pomdp.getNrObservations();
+            }
+            for(uint64_t state = 0; state < pomdp.getNumberOfStates(); ++state) {
+                uint64_t union_state = state_offset[model_index] + state;
+                state_observation[union_state] = pomdp.getObservation(state);
+            }
+        }
+        state_observation[union_initial_state] = num_observations;
+        components.observabilityClasses = state_observation;
+    }
+
+    // skipping state and observation valuations
+
+    storm::models::sparse::ChoiceLabeling union_choice_labeling(union_num_choices);
+    storm::storage::SparseMatrixBuilder<ValueType> builder(
+        union_num_choices, union_num_states, 0, false, true, union_num_states
+    );
+    builder.newRowGroup(union_initial_state);
+    for(uint64_t model_index = 0; model_index < num_models; ++model_index) {
+        union_choice_labeling.addLabel("model_"+std::to_string(model_index));
+        union_choice_labeling.addLabelToChoice("model_"+std::to_string(model_index),model_index);
+        auto model = models[model_index];
+        uint64_t initial_state = state_offset[model_index] + *(model->getInitialStates().begin());
+        builder.addNextValue(model_index, initial_state, 1);
+    }
+    for(uint64_t model_index = 0; model_index < num_models; ++model_index) {
+        auto model = models[model_index];
+        storm::models::sparse::ChoiceLabeling const& choice_labeling = model->getChoiceLabeling();
+        for (auto const& label : choice_labeling.getLabels()) {
+            if(not union_choice_labeling.containsLabel(label)) {
+                union_choice_labeling.addLabel(label);
+            }
+        }
+
+        auto const& row_groups = model->getTransitionMatrix().getRowGroupIndices();
+        for(uint64_t state = 0; state < model->getNumberOfStates(); ++state) {
+            builder.newRowGroup(choice_offset[model_index]+row_groups[state]);
+            for(uint64_t choice = row_groups[state]; choice < row_groups[state+1]; ++choice) {
+                uint64_t union_choice = choice_offset[model_index]+choice;
+                for(auto entry: model->getTransitionMatrix().getRow(choice)) {
+                    builder.addNextValue(union_choice, state_offset[model_index]+entry.getColumn(), entry.getValue());
+                }
+                for(std::string const& label: choice_labeling.getLabelsOfChoice(choice)) {
+                    union_choice_labeling.addLabelToChoice(label,union_choice);
+                }
+            }
+        }
+    }
+    components.transitionMatrix =  builder.build();
+    components.choiceLabeling = union_choice_labeling;
+    // skipping choice origins
+
+    std::map<std::string,std::vector<ValueType>> reward_models;
+    for(uint64_t model_index = 0; model_index < num_models; ++model_index) {
+        auto model = models[model_index];
+        for(auto const& [reward_name,reward_model] : model->getRewardModels()) {
+            STORM_LOG_THROW(!reward_model.hasStateRewards() and !reward_model.hasTransitionRewards() and reward_model.hasStateActionRewards(),
+                storm::exceptions::NotSupportedException, "expected state-action rewards");
+            if(reward_models.count(reward_name) == 0) {
+                reward_models.emplace(reward_name,std::vector<ValueType>(union_num_choices,0));
+            }
+
+            for(uint64_t choice = 0; choice < model->getNumberOfChoices(); ++choice) {
+                uint64_t union_choice = choice_offset[model_index] + choice;
+                reward_models[reward_name][union_choice] = reward_model.getStateActionReward(choice);
+            }
+        }
+    }
+
+    for(auto &[reward_name,action_rewards]: reward_models) {
+        std::optional<std::vector<ValueType>> state_rewards;
+        components.rewardModels.emplace(
+            reward_name, storm::models::sparse::StandardRewardModel<ValueType>(std::move(state_rewards), std::move(action_rewards))
+        );
+    }
+
+    auto output_model_type = storm::models::ModelType::Mdp; 
+
+    // TODO add support for POMDPs
+    std::vector<uint64_t> state_player_indications;
+    if (model_type == storm::models::ModelType::Mdp) {
+        for (uint64_t state_index = 0; state_index < union_num_states; ++state_index) {
+            if (state_index == 0) {
+                state_player_indications.push_back(1);
+            } else {
+                state_player_indications.push_back(0);
+            }
+        }
+        components.statePlayerIndications = state_player_indications;
+        output_model_type = storm::models::ModelType::Smg; 
+    }
+
+    return storm::utility::builder::buildModelFromComponents<ValueType>(output_model_type,std::move(components));
+}
+
+
 template std::vector<std::vector<uint64_t>> computeChoiceDestinations<double>(
     storm::models::sparse::Model<double> const& model);
 template std::pair<std::vector<std::string>,std::vector<uint64_t>> extractActionLabels<double>(
@@ -577,6 +728,9 @@ template std::shared_ptr<storm::models::sparse::Model<double>> restoreActionsInA
 template std::shared_ptr<storm::models::sparse::Model<double>> addDontCareAction<double>(
     storm::models::sparse::Model<double> const& model);
 template std::shared_ptr<storm::models::sparse::Model<double>> createModelUnion(
+    std::vector<std::shared_ptr<storm::models::sparse::Model<double>>> const&
+);
+template std::shared_ptr<storm::models::sparse::Model<double>> createModelWithInitialDecision(
     std::vector<std::shared_ptr<storm::models::sparse::Model<double>>> const&
 );
 

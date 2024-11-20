@@ -18,6 +18,7 @@ void bindings_translation(py::module& m) {
     m.def("restoreActionsInAbsorbingStates", &synthesis::restoreActionsInAbsorbingStates<double>);
     m.def("addDontCareAction", &synthesis::addDontCareAction<double>);
     m.def("createModelUnion", &synthesis::createModelUnion<double>);
+    m.def("createModelWithInitialDecision", &synthesis::createModelWithInitialDecision<double>);
 
     py::class_<synthesis::SubPomdpBuilder<double>, std::shared_ptr<synthesis::SubPomdpBuilder<double>>>(m, "SubPomdpBuilder")
         .def(py::init<storm::models::sparse::Pomdp<double> const&>())

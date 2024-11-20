@@ -20,6 +20,8 @@ import paynt.quotient.mdp_family
 import os
 import sys
 
+import cProfile, pstats
+
 
 class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
 
@@ -259,28 +261,152 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
 
         print("no robust policy found")
 
+
+    def assignment_to_mdp(self, assignment):
+        mdp = self.quotient.build_assignment(assignment)
+        goal_label = self.quotient.specification.constraints[0].get_target_label()
+        new_state_labeling = mdp.model.labeling
+        new_state_labeling.add_label("goal")
+        for state in range(mdp.model.nr_states):
+            state_labels = new_state_labeling.get_labels_of_state(state)
+            if goal_label in state_labels:
+                new_state_labeling.add_label_to_state("goal", state)
+        components = stormpy.SparseModelComponents(transition_matrix=mdp.model.transition_matrix, state_labeling=new_state_labeling,
+                                                   reward_models=mdp.model.reward_models)
+        components.state_valuations = mdp.model.state_valuations
+        components.choice_labeling = mdp.model.choice_labeling
+        
+        return stormpy.storage.SparseMdp(components)
+    
+    def create_game_optimality_specification(self, relative_error=0):
+        optimality_formula_str = "<<0>> Pmax=? [ F \"goal\" ]"
+        optimality_formula = stormpy.parse_properties_without_context(optimality_formula_str)[0]
+        prop = paynt.verification.property.construct_property(optimality_formula, relative_error)
+        properties = [prop]
+        specification = paynt.verification.property.Specification(properties)
+        return specification
+
+    def robust_union_game(self, mdp_family):
+        assignments = []
+        # print(self.quotient.quotient_mdp)
+        for mdp_hole_assignments in mdp_family.all_combinations():
+            combination = list(mdp_hole_assignments)
+            mdp_singleton_suboptions = [[option] for option in combination]
+            mdp_singleton_family = mdp_family.assume_options_copy(mdp_singleton_suboptions)
+            assignments.append(mdp_singleton_family)
+        mdps = [self.assignment_to_mdp(assignment) for assignment in assignments]
+        print(f"created {len(mdps)} MDPs")
+
+        game_with_decision = payntbind.synthesis.createModelWithInitialDecision(mdps)
+        print(f"constructed union POMDP with {game_with_decision.nr_states} states and {game_with_decision.nr_choices} actions")
+
+        optimality_specification = self.create_game_optimality_specification()
+
+        print(dir(optimality_specification.optimality))
+        exit()
+        
+        result = payntbind.synthesis.smg_model_checking(game_with_decision, optimality_specification.optimality.formula, only_initial_state=False, set_produce_scheduler=True)
+
+        value = result.at(self.model.initial_states[0])
+
+        print(value)
+
+
+    def assignment_to_pomdp(self, assignment):
+        mdp = self.quotient.build_assignment(assignment)
+        goal_label = self.quotient.specification.constraints[0].get_target_label()
+        new_state_labeling = mdp.model.labeling
+        new_state_labeling.add_label("goal")
+        for state in range(mdp.model.nr_states):
+            state_labels = new_state_labeling.get_labels_of_state(state)
+            if goal_label in state_labels:
+                new_state_labeling.add_label_to_state("goal", state)
+        components = stormpy.SparseModelComponents(transition_matrix=mdp.model.transition_matrix, state_labeling=new_state_labeling,
+                                                   reward_models=mdp.model.reward_models)
+        components.state_valuations = mdp.model.state_valuations
+        components.choice_labeling = mdp.model.choice_labeling
+        components.observability_classes = [mdp.quotient_state_map[state] for state in range(mdp.model.nr_states)]
+        
+        return stormpy.storage.SparsePomdp(components)
+    
+
+    def create_optimality_specification(self, relative_error=0):
+        optimality_formula_str = "Pmax=? [ F \"goal\" ]"
+        optimality_formula = stormpy.parse_properties_without_context(optimality_formula_str)[0]
+        prop = paynt.verification.property.construct_property(optimality_formula, relative_error)
+        properties = [prop]
+        specification = paynt.verification.property.Specification(properties)
+        return specification
+
         
     def average_union_pomdp(self, mdp_family):
-        pass
+        assignments = []
+        # print(self.quotient.quotient_mdp)
+        for mdp_hole_assignments in mdp_family.all_combinations():
+            combination = list(mdp_hole_assignments)
+            mdp_singleton_suboptions = [[option] for option in combination]
+            mdp_singleton_family = mdp_family.assume_options_copy(mdp_singleton_suboptions)
+            assignments.append(mdp_singleton_family)
+        pomdps = [self.assignment_to_pomdp(assignment) for assignment in assignments]
+        print(f"created {len(pomdps)} POMDPs")
 
-    def run_robust(self):
+        union_pomdp = payntbind.synthesis.createModelUnion(pomdps)
+        print(f"constructed union POMDP with {union_pomdp.nr_states} states and {union_pomdp.nr_choices} actions")
+
+        pomdp_specification = self.create_optimality_specification()
+        union_pomdp_quotient = paynt.quotient.pomdp.PomdpQuotient(union_pomdp, pomdp_specification)
+        synthesizer = paynt.synthesizer.synthesizer.Synthesizer.choose_synthesizer(union_pomdp_quotient, "ar", True)
+        synthesizer.run()
+
+    def run_robust(self, family=None):
+        if family is None:
+            family = self.quotient.family
         self.synthesis_timer = paynt.utils.timer.Timer()
         self.synthesis_timer.start()
         self.stat = paynt.synthesizer.statistic.Statistic(self)
         self.explored = 0
         self.stat.start(self.policy_family)
 
-        robust_policy_synthesizer.robust_cegis_policies_ar_mdps(self.quotient.family)
-        # robust_policy_synthesizer.robust_cegis_policies_1by1_mdps(self.quotient.family)
-        # robust_policy_synthesizer.robust_ar_policies_1by1_mdps(self.quotient.family)
-        # robust_policy_synthesizer.average_union_pomdp(self.quotient.family)
+        # self.robust_cegis_policies_ar_mdps(family)
+        # self.robust_cegis_policies_1by1_mdps(family)
+        # self.robust_ar_policies_1by1_mdps(family)
+        self.robust_union_game(family)
 
 
-atva_folder = "models/archive/atva24-policy-trees/"
+def print_profiler_stats(profiler):
+    stats = pstats.Stats(profiler)
+    NUM_LINES = 10
+
+    print("cProfiler info:")
+    stats.sort_stats('tottime').print_stats(NUM_LINES)
+
+    print("percentage breakdown:")
+    entries = [ (key,data[2]) for key,data in stats.stats.items()]
+    entries = sorted(entries, key=lambda x : x[1], reverse=True)
+    entries = entries[:NUM_LINES]
+    for key,data in entries:
+        module,line,method = key
+        if module == "~":
+            callee = method
+        else:
+            callee = f"{module}:{line}({method})"
+        percentage = round(data / stats.total_tt * 100,1)
+        percentage = str(percentage).ljust(4)
+        print(f"{percentage} %  {callee}")
+
+
+profiling = False
+
+if profiling:
+    profiler = cProfile.Profile()
+    profiler.enable()
+
+robust_folder = "models/archive/atva24-policy-trees/"
+# robust_folder = "models/robust-mdps/"
 if len(sys.argv) < 2:
-    model_folder = os.path.join(atva_folder, 'obstacles-demo/')
+    model_folder = os.path.join(robust_folder, 'obstacles-demo/')
 else:
-    model_folder = os.path.join(atva_folder, sys.argv[1])
+    model_folder = os.path.join(robust_folder, sys.argv[1])
 model_file = os.path.join(model_folder, 'sketch.templ')
 props_file = os.path.join(model_folder, 'sketch.props')
 quotient = paynt.parser.sketch.Sketch.load_sketch(model_file, props_file)
@@ -289,3 +415,10 @@ assert isinstance(quotient, paynt.quotient.mdp_family.MdpFamilyQuotient)
 robust_policy_synthesizer = RobustPolicySynthesizer(quotient)
 
 robust_policy_synthesizer.run_robust()
+# robust_policy_synthesizer.average_union_pomdp(quotient.family)
+
+if profiling:
+    profiler.disable()
+    print_profiler_stats(profiler)
+
+

@@ -119,4 +119,13 @@ std::shared_ptr<storm::models::sparse::Model<ValueType>> createModelUnion(
     std::vector<std::shared_ptr<storm::models::sparse::Model<ValueType>>> const& models
 );
 
+/**
+ * Create a union model with a fresh initial state with a decision as to which model is chosen.
+ * List of DTMCs leads to an MDP. List of MDPs leads to an SMG. List of POMDPs leads to an POSMG. 
+ */
+template<typename ValueType>
+std::shared_ptr<storm::models::sparse::Model<ValueType>> createModelWithInitialDecision(
+    std::vector<std::shared_ptr<storm::models::sparse::Model<ValueType>>> const& models
+);
+
 }

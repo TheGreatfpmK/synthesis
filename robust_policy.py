@@ -7,6 +7,7 @@ import payntbind
 import paynt.family.family
 import paynt.synthesizer.synthesizer
 import paynt.synthesizer.synthesizer_ar
+import paynt.quotient.storm_pomdp_control
 
 import paynt.quotient.quotient
 import paynt.verification.property_result
@@ -107,7 +108,7 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
                 choice_to_hole_options.append(policy_assignment[quotient_choice])
 
             coloring = payntbind.synthesis.Coloring(policy_family.family, unsat_mdp.model.nondeterministic_choice_indices, choice_to_hole_options)
-            quotient_container = paynt.quotient.quotient.Quotient(unsat_mdp.model, policy_family, coloring, self.quotient.specification)
+            quotient_container = paynt.quotient.quotient.Quotient(unsat_mdp.model, policy_family, coloring, self.quotient.specification) # negate here or no?
 
             conflict_generator = paynt.synthesizer.conflict_generator.dtmc.ConflictGeneratorDtmc(quotient_container)
             conflict_generator.initialize()
@@ -125,7 +126,7 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             policy_singleton_family = smt_solver.pick_assignment(policy_family)
             iter += 1
 
-            if iter % 2 == 0:
+            if iter % 10 == 0:
                 print(f"iter {iter}, progress {self.explored/self.policy_family.size}")
 
         print("no robust policy found")
@@ -168,7 +169,8 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
                 choice_to_hole_options.append(policy_assignment[quotient_choice])
 
             coloring = payntbind.synthesis.Coloring(policy_family.family, mdp_singleton_family.mdp.model.nondeterministic_choice_indices, choice_to_hole_options)
-            quotient_container = paynt.quotient.quotient.Quotient(mdp_singleton_family.mdp.model, policy_family, coloring, self.quotient.specification)
+            # quotient_container = paynt.quotient.quotient.Quotient(mdp_singleton_family.mdp.model, policy_family, coloring, self.quotient.specification.negate()) # negate here or no?
+            quotient_container = paynt.quotient.quotient.Quotient(mdp_singleton_family.mdp.model, policy_family, coloring, self.quotient.specification) # negate here or no?
 
             conflict_generator = paynt.synthesizer.conflict_generator.dtmc.ConflictGeneratorDtmc(quotient_container)
             conflict_generator.initialize()
@@ -180,6 +182,7 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             conflicts = conflict_generator.construct_conflicts(policy_family, policy_singleton_family, model, requests)
             pruned = smt_solver.exclude_conflicts(policy_family, policy_singleton_family, conflicts)
 
+            # print(f"pruned {pruned} options ({pruned/policy_family.size}%)")
             self.explored += pruned
             
             # construct next assignment
@@ -264,6 +267,28 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         print("no robust policy found")
 
 
+    def robust_posmg(self, mdp_family):
+        assignments = []
+        # print(self.quotient.quotient_mdp)
+        for mdp_hole_assignments in mdp_family.all_combinations():
+            combination = list(mdp_hole_assignments)
+            mdp_singleton_suboptions = [[option] for option in combination]
+            mdp_singleton_family = mdp_family.assume_options_copy(mdp_singleton_suboptions)
+            assignments.append(mdp_singleton_family)
+        pomdps = [self.assignment_to_pomdp(assignment) for assignment in assignments]
+        print(f"created {len(pomdps)} POMDPs")
+
+        posmg_with_decision = payntbind.synthesis.createModelWithInitialDecision(pomdps)
+        print(f"constructed union POSMG with {posmg_with_decision.nr_states} states and {posmg_with_decision.nr_choices} actions")
+
+        posmg_specification = self.create_game_optimality_specification()
+        posmg_quotient = paynt.quotient.posmg.PosmgQuotient(posmg_with_decision, posmg_specification)
+        synthesizer = paynt.synthesizer.synthesizer.Synthesizer.choose_synthesizer(posmg_quotient, "ar", False)
+        result = synthesizer.run()
+
+        print(result)
+
+
     def assignment_to_mdp(self, assignment):
         mdp = self.quotient.build_assignment(assignment)
         goal_label = self.quotient.specification.constraints[0].get_target_label()
@@ -335,7 +360,7 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         return specification
 
         
-    def average_union_pomdp(self, mdp_family):
+    def average_union_pomdp(self, mdp_family, storm=False):
         assignments = []
         # print(self.quotient.quotient_mdp)
         for mdp_hole_assignments in mdp_family.all_combinations():
@@ -351,7 +376,12 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
 
         pomdp_specification = self.create_optimality_specification()
         union_pomdp_quotient = paynt.quotient.pomdp.PomdpQuotient(union_pomdp, pomdp_specification)
-        synthesizer = paynt.synthesizer.synthesizer.Synthesizer.choose_synthesizer(union_pomdp_quotient, "ar", True)
+
+        storm_control = None
+        if storm:
+            storm_control = paynt.quotient.storm_pomdp_control.StormPOMDPControl()
+            storm_control.set_options(get_storm_result=0)
+        synthesizer = paynt.synthesizer.synthesizer.Synthesizer.choose_synthesizer(union_pomdp_quotient, "ar", True, storm_control)
         synthesizer.run()
 
     def run_robust(self, family=None):
@@ -365,7 +395,20 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
 
         # self.robust_cegis_policies_ar_mdps(family)
         # self.robust_cegis_policies_1by1_mdps(family)
-        self.robust_ar_policies_1by1_mdps(family)
+        # self.robust_ar_policies_1by1_mdps(family)
+        self.robust_posmg(family)
+
+
+    def run_game_abstraction_heuristic(self, family):
+        self.quotient.build(family)
+        prop = self.quotient.specification.constraints[0]
+        game_solver = self.quotient.build_game_abstraction_solver(prop)
+        game_solver.solve(family.selected_choices, prop.maximizing, prop.minimizing)
+        game_value = game_solver.solution_value
+        game_sat = prop.satisfies_threshold_within_precision(game_value)
+        print(game_value)
+        print(game_sat)
+        return game_sat
 
 
 def print_profiler_stats(profiler):
@@ -390,14 +433,21 @@ def print_profiler_stats(profiler):
         print(f"{percentage} %  {callee}")
 
 
+def family_selection(quotient):
+    if False:
+        pass
+    else:
+        return quotient.family
+
+
 profiling = False
 
 if profiling:
     profiler = cProfile.Profile()
     profiler.enable()
 
-robust_folder = "models/archive/atva24-policy-trees/"
-# robust_folder = "models/robust-mdps/"
+# robust_folder = "models/archive/atva24-policy-trees/"
+robust_folder = "models/robust-mdps/"
 if len(sys.argv) < 2:
     model_folder = os.path.join(robust_folder, 'obstacles-demo/')
 else:
@@ -407,10 +457,12 @@ props_file = os.path.join(model_folder, 'sketch.props')
 quotient = paynt.parser.sketch.Sketch.load_sketch(model_file, props_file)
 assert isinstance(quotient, paynt.quotient.mdp_family.MdpFamilyQuotient)
 
-robust_policy_synthesizer = RobustPolicySynthesizer(quotient)
+family = family_selection(quotient)
 
-robust_policy_synthesizer.run_robust()
-# robust_policy_synthesizer.average_union_pomdp(quotient.family)
+robust_policy_synthesizer = RobustPolicySynthesizer(quotient)
+robust_policy_synthesizer.run_game_abstraction_heuristic(quotient.family)
+# robust_policy_synthesizer.run_robust()
+robust_policy_synthesizer.average_union_pomdp(quotient.family)
 
 if profiling:
     profiler.disable()

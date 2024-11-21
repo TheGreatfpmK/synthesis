@@ -10,6 +10,8 @@
 #include <storm/transformer/SubsystemBuilder.h>
 #include <storm/utility/builder.h>
 
+#include "src/synthesis/posmg/Posmg.h"
+
 
 namespace synthesis {
 
@@ -697,7 +699,7 @@ std::shared_ptr<storm::models::sparse::Model<ValueType>> createModelWithInitialD
 
     // TODO add support for POMDPs
     std::vector<uint64_t> state_player_indications;
-    if (model_type == storm::models::ModelType::Mdp) {
+    if (model_type == storm::models::ModelType::Mdp || model_type == storm::models::ModelType::Pomdp) {
         for (uint64_t state_index = 0; state_index < union_num_states; ++state_index) {
             if (state_index == 0) {
                 state_player_indications.push_back(1);
@@ -707,6 +709,9 @@ std::shared_ptr<storm::models::sparse::Model<ValueType>> createModelWithInitialD
         }
         components.statePlayerIndications = state_player_indications;
         output_model_type = storm::models::ModelType::Smg; 
+        if (model_type == storm::models::ModelType::Pomdp) {
+            return std::make_shared<synthesis::Posmg>(std::move(components));
+        }
     }
 
     return storm::utility::builder::buildModelFromComponents<ValueType>(output_model_type,std::move(components));

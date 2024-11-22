@@ -1,5 +1,6 @@
 import paynt.models
 import paynt.models.models
+import paynt.quotient.pomdp
 import paynt.synthesizer.statistic
 import stormpy
 import payntbind
@@ -234,7 +235,9 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
                     break
             else:
                 # all MDPs share the same satisfying policy (i.e. robust policy was found)
-                print("robust policy found")
+                print(f"robust policy found")
+                print(current_policy_family)
+                print(score_lists)
                 return
 
             # unsat MDP was found
@@ -293,11 +296,12 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         mdp = self.quotient.build_assignment(assignment)
         goal_label = self.quotient.specification.constraints[0].get_target_label()
         new_state_labeling = mdp.model.labeling
-        new_state_labeling.add_label("goal")
-        for state in range(mdp.model.nr_states):
-            state_labels = new_state_labeling.get_labels_of_state(state)
-            if goal_label in state_labels:
-                new_state_labeling.add_label_to_state("goal", state)
+        if "goal" != goal_label:
+            new_state_labeling.add_label("goal")
+            for state in range(mdp.model.nr_states):
+                state_labels = new_state_labeling.get_labels_of_state(state)
+                if goal_label in state_labels:
+                    new_state_labeling.add_label_to_state("goal", state)
         components = stormpy.SparseModelComponents(transition_matrix=mdp.model.transition_matrix, state_labeling=new_state_labeling,
                                                    reward_models=mdp.model.reward_models)
         components.state_valuations = mdp.model.state_valuations
@@ -337,11 +341,12 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         mdp = self.quotient.build_assignment(assignment)
         goal_label = self.quotient.specification.constraints[0].get_target_label()
         new_state_labeling = mdp.model.labeling
-        new_state_labeling.add_label("goal")
-        for state in range(mdp.model.nr_states):
-            state_labels = new_state_labeling.get_labels_of_state(state)
-            if goal_label in state_labels:
-                new_state_labeling.add_label_to_state("goal", state)
+        if "goal" != goal_label:
+            new_state_labeling.add_label("goal")
+            for state in range(mdp.model.nr_states):
+                state_labels = new_state_labeling.get_labels_of_state(state)
+                if goal_label in state_labels:
+                    new_state_labeling.add_label_to_state("goal", state)
         components = stormpy.SparseModelComponents(transition_matrix=mdp.model.transition_matrix, state_labeling=new_state_labeling,
                                                    reward_models=mdp.model.reward_models)
         components.state_valuations = mdp.model.state_valuations
@@ -375,6 +380,7 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         print(f"constructed union POMDP with {union_pomdp.nr_states} states and {union_pomdp.nr_choices} actions")
 
         pomdp_specification = self.create_optimality_specification()
+        # paynt.quotient.pomdp.PomdpQuotient.initial_memory_size = 4
         union_pomdp_quotient = paynt.quotient.pomdp.PomdpQuotient(union_pomdp, pomdp_specification)
 
         storm_control = None
@@ -395,8 +401,8 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
 
         # self.robust_cegis_policies_ar_mdps(family)
         # self.robust_cegis_policies_1by1_mdps(family)
-        # self.robust_ar_policies_1by1_mdps(family)
-        self.robust_posmg(family)
+        self.robust_ar_policies_1by1_mdps(family)
+        # self.robust_posmg(family)
 
 
     def run_game_abstraction_heuristic(self, family):
@@ -461,8 +467,9 @@ family = family_selection(quotient)
 
 robust_policy_synthesizer = RobustPolicySynthesizer(quotient)
 robust_policy_synthesizer.run_game_abstraction_heuristic(quotient.family)
-# robust_policy_synthesizer.run_robust()
-robust_policy_synthesizer.average_union_pomdp(quotient.family)
+robust_policy_synthesizer.run_robust()
+# robust_policy_synthesizer.average_union_pomdp(quotient.family)
+# robust_policy_synthesizer.average_union_pomdp(quotient.family, storm=True)
 
 if profiling:
     profiler.disable()

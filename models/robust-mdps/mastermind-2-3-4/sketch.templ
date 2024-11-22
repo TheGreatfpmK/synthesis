@@ -1,0 +1,42 @@
+// This file was automatically generated.
+
+mdp
+
+const int COLORS = 2;
+const int GUESSES = 4;
+const int BALLS = 3;
+
+hole int ANSWER0 in {0,1};
+hole int ANSWER1 in {0,1};
+hole int ANSWER2 in {0,1};
+
+module mastermind
+	// state
+	guess : [0 .. GUESSES] init 0;
+	ball0 : [0 .. COLORS-1] init 0;
+	ball1 : [0 .. COLORS-1] init 0;
+	ball2 : [0 .. COLORS-1] init 0;
+	correct : [0 .. BALLS] init 0;
+	
+	// transitions
+	[g000] has_guesses & !all_correct -> (guess'= guess + 1) & (correct'= 0 + (0=ANSWER0 ? 1 : 0) + (0=ANSWER1 ? 1 : 0) + (0=ANSWER2 ? 1 : 0));
+	[g001] has_guesses & !all_correct -> (guess'= guess + 1) & (correct'= 0 + (0=ANSWER0 ? 1 : 0) + (0=ANSWER1 ? 1 : 0) + (1=ANSWER2 ? 1 : 0));
+	[g010] has_guesses & !all_correct -> (guess'= guess + 1) & (correct'= 0 + (0=ANSWER0 ? 1 : 0) + (1=ANSWER1 ? 1 : 0) + (0=ANSWER2 ? 1 : 0));
+	[g011] has_guesses & !all_correct -> (guess'= guess + 1) & (correct'= 0 + (0=ANSWER0 ? 1 : 0) + (1=ANSWER1 ? 1 : 0) + (1=ANSWER2 ? 1 : 0));
+	[g100] has_guesses & !all_correct -> (guess'= guess + 1) & (correct'= 0 + (1=ANSWER0 ? 1 : 0) + (0=ANSWER1 ? 1 : 0) + (0=ANSWER2 ? 1 : 0));
+	[g101] has_guesses & !all_correct -> (guess'= guess + 1) & (correct'= 0 + (1=ANSWER0 ? 1 : 0) + (0=ANSWER1 ? 1 : 0) + (1=ANSWER2 ? 1 : 0));
+	[g110] has_guesses & !all_correct -> (guess'= guess + 1) & (correct'= 0 + (1=ANSWER0 ? 1 : 0) + (1=ANSWER1 ? 1 : 0) + (0=ANSWER2 ? 1 : 0));
+	[g111] has_guesses & !all_correct -> (guess'= guess + 1) & (correct'= 0 + (1=ANSWER0 ? 1 : 0) + (1=ANSWER1 ? 1 : 0) + (1=ANSWER2 ? 1 : 0));
+	[g000] all_correct | !has_guesses -> true;
+	[g001] all_correct | !has_guesses -> true;
+	[g010] all_correct | !has_guesses -> true;
+	[g011] all_correct | !has_guesses -> true;
+	[g100] all_correct | !has_guesses -> true;
+	[g101] all_correct | !has_guesses -> true;
+	[g110] all_correct | !has_guesses -> true;
+	[g111] all_correct | !has_guesses -> true;
+endmodule
+
+formula has_guesses = guess < GUESSES;
+formula all_correct = correct=BALLS;
+label "goal" = all_correct;

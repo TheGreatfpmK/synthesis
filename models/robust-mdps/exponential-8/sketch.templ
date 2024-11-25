@@ -1,0 +1,64 @@
+mdp
+
+const int N = 8;
+hole int VARIANT in {0..7};
+
+module exponential
+    stage : [0 .. 1] init 0;
+    a : bool init false;
+    a_or_b : bool init false;
+    s : [0 .. N/2] init 0;
+
+    [a] stage=0 & !a_or_b & VARIANT=s -> (a'=true) & (a_or_b'=true);
+    [a] stage=0 & !a_or_b & VARIANT=N-1-s -> (a'=false) & (a_or_b'=true);
+    [a] stage=0 & !a_or_b & s!=VARIANT & s!=N-VARIANT-1 -> 0.5:(a'=false) & (a_or_b'=true) + 0.5:(a'=true) & (a_or_b'=true);
+
+    [a] stage=0 & a_or_b & s+1 < N/2 -> (s'=s+1) & (a_or_b'=false) & (a'=false);
+    [a] stage=0 & a_or_b & s+1 >= N/2 -> (s'=0) & (a_or_b'=false) & (a'=false) & (stage'=1);
+
+    [a] stage=1 -> true;
+    [g0] stage=0 -> true;
+    [g0] stage=1 & a_or_b -> true;
+    [g1] stage=0 -> true;
+    [g1] stage=1 & a_or_b -> true;
+    [g2] stage=0 -> true;
+    [g2] stage=1 & a_or_b -> true;
+    [g3] stage=0 -> true;
+    [g3] stage=1 & a_or_b -> true;
+    [g4] stage=0 -> true;
+    [g4] stage=1 & a_or_b -> true;
+    [g5] stage=0 -> true;
+    [g5] stage=1 & a_or_b -> true;
+    [g6] stage=0 -> true;
+    [g6] stage=1 & a_or_b -> true;
+    [g7] stage=0 -> true;
+    [g7] stage=1 & a_or_b -> true;
+
+    [g0] stage=1 & !a_or_b & VARIANT=0 & s < N/2 -> (a_or_b'=true) & (a'=true) & (s'=0);
+    [g0] stage=1 & !a_or_b & VARIANT!=0 & s < N/2 -> (s'=s+1);
+    [g0] stage=1 & !a_or_b & s >= N/2 -> (a_or_b'=true) & (a'=false);
+    [g1] stage=1 & !a_or_b & VARIANT=1 & s < N/2 -> (a_or_b'=true) & (a'=true) & (s'=0);
+    [g1] stage=1 & !a_or_b & VARIANT!=1 & s < N/2 -> (s'=s+1);
+    [g1] stage=1 & !a_or_b & s >= N/2 -> (a_or_b'=true) & (a'=false);
+    [g2] stage=1 & !a_or_b & VARIANT=2 & s < N/2 -> (a_or_b'=true) & (a'=true) & (s'=0);
+    [g2] stage=1 & !a_or_b & VARIANT!=2 & s < N/2 -> (s'=s+1);
+    [g2] stage=1 & !a_or_b & s >= N/2 -> (a_or_b'=true) & (a'=false);
+    [g3] stage=1 & !a_or_b & VARIANT=3 & s < N/2 -> (a_or_b'=true) & (a'=true) & (s'=0);
+    [g3] stage=1 & !a_or_b & VARIANT!=3 & s < N/2 -> (s'=s+1);
+    [g3] stage=1 & !a_or_b & s >= N/2 -> (a_or_b'=true) & (a'=false);
+    [g4] stage=1 & !a_or_b & VARIANT=4 & s < N/2 -> (a_or_b'=true) & (a'=true) & (s'=0);
+    [g4] stage=1 & !a_or_b & VARIANT!=4 & s < N/2 -> (s'=s+1);
+    [g4] stage=1 & !a_or_b & s >= N/2 -> (a_or_b'=true) & (a'=false);
+    [g5] stage=1 & !a_or_b & VARIANT=5 & s < N/2 -> (a_or_b'=true) & (a'=true) & (s'=0);
+    [g5] stage=1 & !a_or_b & VARIANT!=5 & s < N/2 -> (s'=s+1);
+    [g5] stage=1 & !a_or_b & s >= N/2 -> (a_or_b'=true) & (a'=false);
+    [g6] stage=1 & !a_or_b & VARIANT=6 & s < N/2 -> (a_or_b'=true) & (a'=true) & (s'=0);
+    [g6] stage=1 & !a_or_b & VARIANT!=6 & s < N/2 -> (s'=s+1);
+    [g6] stage=1 & !a_or_b & s >= N/2 -> (a_or_b'=true) & (a'=false);
+    [g7] stage=1 & !a_or_b & VARIANT=7 & s < N/2 -> (a_or_b'=true) & (a'=true) & (s'=0);
+    [g7] stage=1 & !a_or_b & VARIANT!=7 & s < N/2 -> (s'=s+1);
+    [g7] stage=1 & !a_or_b & s >= N/2 -> (a_or_b'=true) & (a'=false);
+
+endmodule
+
+label "target"= stage=1 & a_or_b & a;

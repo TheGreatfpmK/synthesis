@@ -1,21 +1,28 @@
 mdp
 
-const int N = 8;
 const int xMIN = 1;
 const int yMIN = 1;
-const int xMAX = N;
-const int yMAX = N;
+const int xMAX = 11;
+const int yMAX = 5;
 
-hole int o1x in {4..8};
-hole int o1y in {4..8};
+hole int o1y in {1..5};
+hole int o2y in {1..5};
+hole int o3y in {1..5};
+hole int o4y in {1..5};
 
-formula at1 = (x = o1x & y = o1y);
+formula at1 = y=o1y;
+formula at2 = y=o2y;
+formula at3 = y=o3y;
+formula at4 = y=o4y;
 
-formula near1 = o1x_MIN<=x & x<=o1x_MAX & o1y_MIN<=y & y<=o1y_MAX;
+formula near1 = x=2 | x=10;
+formula near2 = x=3 | x=9;
+formula near3 = x=4 | x=8;
+formula near4 = x=5 | x=7;
 
-const NUM_OBS = 1;
-formula crash = false;
-formula goal = visit1;
+const NUM_OBS = 4;
+formula crash = visit1 | visit2 | visit3 | visit4;
+formula goal = x=xMAX & y=yMAX;
 formula done = goal | crash;
 
 
@@ -29,10 +36,13 @@ module clk
     [up]    !done & clk=0 -> (clk'=clk_next);
     
     [detect1] !done & clk=1 -> (clk'=clk_next);
+    [detect2] !done & clk=2 -> (clk'=clk_next);
+    [detect3] !done & clk=3 -> (clk'=clk_next);
+    [detect4] !done & clk=4 -> (clk'=clk_next);
 endmodule
 
 
-const double slip = 0.2;
+const double slip = 0;
 
 formula xright  = min(x+1,xMAX);
 formula xleft   = max(x-1,xMIN);
@@ -51,6 +61,10 @@ endmodule
 
 module visit1
     visit1 : bool init false;
-    [detect1] !near1 |  visit1 -> true;
-    [detect1]  near1 & !visit1 -> (visit1'=at1);
+    [detect1] !near1 -> true;
+    [detect1]  near1 -> 0.01: (visit1'=at1) + 0.99: true;
 endmodule
+
+module visit2=visit1[visit1=visit2,detect1=detect2,near1=near2,at1=at2] endmodule
+module visit3=visit1[visit1=visit3,detect1=detect3,near1=near3,at1=at3] endmodule
+module visit4=visit1[visit1=visit4,detect1=detect4,near1=near4,at1=at4] endmodule

@@ -1,0 +1,49 @@
+mdp
+
+const int DIM_X = 5;
+const int DIM_Y = 30;
+const int CAR_WIDTH = 1;
+
+hole int VARIANT in {1..10};
+
+module frog
+  fx : [0 .. DIM_X-1] init 0;
+  fy : [0 .. DIM_Y-1] init 0;
+
+  [north] !avoid -> (fy'=ny);
+  [south] !avoid -> (fy'=sy);
+  [east]  !avoid -> (fx'=ex);
+  [west]  !avoid -> (fx'=wx);
+
+  [north] avoid -> true;
+  [south] avoid -> true;
+  [east]  avoid -> true;
+  [west]  avoid -> true;
+endmodule
+
+module car
+  cx : [0 .. DIM_X-1] init 0;
+  cd : bool init false; // car direction, false => -x, true => +x
+
+  [north] !avoid -> (cd'=new_cd) & (cx'=new_cx);
+  [south] !avoid -> (cd'=new_cd) & (cx'=new_cx);
+  [east]  !avoid -> (cd'=new_cd) & (cx'=new_cx);
+  [west]  !avoid -> (cd'=new_cd) & (cx'=new_cx);
+
+  [north] avoid -> true;
+  [south] avoid -> true;
+  [east]  avoid -> true;
+  [west]  avoid -> true;
+endmodule
+
+// TODO need more proper detection of collisions
+
+formula avoid = ((fx>=cx&fx<cx+CAR_WIDTH) & fy=VARIANT);
+formula ny=min(fy+1,DIM_Y-1);
+formula sy=max(fy-1,0);
+formula ex=min(fx+1,DIM_X-1);
+formula wx=max(fx-1,0);
+formula new_cd= (cx=0|cx=DIM_X-1) ? !cd : cd;
+formula new_cx= (new_cd ? cx+1 : cx-1);
+
+label "target"= fx=DIM_X-1&fy=DIM_Y-1;

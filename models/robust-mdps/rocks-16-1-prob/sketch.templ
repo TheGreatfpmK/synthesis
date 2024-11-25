@@ -1,13 +1,13 @@
 mdp
 
-const int N = 8;
+const int N = 16;
 const int xMIN = 1;
 const int yMIN = 1;
 const int xMAX = N;
 const int yMAX = N;
 
-hole int o1x in {4..8};
-hole int o1y in {4..8};
+hole int o1x in {1..16};
+hole int o1y in {1..16};
 
 formula at1 = (x = o1x & y = o1y);
 
@@ -16,7 +16,7 @@ formula near1 = o1x_MIN<=x & x<=o1x_MAX & o1y_MIN<=y & y<=o1y_MAX;
 const NUM_OBS = 1;
 formula crash = false;
 formula goal = visit1;
-formula done = goal | crash;
+formula done = goal | out_of_signal;
 
 
 formula clk_next = mod(clk+1,NUM_OBS+1);
@@ -53,4 +53,11 @@ module visit1
     visit1 : bool init false;
     [detect1] !near1 |  visit1 -> true;
     [detect1]  near1 & !visit1 -> (visit1'=at1);
+endmodule
+
+
+module battery
+    out_of_signal : bool init false;
+
+    [detect1] !out_of_signal -> ceil(y/4)/1000: (out_of_signal'=true) + 1-(ceil(y/4)/1000): true;
 endmodule

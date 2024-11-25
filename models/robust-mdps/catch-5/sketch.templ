@@ -1,0 +1,116 @@
+mdp
+
+// Beginning of a pacman/frogger type model. There is a NxN grid where pacman
+// (player) tries to get to the other side of the grid (i.e. y=N), while the
+// ghost (adversary) tries to catch pacman (i.e. occupy the same grid
+// position). If the ghost catches the pacman, the game is reset.
+
+const int DIM = 5;
+hole int offsetNorth in {0..3};
+hole int offsetEast in {0..3};
+hole int offsetSouth in {0..3};
+hole int offsetWest in {0..3};
+
+module pacman
+    px : [0 .. DIM-1] init 0;
+    py : [0 .. DIM-1] init 0;
+
+    [north] !catch -> (py'=min(DIM-1,py+1));
+    [south] !catch -> (py'=max(0, py-1));
+    [east]  !catch -> (px'=min(DIM-1,px+1));
+    [west]  !catch -> (px'=max(0,px-1));
+
+    [north] catch -> true;
+    [south] catch -> true;
+    [east]  catch -> true;
+    [west]  catch -> true;
+endmodule
+
+// Ghosts:
+//
+// Each ghost has a different response to the movement of pacman. For each 
+// direction that pacman goes, each ghost has a fixed response. A ghost can
+// therefore be seen as a mapping from the cardinal directions to itself (an
+// endomorphism). There can be 4*4*4*4=256 such endomorphisms.
+//
+// These newly computed directions have to be transformed in the correct x/y
+// movement.
+//
+// dx(north) = 0
+// dx(east) = 1
+// dx(south) = 0
+// dx(west) = -1
+// so 0 => 0, 1 => 1, 2 => 0, 3 => -1
+//
+// dy(north) = 1
+// dy(east) = 0
+// dy(south) = -1
+// dy(west) = 0
+// so 0 => 1, 1 => 0, 2 => -1, 3 => 0
+//
+// New x and y can then be computed as:
+// gx' = max(0, min(gx+dx, DIM-1))
+
+module ghost
+    gx : [0 .. DIM-1] init DIM-1;
+    gy : [0 .. DIM-1] init DIM-1;
+
+    // These move respond to the movement of pacman
+    // The different variants dictate how the ghost moves
+    [north] !catch -> (gx' = nxn) & (gy' = nyn);
+    [south] !catch -> (gx' = nxs) & (gy' = nys);
+    [east] !catch -> (gx' = nxe) & (gy' = nye);
+    [west] !catch -> (gx' = nxw) & (gy' = nyw);
+
+    [north] catch -> true;
+    [south] catch -> true;
+    [east] catch -> true;
+    [west] catch -> true;
+endmodule
+
+formula dxn =
+    (offsetNorth = 0 ? 0 :
+    (offsetNorth = 1 ? 1 :
+    (offsetNorth = 2 ? 0 : -1)));
+formula dyn = 
+    (offsetNorth = 0 ? 1 :
+    (offsetNorth = 1 ? 0 :
+    (offsetNorth = 2 ? -1 : 0)));
+formula dxs =
+    (offsetSouth = 0 ? 0 :
+    (offsetSouth = 1 ? 1 :
+    (offsetSouth = 2 ? 0 : -1)));
+formula dys = 
+    (offsetSouth = 0 ? 1 :
+    (offsetSouth = 1 ? 0 :
+    (offsetSouth = 2 ? -1 : 0)));
+formula dxe =
+    (offsetEast = 0 ? 0 :
+    (offsetEast = 1 ? 1 :
+    (offsetEast = 2 ? 0 : -1)));
+formula dye = 
+    (offsetEast = 0 ? 1 :
+    (offsetEast = 1 ? 0 :
+    (offsetEast = 2 ? -1 : 0)));
+formula dxw =
+    (offsetWest = 0 ? 0 :
+    (offsetWest = 1 ? 1 :
+    (offsetWest = 2 ? 0 : -1)));
+formula dyw = 
+    (offsetWest = 0 ? 1 :
+    (offsetWest = 1 ? 0 :
+    (offsetWest = 2 ? -1 : 0)));
+
+formula nxn = max(0, min(gx + dxn, DIM-1));
+formula nyn = max(0, min(gy + dyn, DIM-1));
+formula nxs = max(0, min(gx + dxs, DIM-1));
+formula nys = max(0, min(gy + dys, DIM-1));
+formula nxe = max(0, min(gx + dxe, DIM-1));
+formula nye = max(0, min(gy + dye, DIM-1));
+formula nxw = max(0, min(gx + dxw, DIM-1));
+formula nyw = max(0, min(gy + dyw, DIM-1));
+
+formula catch = (px=gx) & (py=gy);
+
+label "target" = catch;
+label "remain" = true;

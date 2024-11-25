@@ -77,7 +77,8 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
 
         policy_singleton_family = smt_solver.pick_assignment(policy_family)
 
-        iter = 0
+        # iter = 0
+        self.stat.iterations_mdp = 0
 
         # CEG over policies
         while policy_singleton_family is not None:
@@ -96,8 +97,11 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
 
             unsat_mdp_assignment = synthesizer.synthesize(print_stats=False)
 
+            self.stat.iterations_mdp += synthesizer.stat.iterations_mdp
+
             if unsat_mdp_assignment is None:
                 print("robust policy found")
+                self.stat.synthesized_assignment = True
                 return
             
             # unsat MDP was found
@@ -125,10 +129,10 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             
             # construct next assignment
             policy_singleton_family = smt_solver.pick_assignment(policy_family)
-            iter += 1
+            # iter += 1
 
-            if iter % 10 == 0:
-                print(f"iter {iter}, progress {self.explored/self.policy_family.size}")
+            # if iter % 10 == 0:
+                # print(f"iter {iter}, progress {self.explored/self.policy_family.size}")
 
         print("no robust policy found")
 
@@ -159,6 +163,7 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
                     break
             else:
                 print("robust policy found")
+                self.stat.synthesized_assignment = True
                 return
             
             # unsat MDP was found
@@ -235,9 +240,11 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
                     break
             else:
                 # all MDPs share the same satisfying policy (i.e. robust policy was found)
-                print(f"robust policy found")
-                print(current_policy_family)
-                print(score_lists)
+                print("robust policy found")
+                # print(current_policy_family)
+                # print(score_lists)
+                # print(self.stat.iterations_mdp)
+                self.stat.synthesized_assignment = True
                 return
 
             # unsat MDP was found
@@ -285,6 +292,7 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         print(f"constructed union POSMG with {posmg_with_decision.nr_states} states and {posmg_with_decision.nr_choices} actions")
 
         posmg_specification = self.create_game_optimality_specification()
+        # posmg_specification = self.create_game_feasibility_specification()
         posmg_quotient = paynt.quotient.posmg.PosmgQuotient(posmg_with_decision, posmg_specification)
         synthesizer = paynt.synthesizer.synthesizer.Synthesizer.choose_synthesizer(posmg_quotient, "ar", False)
         result = synthesizer.run()
@@ -311,6 +319,14 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
     
     def create_game_optimality_specification(self, relative_error=0):
         optimality_formula_str = "<<0>> Pmax=? [ F \"goal\" ]"
+        optimality_formula = stormpy.parse_properties_without_context(optimality_formula_str)[0]
+        prop = paynt.verification.property.construct_property(optimality_formula, relative_error)
+        properties = [prop]
+        specification = paynt.verification.property.Specification(properties)
+        return specification
+    
+    def create_game_feasibility_specification(self, relative_error=0):
+        optimality_formula_str = "<<0>> P>=1 [ F \"goal\" ]"
         optimality_formula = stormpy.parse_properties_without_context(optimality_formula_str)[0]
         prop = paynt.verification.property.construct_property(optimality_formula, relative_error)
         properties = [prop]
@@ -390,6 +406,16 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         synthesizer = paynt.synthesizer.synthesizer.Synthesizer.choose_synthesizer(union_pomdp_quotient, "ar", True, storm_control)
         synthesizer.run()
 
+    def get_iterations(self):
+        iterations = 0
+        if self.stat.iterations_mdp is not None:
+            iterations += self.stat.iterations_mdp
+        if self.stat.iterations_dtmc is not None:
+            iterations += self.stat.iterations_dtmc
+        if self.stat.iterations_game is not None:
+            iterations += self.stat.iterations_game
+        return iterations
+
     def run_robust(self, family=None):
         if family is None:
             family = self.quotient.family
@@ -399,22 +425,28 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         self.explored = 0
         self.stat.start(self.policy_family)
 
-        # self.robust_cegis_policies_ar_mdps(family)
-        # self.robust_cegis_policies_1by1_mdps(family)
-        self.robust_ar_policies_1by1_mdps(family)
-        # self.robust_posmg(family)
+        if True:
+            self.robust_cegis_policies_ar_mdps(family)
+            # self.robust_cegis_policies_1by1_mdps(family)
+            # self.robust_ar_policies_1by1_mdps(family)
+
+            self.stat.job_type = "synthesis"
+            self.stat.synthesis_timer.stop()
+            self.stat.print()
+            print(f"{self.stat.synthesized_assignment}, {round(self.stat.synthesis_timer.time, 2)}, {self.get_iterations()}, {int((self.explored / self.stat.family_size) * 100)}")
+        else:
+            pass
+            # self.robust_posmg(family)
 
 
     def run_game_abstraction_heuristic(self, family):
         self.quotient.build(family)
         prop = self.quotient.specification.constraints[0]
         game_solver = self.quotient.build_game_abstraction_solver(prop)
-        game_solver.solve(family.selected_choices, prop.maximizing, prop.minimizing)
+        game_solver.solve_smg(family.selected_choices)
         game_value = game_solver.solution_value
         game_sat = prop.satisfies_threshold_within_precision(game_value)
-        print(game_value)
-        print(game_sat)
-        return game_sat
+        return game_value, game_sat
 
 
 def print_profiler_stats(profiler):
@@ -466,7 +498,10 @@ assert isinstance(quotient, paynt.quotient.mdp_family.MdpFamilyQuotient)
 family = family_selection(quotient)
 
 robust_policy_synthesizer = RobustPolicySynthesizer(quotient)
-robust_policy_synthesizer.run_game_abstraction_heuristic(quotient.family)
+game_abs_val, game_abs_sat = robust_policy_synthesizer.run_game_abstraction_heuristic(quotient.family)
+
+print(f"{sys.argv[1]}, {quotient.quotient_mdp.nr_states}, {len(quotient.action_labels)}, {quotient.family.size}, {robust_policy_synthesizer.policy_family.size}, {quotient.specification.constraints[0].threshold}, , {game_abs_val}")
+
 robust_policy_synthesizer.run_robust()
 # robust_policy_synthesizer.average_union_pomdp(quotient.family)
 # robust_policy_synthesizer.average_union_pomdp(quotient.family, storm=True)

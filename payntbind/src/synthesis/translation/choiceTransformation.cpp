@@ -710,7 +710,7 @@ std::shared_ptr<storm::models::sparse::Model<ValueType>> createModelWithInitialD
         components.statePlayerIndications = state_player_indications;
         output_model_type = storm::models::ModelType::Smg; 
         if (model_type == storm::models::ModelType::Pomdp) {
-            return std::make_shared<synthesis::Posmg>(std::move(components));
+            return std::make_shared<synthesis::Posmg<double>>(std::move(components));
         }
     }
 

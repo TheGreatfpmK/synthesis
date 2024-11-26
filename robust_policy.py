@@ -134,6 +134,9 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             # if iter % 10 == 0:
                 # print(f"iter {iter}, progress {self.explored/self.policy_family.size}")
 
+            if self.synthesis_timer.time_limit_reached():
+                break
+
         print("no robust policy found")
 
 
@@ -193,6 +196,9 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             
             # construct next assignment
             policy_singleton_family = smt_solver.pick_assignment(policy_family)
+
+            if self.synthesis_timer.time_limit_reached():
+                break
 
         print("no robust policy found")
                     
@@ -274,6 +280,9 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
 
             policy_family_stack = policy_family_stack + subfamilies
 
+            if self.synthesis_timer.time_limit_reached():
+                break
+
         print("no robust policy found")
 
 
@@ -295,7 +304,7 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         # posmg_specification = self.create_game_feasibility_specification()
         posmg_quotient = paynt.quotient.posmg.PosmgQuotient(posmg_with_decision, posmg_specification)
         synthesizer = paynt.synthesizer.synthesizer.Synthesizer.choose_synthesizer(posmg_quotient, "ar", False)
-        result = synthesizer.run()
+        result = synthesizer.synthesize(timeout=300)
 
         print(result)
 
@@ -416,27 +425,33 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             iterations += self.stat.iterations_game
         return iterations
 
-    def run_robust(self, family=None):
+    def run_robust(self, method="ceg-ar", family=None):
         if family is None:
             family = self.quotient.family
-        self.synthesis_timer = paynt.utils.timer.Timer()
+        self.synthesis_timer = paynt.utils.timer.Timer(300)
         self.synthesis_timer.start()
         self.stat = paynt.synthesizer.statistic.Statistic(self)
         self.explored = 0
         self.stat.start(self.policy_family)
 
-        if True:
+        if method == "posmg":
+            print("### POSMG ###")
+            self.robust_posmg(family)
+        elif method == "ceg-ar":
+            print("### CEG-AR ###")
             self.robust_cegis_policies_ar_mdps(family)
-            # self.robust_cegis_policies_1by1_mdps(family)
-            # self.robust_ar_policies_1by1_mdps(family)
+        elif method == "ceg-1by1":
+            print("### CEG-1by1 ###")
+            self.robust_cegis_policies_1by1_mdps(family)
+        elif method == "ar-1by1":
+            print("### AR-1by1 ###")
+            self.robust_ar_policies_1by1_mdps(family)
 
-            self.stat.job_type = "synthesis"
-            self.stat.synthesis_timer.stop()
-            self.stat.print()
-            print(f"{self.stat.synthesized_assignment}, {round(self.stat.synthesis_timer.time, 2)}, {self.get_iterations()}, {int((self.explored / self.stat.family_size) * 100)}")
-        else:
-            pass
-            # self.robust_posmg(family)
+        self.stat.job_type = "synthesis"
+        self.stat.synthesis_timer.stop()
+        self.stat.print()
+        print(f"{self.stat.synthesized_assignment}, {round(self.stat.synthesis_timer.time, 2)}, {self.get_iterations()}, {int((self.explored / self.stat.family_size) * 100)}")
+            
 
 
     def run_game_abstraction_heuristic(self, family):
@@ -484,8 +499,8 @@ if profiling:
     profiler = cProfile.Profile()
     profiler.enable()
 
-# robust_folder = "models/archive/atva24-policy-trees/"
-robust_folder = "models/robust-mdps/"
+robust_folder = "models/archive/atva24-policy-trees/"
+# robust_folder = "models/robust-mdps/"
 if len(sys.argv) < 2:
     model_folder = os.path.join(robust_folder, 'obstacles-demo/')
 else:
@@ -502,7 +517,9 @@ game_abs_val, game_abs_sat = robust_policy_synthesizer.run_game_abstraction_heur
 
 print(f"{sys.argv[1]}, {quotient.quotient_mdp.nr_states}, {len(quotient.action_labels)}, {quotient.family.size}, {robust_policy_synthesizer.policy_family.size}, {quotient.specification.constraints[0].threshold}, , {game_abs_val}")
 
-robust_policy_synthesizer.run_robust()
+methods = ["ceg-ar", "ceg-1by1", "ar-1by1", "posmg"]
+for method in methods:
+    robust_policy_synthesizer.run_robust(method)
 # robust_policy_synthesizer.average_union_pomdp(quotient.family)
 # robust_policy_synthesizer.average_union_pomdp(quotient.family, storm=True)
 

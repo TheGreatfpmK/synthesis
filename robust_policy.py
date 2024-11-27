@@ -33,6 +33,7 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         self.quotient = quotient
         self.prop = self.quotient.specification.constraints[0]
         self.create_policy_coloring()
+        self.policy_quotient = paynt.quotient.quotient.Quotient(self.quotient.quotient_mdp, self.policy_family, self.policy_coloring, self.quotient.specification)
 
     def create_policy_coloring(self):
         quotient_mdp = self.quotient.quotient_mdp
@@ -94,6 +95,7 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             quotient_container = paynt.quotient.quotient.Quotient(policy_model.model, mdp_family, coloring, self.quotient.specification.negate())
 
             synthesizer = paynt.synthesizer.synthesizer_ar.SynthesizerAR(quotient_container)
+            synthesizer.synthesis_timer = paynt.utils.timer.Timer(30)
 
             unsat_mdp_assignment = synthesizer.synthesize(print_stats=False)
 
@@ -247,9 +249,9 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             else:
                 # all MDPs share the same satisfying policy (i.e. robust policy was found)
                 print("robust policy found")
-                # print(current_policy_family)
-                # print(score_lists)
-                # print(self.stat.iterations_mdp)
+                print(current_policy_family)
+                print(score_lists)
+                print(self.stat.iterations_mdp)
                 self.stat.synthesized_assignment = True
                 return
 
@@ -284,6 +286,101 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
                 break
 
         print("no robust policy found")
+
+    def choose_mdp_to_evaluate(self, undecided_mdps, mdp_optimal_values, epsilon):
+        return undecided_mdps[0]
+
+
+    def eps_robust_enumeration_splitting(self, mdp_family, epsilon=0.1):
+        policy_family = self.policy_family.copy()
+        mdp_hole_combinations = [list(x) for x in mdp_family.all_combinations()]
+        mdp_hole_assignments = [[[option] for option in mdp_hole_combination] for mdp_hole_combination in mdp_hole_combinations]
+        family_undecided_mdps = {policy_family: list(range(len(mdp_hole_assignments)))}
+        mdp_optimal_values = [None for _ in mdp_hole_assignments]
+        optimality_prop = self.create_optimality_specification().optimality
+        self.quotient.quotient_mdp = self.add_goal_label_to_model(self.quotient.quotient_mdp)
+        last_index = None
+
+        while family_undecided_mdps:
+            current_policy_family, undecided_mdps = family_undecided_mdps.popitem()
+            mdp_index = self.choose_mdp_to_evaluate(undecided_mdps, mdp_optimal_values, epsilon)
+            if last_index is None or last_index != mdp_index:
+                mdp_singleton_family = None
+            if mdp_optimal_values[mdp_index] is None:
+                mdp_singleton_suboptions = mdp_hole_assignments[mdp_index]
+                mdp_singleton_family = mdp_family.assume_options_copy(mdp_singleton_suboptions)
+                mdp = self.build_model_from_families(mdp_singleton_family, policy_family)
+                mdp_result = mdp.model_check_property(optimality_prop)
+                # self.stat.iteration(mdp)
+                mdp_optimal_values[mdp_index] = mdp_result.value
+
+            if mdp_singleton_family is None:
+                mdp_singleton_suboptions = mdp_hole_assignments[mdp_index]
+                mdp_singleton_family = mdp_family.assume_options_copy(mdp_singleton_suboptions)
+            
+            mdp_current_policy_family = self.build_model_from_families(mdp_singleton_family, current_policy_family)
+            self.stat.iteration(mdp_current_policy_family)
+            primary_result = mdp_current_policy_family.model_check_property(optimality_prop)
+            # discard policies
+            # if primary_result.value < mdp_optimal_values[mdp_index] - mdp_optimal_values[mdp_index]*epsilon:
+            if primary_result.value < self.prop.threshold:
+                self.explore(current_policy_family)
+                continue
+            alt_result = mdp_current_policy_family.model_check_property(optimality_prop, alt=True)
+            # remove MDP from undecided MDPs
+            # if alt_result.value >= mdp_optimal_values[mdp_index] - mdp_optimal_values[mdp_index]*epsilon:
+            if alt_result.value >= self.prop.threshold:
+                undecided_mdps.remove(mdp_index)
+                if len(undecided_mdps) == 0:
+                    print("robust policy found")
+                    break
+                family_undecided_mdps = {current_policy_family: undecided_mdps}
+                continue
+
+            # split
+            # hole_assignments = self.scheduler_selection_for_coloring(mdp_current_policy_family, primary_result.result.scheduler, self.policy_coloring)
+            # scores = self.policy_quotient.scheduler_scores(mdp_current_policy_family, optimality_prop, primary_result.result, hole_assignments)
+            # print(scores)
+
+            # choices = primary_result.result.scheduler.compute_action_support(mdp.model.nondeterministic_choice_indices)
+            # expected_visits = self.quotient.compute_expected_visits(mdp_current_policy_family.model, optimality_prop, choices)
+            # choice_values = self.quotient.choice_values(mdp_current_policy_family.model, optimality_prop, primary_result.result.get_values())
+            # print(choice_values)
+
+            primary_scheduler_selection = self.scheduler_selection_for_coloring(mdp_current_policy_family, primary_result.result.scheduler, self.policy_coloring)
+            alt_scheduler_selection = self.scheduler_selection_for_coloring(mdp_current_policy_family, alt_result.result.scheduler, self.policy_coloring)
+
+            splitter = None
+            for hole in range(current_policy_family.num_holes):
+                if len(primary_scheduler_selection[hole]) != 0 and len(alt_scheduler_selection[hole]) != 0 and primary_scheduler_selection[hole][0] != alt_scheduler_selection[hole][0]:
+                    splitter = hole
+                    break
+            else:
+                assert False
+
+            core_suboptions = [primary_scheduler_selection[hole], alt_scheduler_selection[hole]]
+            other_suboptions = [option for option in current_policy_family.hole_options(splitter) if option not in [primary_scheduler_selection[hole][0], alt_scheduler_selection[hole][0]]]
+            new_family = current_policy_family.copy()
+            for index, suboption in enumerate(other_suboptions):
+                core_suboptions[index % 2].append(suboption)
+            
+            # print(core_suboptions)
+            # exit()
+            suboptions = core_suboptions
+
+            subfamilies = []
+            current_policy_family.splitter = splitter
+            for suboption in suboptions:
+                subfamily = new_family.subholes(splitter, suboption)
+                subfamily.hole_set_options(splitter, suboption)
+                subfamilies.append(subfamily)
+
+            for subfamily in subfamilies:
+                family_undecided_mdps[subfamily] = undecided_mdps
+
+            last_index = mdp_index
+
+
 
 
     def robust_posmg(self, mdp_family):
@@ -360,6 +457,16 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         smg = paynt.models.models.Smg(game_with_decision)
         result = smg.model_check_property(optimality_specification.optimality)
         print(result)
+
+    def add_goal_label_to_model(self, model):
+        if "goal" not in model.labeling.get_labels():
+            goal_label = self.quotient.specification.constraints[0].get_target_label()
+            model.labeling.add_label("goal")
+            for state in range(model.nr_states):
+                state_labels = model.labeling.get_labels_of_state(state)
+                if goal_label in state_labels:
+                    model.labeling.add_label_to_state("goal", state)
+        return model
 
 
     def assignment_to_pomdp(self, assignment):
@@ -446,6 +553,9 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         elif method == "ar-1by1":
             print("### AR-1by1 ###")
             self.robust_ar_policies_1by1_mdps(family)
+        elif method == "eps-robust":
+            print("### EPS-ROBUST ###")
+            self.eps_robust_enumeration_splitting(family)
 
         self.stat.job_type = "synthesis"
         self.stat.synthesis_timer.stop()
@@ -499,8 +609,10 @@ if profiling:
     profiler = cProfile.Profile()
     profiler.enable()
 
-robust_folder = "models/archive/atva24-policy-trees/"
+# robust_folder = "models/archive/atva24-policy-trees/"
 # robust_folder = "models/robust-mdps/"
+# robust_folder = "models/robust-mdps/atva-sat/"
+robust_folder = "models/robust-mdps/atva-smallest/"
 if len(sys.argv) < 2:
     model_folder = os.path.join(robust_folder, 'obstacles-demo/')
 else:
@@ -517,9 +629,11 @@ game_abs_val, game_abs_sat = robust_policy_synthesizer.run_game_abstraction_heur
 
 print(f"{sys.argv[1]}, {quotient.quotient_mdp.nr_states}, {len(quotient.action_labels)}, {quotient.family.size}, {robust_policy_synthesizer.policy_family.size}, {quotient.specification.constraints[0].threshold}, , {game_abs_val}")
 
-methods = ["ceg-ar", "ceg-1by1", "ar-1by1", "posmg"]
-for method in methods:
-    robust_policy_synthesizer.run_robust(method)
+# methods = ["ceg-ar", "ceg-1by1", "ar-1by1"]
+# for method in methods:
+#     robust_policy_synthesizer.run_robust(method)
+# robust_policy_synthesizer.run_robust("ar-1by1")
+robust_policy_synthesizer.run_robust("eps-robust")
 # robust_policy_synthesizer.average_union_pomdp(quotient.family)
 # robust_policy_synthesizer.average_union_pomdp(quotient.family, storm=True)
 

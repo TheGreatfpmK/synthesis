@@ -70,6 +70,31 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         choices = self.quotient.state_to_choice_to_choices(state_to_choice)
         hole_selection = coloring.collectHoleOptions(choices)
         return hole_selection
+    
+
+    def create_policy(self, policy_family, hole_assignment=None):
+        policy = self.quotient.empty_policy()
+        for hole in range(policy_family.num_holes):
+            if policy_family.hole_options(hole) != 1:
+                assert hole_assignment is not None
+            hole_name = policy_family.hole_name(hole)
+            state = int(hole_name.split('_')[1])
+            hole_options = policy_family.hole_options(hole)
+            option_labels = policy_family.hole_to_option_labels[hole]
+            if len(hole_options) == 1:
+                option_index = hole_options[0]
+                label = option_labels[option_index]
+            else:
+                if len(hole_assignment[hole]) == 0:
+                    continue
+                else:
+                    assert len(hole_assignment[hole]) == 1
+                    option = hole_assignment[hole][0]
+                    label = option_labels[option]
+            action = self.quotient.action_labels.index(label)
+            policy[state] = action
+
+        return policy
 
 
     def robust_cegis_policies_ar_mdps(self, mdp_family):
@@ -104,7 +129,8 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             if unsat_mdp_assignment is None:
                 print("robust policy found")
                 self.stat.synthesized_assignment = True
-                return
+                self.robust_policy = self.create_policy(policy_singleton_family)
+                return self.robust_policy
             
             # unsat MDP was found
             unsat_mdp = self.quotient.build_assignment(unsat_mdp_assignment)
@@ -169,7 +195,8 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             else:
                 print("robust policy found")
                 self.stat.synthesized_assignment = True
-                return
+                self.robust_policy = self.create_policy(policy_singleton_family)
+                return self.robust_policy
             
             # unsat MDP was found
             self.quotient.build(mdp_singleton_family)
@@ -249,11 +276,12 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             else:
                 # all MDPs share the same satisfying policy (i.e. robust policy was found)
                 print("robust policy found")
-                print(current_policy_family)
-                print(score_lists)
-                print(self.stat.iterations_mdp)
+                # print(current_policy_family)
+                # print(score_lists)
+                # print(self.stat.iterations_mdp)
                 self.stat.synthesized_assignment = True
-                return
+                self.robust_policy = self.create_policy(current_policy_family, score_lists)
+                return self.robust_policy
 
             # unsat MDP was found
             if splitter is None:
@@ -295,14 +323,16 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         policy_family = self.policy_family.copy()
         mdp_hole_combinations = [list(x) for x in mdp_family.all_combinations()]
         mdp_hole_assignments = [[[option] for option in mdp_hole_combination] for mdp_hole_combination in mdp_hole_combinations]
-        family_undecided_mdps = {policy_family: list(range(len(mdp_hole_assignments)))}
+        family_stack = [policy_family]
+        undecided_mdps_stack = [list(range(len(mdp_hole_assignments)))]
         mdp_optimal_values = [None for _ in mdp_hole_assignments]
         optimality_prop = self.create_optimality_specification().optimality
         self.quotient.quotient_mdp = self.add_goal_label_to_model(self.quotient.quotient_mdp)
         last_index = None
 
-        while family_undecided_mdps:
-            current_policy_family, undecided_mdps = family_undecided_mdps.popitem()
+        while family_stack:
+            current_policy_family = family_stack.pop(-1)
+            undecided_mdps = undecided_mdps_stack.pop(-1)
             mdp_index = self.choose_mdp_to_evaluate(undecided_mdps, mdp_optimal_values, epsilon)
             if last_index is None or last_index != mdp_index:
                 mdp_singleton_family = None
@@ -322,19 +352,21 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             self.stat.iteration(mdp_current_policy_family)
             primary_result = mdp_current_policy_family.model_check_property(optimality_prop)
             # discard policies
-            # if primary_result.value < mdp_optimal_values[mdp_index] - mdp_optimal_values[mdp_index]*epsilon:
-            if primary_result.value < self.prop.threshold:
+            if primary_result.value < mdp_optimal_values[mdp_index] - mdp_optimal_values[mdp_index]*epsilon:
+            # if primary_result.value < self.prop.threshold:
                 self.explore(current_policy_family)
                 continue
             alt_result = mdp_current_policy_family.model_check_property(optimality_prop, alt=True)
             # remove MDP from undecided MDPs
-            # if alt_result.value >= mdp_optimal_values[mdp_index] - mdp_optimal_values[mdp_index]*epsilon:
-            if alt_result.value >= self.prop.threshold:
+            if alt_result.value >= mdp_optimal_values[mdp_index] - mdp_optimal_values[mdp_index]*epsilon:
+            # if alt_result.value >= self.prop.threshold:
                 undecided_mdps.remove(mdp_index)
                 if len(undecided_mdps) == 0:
                     print("robust policy found")
+                    self.stat.synthesized_assignment = True
                     break
-                family_undecided_mdps = {current_policy_family: undecided_mdps}
+                family_stack.append(current_policy_family)
+                undecided_mdps_stack.append(undecided_mdps.copy())
                 continue
 
             # split
@@ -376,7 +408,8 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
                 subfamilies.append(subfamily)
 
             for subfamily in subfamilies:
-                family_undecided_mdps[subfamily] = undecided_mdps
+                family_stack.append(subfamily)
+                undecided_mdps_stack.append(undecided_mdps.copy())
 
             last_index = mdp_index
 
@@ -522,6 +555,45 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         synthesizer = paynt.synthesizer.synthesizer.Synthesizer.choose_synthesizer(union_pomdp_quotient, "ar", True, storm_control)
         synthesizer.run()
 
+
+    def create_policy_family_from_policy(self, policy):
+        policy_hole_options = [None for _ in range(self.policy_family.num_holes)]
+        for state, action in enumerate(policy):
+            try:
+                hole_index = self.policy_family.hole_to_name.index(f'state_{state}')
+            except:
+                continue
+            if action is None:
+                policy_hole_options[hole_index] = [0]
+            else:
+                policy_hole_options[hole_index] = [self.quotient.state_to_actions[state].index(action)]
+
+        policy_family = self.policy_family.assume_options_copy(policy_hole_options)
+        return policy_family
+
+
+    # TODO also add epsilon robust check
+    def double_check_policy(self, quotient, family, prop, policy):
+        policy_family = self.create_policy_family_from_policy(policy)
+        for mdp_hole_assignments in family.all_combinations():
+            combination = list(mdp_hole_assignments)
+            mdp_singleton_suboptions = [[option] for option in combination]
+            mdp_singleton_family = family.assume_options_copy(mdp_singleton_suboptions)
+            model = self.build_model_from_families(mdp_singleton_family, policy_family)
+            
+            assert model.is_deterministic, "expected DTMC"
+            
+            DOUBLE_CHECK_PRECISION = 1e-6
+            default_precision = Property.model_checking_precision
+            Property.set_model_checking_precision(DOUBLE_CHECK_PRECISION)
+            policy_result = model.model_check_property(prop)
+            Property.set_model_checking_precision(default_precision)
+            if not policy_result.sat:
+                print("policy should be SAT but (most likely due to model checking precision) has value {}".format(policy_result.value))
+                assert False
+            # print(f"double check result: {policy_result.sat}, {policy_result.value}")
+        return
+
     def get_iterations(self):
         iterations = 0
         if self.stat.iterations_mdp is not None:
@@ -559,6 +631,11 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
 
         self.stat.job_type = "synthesis"
         self.stat.synthesis_timer.stop()
+
+        # double check
+        if self.stat.synthesized_assignment:
+            self.double_check_policy(self.quotient, family, self.prop, self.robust_policy)
+
         self.stat.print()
         print(f"{self.stat.synthesized_assignment}, {round(self.stat.synthesis_timer.time, 2)}, {self.get_iterations()}, {int((self.explored / self.stat.family_size) * 100)}")
             
@@ -632,8 +709,8 @@ print(f"{sys.argv[1]}, {quotient.quotient_mdp.nr_states}, {len(quotient.action_l
 # methods = ["ceg-ar", "ceg-1by1", "ar-1by1"]
 # for method in methods:
 #     robust_policy_synthesizer.run_robust(method)
-# robust_policy_synthesizer.run_robust("ar-1by1")
-robust_policy_synthesizer.run_robust("eps-robust")
+robust_policy_synthesizer.run_robust("ar-1by1")
+# robust_policy_synthesizer.run_robust("eps-robust")
 # robust_policy_synthesizer.average_union_pomdp(quotient.family)
 # robust_policy_synthesizer.average_union_pomdp(quotient.family, storm=True)
 

@@ -458,6 +458,114 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
 
         print("no robust policy found")
 
+
+    def robust_ar_policies_ar_mdp_eval(self, mdp_family):
+        policy_family = self.policy_family.copy()
+        policy_family_stack = [policy_family]
+        mdp_singleton_family = mdp_family.pick_any()
+
+        # AR over policies
+        while policy_family_stack:
+            current_policy_family = policy_family_stack.pop(-1)
+
+            refined_policy_family = None
+
+            model = self.build_model_from_families(mdp_singleton_family, current_policy_family)
+
+            primary_result = model.model_check_property(self.prop)
+            self.stat.iteration(model)
+
+            # we found unsat MDP for the current policy family
+            if primary_result.sat == False:
+                # print(f"explored family of size {current_policy_family.size/self.policy_family.size}")
+                self.explore(current_policy_family)
+                continue
+
+            scheduler_selection = self.scheduler_selection_for_coloring(model, primary_result.result.scheduler, self.policy_coloring)
+
+            for hole, options in enumerate(scheduler_selection):
+                if len(options) == 0:
+                    scheduler_selection[hole] = current_policy_family.hole_options(hole)
+                    continue
+
+            refined_policy_family = current_policy_family.assume_options_copy(scheduler_selection)
+            # TODO remember which holes were not fixed here
+            refined_policy_family = refined_policy_family.pick_any()
+
+            policy_model = self.build_model_from_families(mdp_family, refined_policy_family)
+            mdp_assignment = self.quotient.coloring.getChoiceToAssignment()
+            choice_to_hole_options = []
+            for choice in range(policy_model.model.nr_choices):
+                quotient_choice = policy_model.quotient_choice_map[choice]
+                choice_to_hole_options.append(mdp_assignment[quotient_choice])
+
+            coloring = payntbind.synthesis.Coloring(mdp_family.family, policy_model.model.nondeterministic_choice_indices, choice_to_hole_options)
+            quotient_container = paynt.quotient.quotient.Quotient(policy_model.model, mdp_family, coloring, self.quotient.specification.negate())
+
+            synthesizer = paynt.synthesizer.synthesizer_ar.SynthesizerAR(quotient_container)
+            synthesizer.synthesis_timer = paynt.utils.timer.Timer(30)
+
+            unsat_mdp_assignment = synthesizer.synthesize(print_stats=False)
+
+            self.stat.iterations_mdp += synthesizer.stat.iterations_mdp
+
+            if unsat_mdp_assignment is None:
+                print("robust policy found")
+                self.stat.synthesized_assignment = True
+                self.robust_policy = self.create_policy(refined_policy_family)
+                return self.robust_policy
+            
+            unsat_mdp_model = self.build_model_from_families(unsat_mdp_assignment, current_policy_family)
+            unsat_mdp_result = unsat_mdp_model.model_check_property(self.prop)
+            self.stat.iteration(unsat_mdp_model)
+
+            # we found unsat MDP for the current policy family
+            if unsat_mdp_result.sat == False:
+                self.explore(current_policy_family)
+                continue
+
+            unsat_mdp_scheduler_selection = self.scheduler_selection_for_coloring(unsat_mdp_model, unsat_mdp_result.result.scheduler, self.policy_coloring)
+            
+            splitter = None
+            used_options = []
+            for hole, options in enumerate(unsat_mdp_scheduler_selection):
+                if len(options) == 0:
+                    continue
+                if refined_policy_family.hole_options(hole)[0] not in options:
+                    splitter = hole
+                    used_options = options + [refined_policy_family.hole_options(hole)[0]]
+                    break
+
+
+            assert splitter is not None
+            assert len(used_options) > 1
+
+            core_suboptions = [[option] for option in used_options]
+            other_suboptions = [option for option in current_policy_family.hole_options(splitter) if option not in used_options]
+            new_family = current_policy_family.copy()
+            if len(other_suboptions) == 0:
+                suboptions = core_suboptions
+            else:
+                suboptions = [other_suboptions] + core_suboptions  # DFS solves core first
+
+
+            subfamilies = []
+            current_policy_family.splitter = splitter
+            # parent_info = current_policy_family.collect_parent_info(self.quotient.specification)
+            for suboption in suboptions:
+                subfamily = new_family.subholes(splitter, suboption)
+                # subfamily.add_parent_info(parent_info)
+                subfamily.hole_set_options(splitter, suboption)
+                subfamilies.append(subfamily)
+
+            policy_family_stack = policy_family_stack + subfamilies
+
+            if self.synthesis_timer.time_limit_reached():
+                break
+
+
+
+
     def choose_mdp_to_evaluate(self, undecided_mdps, mdp_optimal_values, epsilon):
         return undecided_mdps[0]
 
@@ -735,7 +843,7 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             policy_result = model.model_check_property(prop)
             Property.set_model_checking_precision(default_precision)
             if not policy_result.sat:
-                print(f"policy should be SAT but (most likely due to model checking precision) has value {policy_result.value}")
+                print(f"policy should be SAT but (most likely due to model checking precision) has value {policy_result.value}", file=sys.stderr)
                 # assert False
             # print(f"double check result: {policy_result.sat}, {policy_result.value}")
         return
@@ -796,6 +904,9 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         elif method == "ar-1by1-v2":
             print("### AR-1by1-v2 ###")
             self.robust_ar_policies_1by1_mdps_v2(family)
+        elif method == "ar-mdp-eval":
+            print("### AR-MDP-EVAL ###")
+            self.robust_ar_policies_ar_mdp_eval(family)
         elif method == "eps-robust":
             print("### EPS-ROBUST ###")
             self.eps_robust_enumeration_splitting(family)
@@ -862,8 +973,8 @@ if profiling:
     profiler.enable()
 
 # robust_folder = "models/archive/atva24-policy-trees/"
-robust_folder = "models/robust-mdps/"
-# robust_folder = "models/robust-mdps/atva-sat/"
+# robust_folder = "models/robust-mdps/"
+robust_folder = "models/robust-mdps/atva-sat/"
 # robust_folder = "models/robust-mdps/atva-smaller/"
 # robust_folder = "models/robust-mdps/atva-smallest/"
 if len(sys.argv) < 2:
@@ -886,7 +997,8 @@ print(f"{sys.argv[1]}, {quotient.quotient_mdp.nr_states}, {len(quotient.action_l
 # methods = ["ceg-ar", "ceg-1by1", "ar-1by1"]
 # for method in methods:
 #     robust_policy_synthesizer.run_robust(method)
-# robust_policy_synthesizer.run_robust("ar-1by1-v2")
+robust_policy_synthesizer.run_robust("ar-1by1-v2")
+# robust_policy_synthesizer.run_robust("ar-mdp-eval")
 # robust_policy_synthesizer.run_robust("eps-robust")
 # robust_policy_synthesizer.average_union_pomdp(quotient.family)
 # robust_policy_synthesizer.average_union_pomdp(quotient.family, storm=True)

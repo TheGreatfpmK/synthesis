@@ -760,12 +760,12 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         mdp = self.quotient.build_assignment(assignment)
         goal_label = self.quotient.specification.constraints[0].get_target_label()
         new_state_labeling = mdp.model.labeling
-        if "goal" != goal_label:
-            new_state_labeling.add_label("goal")
-            for state in range(mdp.model.nr_states):
-                state_labels = new_state_labeling.get_labels_of_state(state)
-                if goal_label in state_labels:
-                    new_state_labeling.add_label_to_state("goal", state)
+        # if "goal" != goal_label:
+        #     new_state_labeling.add_label("goal")
+        #     for state in range(mdp.model.nr_states):
+        #         state_labels = new_state_labeling.get_labels_of_state(state)
+        #         if goal_label in state_labels:
+        #             new_state_labeling.add_label_to_state("goal", state)
         components = stormpy.SparseModelComponents(transition_matrix=mdp.model.transition_matrix, state_labeling=new_state_labeling,
                                                    reward_models=mdp.model.reward_models)
         components.state_valuations = mdp.model.state_valuations
@@ -973,8 +973,8 @@ if profiling:
     profiler.enable()
 
 # robust_folder = "models/archive/atva24-policy-trees/"
-# robust_folder = "models/robust-mdps/"
-robust_folder = "models/robust-mdps/atva-sat/"
+robust_folder = "models/robust-mdps/"
+# robust_folder = "models/robust-mdps/atva-sat/"
 # robust_folder = "models/robust-mdps/atva-smaller/"
 # robust_folder = "models/robust-mdps/atva-smallest/"
 if len(sys.argv) < 2:
@@ -995,10 +995,12 @@ print(f"{sys.argv[1]}, {quotient.quotient_mdp.nr_states}, {len(quotient.action_l
 # robust_policy_synthesizer.double_check_policy_eps(family, robust_policy_synthesizer.optimality_prop, robust_policy_synthesizer.game_abs_policy)
 
 # methods = ["ceg-ar", "ceg-1by1", "ar-1by1"]
+# methods = ["ar-1by1-v2", "ar-mdp-eval"]
 # for method in methods:
 #     robust_policy_synthesizer.run_robust(method)
-robust_policy_synthesizer.run_robust("ar-1by1-v2")
-# robust_policy_synthesizer.run_robust("ar-mdp-eval")
+# robust_policy_synthesizer.run_robust("ar-1by1-v2")
+robust_policy_synthesizer.run_robust("ar-mdp-eval")
+# robust_policy_synthesizer.run_robust("posmg")
 # robust_policy_synthesizer.run_robust("eps-robust")
 # robust_policy_synthesizer.average_union_pomdp(quotient.family)
 # robust_policy_synthesizer.average_union_pomdp(quotient.family, storm=True)

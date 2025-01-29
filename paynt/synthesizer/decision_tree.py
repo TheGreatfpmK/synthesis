@@ -270,7 +270,7 @@ class SynthesizerDecisionTree(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
             if self.quotient.specification.has_optimality:
                 logger.info(f"the synthesized tree has value {self.best_tree_value}")
             if self.quotient.DONT_CARE_ACTION_LABEL in self.quotient.action_labels:
-                logger.info(f"the synthesized tree has relative value: {(self.best_tree_value-random_result_value)/(opt_result_value-random_result_value)}")
+                logger.info(f"the synthesized tree has relative value: {(self.best_tree_value-random_result_value)/(opt_result_value-random_result_value) if opt_result_value-random_result_value != 0 else None}")
             logger.info(f"printing the synthesized tree below:")
             print(self.best_tree.to_string())
             # logger.info(f"printing the PRISM module below:")

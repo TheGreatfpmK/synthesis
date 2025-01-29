@@ -82,6 +82,9 @@ public:
         for(auto const& [method,timer]: timers) {
             profiling.emplace_back(method, (double)(timer.getTimeInMilliseconds())/1000);
         }
+        for(auto const& entry: getRoot()->getProfilingInfo()) {
+            profiling.push_back(entry);
+        }	
         return profiling;
     }
 

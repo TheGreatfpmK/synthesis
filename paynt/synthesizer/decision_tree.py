@@ -137,7 +137,7 @@ class SynthesizerDecisionTree(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
 
         global_timeout = paynt.utils.timer.GlobalTimer.global_timer.time_limit_seconds
         if global_timeout is None: global_timeout = 900
-        depth_timeout = global_timeout / 2 / SynthesizerDecisionTree.tree_depth
+        depth_timeout = global_timeout / 2 / (SynthesizerDecisionTree.tree_depth-1) if SynthesizerDecisionTree.tree_depth > 1 else global_timeout / 2
         for depth in range(SynthesizerDecisionTree.tree_depth+1):
             print()
             self.quotient.reset_tree(depth)

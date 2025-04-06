@@ -1,0 +1,23 @@
+pomdp
+
+observables
+s
+endobservables
+
+const double p;
+
+module mod1
+
+s : [0..2] init 0;
+[a] s=0 -> p : true + 1-p : (s'=1);
+[b] s=0 -> (s'=1);
+[c] s=1 -> (s'=2);
+[d] s=2 -> (s'=2);
+
+endmodule
+
+rewards
+ [c] s=1 : 1;
+endrewards
+
+label "target" = s=2;

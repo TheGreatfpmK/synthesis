@@ -24,6 +24,8 @@ import paynt.quotient.mdp_family
 import os
 import sys
 
+import click
+
 import cProfile, pstats
 
 
@@ -1006,10 +1008,10 @@ class RobustPolicySynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             iterations += self.stat.iterations_game
         return iterations
 
-    def run_robust(self, method="ceg-ar", family=None):
+    def run_robust(self, method="ceg-ar", timeout=300, family=None):
         if family is None:
             family = self.quotient.family
-        self.synthesis_timer = paynt.utils.timer.Timer(300)
+        self.synthesis_timer = paynt.utils.timer.Timer(timeout)
         self.synthesis_timer.start()
         self.stat = paynt.synthesizer.statistic.Statistic(self)
         self.explored = 0
@@ -1094,49 +1096,38 @@ def family_selection(quotient):
     else:
         return quotient.family
 
+@click.command()
+@click.argument('project', type=click.Path(exists=True))
+@click.option("--sketch", default="sketch.templ", show_default=True,
+    help="name of the sketch file in the project")
+@click.option("--props", default="sketch.props", show_default=True,
+    help="name of the properties file in the project")
+@click.option("--synthesizer", type=click.Choice(["posmg", "ceg-ar", "ceg-1by1", "ar-1by1", "ar-1by1-v2", "ar-mdp-eval", "ar-mdp-eval-v2", "eps-robust"], case_sensitive=False),
+              default="ar-1by1-v2", show_default=True, help="choose robust synthesizer")
+@click.option("--timeout", default=300, show_default=True, help="timeout for the synthesis process")
+@click.option("--profiling", is_flag=True, default=False,
+    help="run profiling")
+def main(project, sketch, props, synthesizer, timeout, profiling):
 
-profiling = False
+    if profiling:
+        profiler = cProfile.Profile()
+        profiler.enable()
 
-if profiling:
-    profiler = cProfile.Profile()
-    profiler.enable()
+    model_file = os.path.join(project, sketch)
+    props_file = os.path.join(project, props)
+    quotient = paynt.parser.sketch.Sketch.load_sketch(model_file, props_file)
+    assert isinstance(quotient, paynt.quotient.mdp_family.MdpFamilyQuotient)
 
-# robust_folder = "models/archive/atva24-policy-trees/"
-# robust_folder = "models/robust-mdps/"
-# robust_folder = "models/robust-mdps/atva-sat/"
-# robust_folder = "models/robust-mdps/atva-smaller/"
-robust_folder = "models/robust-mdps/atva-smallest/"
-if len(sys.argv) < 2:
-    model_folder = os.path.join(robust_folder, 'obstacles-demo/')
-else:
-    model_folder = os.path.join(robust_folder, sys.argv[1])
-model_file = os.path.join(model_folder, 'sketch.templ')
-props_file = os.path.join(model_folder, 'sketch.props')
-quotient = paynt.parser.sketch.Sketch.load_sketch(model_file, props_file)
-assert isinstance(quotient, paynt.quotient.mdp_family.MdpFamilyQuotient)
+    robust_policy_synthesizer = RobustPolicySynthesizer(quotient)
 
-family = family_selection(quotient)
+    # print(f"{sys.argv[1]}, {quotient.quotient_mdp.nr_states}, {len(quotient.action_labels)}, {quotient.family.size}, {robust_policy_synthesizer.policy_family.size}, {quotient.specification.constraints[0].threshold}, , {robust_policy_synthesizer.game_abs_val}")
 
-robust_policy_synthesizer = RobustPolicySynthesizer(quotient)
+    robust_policy_synthesizer.run_robust(synthesizer, timeout)
 
-print(f"{sys.argv[1]}, {quotient.quotient_mdp.nr_states}, {len(quotient.action_labels)}, {quotient.family.size}, {robust_policy_synthesizer.policy_family.size}, {quotient.specification.constraints[0].threshold}, , {robust_policy_synthesizer.game_abs_val}")
-
-# robust_policy_synthesizer.double_check_policy_eps(family, robust_policy_synthesizer.optimality_prop, robust_policy_synthesizer.game_abs_policy)
-
-# methods = ["ceg-ar", "ceg-1by1", "ar-1by1"]
-# methods = ["ar-1by1-v2", "ar-mdp-eval"]
-# for method in methods:
-#     robust_policy_synthesizer.run_robust(method)
-# robust_policy_synthesizer.run_robust("ar-1by1-v2")
-robust_policy_synthesizer.run_robust("ar-mdp-eval-v2")
-# robust_policy_synthesizer.run_robust("ar-mdp-eval")
-# robust_policy_synthesizer.run_robust("posmg")
-# robust_policy_synthesizer.run_robust("eps-robust")
-# robust_policy_synthesizer.average_union_pomdp(quotient.family)
-# robust_policy_synthesizer.average_union_pomdp(quotient.family, storm=True)
-
-if profiling:
-    profiler.disable()
-    print_profiler_stats(profiler)
+    if profiling:
+        profiler.disable()
+        print_profiler_stats(profiler)
 
 
+if __name__ == "__main__":
+    main()

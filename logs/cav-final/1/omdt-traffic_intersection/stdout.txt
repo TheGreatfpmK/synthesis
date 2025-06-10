@@ -1,0 +1,98 @@
+2025-01-21 15:51:53,531 - cli.py - This is Paynt version 0.1.0.
+2025-01-21 15:51:53,531 - sketch.py - loading sketch from /home/imacak/disk2/synthesis/models/dts/omdt/traffic_intersection/model-random.drn ...
+2025-01-21 15:51:53,531 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:26): Parsing error at 3:1:  expecting <model type>, here:
+	@type: MDP
+	^
+
+2025-01-21 15:51:53,542 - sketch.py - assuming sketch in DRN format...
+2025-01-21 15:51:53,552 - prism_parser.py - loading properties from /home/imacak/disk2/synthesis/models/dts/omdt/traffic_intersection/discounted.props ...
+2025-01-21 15:51:53,552 - prism_parser.py - found the following specification: optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 15:51:53,552 - sketch.py - found state valuations in /home/imacak/disk2/synthesis/models/dts/omdt/traffic_intersection/state-valuations.json, adding to the model...
+2025-01-21 15:51:53,553 - sketch.py - sketch parsing OK
+2025-01-21 15:51:53,553 - sketch.py - constructed explicit quotient having 361 states and 1083 choices
+2025-01-21 15:51:53,553 - sketch.py - found the following specification optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 15:51:53,554 - mdp.py - MDP has 361/361 relevant states
+2025-01-21 15:51:53,555 - mdp.py - MDP has 3 actions
+2025-01-21 15:51:53,557 - mdp.py - found the following 4 variables: ['cars_left:[0..5]', 'cars_right:[0..5]', 'green_side:[0..1]', 'waiting_time:[0..5]']
+2025-01-21 15:51:53,571 - decision_tree.py - the optimal scheduler has value: 2.1245510986189875
+2025-01-21 15:51:53,575 - decision_tree.py - the random scheduler has value: -146.4376645909478
+
+2025-01-21 15:51:53,575 - mdp.py - building tree of depth 0
+2025-01-21 15:51:53,579 - statistic.py - synthesis initiated, design space: 3
+2025-01-21 15:51:53,595 - synthesizer_ar.py - value -168.1136 achieved after 0.06 seconds
+2025-01-21 15:51:53,609 - synthesizer_ar.py - value -146.4377 achieved after 0.08 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.03 s
+number of holes: 1, family size: 3, quotient: 361 states / 1083 actions
+explored: 100 %
+MDP stats: avg MDP size: 244, iterations: 4
+
+optimum: -146.437665
+--------------------
+2025-01-21 15:51:53,609 - decision_tree.py - families considered: 4
+2025-01-21 15:51:53,609 - decision_tree.py - families skipped by construction: 0
+2025-01-21 15:51:53,609 - decision_tree.py - families with schedulers preserved: 0
+2025-01-21 15:51:53,609 - decision_tree.py - families model checked: 4
+2025-01-21 15:51:53,609 - decision_tree.py - harmonizations attempted: 1
+2025-01-21 15:51:53,609 - decision_tree.py - harmonizations succeeded: 1
+
+2025-01-21 15:51:53,609 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 15:51:53,609 - decision_tree.py - A_0=__random__
+2025-01-21 15:51:53,613 - decision_tree.py - double-checking specification satisfiability:  : -146.4376645909478
+
+2025-01-21 15:51:53,613 - mdp.py - building tree of depth 1
+2025-01-21 15:51:53,627 - statistic.py - synthesis initiated, design space: 4500
+2025-01-21 15:51:53,696 - synthesizer_ar.py - value -132.6635 achieved after 0.17 seconds
+2025-01-21 15:51:53,717 - synthesizer_ar.py - value -72.0642 achieved after 0.19 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 2.41 s
+number of holes: 7, family size: 4500, quotient: 361 states / 1083 actions
+explored: 200 %
+MDP stats: avg MDP size: 300, iterations: 186
+
+optimum: -72.064215
+--------------------
+2025-01-21 15:51:56,035 - decision_tree.py - families considered: 186
+2025-01-21 15:51:56,035 - decision_tree.py - families skipped by construction: 0
+2025-01-21 15:51:56,035 - decision_tree.py - families with schedulers preserved: 27
+2025-01-21 15:51:56,035 - decision_tree.py - families model checked: 159
+2025-01-21 15:51:56,035 - decision_tree.py - harmonizations attempted: 44
+2025-01-21 15:51:56,035 - decision_tree.py - harmonizations succeeded: 2
+
+2025-01-21 15:51:56,035 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 15:51:56,035 - decision_tree.py - V_0=waiting_time, cars_left_0=2, cars_right_0=2, green_side_0=0, waiting_time_0=2, A_1=(wait), A_2=(switch_light)
+2025-01-21 15:51:56,036 - decision_tree.py - double-checking specification satisfiability:  : -72.06421483394563
+2025-01-21 15:51:56,036 - decision_tree.py - the optimal scheduler has value: 2.1245510986189875
+2025-01-21 15:51:56,036 - decision_tree.py - the random scheduler has value: -146.4376645909478
+2025-01-21 15:51:56,037 - decision_tree.py - synthesized tree of depth 1 with 1 decision nodes
+2025-01-21 15:51:56,037 - decision_tree.py - the synthesized tree has value -72.06421483394563
+2025-01-21 15:51:56,037 - decision_tree.py - the synthesized tree has relative value: 0.5006215706449326
+2025-01-21 15:51:56,037 - decision_tree.py - printing the synthesized tree below:
+if waiting_time<=2:
+  (wait)
+else:
+  (switch_light)
+
+2025-01-21 15:51:56,037 - decision_tree.py - exported decision tree to logs/01-21-all/1/omdt-traffic_intersection/tree.dot
+2025-01-21 15:51:56,076 - decision_tree.py - exported decision tree visualization to logs/01-21-all/1/omdt-traffic_intersection/tree.png
+2025-01-21 15:51:56,077 - decision_tree.py - synthesis finished after 2.55 seconds
+
+ColoringSmt = 0.008 s (0.3 %)
+ColoringSmt:: create choice colors = 0.002 s (0.1 %)
+ColoringSmt:: create harmonizing variants = 0.006 s (0.2 %)
+areChoicesConsistent = 0.398 s (15.6 %)
+areChoicesConsistent::1 is scheduler consistent? = 0.256 s (10.0 %)
+areChoicesConsistent::2 better unsat core = 0.088 s (3.5 %)
+areChoicesConsistent::3 unsat core analysis = 0.036 s (1.4 %)
+check = 0.296 s (11.6 %)
+loadUnsatCore = 0.0 s (0.0 %)
+selectCompatibleChoices = 0.074 s (2.9 %)
+selectCompatibleChoices::1 is family sat = 0.056 s (2.2 %)
+selectCompatibleChoices::2 state exploration = 0.017 s (0.7 %)

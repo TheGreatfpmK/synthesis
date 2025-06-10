@@ -1,0 +1,138 @@
+2025-02-06 19:13:06,223 - cli.py:170 - This is Paynt version 0.1.0.
+2025-02-06 19:13:06,223 - sketch.py:84 - loading sketch from /home/fpmk/synthesis-playground/models/dts-uai-subset/undiscounted/wlan-4/model.prism ...
+2025-02-06 19:13:06,223 - sketch.py:88 - assuming sketch in PRISM format...
+2025-02-06 19:13:06,235 - prism_parser.py:31 - PRISM model type: MDP
+2025-02-06 19:13:06,235 - prism_parser.py:202 - loading properties from /home/fpmk/synthesis-playground/models/dts-uai-subset/undiscounted/wlan-4/model.props ...
+2025-02-06 19:13:06,237 - prism_parser.py:218 - found the following specification: optimality: R{"cost"}max=? [F ((s1 = 12) & (s2 = 12))] 
+2025-02-06 19:13:09,116 - sketch.py:149 - sketch parsing OK
+2025-02-06 19:13:09,134 - sketch.py:154 - tree helper loaded
+2025-02-06 19:13:10,536 - sketch.py:170 - constructed explicit quotient having 345000 states and 440206 choices
+2025-02-06 19:13:10,536 - sketch.py:176 - found the following specification optimality: R{"cost"}max=? [F ((s1 = 12) & (s2 = 12))] 
+2025-02-06 19:13:11,730 - mdp.py:497 - MDP has 95103/345000 relevant states
+2025-02-06 19:13:11,743 - mdp.py:501 - adding explicit don't-care action to relevant states...
+2025-02-06 19:13:12,966 - mdp.py:507 - MDP has 45 actions
+2025-02-06 19:13:16,876 - mdp.py:532 - found the following 12 variables: ['backoff1:[0..15]', 'backoff2:[0..15]', 'bc1:[0..4]', 'bc2:[0..4]', 'c1:[0..2]', 'c2:[0..2]', 's1:[1..12]', 's2:[1..12]', 'slot1:[0..15]', 'slot2:[0..15]', 'x1:[0..10]', 'x2:[0..10]']
+2025-02-06 19:13:23,036 - decision_tree.py:609 - the optimal scheduler has value: 227297.0264799384
+2025-02-06 19:13:27,194 - decision_tree.py:616 - the random scheduler has value: 35914.060044727565
+2025-02-06 19:13:27,195 - synthesizer.py:109 - optimality threshold set to 208158.7298364173
+
+2025-02-06 19:13:27,195 - mdp.py:825 - building tree of depth 0
+2025-02-06 19:13:28,187 - statistic.py:67 - synthesis initiated, design space: 45
+> progress 0.0%, elapsed 10 s, estimated 10264575 s (118 days), iters = {MDP: 2}, opt = 208158.7298
+> progress 2.222%, elapsed 14 s, estimated 643 s, iters = {MDP: 3}, opt = 208158.7298
+> progress 4.444%, elapsed 18 s, estimated 406 s, iters = {MDP: 4}, opt = 208158.7298
+--------------------
+Synthesis summary:
+optimality objective: R{"cost"}max=? [F ((s1 = 12) & (s2 = 12))] 
+
+method: AR (decision tree), synthesis time: 22.07 s
+number of holes: 1, family size: 45, quotient: 345000 states / 535309 actions
+explored: 100 %
+MDP stats: avg MDP size: 344140, iterations: 4
+
+optimum: 208158.729836
+--------------------
+2025-02-06 19:13:47,329 - decision_tree.py:120 - families considered: 4
+2025-02-06 19:13:47,329 - decision_tree.py:121 - families skipped by construction: 0
+2025-02-06 19:13:47,329 - decision_tree.py:122 - families with schedulers preserved: 0
+2025-02-06 19:13:47,329 - decision_tree.py:123 - families model checked: 4
+2025-02-06 19:13:47,329 - decision_tree.py:124 - harmonizations attempted: 1
+2025-02-06 19:13:47,329 - decision_tree.py:125 - harmonizations succeeded: 0
+
+
+2025-02-06 19:13:47,329 - mdp.py:825 - building tree of depth 1
+2025-02-06 19:13:52,688 - statistic.py:67 - synthesis initiated, design space: 1e14
+> progress 0.0%, elapsed 14 s, estimated 14310288 s (165 days), iters = {MDP: 2}, opt = 208158.7298
+> progress 0.0%, elapsed 19 s, estimated 19547395 s (226 days), iters = {MDP: 3}, opt = 208158.7298
+> progress 0.129%, elapsed 26 s, estimated 20380 s (5 hours), iters = {MDP: 5}, opt = 208158.7298
+> progress 0.259%, elapsed 30 s, estimated 11579 s (3 hours), iters = {MDP: 6}, opt = 208158.7298
+> progress 5.833%, elapsed 34 s, estimated 590 s, iters = {MDP: 7}, opt = 208158.7298
+> progress 5.833%, elapsed 39 s, estimated 679 s, iters = {MDP: 8}, opt = 208158.7298
+2025-02-06 19:14:32,060 - synthesizer.py:93 - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"cost"}max=? [F ((s1 = 12) & (s2 = 12))] 
+
+method: AR (decision tree), synthesis time: 45.25 s
+number of holes: 15, family size: 1e14, quotient: 345000 states / 535309 actions
+explored: 5 %
+MDP stats: avg MDP size: 344586, iterations: 8
+
+optimum: 208158.729836
+--------------------
+2025-02-06 19:14:32,060 - decision_tree.py:120 - families considered: 8
+2025-02-06 19:14:32,060 - decision_tree.py:121 - families skipped by construction: 0
+2025-02-06 19:14:32,060 - decision_tree.py:122 - families with schedulers preserved: 3
+2025-02-06 19:14:32,060 - decision_tree.py:123 - families model checked: 5
+2025-02-06 19:14:32,060 - decision_tree.py:124 - harmonizations attempted: 1
+2025-02-06 19:14:32,060 - decision_tree.py:125 - harmonizations succeeded: 0
+
+
+2025-02-06 19:14:32,060 - mdp.py:825 - building tree of depth 2
+2025-02-06 19:14:47,577 - statistic.py:67 - synthesis initiated, design space: 1e41
+> progress 0.0%, elapsed 33 s, estimated 33146975 s (1 year), iters = {MDP: 2}, opt = 208158.7298
+2025-02-06 19:15:32,260 - synthesizer.py:93 - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"cost"}max=? [F ((s1 = 12) & (s2 = 12))] 
+
+method: AR (decision tree), synthesis time: 50.54 s
+number of holes: 43, family size: 1e41, quotient: 345000 states / 535309 actions
+explored: 0 %
+MDP stats: avg MDP size: 345000, iterations: 2
+
+optimum: 208158.729836
+--------------------
+2025-02-06 19:15:32,260 - decision_tree.py:120 - families considered: 2
+2025-02-06 19:15:32,260 - decision_tree.py:121 - families skipped by construction: 0
+2025-02-06 19:15:32,260 - decision_tree.py:122 - families with schedulers preserved: 1
+2025-02-06 19:15:32,260 - decision_tree.py:123 - families model checked: 1
+2025-02-06 19:15:32,260 - decision_tree.py:124 - harmonizations attempted: 1
+2025-02-06 19:15:32,260 - decision_tree.py:125 - harmonizations succeeded: 0
+
+
+2025-02-06 19:15:32,260 - mdp.py:825 - building tree of depth 3
+2025-02-06 19:16:08,582 - statistic.py:67 - synthesis initiated, design space: 1e94
+2025-02-06 19:18:17,773 - synthesizer.py:93 - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"cost"}max=? [F ((s1 = 12) & (s2 = 12))] 
+
+method: AR (decision tree), synthesis time: 140.92 s
+number of holes: 99, family size: 1e94, quotient: 345000 states / 535309 actions
+explored: 0 %
+MDP stats: avg MDP size: 345000, iterations: 1
+
+optimum: 208158.729836
+--------------------
+2025-02-06 19:18:17,774 - decision_tree.py:120 - families considered: 1
+2025-02-06 19:18:17,774 - decision_tree.py:121 - families skipped by construction: 0
+2025-02-06 19:18:17,774 - decision_tree.py:122 - families with schedulers preserved: 0
+2025-02-06 19:18:17,774 - decision_tree.py:123 - families model checked: 1
+2025-02-06 19:18:17,774 - decision_tree.py:124 - harmonizations attempted: 1
+2025-02-06 19:18:17,774 - decision_tree.py:125 - harmonizations succeeded: 0
+
+
+2025-02-06 19:18:17,774 - mdp.py:825 - building tree of depth 4
+Traceback (most recent call last):
+  File "/home/fpmk/synthesis-playground/paynt.py", line 4, in <module>
+    paynt.cli.main()
+  File "/home/fpmk/synthesis-playground/paynt/cli.py", line 231, in main
+    paynt_run()
+  File "/home/fpmk/synthesis-playground/prerequisites/venv/lib/python3.10/site-packages/click/core.py", line 1157, in __call__
+    return self.main(*args, **kwargs)
+  File "/home/fpmk/synthesis-playground/prerequisites/venv/lib/python3.10/site-packages/click/core.py", line 1078, in main
+    rv = self.invoke(ctx)
+  File "/home/fpmk/synthesis-playground/prerequisites/venv/lib/python3.10/site-packages/click/core.py", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/fpmk/synthesis-playground/prerequisites/venv/lib/python3.10/site-packages/click/core.py", line 783, in invoke
+    return __callback(*args, **kwargs)
+  File "/home/fpmk/synthesis-playground/paynt/cli.py", line 202, in paynt_run
+    synthesizer.run(optimum_threshold)
+  File "/home/fpmk/synthesis-playground/paynt/synthesizer/decision_tree.py", line 637, in run
+    self.synthesize_tree_sequence(opt_result_value, break_if_found=True)
+  File "/home/fpmk/synthesis-playground/paynt/synthesizer/decision_tree.py", line 521, in synthesize_tree_sequence
+    self.quotient.reset_tree(depth)
+  File "/home/fpmk/synthesis-playground/paynt/quotient/mdp.py", line 839, in reset_tree
+    self.coloring = payntbind.synthesis.ColoringSmt(
+RuntimeError: out of memory

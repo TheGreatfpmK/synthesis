@@ -1,0 +1,100 @@
+2025-01-21 15:51:52,925 - cli.py - This is Paynt version 0.1.0.
+2025-01-21 15:51:52,925 - sketch.py - loading sketch from /home/imacak/disk2/synthesis/models/dts/omdt/system_administrator_tree/model-random.drn ...
+2025-01-21 15:51:52,925 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:26): Parsing error at 3:1:  expecting <model type>, here:
+	@type: MDP
+	^
+
+2025-01-21 15:51:52,938 - sketch.py - assuming sketch in DRN format...
+2025-01-21 15:51:52,950 - prism_parser.py - loading properties from /home/imacak/disk2/synthesis/models/dts/omdt/system_administrator_tree/discounted.props ...
+2025-01-21 15:51:52,950 - prism_parser.py - found the following specification: optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 15:51:52,951 - sketch.py - found state valuations in /home/imacak/disk2/synthesis/models/dts/omdt/system_administrator_tree/state-valuations.json, adding to the model...
+2025-01-21 15:51:52,951 - sketch.py - sketch parsing OK
+2025-01-21 15:51:52,952 - sketch.py - constructed explicit quotient having 128 states and 1152 choices
+2025-01-21 15:51:52,952 - sketch.py - found the following specification optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 15:51:52,952 - mdp.py - MDP has 128/128 relevant states
+2025-01-21 15:51:52,955 - mdp.py - MDP has 9 actions
+2025-01-21 15:51:52,956 - mdp.py - found the following 7 variables: ['computer_0_running:[0..1]', 'computer_1_running:[0..1]', 'computer_2_running:[0..1]', 'computer_3_running:[0..1]', 'computer_4_running:[0..1]', 'computer_5_running:[0..1]', 'computer_6_running:[0..1]']
+2025-01-21 15:51:52,969 - decision_tree.py - the optimal scheduler has value: 557.6929679094094
+2025-01-21 15:51:52,973 - decision_tree.py - the random scheduler has value: 332.2622643222469
+
+2025-01-21 15:51:52,973 - mdp.py - building tree of depth 0
+2025-01-21 15:51:52,977 - statistic.py - synthesis initiated, design space: 9
+2025-01-21 15:51:52,992 - synthesizer_ar.py - value 261.7559 achieved after 0.07 seconds
+2025-01-21 15:51:52,993 - synthesizer_ar.py - value 266.9786 achieved after 0.07 seconds
+2025-01-21 15:51:53,012 - synthesizer_ar.py - value 332.2623 achieved after 0.09 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.05 s
+number of holes: 1, family size: 9, quotient: 128 states / 1152 actions
+explored: 100 %
+MDP stats: avg MDP size: 100, iterations: 10
+
+optimum: 332.262264
+--------------------
+2025-01-21 15:51:53,031 - decision_tree.py - families considered: 10
+2025-01-21 15:51:53,031 - decision_tree.py - families skipped by construction: 0
+2025-01-21 15:51:53,031 - decision_tree.py - families with schedulers preserved: 0
+2025-01-21 15:51:53,031 - decision_tree.py - families model checked: 10
+2025-01-21 15:51:53,031 - decision_tree.py - harmonizations attempted: 3
+2025-01-21 15:51:53,031 - decision_tree.py - harmonizations succeeded: 3
+
+2025-01-21 15:51:53,031 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 15:51:53,031 - decision_tree.py - A_0=__random__
+2025-01-21 15:51:53,035 - decision_tree.py - double-checking specification satisfiability:  : 332.2622643222469
+
+2025-01-21 15:51:53,035 - mdp.py - building tree of depth 1
+2025-01-21 15:51:53,046 - statistic.py - synthesis initiated, design space: 567
+2025-01-21 15:51:53,152 - synthesizer_ar.py - value 345.1816 achieved after 0.23 seconds
+2025-01-21 15:51:53,493 - synthesizer_ar.py - value 377.9102 achieved after 0.57 seconds
+> progress 117.46%, elapsed 3 s, estimated 2 s, iters = {MDP: 278}, opt = 377.9102
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 4.42 s
+number of holes: 10, family size: 567, quotient: 128 states / 1152 actions
+explored: 200 %
+MDP stats: avg MDP size: 115, iterations: 479
+
+optimum: 377.910181
+--------------------
+2025-01-21 15:51:57,466 - decision_tree.py - families considered: 479
+2025-01-21 15:51:57,467 - decision_tree.py - families skipped by construction: 0
+2025-01-21 15:51:57,467 - decision_tree.py - families with schedulers preserved: 12
+2025-01-21 15:51:57,467 - decision_tree.py - families model checked: 467
+2025-01-21 15:51:57,467 - decision_tree.py - harmonizations attempted: 147
+2025-01-21 15:51:57,467 - decision_tree.py - harmonizations succeeded: 1
+
+2025-01-21 15:51:57,467 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 15:51:57,467 - decision_tree.py - V_0=computer_0_running, computer_0_running_0=0, computer_1_running_0=0, computer_2_running_0=0, computer_3_running_0=0, computer_4_running_0=0, computer_5_running_0=0, computer_6_running_0=0, A_1=(reboot_computer_0), A_2=__random__
+2025-01-21 15:51:57,470 - decision_tree.py - double-checking specification satisfiability:  : 377.9101809047169
+2025-01-21 15:51:57,470 - decision_tree.py - the optimal scheduler has value: 557.6929679094094
+2025-01-21 15:51:57,470 - decision_tree.py - the random scheduler has value: 332.2622643222469
+2025-01-21 15:51:57,470 - decision_tree.py - synthesized tree of depth 1 with 1 decision nodes
+2025-01-21 15:51:57,470 - decision_tree.py - the synthesized tree has value 377.9101809047169
+2025-01-21 15:51:57,470 - decision_tree.py - the synthesized tree has relative value: 0.20249201131921377
+2025-01-21 15:51:57,470 - decision_tree.py - printing the synthesized tree below:
+if computer_0_running<=0:
+  (reboot_computer_0)
+else:
+  __random__
+
+2025-01-21 15:51:57,470 - decision_tree.py - exported decision tree to logs/01-21-all/1/omdt-system_administrator_tree/tree.dot
+2025-01-21 15:51:57,509 - decision_tree.py - exported decision tree visualization to logs/01-21-all/1/omdt-system_administrator_tree/tree.png
+2025-01-21 15:51:57,509 - decision_tree.py - synthesis finished after 4.58 seconds
+
+ColoringSmt = 0.005 s (0.1 %)
+ColoringSmt:: create choice colors = 0.001 s (0.0 %)
+ColoringSmt:: create harmonizing variants = 0.003 s (0.1 %)
+areChoicesConsistent = 0.692 s (15.1 %)
+areChoicesConsistent::1 is scheduler consistent? = 0.196 s (4.3 %)
+areChoicesConsistent::2 better unsat core = 0.392 s (8.6 %)
+areChoicesConsistent::3 unsat core analysis = 0.093 s (2.0 %)
+check = 0.58 s (12.7 %)
+loadUnsatCore = 0.0 s (0.0 %)
+selectCompatibleChoices = 0.194 s (4.2 %)
+selectCompatibleChoices::1 is family sat = 0.159 s (3.5 %)
+selectCompatibleChoices::2 state exploration = 0.035 s (0.8 %)

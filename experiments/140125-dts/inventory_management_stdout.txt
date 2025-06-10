@@ -1,0 +1,83 @@
+2025-01-14 12:24:46,078 - cli.py - This is Paynt version 0.1.0.
+2025-01-14 12:24:46,078 - sketch.py - loading sketch from models/dts-helpers/omdt/inventory_management/model.drn ...
+2025-01-14 12:24:46,078 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:26): Parsing error at 3:1:  expecting <model type>, here:
+	@type: MDP
+	^
+
+2025-01-14 12:24:46,720 - sketch.py - assuming sketch in DRN format...
+2025-01-14 12:24:47,179 - prism_parser.py - loading properties from models/dts-helpers/omdt/inventory_management/discounted.props ...
+2025-01-14 12:24:47,185 - prism_parser.py - found the following specification: optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-14 12:24:47,185 - sketch.py - found state valuations in models/dts-helpers/omdt/inventory_management/state-valuations.json, adding to the model...
+2025-01-14 12:24:47,187 - sketch.py - sketch parsing OK
+2025-01-14 12:24:47,189 - sketch.py - tree helper loaded
+2025-01-14 12:24:47,234 - sketch.py - constructed explicit quotient having 101 states and 10100 choices
+2025-01-14 12:24:47,235 - sketch.py - found the following specification optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-14 12:24:47,298 - mdp.py - MDP has 101/101 relevant states
+2025-01-14 12:24:47,370 - mdp.py - MDP has 100 actions
+2025-01-14 12:24:47,370 - mdp.py - found the following 1 variables: ['inventory:[0..100]']
+2025-01-14 12:24:47,871 - decision_tree.py - the optimal scheduler has value: 967.8226674262729
+2025-01-14 12:24:47,871 - decision_tree.py - initial external tree has depth 6 and 14 nodes
+// decision tree
+digraph {
+	5 [label="(Buy_12)" margin="0.05,0.05" shape=box style=rounded]
+	6 [label="(Buy_11)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="inventory<=0" margin="0.05,0.05" shape=box style=rounded]
+	4 -> 5 [label=T]
+	4 -> 6 [label=F]
+	8 [label="(Buy_9)" margin="0.05,0.05" shape=box style=rounded]
+	9 [label="(Buy_8)" margin="0.05,0.05" shape=box style=rounded]
+	7 [label="inventory<=2" margin="0.05,0.05" shape=box style=rounded]
+	7 -> 8 [label=T]
+	7 -> 9 [label=F]
+	3 [label="inventory<=1" margin="0.05,0.05" shape=box style=rounded]
+	3 -> 4 [label=T]
+	3 -> 7 [label=F]
+	12 [label="(Buy_7)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Buy_6)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="inventory<=4" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	15 [label="(Buy_5)" margin="0.05,0.05" shape=box style=rounded]
+	16 [label="(Buy_4)" margin="0.05,0.05" shape=box style=rounded]
+	14 [label="inventory<=6" margin="0.05,0.05" shape=box style=rounded]
+	14 -> 15 [label=T]
+	14 -> 16 [label=F]
+	10 [label="inventory<=5" margin="0.05,0.05" shape=box style=rounded]
+	10 -> 11 [label=T]
+	10 -> 14 [label=F]
+	2 [label="inventory<=3" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 10 [label=F]
+	19 [label="(Buy_3)" margin="0.05,0.05" shape=box style=rounded]
+	20 [label="(Buy_2)" margin="0.05,0.05" shape=box style=rounded]
+	18 [label="inventory<=8" margin="0.05,0.05" shape=box style=rounded]
+	18 -> 19 [label=T]
+	18 -> 20 [label=F]
+	23 [label="(Buy_1)" margin="0.05,0.05" shape=box style=rounded]
+	25 [label="(Buy_3)" margin="0.05,0.05" shape=box style=rounded]
+	26 [label="(Buy_2)" margin="0.05,0.05" shape=box style=rounded]
+	24 [label="inventory<=19" margin="0.05,0.05" shape=box style=rounded]
+	24 -> 25 [label=T]
+	24 -> 26 [label=F]
+	22 [label="inventory<=18" margin="0.05,0.05" shape=box style=rounded]
+	22 -> 23 [label=T]
+	22 -> 24 [label=F]
+	27 [label="(Buy_1)" margin="0.05,0.05" shape=box style=rounded]
+	21 [label="inventory<=20" margin="0.05,0.05" shape=box style=rounded]
+	21 -> 22 [label=T]
+	21 -> 27 [label=F]
+	17 [label="inventory<=9" margin="0.05,0.05" shape=box style=rounded]
+	17 -> 18 [label=T]
+	17 -> 21 [label=F]
+	1 [label="inventory<=7" margin="0.05,0.05" shape=box style=rounded]
+	1 -> 2 [label=T]
+	1 -> 17 [label=F]
+	28 [label="(Don't" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="inventory<=39" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 28 [label=F]
+}
+
+2025-01-14 12:24:47,874 - decision_tree.py - final tree has value 967.8192137889025 with depth 6 and 14 nodes
+967.8192137889025 0.0 6 14

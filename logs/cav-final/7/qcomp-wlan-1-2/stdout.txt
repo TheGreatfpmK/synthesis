@@ -1,0 +1,527 @@
+2025-01-21 20:21:52,830 - cli.py - This is Paynt version 0.1.0.
+2025-01-21 20:21:52,830 - sketch.py - loading sketch from /home/imacak/disk2/synthesis/models/dts/qcomp/wlan-1-2/model-random-enabled.drn ...
+2025-01-21 20:21:52,830 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:26): Parsing error at 3:1:  expecting <model type>, here:
+	@type: MDP
+	^
+
+2025-01-21 20:21:52,944 - sketch.py - assuming sketch in DRN format...
+2025-01-21 20:21:53,295 - prism_parser.py - loading properties from /home/imacak/disk2/synthesis/models/dts/qcomp/wlan-1-2/discounted.props ...
+2025-01-21 20:21:53,296 - prism_parser.py - found the following specification: optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 20:21:53,311 - sketch.py - found state valuations in /home/imacak/disk2/synthesis/models/dts/qcomp/wlan-1-2/state-valuations.json, adding to the model...
+2025-01-21 20:21:53,318 - sketch.py - sketch parsing OK
+2025-01-21 20:21:53,501 - sketch.py - constructed explicit quotient having 3127 states and 106318 choices
+2025-01-21 20:21:53,501 - sketch.py - found the following specification optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 20:21:53,510 - mdp.py - MDP has 3124/3127 relevant states
+2025-01-21 20:21:54,082 - mdp.py - MDP has 34 actions
+2025-01-21 20:21:54,106 - mdp.py - found the following 11 variables: ['backoff1:[0..15]', 'backoff2:[0..15]', 'bc1:[0..1]', 'bc2:[0..1]', 'c1:[0..2]', 'c2:[0..2]', 'col:[0..2]', 's1:[1..12]', 's2:[1..12]', 'x1:[0..10]', 'x2:[0..10]']
+2025-01-21 20:21:54,119 - decision_tree.py - the optimal scheduler has value: 0.10827098374814313
+2025-01-21 20:21:54,123 - decision_tree.py - the random scheduler has value: 0.02730039610596835
+
+2025-01-21 20:21:54,123 - mdp.py - building tree of depth 0
+2025-01-21 20:21:54,200 - statistic.py - synthesis initiated, design space: 34
+2025-01-21 20:21:54,249 - synthesizer_ar.py - value 0.0274 achieved after 1.42 seconds
+2025-01-21 20:21:54,255 - synthesizer_ar.py - value 0.0382 achieved after 1.42 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.62 s
+number of holes: 1, family size: 34, quotient: 3127 states / 106318 actions
+explored: 100 %
+MDP stats: avg MDP size: 3079, iterations: 31
+
+optimum: 0.038173
+--------------------
+2025-01-21 20:21:54,824 - decision_tree.py - families considered: 31
+2025-01-21 20:21:54,824 - decision_tree.py - families skipped by construction: 0
+2025-01-21 20:21:54,824 - decision_tree.py - families with schedulers preserved: 0
+2025-01-21 20:21:54,824 - decision_tree.py - families model checked: 31
+2025-01-21 20:21:54,824 - decision_tree.py - harmonizations attempted: 10
+2025-01-21 20:21:54,824 - decision_tree.py - harmonizations succeeded: 2
+
+2025-01-21 20:21:54,824 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 20:21:54,824 - decision_tree.py - A_0=time
+2025-01-21 20:21:54,829 - decision_tree.py - double-checking specification satisfiability:  : 0.038173480123536434
+
+2025-01-21 20:21:54,830 - mdp.py - building tree of depth 1
+2025-01-21 20:21:55,183 - statistic.py - synthesis initiated, design space: 1e11
+2025-01-21 20:21:55,491 - synthesizer_ar.py - value 0.039 achieved after 2.66 seconds
+2025-01-21 20:21:55,561 - synthesizer_ar.py - value 0.0395 achieved after 2.73 seconds
+2025-01-21 20:21:56,811 - synthesizer_ar.py - value 0.0399 achieved after 3.98 seconds
+2025-01-21 20:21:57,647 - synthesizer_ar.py - value 0.0406 achieved after 4.82 seconds
+> progress 0.257%, elapsed 3 s, estimated 1196 s, iters = {MDP: 84}, opt = 0.0406
+2025-01-21 20:21:58,491 - synthesizer_ar.py - value 0.0452 achieved after 5.66 seconds
+2025-01-21 20:21:59,901 - synthesizer_ar.py - value 0.0453 achieved after 7.07 seconds
+> progress 0.786%, elapsed 6 s, estimated 784 s, iters = {MDP: 162}, opt = 0.0453
+> progress 1.216%, elapsed 9 s, estimated 759 s, iters = {MDP: 247}, opt = 0.0453
+> progress 3.315%, elapsed 12 s, estimated 370 s, iters = {MDP: 325}, opt = 0.0453
+> progress 5.08%, elapsed 15 s, estimated 300 s, iters = {MDP: 408}, opt = 0.0453
+> progress 12.846%, elapsed 18 s, estimated 142 s, iters = {MDP: 491}, opt = 0.0453
+> progress 15.24%, elapsed 21 s, estimated 140 s, iters = {MDP: 578}, opt = 0.0453
+> progress 19.267%, elapsed 24 s, estimated 126 s, iters = {MDP: 649}, opt = 0.0453
+> progress 29.358%, elapsed 27 s, estimated 93 s, iters = {MDP: 732}, opt = 0.0453
+> progress 36.634%, elapsed 30 s, estimated 83 s, iters = {MDP: 823}, opt = 0.0453
+> progress 41.978%, elapsed 33 s, estimated 79 s, iters = {MDP: 903}, opt = 0.0453
+> progress 44.294%, elapsed 36 s, estimated 82 s, iters = {MDP: 982}, opt = 0.0453
+> progress 47.367%, elapsed 39 s, estimated 83 s, iters = {MDP: 1060}, opt = 0.0453
+> progress 54.212%, elapsed 42 s, estimated 78 s, iters = {MDP: 1141}, opt = 0.0453
+> progress 55.969%, elapsed 45 s, estimated 81 s, iters = {MDP: 1212}, opt = 0.0453
+> progress 65.24%, elapsed 48 s, estimated 74 s, iters = {MDP: 1288}, opt = 0.0453
+> progress 79.946%, elapsed 51 s, estimated 64 s, iters = {MDP: 1359}, opt = 0.0453
+> progress 86.363%, elapsed 54 s, estimated 63 s, iters = {MDP: 1420}, opt = 0.0453
+> progress 100.49%, elapsed 57 s, estimated 57 s, iters = {MDP: 1502}, opt = 0.0453
+> progress 107.43%, elapsed 60 s, estimated 56 s, iters = {MDP: 1589}, opt = 0.0453
+> progress 109.358%, elapsed 63 s, estimated 58 s, iters = {MDP: 1674}, opt = 0.0453
+> progress 113.903%, elapsed 66 s, estimated 58 s, iters = {MDP: 1750}, opt = 0.0453
+> progress 118.666%, elapsed 69 s, estimated 58 s, iters = {MDP: 1848}, opt = 0.0453
+> progress 119.735%, elapsed 72 s, estimated 60 s, iters = {MDP: 1936}, opt = 0.0453
+> progress 127.399%, elapsed 75 s, estimated 59 s, iters = {MDP: 2019}, opt = 0.0453
+> progress 128.059%, elapsed 78 s, estimated 61 s, iters = {MDP: 2103}, opt = 0.0453
+> progress 131.076%, elapsed 81 s, estimated 62 s, iters = {MDP: 2182}, opt = 0.0453
+> progress 136.48%, elapsed 84 s, estimated 62 s, iters = {MDP: 2254}, opt = 0.0453
+2025-01-21 20:23:20,952 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 85.77 s
+number of holes: 14, family size: 1e11, quotient: 3127 states / 106318 actions
+explored: 136 %
+MDP stats: avg MDP size: 3054, iterations: 2272
+
+optimum: 0.045338
+--------------------
+2025-01-21 20:23:20,952 - decision_tree.py - families considered: 2272
+2025-01-21 20:23:20,952 - decision_tree.py - families skipped by construction: 0
+2025-01-21 20:23:20,952 - decision_tree.py - families with schedulers preserved: 93
+2025-01-21 20:23:20,952 - decision_tree.py - families model checked: 2179
+2025-01-21 20:23:20,952 - decision_tree.py - harmonizations attempted: 719
+2025-01-21 20:23:20,952 - decision_tree.py - harmonizations succeeded: 6
+
+2025-01-21 20:23:20,952 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 20:23:20,953 - decision_tree.py - V_0=c1, backoff1_0=0, backoff2_0=0, bc1_0=0, bc2_0=0, c1_0=0, c2_0=0, col_0=0, s1_0=1, s2_0=1, x1_0=0, x2_0=0, A_1=time, A_2=station2_cmd_54
+2025-01-21 20:23:20,960 - decision_tree.py - double-checking specification satisfiability:  : 0.04533787523644744
+
+2025-01-21 20:23:20,960 - mdp.py - building tree of depth 2
+2025-01-21 20:23:21,796 - statistic.py - synthesis initiated, design space: 1e31
+2025-01-21 20:23:22,208 - synthesizer_ar.py - value 0.0457 achieved after 89.38 seconds
+2025-01-21 20:23:23,041 - synthesizer_ar.py - value 0.0459 achieved after 90.21 seconds
+> progress 0.0%, elapsed 3 s, estimated 448785803 s (14 years), iters = {MDP: 52}, opt = 0.0459
+> progress 0.0%, elapsed 6 s, estimated 155174690 s (4 years), iters = {MDP: 118}, opt = 0.0459
+> progress 0.0%, elapsed 9 s, estimated 37105053 s (1 year), iters = {MDP: 187}, opt = 0.0459
+2025-01-21 20:23:32,446 - synthesizer_ar.py - value 0.046 achieved after 99.62 seconds
+2025-01-21 20:23:32,656 - synthesizer_ar.py - value 0.0464 achieved after 99.83 seconds
+> progress 0.0%, elapsed 12 s, estimated 25887611 s (299 days), iters = {MDP: 260}, opt = 0.0464
+2025-01-21 20:23:34,130 - synthesizer_ar.py - value 0.049 achieved after 101.3 seconds
+2025-01-21 20:23:34,226 - synthesizer_ar.py - value 0.0494 achieved after 101.4 seconds
+2025-01-21 20:23:35,678 - synthesizer_ar.py - value 0.0527 achieved after 102.85 seconds
+2025-01-21 20:23:36,940 - synthesizer_ar.py - value 0.0529 achieved after 104.11 seconds
+> progress 0.0%, elapsed 15 s, estimated 32777888 s (1 year), iters = {MDP: 286}, opt = 0.0529
+2025-01-21 20:23:38,096 - synthesizer_ar.py - value 0.053 achieved after 105.27 seconds
+2025-01-21 20:23:39,139 - synthesizer_ar.py - value 0.0531 achieved after 106.31 seconds
+> progress 0.0%, elapsed 19 s, estimated 40360453 s (1 year), iters = {MDP: 304}, opt = 0.0531
+2025-01-21 20:23:41,013 - synthesizer_ar.py - value 0.0532 achieved after 108.18 seconds
+> progress 0.0%, elapsed 22 s, estimated 29552835 s (342 days), iters = {MDP: 379}, opt = 0.0532
+> progress 0.0%, elapsed 25 s, estimated 27250773 s (315 days), iters = {MDP: 450}, opt = 0.0532
+> progress 0.0%, elapsed 28 s, estimated 24128273 s (279 days), iters = {MDP: 519}, opt = 0.0532
+> progress 0.0%, elapsed 31 s, estimated 22650749 s (262 days), iters = {MDP: 549}, opt = 0.0532
+> progress 0.0%, elapsed 34 s, estimated 13489131 s (156 days), iters = {MDP: 605}, opt = 0.0532
+> progress 0.0%, elapsed 37 s, estimated 13162177 s (152 days), iters = {MDP: 690}, opt = 0.0532
+> progress 0.0%, elapsed 40 s, estimated 14132004 s (163 days), iters = {MDP: 769}, opt = 0.0532
+> progress 0.0%, elapsed 43 s, estimated 14579102 s (168 days), iters = {MDP: 855}, opt = 0.0532
+> progress 0.0%, elapsed 46 s, estimated 14260886 s (165 days), iters = {MDP: 933}, opt = 0.0532
+> progress 0.0%, elapsed 49 s, estimated 13992806 s (161 days), iters = {MDP: 1011}, opt = 0.0532
+> progress 0.0%, elapsed 52 s, estimated 8224450 s (95 days), iters = {MDP: 1089}, opt = 0.0532
+> progress 0.0%, elapsed 55 s, estimated 8492015 s (98 days), iters = {MDP: 1159}, opt = 0.0532
+> progress 0.002%, elapsed 59 s, estimated 2427413 s (28 days), iters = {MDP: 1223}, opt = 0.0532
+> progress 0.004%, elapsed 62 s, estimated 1292901 s (14 days), iters = {MDP: 1282}, opt = 0.0532
+> progress 0.006%, elapsed 65 s, estimated 1072937 s (12 days), iters = {MDP: 1340}, opt = 0.0532
+> progress 0.008%, elapsed 68 s, estimated 762425 s (8 days), iters = {MDP: 1396}, opt = 0.0532
+> progress 0.009%, elapsed 71 s, estimated 781089 s (9 days), iters = {MDP: 1457}, opt = 0.0532
+> progress 0.009%, elapsed 74 s, estimated 809352 s (9 days), iters = {MDP: 1514}, opt = 0.0532
+> progress 0.009%, elapsed 77 s, estimated 837920 s (9 days), iters = {MDP: 1571}, opt = 0.0532
+> progress 0.009%, elapsed 80 s, estimated 838664 s (9 days), iters = {MDP: 1630}, opt = 0.0532
+> progress 0.009%, elapsed 83 s, estimated 865681 s (10 days), iters = {MDP: 1688}, opt = 0.0532
+2025-01-21 20:24:47,534 - synthesizer.py - time limit reached, aborting...
+2025-01-21 20:24:47,534 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 85.74 s
+number of holes: 40, family size: 1e31, quotient: 3127 states / 106318 actions
+explored: 0 %
+MDP stats: avg MDP size: 2978, iterations: 1736
+
+optimum: 0.053192
+--------------------
+2025-01-21 20:24:47,534 - decision_tree.py - families considered: 1736
+2025-01-21 20:24:47,534 - decision_tree.py - families skipped by construction: 0
+2025-01-21 20:24:47,535 - decision_tree.py - families with schedulers preserved: 276
+2025-01-21 20:24:47,535 - decision_tree.py - families model checked: 1460
+2025-01-21 20:24:47,535 - decision_tree.py - harmonizations attempted: 367
+2025-01-21 20:24:47,535 - decision_tree.py - harmonizations succeeded: 10
+
+2025-01-21 20:24:47,535 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 20:24:47,535 - decision_tree.py - V_0=c1, backoff1_0=0, backoff2_0=0, bc1_0=0, bc2_0=0, c1_0=0, c2_0=0, col_0=0, s1_0=1, s2_0=1, x1_0=0, x2_0=0, V_1=x2, backoff1_1=0, backoff2_1=0, bc1_1=0, bc2_1=0, c1_1=0, c2_1=0, col_1=0, s1_1=1, s2_1=1, x1_1=0, x2_1=4, A_2=time, A_3=station2_cmd_42, V_4=x2, backoff1_4=0, backoff2_4=0, bc1_4=0, bc2_4=0, c1_4=0, c2_4=0, col_4=0, s1_4=1, s2_4=1, x1_4=0, x2_4=1, A_5=station2_cmd_54, A_6=station2_cmd_42
+2025-01-21 20:24:47,544 - decision_tree.py - double-checking specification satisfiability:  : 0.053192403967253284
+
+2025-01-21 20:24:47,544 - mdp.py - building tree of depth 3
+2025-01-21 20:24:49,317 - statistic.py - synthesis initiated, design space: 1e70
+2025-01-21 20:24:52,750 - synthesizer_ar.py - value 0.0567 achieved after 179.92 seconds
+> progress 0.0%, elapsed 3 s, estimated 75683785708294 s (2399917 years), iters = {MDP: 21}, opt = 0.0567
+> progress 0.0%, elapsed 6 s, estimated 141511495927979 s (4487300 years), iters = {MDP: 73}, opt = 0.0567
+> progress 0.0%, elapsed 9 s, estimated 99793250650250 s (3164423 years), iters = {MDP: 117}, opt = 0.0567
+2025-01-21 20:25:00,327 - synthesizer_ar.py - value 0.0569 achieved after 187.5 seconds
+> progress 0.0%, elapsed 12 s, estimated 130134774813964 s (4126546 years), iters = {MDP: 149}, opt = 0.0569
+> progress 0.0%, elapsed 15 s, estimated 106892879513435 s (3389550 years), iters = {MDP: 199}, opt = 0.0569
+2025-01-21 20:25:08,081 - synthesizer_ar.py - value 0.0617 achieved after 195.25 seconds
+> progress 0.0%, elapsed 18 s, estimated 96363317278292 s (3055660 years), iters = {MDP: 215}, opt = 0.0617
+> progress 0.0%, elapsed 21 s, estimated 100793600997868 s (3196144 years), iters = {MDP: 265}, opt = 0.0617
+> progress 0.0%, elapsed 25 s, estimated 14227930533598 s (451164 years), iters = {MDP: 312}, opt = 0.0617
+> progress 0.0%, elapsed 28 s, estimated 15949462844148 s (505754 years), iters = {MDP: 352}, opt = 0.0617
+> progress 0.0%, elapsed 31 s, estimated 17620771730796 s (558751 years), iters = {MDP: 394}, opt = 0.0617
+> progress 0.0%, elapsed 34 s, estimated 19347939709231 s (613519 years), iters = {MDP: 434}, opt = 0.0617
+> progress 0.0%, elapsed 37 s, estimated 21063823048226 s (667929 years), iters = {MDP: 478}, opt = 0.0617
+> progress 0.0%, elapsed 40 s, estimated 22796950328381 s (722886 years), iters = {MDP: 521}, opt = 0.0617
+> progress 0.0%, elapsed 43 s, estimated 24341088769954 s (771850 years), iters = {MDP: 563}, opt = 0.0617
+> progress 0.0%, elapsed 46 s, estimated 26042109982368 s (825789 years), iters = {MDP: 606}, opt = 0.0617
+> progress 0.0%, elapsed 49 s, estimated 27530090233639 s (872973 years), iters = {MDP: 645}, opt = 0.0617
+> progress 0.0%, elapsed 52 s, estimated 29221465762278 s (926606 years), iters = {MDP: 687}, opt = 0.0617
+> progress 0.0%, elapsed 55 s, estimated 30895820861177 s (979700 years), iters = {MDP: 726}, opt = 0.0617
+> progress 0.0%, elapsed 58 s, estimated 32572691041100 s (1032873 years), iters = {MDP: 772}, opt = 0.0617
+> progress 0.0%, elapsed 61 s, estimated 34304224825230 s (1087779 years), iters = {MDP: 815}, opt = 0.0617
+> progress 0.0%, elapsed 64 s, estimated 35974281494250 s (1140736 years), iters = {MDP: 857}, opt = 0.0617
+> progress 0.0%, elapsed 67 s, estimated 37720911867536 s (1196122 years), iters = {MDP: 902}, opt = 0.0617
+> progress 0.0%, elapsed 71 s, estimated 39425281053478 s (1250167 years), iters = {MDP: 941}, opt = 0.0617
+> progress 0.0%, elapsed 74 s, estimated 41090329165592 s (1302965 years), iters = {MDP: 982}, opt = 0.0617
+> progress 0.0%, elapsed 77 s, estimated 42792901517017 s (1356954 years), iters = {MDP: 1027}, opt = 0.0617
+> progress 0.0%, elapsed 80 s, estimated 44507879763369 s (1411335 years), iters = {MDP: 1065}, opt = 0.0617
+> progress 0.0%, elapsed 83 s, estimated 46211065452320 s (1465343 years), iters = {MDP: 1108}, opt = 0.0617
+2025-01-21 20:26:15,211 - synthesizer.py - time limit reached, aborting...
+2025-01-21 20:26:15,212 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 85.89 s
+number of holes: 92, family size: 1e70, quotient: 3127 states / 106318 actions
+explored: 0 %
+MDP stats: avg MDP size: 2545, iterations: 1144
+
+optimum: 0.061674
+--------------------
+2025-01-21 20:26:15,212 - decision_tree.py - families considered: 1144
+2025-01-21 20:26:15,212 - decision_tree.py - families skipped by construction: 0
+2025-01-21 20:26:15,212 - decision_tree.py - families with schedulers preserved: 242
+2025-01-21 20:26:15,212 - decision_tree.py - families model checked: 902
+2025-01-21 20:26:15,212 - decision_tree.py - harmonizations attempted: 194
+2025-01-21 20:26:15,212 - decision_tree.py - harmonizations succeeded: 1
+
+2025-01-21 20:26:15,212 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 20:26:15,212 - decision_tree.py - V_0=c1, backoff1_0=0, backoff2_0=0, bc1_0=0, bc2_0=0, c1_0=0, c2_0=0, col_0=0, s1_0=1, s2_0=1, x1_0=0, x2_0=0, V_1=x2, backoff1_1=0, backoff2_1=0, bc1_1=0, bc2_1=0, c1_1=0, c2_1=0, col_1=0, s1_1=1, s2_1=1, x1_1=0, x2_1=4, V_2=x2, backoff1_2=0, backoff2_2=0, bc1_2=0, bc2_2=0, c1_2=0, c2_2=0, col_2=0, s1_2=1, s2_2=1, x1_2=0, x2_2=4, A_3=time, A_4=__random__, V_5=s1, backoff1_5=0, backoff2_5=0, bc1_5=0, bc2_5=0, c1_5=0, c2_5=0, col_5=0, s1_5=11, s2_5=1, x1_5=0, x2_5=0, A_6=finish2, A_7=finish2, V_8=x2, backoff1_8=0, backoff2_8=0, bc1_8=0, bc2_8=0, c1_8=0, c2_8=0, col_8=0, s1_8=1, s2_8=1, x1_8=0, x2_8=1, V_9=x2, backoff1_9=0, backoff2_9=0, bc1_9=0, bc2_9=0, c1_9=0, c2_9=0, col_9=0, s1_9=1, s2_9=1, x1_9=0, x2_9=0, A_10=finish1, A_11=station2_cmd_54, V_12=c1, backoff1_12=0, backoff2_12=0, bc1_12=0, bc2_12=0, c1_12=1, c2_12=0, col_12=0, s1_12=1, s2_12=1, x1_12=0, x2_12=0, A_13=station2_cmd_42, A_14=time
+2025-01-21 20:26:15,224 - decision_tree.py - double-checking specification satisfiability:  : 0.06167388614031624
+
+2025-01-21 20:26:15,224 - mdp.py - building tree of depth 4
+2025-01-21 20:26:19,472 - statistic.py - synthesis initiated, design space: 1e150
+> progress 0.0%, elapsed 3 s, estimated 3009006 s (34 days), iters = {MDP: 14}, opt = 0.0617
+> progress 0.0%, elapsed 6 s, estimated 121494056616521023333859328 s (3852551262573598720 years), iters = {MDP: 17}, opt = 0.0617
+2025-01-21 20:26:28,198 - synthesizer_ar.py - value 0.0645 achieved after 275.37 seconds
+> progress 0.0%, elapsed 10 s, estimated 203218799182469736991555584 s (6444025849266543616 years), iters = {MDP: 27}, opt = 0.0645
+> progress 0.0%, elapsed 15 s, estimated 226782358639918746922123264 s (7191221418059321344 years), iters = {MDP: 46}, opt = 0.0645
+> progress 0.0%, elapsed 19 s, estimated 278745718721756776405925888 s (8838968757031860224 years), iters = {MDP: 56}, opt = 0.0645
+> progress 0.0%, elapsed 22 s, estimated 318344221683132240903536640 s (10094629048805562368 years), iters = {MDP: 65}, opt = 0.0645
+> progress 0.0%, elapsed 25 s, estimated 337734970919476642497691648 s (10709505673499385856 years), iters = {MDP: 81}, opt = 0.0645
+> progress 0.0%, elapsed 29 s, estimated 366150802204372415184633856 s (11610565772589180928 years), iters = {MDP: 94}, opt = 0.0645
+> progress 0.0%, elapsed 32 s, estimated 371446744179733692634103808 s (11778498990985973760 years), iters = {MDP: 114}, opt = 0.0645
+> progress 0.0%, elapsed 35 s, estimated 385595719719143179273895936 s (12227160062124023808 years), iters = {MDP: 132}, opt = 0.0645
+> progress 0.0%, elapsed 39 s, estimated 398956610398743249654120448 s (12650831126291961856 years), iters = {MDP: 154}, opt = 0.0645
+> progress 0.0%, elapsed 42 s, estimated 416202746784193420839616512 s (13197702523598217216 years), iters = {MDP: 163}, opt = 0.0645
+> progress 0.0%, elapsed 45 s, estimated 125561594253238891184128 s (3981532034920056 years), iters = {MDP: 195}, opt = 0.0645
+> progress 0.0%, elapsed 48 s, estimated 96210207387742491377664 s (3050805662980165 years), iters = {MDP: 224}, opt = 0.0645
+> progress 0.0%, elapsed 52 s, estimated 84057640847328428425216 s (2665450305914777 years), iters = {MDP: 253}, opt = 0.0645
+> progress 0.0%, elapsed 55 s, estimated 67363562909841267621888 s (2136084567156305 years), iters = {MDP: 284}, opt = 0.0645
+> progress 0.0%, elapsed 58 s, estimated 32842714266060690817024 s (1041435637559002 years), iters = {MDP: 300}, opt = 0.0645
+2025-01-21 20:27:20,383 - synthesizer_ar.py - value 0.065 achieved after 327.55 seconds
+> progress 0.0%, elapsed 63 s, estimated 35461619095008285032448 s (1124480564910207 years), iters = {MDP: 317}, opt = 0.065
+> progress 0.0%, elapsed 66 s, estimated 37513340909046313517056 s (1189540236841905 years), iters = {MDP: 323}, opt = 0.065
+> progress 0.0%, elapsed 71 s, estimated 39986791850512603938816 s (1267972851677847 years), iters = {MDP: 341}, opt = 0.065
+> progress 0.0%, elapsed 74 s, estimated 41953640826255286730752 s (1330341223562128 years), iters = {MDP: 346}, opt = 0.065
+> progress 0.0%, elapsed 78 s, estimated 44181486894935867129856 s (1400985758971837 years), iters = {MDP: 359}, opt = 0.065
+> progress 0.0%, elapsed 82 s, estimated 46046361340084140113920 s (1460120539703327 years), iters = {MDP: 362}, opt = 0.065
+> progress 0.0%, elapsed 85 s, estimated 47393562848259838312448 s (1502840019287793 years), iters = {MDP: 382}, opt = 0.065
+2025-01-21 20:27:45,340 - synthesizer.py - time limit reached, aborting...
+2025-01-21 20:27:45,341 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 85.87 s
+number of holes: 196, family size: 1e150, quotient: 3127 states / 106318 actions
+explored: 0 %
+MDP stats: avg MDP size: 2915, iterations: 386
+
+optimum: 0.064973
+--------------------
+2025-01-21 20:27:45,341 - decision_tree.py - families considered: 386
+2025-01-21 20:27:45,341 - decision_tree.py - families skipped by construction: 0
+2025-01-21 20:27:45,341 - decision_tree.py - families with schedulers preserved: 136
+2025-01-21 20:27:45,341 - decision_tree.py - families model checked: 250
+2025-01-21 20:27:45,341 - decision_tree.py - harmonizations attempted: 11
+2025-01-21 20:27:45,341 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-21 20:27:45,341 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 20:27:45,341 - decision_tree.py - V_0=c1, backoff1_0=0, backoff2_0=0, bc1_0=0, bc2_0=0, c1_0=0, c2_0=0, col_0=0, s1_0=1, s2_0=1, x1_0=0, x2_0=0, V_1=x2, backoff1_1=0, backoff2_1=0, bc1_1=0, bc2_1=0, c1_1=0, c2_1=0, col_1=0, s1_1=1, s2_1=1, x1_1=0, x2_1=4, V_2=x2, backoff1_2=0, backoff2_2=0, bc1_2=0, bc2_2=0, c1_2=0, c2_2=0, col_2=0, s1_2=1, s2_2=1, x1_2=0, x2_2=4, V_3=x2, backoff1_3=0, backoff2_3=0, bc1_3=0, bc2_3=0, c1_3=0, c2_3=0, col_3=0, s1_3=1, s2_3=1, x1_3=0, x2_3=4, A_4=time, A_5=station2_cmd_42, V_6=c1, backoff1_6=0, backoff2_6=0, bc1_6=0, bc2_6=0, c1_6=0, c2_6=0, col_6=0, s1_6=1, s2_6=1, x1_6=0, x2_6=0, A_7=station1_cmd_13, A_8=__random__, V_9=s1, backoff1_9=0, backoff2_9=0, bc1_9=0, bc2_9=0, c1_9=0, c2_9=0, col_9=0, s1_9=11, s2_9=1, x1_9=0, x2_9=0, V_10=s2, backoff1_10=0, backoff2_10=0, bc1_10=0, bc2_10=0, c1_10=0, c2_10=0, col_10=0, s1_10=1, s2_10=1, x1_10=0, x2_10=0, A_11=time, A_12=finish2, V_13=x1, backoff1_13=0, backoff2_13=0, bc1_13=0, bc2_13=0, c1_13=0, c2_13=0, col_13=0, s1_13=1, s2_13=1, x1_13=0, x2_13=0, A_14=finish2, A_15=__random__, V_16=x2, backoff1_16=0, backoff2_16=0, bc1_16=0, bc2_16=0, c1_16=0, c2_16=0, col_16=0, s1_16=1, s2_16=1, x1_16=0, x2_16=1, V_17=x2, backoff1_17=0, backoff2_17=0, bc1_17=0, bc2_17=0, c1_17=0, c2_17=0, col_17=0, s1_17=1, s2_17=1, x1_17=0, x2_17=0, V_18=x2, backoff1_18=0, backoff2_18=0, bc1_18=0, bc2_18=0, c1_18=0, c2_18=0, col_18=0, s1_18=1, s2_18=11, x1_18=0, x2_18=0, A_19=send2, A_20=send1, V_21=s1, backoff1_21=0, backoff2_21=0, bc1_21=0, bc2_21=0, c1_21=0, c2_21=0, col_21=0, s1_21=9, s2_21=1, x1_21=0, x2_21=0, A_22=station2_cmd_54, A_23=station2_cmd_60, V_24=c1, backoff1_24=0, backoff2_24=0, bc1_24=0, bc2_24=0, c1_24=1, c2_24=0, col_24=0, s1_24=1, s2_24=1, x1_24=0, x2_24=0, V_25=col, backoff1_25=0, backoff2_25=0, bc1_25=0, bc2_25=0, c1_25=0, c2_25=0, col_25=0, s1_25=1, s2_25=1, x1_25=0, x2_25=0, A_26=station2_cmd_42, A_27=__random__, V_28=x2, backoff1_28=0, backoff2_28=0, bc1_28=0, bc2_28=0, c1_28=0, c2_28=0, col_28=0, s1_28=1, s2_28=8, x1_28=0, x2_28=4, A_29=time, A_30=finish1
+2025-01-21 20:27:45,362 - decision_tree.py - double-checking specification satisfiability:  : 0.06497272368751467
+
+2025-01-21 20:27:45,363 - mdp.py - building tree of depth 5
+2025-01-21 20:27:54,378 - statistic.py - synthesis initiated, design space: 1e308
+> progress 0.0%, elapsed 3 s, estimated 58663219049943313559513924796153856 s (1860198473171718701370572800 years), iters = {MDP: 12}, opt = 0.065
+> progress 0.0%, elapsed 7 s, estimated 145124345567761919909178855231848448 s (4601862809733698258617761792 years), iters = {MDP: 18}, opt = 0.065
+> progress 0.0%, elapsed 13 s, estimated 256918371159169114470516771579232256 s (8146828106264875871143723008 years), iters = {MDP: 20}, opt = 0.065
+2025-01-21 20:28:11,093 - synthesizer_ar.py - value 0.0737 achieved after 378.26 seconds
+> progress 0.0%, elapsed 16 s, estimated 325909581294639956869538443698372608 s (10334525028368847835798437888 years), iters = {MDP: 21}, opt = 0.0737
+> progress 0.0%, elapsed 20 s, estimated 405975654930384016452808713774825472 s (12873403568315069120972324864 years), iters = {MDP: 35}, opt = 0.0737
+> progress 0.0%, elapsed 24 s, estimated 467244081096164237221316325994921984 s (14816212617204599732142342144 years), iters = {MDP: 37}, opt = 0.0737
+> progress 0.0%, elapsed 27 s, estimated 526400859441148480447785424568451072 s (16692061752953720751937028096 years), iters = {MDP: 41}, opt = 0.0737
+> progress 0.0%, elapsed 30 s, estimated 594385296090301747928361281433632768 s (18847834097231791131361017856 years), iters = {MDP: 49}, opt = 0.0737
+> progress 0.0%, elapsed 33 s, estimated 652573935778732437977195506730795008 s (20692983757570159308775096320 years), iters = {MDP: 69}, opt = 0.0737
+> progress 0.0%, elapsed 36 s, estimated 712746477374699102623999307661967360 s (22601042534712676702666883072 years), iters = {MDP: 73}, opt = 0.0737
+> progress 0.0%, elapsed 41 s, estimated 801256679257653810937321789350477824 s (25407682624862185578869817344 years), iters = {MDP: 87}, opt = 0.0737
+> progress 0.0%, elapsed 44 s, estimated 859745142791286126531076474967949312 s (27262339636963663698091573248 years), iters = {MDP: 89}, opt = 0.0737
+> progress 0.0%, elapsed 50 s, estimated 973798455376298039813554844261679104 s (30878946454093671875680927744 years), iters = {MDP: 93}, opt = 0.0737
+> progress 0.0%, elapsed 53 s, estimated 1036514582870782935585974364693069824 s (32867661810971048276683390976 years), iters = {MDP: 116}, opt = 0.0737
+> progress 0.0%, elapsed 56 s, estimated 1097524635017450641361209534349049856 s (34802277873460508141912326144 years), iters = {MDP: 136}, opt = 0.0737
+> progress 0.0%, elapsed 59 s, estimated 1159227124332438923683407012762222592 s (36758850974519248010971447296 years), iters = {MDP: 158}, opt = 0.0737
+> progress 0.0%, elapsed 63 s, estimated 576862901310507339215462327711170560 s (18292202603707106231872126976 years), iters = {MDP: 180}, opt = 0.0737
+> progress 0.0%, elapsed 67 s, estimated 616474831124089222019432566069657600 s (19548288658171271404895338496 years), iters = {MDP: 189}, opt = 0.0737
+2025-01-21 20:29:08,164 - synthesizer_ar.py - value 0.0743 achieved after 435.33 seconds
+> progress 0.0%, elapsed 73 s, estimated 669861386493742724845701425423974400 s (21241165223672716695030464512 years), iters = {MDP: 191}, opt = 0.0743
+> progress 0.0%, elapsed 77 s, estimated 699090487041511505816201629666377728 s (22168013921914999767830626304 years), iters = {MDP: 196}, opt = 0.0743
+> progress 0.0%, elapsed 80 s, estimated 726359009104027251846102179655974912 s (23032693084222071921642045440 years), iters = {MDP: 199}, opt = 0.0743
+> progress 0.0%, elapsed 83 s, estimated 757823310887993445533948624666361856 s (24030419548706030516894171136 years), iters = {MDP: 206}, opt = 0.0743
+2025-01-21 20:29:20,114 - synthesizer.py - time limit reached, aborting...
+2025-01-21 20:29:20,115 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 85.74 s
+number of holes: 404, family size: 1e308, quotient: 3127 states / 106318 actions
+explored: 0 %
+MDP stats: avg MDP size: 2823, iterations: 221
+
+optimum: 0.074308
+--------------------
+2025-01-21 20:29:20,116 - decision_tree.py - families considered: 221
+2025-01-21 20:29:20,116 - decision_tree.py - families skipped by construction: 0
+2025-01-21 20:29:20,116 - decision_tree.py - families with schedulers preserved: 73
+2025-01-21 20:29:20,116 - decision_tree.py - families model checked: 148
+2025-01-21 20:29:20,116 - decision_tree.py - harmonizations attempted: 13
+2025-01-21 20:29:20,116 - decision_tree.py - harmonizations succeeded: 2
+
+2025-01-21 20:29:20,116 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 20:29:20,116 - decision_tree.py - V_0=c1, backoff1_0=0, backoff2_0=0, bc1_0=0, bc2_0=0, c1_0=0, c2_0=0, col_0=0, s1_0=1, s2_0=1, x1_0=0, x2_0=0, V_1=x2, backoff1_1=0, backoff2_1=0, bc1_1=0, bc2_1=0, c1_1=0, c2_1=0, col_1=0, s1_1=1, s2_1=1, x1_1=0, x2_1=4, V_2=x2, backoff1_2=0, backoff2_2=0, bc1_2=0, bc2_2=0, c1_2=0, c2_2=0, col_2=0, s1_2=1, s2_2=1, x1_2=0, x2_2=4, V_3=x2, backoff1_3=0, backoff2_3=0, bc1_3=0, bc2_3=0, c1_3=0, c2_3=0, col_3=0, s1_3=1, s2_3=1, x1_3=0, x2_3=4, V_4=x1, backoff1_4=0, backoff2_4=0, bc1_4=0, bc2_4=0, c1_4=0, c2_4=0, col_4=0, s1_4=1, s2_4=1, x1_4=2, x2_4=0, A_5=time, A_6=station1_cmd_7, V_7=bc1, backoff1_7=0, backoff2_7=0, bc1_7=0, bc2_7=0, c1_7=0, c2_7=0, col_7=0, s1_7=1, s2_7=1, x1_7=0, x2_7=0, A_8=time, A_9=finish2, V_10=c1, backoff1_10=0, backoff2_10=0, bc1_10=0, bc2_10=0, c1_10=0, c2_10=0, col_10=0, s1_10=1, s2_10=1, x1_10=0, x2_10=0, V_11=bc2, backoff1_11=0, backoff2_11=0, bc1_11=0, bc2_11=0, c1_11=0, c2_11=0, col_11=0, s1_11=1, s2_11=1, x1_11=0, x2_11=0, A_12=station1_cmd_25, A_13=station1_cmd_20, V_14=bc1, backoff1_14=0, backoff2_14=0, bc1_14=0, bc2_14=0, c1_14=0, c2_14=0, col_14=0, s1_14=1, s2_14=1, x1_14=0, x2_14=0, A_15=finish2, A_16=station2_cmd_42, V_17=s1, backoff1_17=0, backoff2_17=0, bc1_17=0, bc2_17=0, c1_17=0, c2_17=0, col_17=0, s1_17=11, s2_17=1, x1_17=0, x2_17=0, V_18=s2, backoff1_18=0, backoff2_18=0, bc1_18=0, bc2_18=0, c1_18=0, c2_18=0, col_18=0, s1_18=1, s2_18=1, x1_18=0, x2_18=0, V_19=bc1, backoff1_19=0, backoff2_19=0, bc1_19=0, bc2_19=0, c1_19=0, c2_19=0, col_19=0, s1_19=1, s2_19=1, x1_19=0, x2_19=0, A_20=station1_cmd_20, A_21=station1_cmd_20, V_22=s1, backoff1_22=0, backoff2_22=0, bc1_22=0, bc2_22=0, c1_22=0, c2_22=0, col_22=0, s1_22=11, s2_22=1, x1_22=0, x2_22=0, A_23=finish2, A_24=station2_cmd_48, V_25=x1, backoff1_25=0, backoff2_25=0, bc1_25=0, bc2_25=0, c1_25=0, c2_25=0, col_25=0, s1_25=1, s2_25=1, x1_25=0, x2_25=0, V_26=col, backoff1_26=0, backoff2_26=0, bc1_26=0, bc2_26=0, c1_26=0, c2_26=0, col_26=1, s1_26=1, s2_26=9, x1_26=0, x2_26=5, A_27=station2_cmd_45, A_28=finish2, V_29=bc1, backoff1_29=0, backoff2_29=0, bc1_29=0, bc2_29=0, c1_29=0, c2_29=0, col_29=0, s1_29=1, s2_29=1, x1_29=0, x2_29=0, A_30=finish2, A_31=finish2, V_32=x2, backoff1_32=0, backoff2_32=0, bc1_32=0, bc2_32=0, c1_32=0, c2_32=0, col_32=0, s1_32=1, s2_32=1, x1_32=0, x2_32=1, V_33=x2, backoff1_33=0, backoff2_33=0, bc1_33=0, bc2_33=0, c1_33=0, c2_33=0, col_33=0, s1_33=1, s2_33=1, x1_33=0, x2_33=0, V_34=x2, backoff1_34=0, backoff2_34=0, bc1_34=0, bc2_34=0, c1_34=0, c2_34=0, col_34=0, s1_34=1, s2_34=1, x1_34=0, x2_34=0, V_35=s2, backoff1_35=0, backoff2_35=0, bc1_35=0, bc2_35=0, c1_35=0, c2_35=0, col_35=0, s1_35=1, s2_35=11, x1_35=0, x2_35=0, A_36=send2, A_37=station2_cmd_71, V_38=bc1, backoff1_38=0, backoff2_38=0, bc1_38=0, bc2_38=0, c1_38=0, c2_38=0, col_38=0, s1_38=1, s2_38=1, x1_38=0, x2_38=0, A_39=station2_cmd_74, A_40=finish2, V_41=s1, backoff1_41=0, backoff2_41=0, bc1_41=0, bc2_41=0, c1_41=0, c2_41=0, col_41=0, s1_41=9, s2_41=1, x1_41=0, x2_41=0, V_42=c1, backoff1_42=0, backoff2_42=0, bc1_42=0, bc2_42=0, c1_42=1, c2_42=0, col_42=0, s1_42=9, s2_42=1, x1_42=0, x2_42=1, A_43=station2_cmd_54, A_44=station2_cmd_54, V_45=backoff2, backoff1_45=0, backoff2_45=14, bc1_45=0, bc2_45=0, c1_45=0, c2_45=0, col_45=0, s1_45=1, s2_45=1, x1_45=0, x2_45=0, A_46=station1_cmd_19, A_47=station1_cmd_12, V_48=c1, backoff1_48=0, backoff2_48=0, bc1_48=0, bc2_48=0, c1_48=1, c2_48=0, col_48=0, s1_48=1, s2_48=1, x1_48=0, x2_48=0, V_49=col, backoff1_49=0, backoff2_49=0, bc1_49=0, bc2_49=0, c1_49=0, c2_49=0, col_49=0, s1_49=1, s2_49=1, x1_49=0, x2_49=0, V_50=backoff2, backoff1_50=0, backoff2_50=0, bc1_50=0, bc2_50=0, c1_50=0, c2_50=0, col_50=0, s1_50=9, s2_50=1, x1_50=0, x2_50=0, A_51=station2_cmd_42, A_52=finish2, V_53=bc2, backoff1_53=0, backoff2_53=0, bc1_53=0, bc2_53=0, c1_53=0, c2_53=0, col_53=0, s1_53=1, s2_53=1, x1_53=0, x2_53=0, A_54=station2_cmd_43, A_55=station1_cmd_39, V_56=x2, backoff1_56=0, backoff2_56=0, bc1_56=0, bc2_56=0, c1_56=0, c2_56=0, col_56=0, s1_56=1, s2_56=1, x1_56=0, x2_56=4, V_57=col, backoff1_57=0, backoff2_57=0, bc1_57=0, bc2_57=0, c1_57=0, c2_57=0, col_57=1, s1_57=1, s2_57=9, x1_57=2, x2_57=0, A_58=time, A_59=station2_cmd_60, V_60=backoff2, backoff1_60=0, backoff2_60=0, bc1_60=0, bc2_60=0, c1_60=0, c2_60=0, col_60=0, s1_60=9, s2_60=9, x1_60=5, x2_60=5, A_61=finish1, A_62=station2_cmd_47
+2025-01-21 20:29:20,154 - decision_tree.py - double-checking specification satisfiability:  : 0.07430788513687023
+
+2025-01-21 20:29:20,155 - mdp.py - building tree of depth 6
+2025-01-21 20:29:39,028 - statistic.py - synthesis initiated, design space: 1e625
+> progress 0.0%, elapsed 3 s, estimated 3627496 s (41 days), iters = {MDP: 6}, opt = 0.0743
+> progress 0.0%, elapsed 6 s, estimated 5166377519818661834147489351855097477592048096723776544178176 s (163824756463047375994972335071548686327699796922466304 years), iters = {MDP: 12}, opt = 0.0743
+> progress 0.0%, elapsed 10 s, estimated 6777815521995374009689968055848551012996412712858139976794112 s (214923120306804114369459189933818904300110366264786944 years), iters = {MDP: 26}, opt = 0.0743
+> progress 0.0%, elapsed 13 s, estimated 9071183264301113814877739191067550716276442027374057759965184 s (287645334357594942784930665832515612513886955294949376 years), iters = {MDP: 36}, opt = 0.0743
+> progress 0.0%, elapsed 21 s, estimated 14262522243689599377752693099232565602141653473072650764943360 s (452261613511212559104129389338007143132770319974006784 years), iters = {MDP: 40}, opt = 0.0743
+> progress 0.0%, elapsed 28 s, estimated 18536097463675540798631845086487346249878508301228937433841664 s (587775794763937747960437315282499868273370370957901824 years), iters = {MDP: 41}, opt = 0.0743
+> progress 0.0%, elapsed 34 s, estimated 22779059466336251279689695082669010908870753984116339257638912 s (722319237263326033368736393175802837640752362801856512 years), iters = {MDP: 42}, opt = 0.0743
+> progress 0.0%, elapsed 42 s, estimated 28055244273861767203731470078647509972232706402050644266450944 s (889625959977859090811888037681370942143980667448328192 years), iters = {MDP: 43}, opt = 0.0743
+> progress 0.0%, elapsed 53 s, estimated 35111906757586213476684249664894662639337075999437049756123136 s (1113391259436396845194425834426580275448180270375632896 years), iters = {MDP: 44}, opt = 0.0743
+2025-01-21 20:30:44,640 - synthesizer_ar.py - value 0.0745 achieved after 531.81 seconds
+> progress 0.0%, elapsed 65 s, estimated 43141268639840909355676796384239028926416916430552242713526272 s (1368000654485061838811796853705836328606752710441566208 years), iters = {MDP: 45}, opt = 0.0745
+> progress 0.0%, elapsed 78 s, estimated 51403091607065532577197505598833745459886066418078203760345088 s (1629981342182443245347170170109110002438071850505338880 years), iters = {MDP: 46}, opt = 0.0745
+2025-01-21 20:31:09,938 - synthesizer.py - time limit reached, aborting...
+2025-01-21 20:31:09,942 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 90.91 s
+number of holes: 820, family size: 1e625, quotient: 3127 states / 106318 actions
+explored: 0 %
+MDP stats: avg MDP size: 2922, iterations: 49
+
+optimum: 0.074495
+--------------------
+2025-01-21 20:31:09,945 - decision_tree.py - families considered: 49
+2025-01-21 20:31:09,945 - decision_tree.py - families skipped by construction: 0
+2025-01-21 20:31:09,945 - decision_tree.py - families with schedulers preserved: 18
+2025-01-21 20:31:09,945 - decision_tree.py - families model checked: 31
+2025-01-21 20:31:09,945 - decision_tree.py - harmonizations attempted: 12
+2025-01-21 20:31:09,945 - decision_tree.py - harmonizations succeeded: 1
+
+2025-01-21 20:31:09,945 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 20:31:09,945 - decision_tree.py - V_0=c1, backoff1_0=0, backoff2_0=0, bc1_0=0, bc2_0=0, c1_0=0, c2_0=0, col_0=0, s1_0=1, s2_0=1, x1_0=0, x2_0=0, V_1=x2, backoff1_1=0, backoff2_1=0, bc1_1=0, bc2_1=0, c1_1=0, c2_1=0, col_1=0, s1_1=1, s2_1=1, x1_1=0, x2_1=4, V_2=x2, backoff1_2=0, backoff2_2=0, bc1_2=0, bc2_2=0, c1_2=0, c2_2=0, col_2=0, s1_2=1, s2_2=1, x1_2=0, x2_2=4, V_3=x2, backoff1_3=0, backoff2_3=0, bc1_3=0, bc2_3=0, c1_3=0, c2_3=0, col_3=0, s1_3=1, s2_3=1, x1_3=0, x2_3=4, V_4=x1, backoff1_4=0, backoff2_4=0, bc1_4=0, bc2_4=0, c1_4=0, c2_4=0, col_4=0, s1_4=1, s2_4=1, x1_4=2, x2_4=0, V_5=x2, backoff1_5=0, backoff2_5=0, bc1_5=0, bc2_5=0, c1_5=0, c2_5=0, col_5=0, s1_5=1, s2_5=1, x1_5=0, x2_5=4, A_6=time, A_7=station1_cmd_7, V_8=s2, backoff1_8=0, backoff2_8=0, bc1_8=0, bc2_8=0, c1_8=0, c2_8=0, col_8=0, s1_8=1, s2_8=8, x1_8=0, x2_8=0, A_9=send2, A_10=station1_cmd_7, V_11=bc1, backoff1_11=0, backoff2_11=0, bc1_11=0, bc2_11=0, c1_11=0, c2_11=0, col_11=0, s1_11=1, s2_11=1, x1_11=0, x2_11=0, V_12=backoff1, backoff1_12=0, backoff2_12=0, bc1_12=0, bc2_12=0, c1_12=0, c2_12=0, col_12=0, s1_12=1, s2_12=1, x1_12=0, x2_12=0, A_13=station1_cmd_8, A_14=__random__, V_15=backoff2, backoff1_15=0, backoff2_15=0, bc1_15=0, bc2_15=0, c1_15=0, c2_15=0, col_15=0, s1_15=1, s2_15=1, x1_15=0, x2_15=0, A_16=__random__, A_17=__random__, V_18=c1, backoff1_18=0, backoff2_18=0, bc1_18=0, bc2_18=0, c1_18=0, c2_18=0, col_18=0, s1_18=1, s2_18=1, x1_18=0, x2_18=0, V_19=bc2, backoff1_19=0, backoff2_19=0, bc1_19=0, bc2_19=0, c1_19=0, c2_19=0, col_19=0, s1_19=1, s2_19=1, x1_19=0, x2_19=0, V_20=backoff1, backoff1_20=0, backoff2_20=0, bc1_20=0, bc2_20=0, c1_20=0, c2_20=0, col_20=0, s1_20=1, s2_20=1, x1_20=0, x2_20=0, A_21=__random__, A_22=send1, V_23=s1, backoff1_23=0, backoff2_23=0, bc1_23=0, bc2_23=0, c1_23=0, c2_23=0, col_23=0, s1_23=1, s2_23=1, x1_23=0, x2_23=0, A_24=__random__, A_25=__random__, V_26=bc1, backoff1_26=0, backoff2_26=0, bc1_26=0, bc2_26=0, c1_26=0, c2_26=0, col_26=0, s1_26=1, s2_26=1, x1_26=0, x2_26=0, V_27=backoff1, backoff1_27=0, backoff2_27=0, bc1_27=0, bc2_27=0, c1_27=0, c2_27=0, col_27=0, s1_27=1, s2_27=1, x1_27=0, x2_27=0, A_28=__random__, A_29=__random__, V_30=backoff1, backoff1_30=0, backoff2_30=0, bc1_30=0, bc2_30=0, c1_30=0, c2_30=0, col_30=0, s1_30=1, s2_30=1, x1_30=0, x2_30=0, A_31=__random__, A_32=__random__, V_33=s1, backoff1_33=0, backoff2_33=0, bc1_33=0, bc2_33=0, c1_33=0, c2_33=0, col_33=0, s1_33=11, s2_33=1, x1_33=0, x2_33=0, V_34=s2, backoff1_34=0, backoff2_34=0, bc1_34=0, bc2_34=0, c1_34=0, c2_34=0, col_34=0, s1_34=1, s2_34=1, x1_34=0, x2_34=0, V_35=bc1, backoff1_35=0, backoff2_35=0, bc1_35=0, bc2_35=0, c1_35=0, c2_35=0, col_35=0, s1_35=1, s2_35=1, x1_35=0, x2_35=0, V_36=bc1, backoff1_36=0, backoff2_36=0, bc1_36=0, bc2_36=0, c1_36=0, c2_36=0, col_36=0, s1_36=1, s2_36=1, x1_36=0, x2_36=0, A_37=__random__, A_38=__random__, V_39=backoff1, backoff1_39=0, backoff2_39=0, bc1_39=0, bc2_39=0, c1_39=0, c2_39=0, col_39=0, s1_39=1, s2_39=1, x1_39=0, x2_39=0, A_40=__random__, A_41=__random__, V_42=s1, backoff1_42=0, backoff2_42=0, bc1_42=0, bc2_42=0, c1_42=0, c2_42=0, col_42=0, s1_42=11, s2_42=1, x1_42=0, x2_42=0, V_43=col, backoff1_43=0, backoff2_43=0, bc1_43=0, bc2_43=0, c1_43=0, c2_43=0, col_43=1, s1_43=1, s2_43=1, x1_43=0, x2_43=0, A_44=finish2, A_45=finish2, V_46=backoff1, backoff1_46=0, backoff2_46=0, bc1_46=0, bc2_46=0, c1_46=0, c2_46=0, col_46=0, s1_46=1, s2_46=1, x1_46=0, x2_46=0, A_47=finish1, A_48=station1_cmd_22, V_49=x1, backoff1_49=0, backoff2_49=0, bc1_49=0, bc2_49=0, c1_49=0, c2_49=0, col_49=0, s1_49=1, s2_49=1, x1_49=0, x2_49=0, V_50=col, backoff1_50=0, backoff2_50=0, bc1_50=0, bc2_50=0, c1_50=0, c2_50=0, col_50=1, s1_50=1, s2_50=1, x1_50=0, x2_50=0, V_51=bc1, backoff1_51=0, backoff2_51=0, bc1_51=0, bc2_51=0, c1_51=0, c2_51=0, col_51=0, s1_51=1, s2_51=1, x1_51=0, x2_51=0, A_52=finish2, A_53=__random__, V_54=backoff1, backoff1_54=0, backoff2_54=0, bc1_54=0, bc2_54=0, c1_54=0, c2_54=0, col_54=0, s1_54=1, s2_54=1, x1_54=0, x2_54=0, A_55=__random__, A_56=__random__, V_57=bc1, backoff1_57=0, backoff2_57=0, bc1_57=0, bc2_57=0, c1_57=0, c2_57=0, col_57=0, s1_57=1, s2_57=1, x1_57=0, x2_57=0, V_58=backoff1, backoff1_58=0, backoff2_58=0, bc1_58=0, bc2_58=0, c1_58=0, c2_58=0, col_58=0, s1_58=1, s2_58=1, x1_58=0, x2_58=0, A_59=__random__, A_60=__random__, V_61=backoff1, backoff1_61=0, backoff2_61=0, bc1_61=0, bc2_61=0, c1_61=0, c2_61=0, col_61=0, s1_61=1, s2_61=1, x1_61=0, x2_61=0, A_62=__random__, A_63=__random__, V_64=x2, backoff1_64=0, backoff2_64=0, bc1_64=0, bc2_64=0, c1_64=0, c2_64=0, col_64=0, s1_64=1, s2_64=1, x1_64=0, x2_64=1, V_65=x2, backoff1_65=0, backoff2_65=0, bc1_65=0, bc2_65=0, c1_65=0, c2_65=0, col_65=0, s1_65=1, s2_65=1, x1_65=0, x2_65=0, V_66=x2, backoff1_66=0, backoff2_66=0, bc1_66=0, bc2_66=0, c1_66=0, c2_66=0, col_66=0, s1_66=1, s2_66=1, x1_66=0, x2_66=0, V_67=s2, backoff1_67=0, backoff2_67=0, bc1_67=0, bc2_67=0, c1_67=0, c2_67=0, col_67=0, s1_67=1, s2_67=11, x1_67=0, x2_67=0, V_68=s2, backoff1_68=0, backoff2_68=0, bc1_68=0, bc2_68=0, c1_68=0, c2_68=0, col_68=0, s1_68=1, s2_68=11, x1_68=0, x2_68=0, A_69=send2, A_70=__random__, V_71=backoff2, backoff1_71=0, backoff2_71=0, bc1_71=0, bc2_71=0, c1_71=0, c2_71=0, col_71=1, s1_71=8, s2_71=1, x1_71=3, x2_71=0, A_72=station2_cmd_60, A_73=station2_cmd_60, V_74=bc1, backoff1_74=0, backoff2_74=0, bc1_74=0, bc2_74=0, c1_74=0, c2_74=0, col_74=0, s1_74=1, s2_74=1, x1_74=0, x2_74=0, V_75=backoff1, backoff1_75=0, backoff2_75=0, bc1_75=0, bc2_75=0, c1_75=0, c2_75=0, col_75=0, s1_75=1, s2_75=1, x1_75=0, x2_75=0, A_76=station2_cmd_74, A_77=station2_cmd_74, V_78=backoff1, backoff1_78=0, backoff2_78=0, bc1_78=0, bc2_78=0, c1_78=0, c2_78=0, col_78=0, s1_78=1, s2_78=1, x1_78=0, x2_78=0, A_79=station2_cmd_45, A_80=send1, V_81=s1, backoff1_81=0, backoff2_81=0, bc1_81=0, bc2_81=0, c1_81=0, c2_81=0, col_81=0, s1_81=9, s2_81=1, x1_81=0, x2_81=0, V_82=c1, backoff1_82=0, backoff2_82=0, bc1_82=0, bc2_82=0, c1_82=1, c2_82=0, col_82=0, s1_82=1, s2_82=1, x1_82=0, x2_82=0, V_83=s1, backoff1_83=0, backoff2_83=0, bc1_83=0, bc2_83=0, c1_83=0, c2_83=0, col_83=0, s1_83=9, s2_83=1, x1_83=0, x2_83=0, A_84=station2_cmd_54, A_85=station2_cmd_57, V_86=bc2, backoff1_86=0, backoff2_86=0, bc1_86=0, bc2_86=0, c1_86=0, c2_86=0, col_86=0, s1_86=1, s2_86=1, x1_86=0, x2_86=0, A_87=time, A_88=finish1, V_89=backoff2, backoff1_89=0, backoff2_89=14, bc1_89=0, bc2_89=0, c1_89=0, c2_89=0, col_89=0, s1_89=1, s2_89=1, x1_89=0, x2_89=0, V_90=s1, backoff1_90=0, backoff2_90=14, bc1_90=0, bc2_90=0, c1_90=0, c2_90=0, col_90=0, s1_90=10, s2_90=1, x1_90=0, x2_90=0, A_91=station2_cmd_60, A_92=station1_cmd_24, V_93=bc2, backoff1_93=0, backoff2_93=0, bc1_93=0, bc2_93=0, c1_93=0, c2_93=0, col_93=0, s1_93=1, s2_93=7, x1_93=0, x2_93=0, A_94=station2_cmd_59, A_95=station2_cmd_60, V_96=c1, backoff1_96=0, backoff2_96=0, bc1_96=0, bc2_96=0, c1_96=1, c2_96=0, col_96=0, s1_96=1, s2_96=1, x1_96=0, x2_96=0, V_97=col, backoff1_97=0, backoff2_97=0, bc1_97=0, bc2_97=0, c1_97=0, c2_97=0, col_97=0, s1_97=1, s2_97=1, x1_97=0, x2_97=0, V_98=backoff2, backoff1_98=0, backoff2_98=0, bc1_98=0, bc2_98=0, c1_98=0, c2_98=0, col_98=0, s1_98=1, s2_98=1, x1_98=0, x2_98=0, V_99=c2, backoff1_99=0, backoff2_99=0, bc1_99=0, bc2_99=0, c1_99=0, c2_99=0, col_99=0, s1_99=1, s2_99=1, x1_99=0, x2_99=0, A_100=station2_cmd_42, A_101=__random__, V_102=backoff1, backoff1_102=0, backoff2_102=0, bc1_102=0, bc2_102=0, c1_102=0, c2_102=0, col_102=0, s1_102=1, s2_102=1, x1_102=0, x2_102=0, A_103=__random__, A_104=__random__, V_105=bc2, backoff1_105=0, backoff2_105=0, bc1_105=0, bc2_105=0, c1_105=0, c2_105=0, col_105=0, s1_105=1, s2_105=1, x1_105=0, x2_105=0, V_106=backoff1, backoff1_106=0, backoff2_106=0, bc1_106=0, bc2_106=0, c1_106=0, c2_106=0, col_106=0, s1_106=1, s2_106=1, x1_106=0, x2_106=0, A_107=__random__, A_108=__random__, V_109=backoff1, backoff1_109=0, backoff2_109=0, bc1_109=0, bc2_109=0, c1_109=0, c2_109=0, col_109=0, s1_109=1, s2_109=1, x1_109=0, x2_109=0, A_110=__random__, A_111=__random__, V_112=x2, backoff1_112=0, backoff2_112=0, bc1_112=0, bc2_112=0, c1_112=0, c2_112=0, col_112=0, s1_112=1, s2_112=1, x1_112=0, x2_112=4, V_113=col, backoff1_113=0, backoff2_113=0, bc1_113=0, bc2_113=0, c1_113=0, c2_113=0, col_113=1, s1_113=1, s2_113=1, x1_113=0, x2_113=0, V_114=x2, backoff1_114=0, backoff2_114=0, bc1_114=0, bc2_114=0, c1_114=0, c2_114=0, col_114=0, s1_114=1, s2_114=1, x1_114=0, x2_114=0, A_115=__random__, A_116=time, V_117=backoff1, backoff1_117=0, backoff2_117=0, bc1_117=0, bc2_117=0, c1_117=0, c2_117=0, col_117=0, s1_117=1, s2_117=1, x1_117=0, x2_117=0, A_118=__random__, A_119=__random__, V_120=backoff2, backoff1_120=0, backoff2_120=0, bc1_120=0, bc2_120=0, c1_120=0, c2_120=0, col_120=0, s1_120=1, s2_120=1, x1_120=0, x2_120=0, V_121=bc2, backoff1_121=0, backoff2_121=0, bc1_121=0, bc2_121=0, c1_121=0, c2_121=0, col_121=0, s1_121=1, s2_121=1, x1_121=0, x2_121=0, A_122=finish1, A_123=finish1, V_124=backoff1, backoff1_124=0, backoff2_124=0, bc1_124=0, bc2_124=0, c1_124=0, c2_124=0, col_124=0, s1_124=1, s2_124=1, x1_124=0, x2_124=0, A_125=__random__, A_126=__random__
+2025-01-21 20:31:10,020 - decision_tree.py - double-checking specification satisfiability:  : 0.07449458836585733
+
+2025-01-21 20:31:10,021 - mdp.py - building tree of depth 7
+2025-01-21 20:31:50,089 - statistic.py - synthesis initiated, design space: 1e1260
+> progress 0.0%, elapsed 3 s, estimated 3234108 s (37 days), iters = {MDP: 4}, opt = 0.0745
+> progress 0.0%, elapsed 6 s, estimated 6265895 s (72 days), iters = {MDP: 7}, opt = 0.0745
+> progress 0.0%, elapsed 10 s, estimated 11488589433138845603900501436723426659271325131951206007551204467885780526386519798789034710473670888990498586091888045981696 s (364300781111708732306125993300965139096543595424692289459230076491824296529406397326255708470785019679135699130384384 years), iters = {MDP: 11}, opt = 0.0745
+> progress 0.0%, elapsed 14 s, estimated 15856157018467356165879817257544150578097893421055463682583863093462199751404086943454284593040172674220437042660184359436288 s (502795440717508725267545994495129796653895691436262040508952626564811942612816513502883078021437532820044563175440384 years), iters = {MDP: 15}, opt = 0.0745
+> progress 0.0%, elapsed 17 s, estimated 19182670571393307792458123106360438641414995736846324116213749091241564129572703446277923761438443427245667633480430168047616 s (608278493511964314452937534343557547260029029266463175244764035074745467952181823833288815640517320803033647700508672 years), iters = {MDP: 18}, opt = 0.0745
+> progress 0.0%, elapsed 21 s, estimated 23024747917106163154589094237051057554954637014511558889721180815221062836059483884839644453246264497482926017541518483521536 s (730109966930053371051800929368302637340499088438145766916023816682653469092887599817121110323520538473286935978704896 years), iters = {MDP: 25}, opt = 0.0745
+> progress 0.0%, elapsed 24 s, estimated 26509069090518761680656649680667193219207487892272428027115827733437044531046789213791694550222056905692715122235444798947328 s (840597066543593391215955553411139768742433766956287471290988147543552199951864513440839854765836738188420750573043712 years), iters = {MDP: 34}, opt = 0.0745
+> progress 0.0%, elapsed 28 s, estimated 30828225854612289571461805724653124372572470415333066406680948112445630131395418720004718355076061976036299625853658289143808 s (977556629078268930712998847858604316349751520921935608972710104493002657746036421894083135034800959193333502209687552 years), iters = {MDP: 41}, opt = 0.0745
+> progress 0.0%, elapsed 32 s, estimated 34829517732905530258913113168625230801745591770418736241200756429240335135053928017132588591355812942848168660191198364827648 s (1104436762205274347239101450333063827144794603747870576456934291747863993496675484200157290185152139745921910418964480 years), iters = {MDP: 48}, opt = 0.0745
+2025-01-21 20:32:39,685 - synthesizer_ar.py - value 0.0747 achieved after 646.86 seconds
+> progress 0.0%, elapsed 49 s, estimated 54061427197731014872365149957182800636612127753618240167497495027519623696261010702885434551575689938446349608740708054728704 s (1714276610785483809573883446225256735239917134790723813637867017110722391106006457135228238483509262372667687698432000 years), iters = {MDP: 50}, opt = 0.0747
+> progress 0.0%, elapsed 65 s, estimated 71385338232013751943321853115495581740789969065745728911175637389785414672454869131520916353358259278606749305381311007948800 s (2263614226027833210458048473198089915730034536804348159861567532475738444157580219699661794946089535555771143326531584 years), iters = {MDP: 51}, opt = 0.0747
+> progress 0.0%, elapsed 79 s, estimated 86770025943137209537877979154022556332867297524723106103240203339380799464149666167148819244423308270010228843669108408975360 s (2751459473082737853376827846220046651005839460895648612273494684691983982662042151807263257589996992468359531278106624 years), iters = {MDP: 52}, opt = 0.0747
+> progress 0.0%, elapsed 96 s, estimated 104175968356239116351217083324946405759590702313055529206440789347887222625447303187140843229759714080295874190125746154897408 s (3303398286283584057042018112449083928603351496084961113239204142829252094673847981803962281841374269197228414957780992 years), iters = {MDP: 56}, opt = 0.0747
+> progress 0.0%, elapsed 110 s, estimated 120006011449364300395363412391257952314544800820126388891906748464124865085969226180894715518864212521076176290616514132836352 s (3805365659860612614613079442988450155338509975793856370019350188758534536228644199306324361409347675562736315296382976 years), iters = {MDP: 57}, opt = 0.0747
+> progress 0.0%, elapsed 125 s, estimated 136081432049173267534249027009472861592228717492493476991724902610272424249484951498714162106971385268876391828947531605213184 s (4315113903132079975617431629130263519167654402275569202707213566021469841526235013774988372346996063559460841945300992 years), iters = {MDP: 61}, opt = 0.0747
+> progress 0.0%, elapsed 142 s, estimated 154294603812785718500503583285218928166647729746506549244107886116476492181341983313999319487620628584926860769074801234935808 s (4892649791120805397601553737545199139267992577746068228286139047837281752946482158936233134948643774051841251020374016 years), iters = {MDP: 65}, opt = 0.0747
+> progress 0.0%, elapsed 157 s, estimated 170681768143558559423639168265942619885936925259830854360948825967358631682343348027482764664756605011976754386091176034828288 s (5412283363253379275371963569673733296743658246005782442201406774857159423145813797994673327802782867297305663817908224 years), iters = {MDP: 66}, opt = 0.0747
+> progress 0.0%, elapsed 172 s, estimated 187125685610122370470411746158663710598980285704268062348299331181011042106863397194804376445848816957489616655854780144418816 s (5933716565516310321218043312803677292351889303640064872791456454630305886782876871164241675465819935097874371852632064 years), iters = {MDP: 70}, opt = 0.0747
+> progress 0.0%, elapsed 189 s, estimated 205886344429973909306116526128354274604082300571201600173022009662437640307367604404790482990299266422880057128421228304924672 s (6528613154172181273006114023125968846193911716460784515843523247296747109279493794923931998701211302260973220858429440 years), iters = {MDP: 74}, opt = 0.0747
+> progress 0.0%, elapsed 204 s, estimated 222154433631154849369057421469352534924052232957926853072656351268337953080002953325546373555960880086929198098389111085727744 s (7044470878714955997262729813087775795112590568905642211232311696503768667071377041132053565026753764089117131038261248 years), iters = {MDP: 75}, opt = 0.0747
+> progress 0.0%, elapsed 219 s, estimated 238319002438860712355116397206700043920673167552378775136056261300655876876599243361911353234590307190692682032534046841503744 s (7557045993114557688668089519976458711523061472369434453413116228502770351188364042942538429575888641520075913704767488 years), iters = {MDP: 79}, opt = 0.0747
+> progress 0.0%, elapsed 236 s, estimated 257030781815372024290666107966042977753472707963565212884388565215221273518469218686269536885595743650794006204461818090356736 s (8150392624789828417963534462890172161600688482682975364857684726231771800320901705047597937368622304104103635545227264 years), iters = {MDP: 83}, opt = 0.0747
+> progress 0.0%, elapsed 251 s, estimated 273403007585163820770702017246330378717361091257002429506344088416174478702556927610609346970205484504077915276951344943988736 s (8669552498261155833463197325433798650835139368649775370234977022352926728611148154328655485745218105874971673621430272 years), iters = {MDP: 84}, opt = 0.0747
+> progress 0.0%, elapsed 267 s, estimated 290056791176909622599237119541381428865141746208611028261503135062297262458473563349549691948875954817806567026591023883091968 s (9197640511698047409285255512024892770050123712089864959257810207413195948543503625567569727808398115711270028050432000 years), iters = {MDP: 85}, opt = 0.0747
+> progress 0.0%, elapsed 282 s, estimated 306271757729402761273198811746378437717361512823421521510307112067947991227533414181942663132799090829919033779753733050073088 s (9711813728101304691135653741785631324641838888971002225249545781882781752401150102947076825546143139718545050989232128 years), iters = {MDP: 89}, opt = 0.0747
+> progress 0.0%, elapsed 297 s, estimated 322775279414166956798635704833802062377631954365349535852014382220750278985970874866052055017082830577125526780689598851842048 s (10235136967724724318030026885822665075079302885685753646193444331592438010984982765414585861676768536375502599687766016 years), iters = {MDP: 93}, opt = 0.0747
+> progress 0.0%, elapsed 311 s, estimated 338535196002698243964106263193146624746465425166672786275107959687723621795265661154591593696166787065438457302601571600695296 s (10734880644428534100080353817765184472984994613329874091222756600816864389927675460179056111373744734901174809240010752 years), iters = {MDP: 94}, opt = 0.0747
+> progress 0.0%, elapsed 327 s, estimated 354847870485271625858499298128981191594539421327289083022856389049007330977701278360522549429157614176117534460683980548079616 s (11252152158969801189554425199902174053835973976456410827911887935272162552357428784194501896282345954646011350672736256 years), iters = {MDP: 98}, opt = 0.0747
+> progress 0.0%, elapsed 344 s, estimated 373379701140305627362588230673214652680794955972913884241958331971407376045208487703212454774374934575980056167933301110079488 s (11839792654119281582800868443925453860530198933713368380501428552705846962309076173449858185508227767419540950034153472 years), iters = {MDP: 102}, opt = 0.0747
+> progress 0.0%, elapsed 358 s, estimated 389228779487624285633812909148317912685280220936404334638249591586722968429360963608943074272068424978565379739378313014018048 s (12342363631647141980918028646978577724576927142022462581519474477107452860655892443998981798912644712243981451549212672 years), iters = {MDP: 103}, opt = 0.0747
+> progress 0.0%, elapsed 373 s, estimated 404816581410232477305370671847834228884507184413483735486002112045203463640912027744727362209547730779805658991620329046016000 s (12836649588097174945834222882903081719803653926967431842605118239451727008547607452526052701623283473656108685383958528 years), iters = {MDP: 107}, opt = 0.0747
+> progress 0.0%, elapsed 388 s, estimated 421033027702317746077735792097009685186873277900832569674295062149558540988850028459995017480990480147200749289005460452540416 s (13350869726735088615969351406048530214957506010450552384079822942279944136417116644429106133879487313234743932894576640 years), iters = {MDP: 108}, opt = 0.0747
+> progress 0.0%, elapsed 403 s, estimated 437484023878353298479265199070560177176857116969471648893149255010945249981308026030637401786964434952793707002781339505131520 s (13872527393402881814239743815534210486456364226303907608304388653067913930851902588514911509972956908800306032182034432 years), iters = {MDP: 112}, opt = 0.0747
+> progress 0.0%, elapsed 421 s, estimated 457090639815525508155416610110562688636432383081090757652942539762444810279310349045245567766787343263123488206824446281908224 s (14494249106276176944540550547313264839308224675308878424029975651098853188219621292345752134011401778867578060356452352 years), iters = {MDP: 116}, opt = 0.0747
+> progress 0.0%, elapsed 438 s, estimated 475742733278561113491338860829133183209379952212901628247292007053914711684275324910002052535614610855535999549451972892426240 s (15085703110050769110276063040614063790495536043087512445376781512216949267909233942504231800749111518725150643043958784 years), iters = {MDP: 120}, opt = 0.0747
+> progress 0.0%, elapsed 452 s, estimated 491512683397216874122840570466404915421976708644145100676185673415862064426863507979331855361386527483257255412624109118423040 s (15585764947907687283061178555905651768325975792100714958460885474250155015290490590933865498585511025937040268310085632 years), iters = {MDP: 121}, opt = 0.0747
+> progress 0.0%, elapsed 467 s, estimated 506853284984625158145831569285822182785117304615246139165316333332239023931337421102022079353834076980282097269845814323183616 s (16072212233150215265777349417646298520127917579194084462280325303675563198121217664590623143648818683843222941338697728 years), iters = {MDP: 122}, opt = 0.0747
+> progress 0.0%, elapsed 482 s, estimated 523964115486888996879723348711331212408382172981642670894251940931823957284517023739627482550697182441556785294962482539921408 s (16614793109046453488501334913623974510409799471084990770866973701254308951751992895036560605049510599618758147393454080 years), iters = {MDP: 126}, opt = 0.0747
+> progress 0.0%, elapsed 498 s, estimated 541247343968558680557506567880685490205501910102956705904386666834207303097143323897324870173278240996938689228655904333758464 s (17162840689008078488713545558150737906572170573081144944247259546583003551109445449192114900873882358496833230052786176 years), iters = {MDP: 130}, opt = 0.0747
+> progress 0.0%, elapsed 512 s, estimated 556377099158029636583043657150809851083928525363975017307966640036506585969697651058574090743878063382005171234078883040985088 s (17642602078831481433164556860374585449365423557454583178127846726974558597450275432519252256918820291020996923839479808 years), iters = {MDP: 131}, opt = 0.0747
+> progress 0.0%, elapsed 527 s, estimated 572759849040343808149855050962615027030514296815091206431329595170470524363502905143637604926500687974990261628364458230284288 s (18162095669721709229098525667002184351822818305199071350539488059957911510650148930423091714895674308232514096706093056 years), iters = {MDP: 135}, opt = 0.0747
+> progress 0.0%, elapsed 544 s, estimated 591134351471896134528112722841423805721224520777374703028852088255779796592833385142601709069439001828904731040568953200967680 s (18744747319631408308083153547652813004319777060370897459599901789244242517916234485283885378987493423639101927512342528 years), iters = {MDP: 139}, opt = 0.0747
+> progress 0.0%, elapsed 559 s, estimated 607199107128819892802971642942391516260273577845138836346818951212191049328080500251848804602167938693273204422510233247547392 s (19254157379782467633575151474070866893806801785337196706326090438351169740727680152750731941100193528900009527131242496 years), iters = {MDP: 140}, opt = 0.0747
+> progress 0.0%, elapsed 575 s, estimated 624055049348715600399909800306507282634291497408774261884521036627805386556333958047264916693143601006624938531941199399354368 s (19788655801265715498714069554764824928491990108167506922043945880234229912802936254237171817883743022562747269620170752 years), iters = {MDP: 144}, opt = 0.0747
+> progress 0.0%, elapsed 593 s, estimated 643949066946243511662378839999216795125629255623449501183664792750023332526310481893499073139970398612755180649628048446980096 s (20419490961004677252933100652514611775206958543436690814154084351184310123451542305836380211737186227839478433897775104 years), iters = {MDP: 148}, opt = 0.0747
+2025-01-21 20:41:58,892 - synthesizer.py - time limit reached, aborting...
+2025-01-21 20:41:58,898 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 608.81 s
+number of holes: 1652, family size: 1e1260, quotient: 3127 states / 106318 actions
+explored: 0 %
+MDP stats: avg MDP size: 2811, iterations: 148
+
+optimum: 0.074681
+--------------------
+2025-01-21 20:41:58,900 - decision_tree.py - families considered: 148
+2025-01-21 20:41:58,900 - decision_tree.py - families skipped by construction: 0
+2025-01-21 20:41:58,900 - decision_tree.py - families with schedulers preserved: 56
+2025-01-21 20:41:58,900 - decision_tree.py - families model checked: 92
+2025-01-21 20:41:58,900 - decision_tree.py - harmonizations attempted: 8
+2025-01-21 20:41:58,900 - decision_tree.py - harmonizations succeeded: 1
+
+2025-01-21 20:41:58,900 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 20:41:58,900 - decision_tree.py - V_0=c1, backoff1_0=0, backoff2_0=0, bc1_0=0, bc2_0=0, c1_0=0, c2_0=0, col_0=0, s1_0=1, s2_0=1, x1_0=0, x2_0=0, V_1=x2, backoff1_1=0, backoff2_1=0, bc1_1=0, bc2_1=0, c1_1=0, c2_1=0, col_1=0, s1_1=1, s2_1=1, x1_1=0, x2_1=4, V_2=x2, backoff1_2=0, backoff2_2=0, bc1_2=0, bc2_2=0, c1_2=0, c2_2=0, col_2=0, s1_2=1, s2_2=1, x1_2=0, x2_2=4, V_3=x2, backoff1_3=0, backoff2_3=0, bc1_3=0, bc2_3=0, c1_3=0, c2_3=0, col_3=0, s1_3=1, s2_3=1, x1_3=0, x2_3=4, V_4=x1, backoff1_4=0, backoff2_4=0, bc1_4=0, bc2_4=0, c1_4=0, c2_4=0, col_4=0, s1_4=1, s2_4=1, x1_4=2, x2_4=0, V_5=x2, backoff1_5=0, backoff2_5=0, bc1_5=0, bc2_5=0, c1_5=0, c2_5=0, col_5=0, s1_5=1, s2_5=1, x1_5=0, x2_5=4, V_6=x2, backoff1_6=0, backoff2_6=0, bc1_6=0, bc2_6=0, c1_6=0, c2_6=0, col_6=0, s1_6=1, s2_6=1, x1_6=0, x2_6=2, A_7=time, A_8=station2_cmd_42, V_9=x1, backoff1_9=0, backoff2_9=0, bc1_9=0, bc2_9=0, c1_9=0, c2_9=0, col_9=0, s1_9=1, s2_9=1, x1_9=0, x2_9=0, A_10=station1_cmd_15, A_11=station2_cmd_47, V_12=s2, backoff1_12=0, backoff2_12=0, bc1_12=0, bc2_12=0, c1_12=0, c2_12=0, col_12=0, s1_12=1, s2_12=8, x1_12=0, x2_12=0, V_13=s2, backoff1_13=0, backoff2_13=0, bc1_13=0, bc2_13=0, c1_13=0, c2_13=0, col_13=0, s1_13=1, s2_13=3, x1_13=0, x2_13=0, A_14=station2_cmd_42, A_15=send2, V_16=s1, backoff1_16=14, backoff2_16=0, bc1_16=0, bc2_16=0, c1_16=0, c2_16=0, col_16=1, s1_16=1, s2_16=1, x1_16=0, x2_16=0, A_17=station1_cmd_7, A_18=time, V_19=bc1, backoff1_19=0, backoff2_19=0, bc1_19=0, bc2_19=0, c1_19=0, c2_19=0, col_19=0, s1_19=1, s2_19=1, x1_19=0, x2_19=0, V_20=backoff1, backoff1_20=0, backoff2_20=0, bc1_20=0, bc2_20=0, c1_20=0, c2_20=0, col_20=0, s1_20=1, s2_20=1, x1_20=0, x2_20=0, V_21=bc2, backoff1_21=0, backoff2_21=0, bc1_21=0, bc2_21=0, c1_21=0, c2_21=0, col_21=0, s1_21=1, s2_21=1, x1_21=0, x2_21=0, A_22=station2_cmd_47, A_23=finish1, V_24=col, backoff1_24=0, backoff2_24=0, bc1_24=0, bc2_24=0, c1_24=0, c2_24=0, col_24=0, s1_24=1, s2_24=1, x1_24=0, x2_24=0, A_25=station2_cmd_71, A_26=time, V_27=backoff2, backoff1_27=0, backoff2_27=0, bc1_27=0, bc2_27=0, c1_27=0, c2_27=0, col_27=0, s1_27=1, s2_27=1, x1_27=0, x2_27=0, V_28=bc2, backoff1_28=0, backoff2_28=0, bc1_28=0, bc2_28=0, c1_28=0, c2_28=0, col_28=0, s1_28=1, s2_28=1, x1_28=0, x2_28=0, A_29=time, A_30=station1_cmd_39, V_31=s2, backoff1_31=0, backoff2_31=0, bc1_31=0, bc2_31=0, c1_31=0, c2_31=0, col_31=0, s1_31=1, s2_31=1, x1_31=0, x2_31=0, A_32=station1_cmd_12, A_33=station1_cmd_15, V_34=c1, backoff1_34=0, backoff2_34=0, bc1_34=0, bc2_34=0, c1_34=0, c2_34=0, col_34=0, s1_34=1, s2_34=1, x1_34=0, x2_34=0, V_35=bc2, backoff1_35=0, backoff2_35=0, bc1_35=0, bc2_35=0, c1_35=0, c2_35=0, col_35=0, s1_35=1, s2_35=1, x1_35=0, x2_35=0, V_36=backoff1, backoff1_36=0, backoff2_36=0, bc1_36=0, bc2_36=0, c1_36=0, c2_36=0, col_36=0, s1_36=1, s2_36=1, x1_36=0, x2_36=0, V_37=c2, backoff1_37=0, backoff2_37=0, bc1_37=0, bc2_37=0, c1_37=0, c2_37=0, col_37=0, s1_37=1, s2_37=1, x1_37=0, x2_37=0, A_38=send2, A_39=station2_cmd_74, V_40=s1, backoff1_40=0, backoff2_40=0, bc1_40=0, bc2_40=0, c1_40=0, c2_40=0, col_40=0, s1_40=1, s2_40=1, x1_40=0, x2_40=0, A_41=station1_cmd_20, A_42=send1, V_43=s1, backoff1_43=0, backoff2_43=0, bc1_43=0, bc2_43=0, c1_43=0, c2_43=0, col_43=0, s1_43=1, s2_43=1, x1_43=0, x2_43=0, V_44=s1, backoff1_44=0, backoff2_44=0, bc1_44=0, bc2_44=0, c1_44=0, c2_44=0, col_44=0, s1_44=1, s2_44=1, x1_44=0, x2_44=0, A_45=finish2, A_46=station1_cmd_20, V_47=col, backoff1_47=0, backoff2_47=0, bc1_47=0, bc2_47=0, c1_47=0, c2_47=0, col_47=0, s1_47=1, s2_47=1, x1_47=0, x2_47=0, A_48=station2_cmd_71, A_49=station1_cmd_25, V_50=bc1, backoff1_50=0, backoff2_50=0, bc1_50=0, bc2_50=0, c1_50=0, c2_50=0, col_50=0, s1_50=1, s2_50=1, x1_50=0, x2_50=0, V_51=backoff1, backoff1_51=0, backoff2_51=0, bc1_51=0, bc2_51=0, c1_51=0, c2_51=0, col_51=0, s1_51=1, s2_51=1, x1_51=0, x2_51=0, V_52=backoff1, backoff1_52=0, backoff2_52=0, bc1_52=0, bc2_52=0, c1_52=0, c2_52=0, col_52=0, s1_52=1, s2_52=1, x1_52=0, x2_52=0, A_53=station1_cmd_39, A_54=finish2, V_55=s2, backoff1_55=0, backoff2_55=0, bc1_55=0, bc2_55=0, c1_55=0, c2_55=0, col_55=0, s1_55=1, s2_55=1, x1_55=0, x2_55=0, A_56=station1_cmd_20, A_57=station1_cmd_10, V_58=backoff1, backoff1_58=0, backoff2_58=0, bc1_58=0, bc2_58=0, c1_58=0, c2_58=0, col_58=0, s1_58=1, s2_58=1, x1_58=0, x2_58=0, V_59=x1, backoff1_59=0, backoff2_59=0, bc1_59=0, bc2_59=0, c1_59=0, c2_59=0, col_59=0, s1_59=1, s2_59=1, x1_59=0, x2_59=0, A_60=station1_cmd_24, A_61=station2_cmd_48, V_62=bc2, backoff1_62=0, backoff2_62=0, bc1_62=0, bc2_62=0, c1_62=0, c2_62=0, col_62=0, s1_62=1, s2_62=1, x1_62=0, x2_62=0, A_63=station2_cmd_43, A_64=station2_cmd_74, V_65=s1, backoff1_65=0, backoff2_65=0, bc1_65=0, bc2_65=0, c1_65=0, c2_65=0, col_65=0, s1_65=11, s2_65=1, x1_65=0, x2_65=0, V_66=s2, backoff1_66=0, backoff2_66=0, bc1_66=0, bc2_66=0, c1_66=0, c2_66=0, col_66=0, s1_66=1, s2_66=1, x1_66=0, x2_66=0, V_67=bc1, backoff1_67=0, backoff2_67=0, bc1_67=0, bc2_67=0, c1_67=0, c2_67=0, col_67=0, s1_67=1, s2_67=1, x1_67=0, x2_67=0, V_68=bc1, backoff1_68=0, backoff2_68=0, bc1_68=0, bc2_68=0, c1_68=0, c2_68=0, col_68=0, s1_68=1, s2_68=1, x1_68=0, x2_68=0, V_69=c1, backoff1_69=0, backoff2_69=0, bc1_69=0, bc2_69=0, c1_69=0, c2_69=0, col_69=0, s1_69=1, s2_69=1, x1_69=0, x2_69=0, A_70=station1_cmd_39, A_71=station1_cmd_22, V_72=col, backoff1_72=0, backoff2_72=0, bc1_72=0, bc2_72=0, c1_72=0, c2_72=0, col_72=0, s1_72=1, s2_72=1, x1_72=0, x2_72=0, A_73=station1_cmd_22, A_74=send1, V_75=backoff1, backoff1_75=0, backoff2_75=0, bc1_75=0, bc2_75=0, c1_75=0, c2_75=0, col_75=0, s1_75=1, s2_75=1, x1_75=0, x2_75=0, V_76=c1, backoff1_76=0, backoff2_76=0, bc1_76=0, bc2_76=0, c1_76=0, c2_76=0, col_76=0, s1_76=1, s2_76=1, x1_76=0, x2_76=0, A_77=station1_cmd_17, A_78=station1_cmd_12, V_79=col, backoff1_79=0, backoff2_79=0, bc1_79=0, bc2_79=0, c1_79=0, c2_79=0, col_79=0, s1_79=1, s2_79=1, x1_79=0, x2_79=0, A_80=station1_cmd_39, A_81=station2_cmd_43, V_82=s1, backoff1_82=0, backoff2_82=0, bc1_82=0, bc2_82=0, c1_82=0, c2_82=0, col_82=0, s1_82=11, s2_82=1, x1_82=0, x2_82=0, V_83=col, backoff1_83=0, backoff2_83=0, bc1_83=0, bc2_83=0, c1_83=0, c2_83=0, col_83=1, s1_83=1, s2_83=1, x1_83=0, x2_83=0, V_84=x1, backoff1_84=0, backoff2_84=0, bc1_84=0, bc2_84=0, c1_84=0, c2_84=0, col_84=0, s1_84=1, s2_84=1, x1_84=6, x2_84=0, A_85=finish2, A_86=time, V_87=bc1, backoff1_87=0, backoff2_87=0, bc1_87=0, bc2_87=0, c1_87=0, c2_87=0, col_87=0, s1_87=1, s2_87=1, x1_87=0, x2_87=0, A_88=station2_cmd_59, A_89=station1_cmd_7, V_90=backoff1, backoff1_90=0, backoff2_90=0, bc1_90=0, bc2_90=0, c1_90=0, c2_90=0, col_90=0, s1_90=1, s2_90=1, x1_90=0, x2_90=0, V_91=x1, backoff1_91=0, backoff2_91=0, bc1_91=0, bc2_91=0, c1_91=0, c2_91=0, col_91=0, s1_91=1, s2_91=1, x1_91=0, x2_91=0, A_92=station1_cmd_8, A_93=station2_cmd_71, V_94=s1, backoff1_94=0, backoff2_94=0, bc1_94=0, bc2_94=0, c1_94=0, c2_94=0, col_94=0, s1_94=1, s2_94=1, x1_94=0, x2_94=0, A_95=send1, A_96=station2_cmd_43, V_97=x1, backoff1_97=0, backoff2_97=0, bc1_97=0, bc2_97=0, c1_97=0, c2_97=0, col_97=0, s1_97=1, s2_97=1, x1_97=0, x2_97=0, V_98=col, backoff1_98=0, backoff2_98=0, bc1_98=0, bc2_98=0, c1_98=0, c2_98=0, col_98=1, s1_98=1, s2_98=1, x1_98=0, x2_98=0, V_99=bc1, backoff1_99=0, backoff2_99=0, bc1_99=0, bc2_99=0, c1_99=0, c2_99=0, col_99=0, s1_99=1, s2_99=1, x1_99=0, x2_99=0, V_100=backoff2, backoff1_100=0, backoff2_100=0, bc1_100=0, bc2_100=0, c1_100=0, c2_100=0, col_100=1, s1_100=1, s2_100=1, x1_100=0, x2_100=0, A_101=station2_cmd_55, A_102=station1_cmd_15, V_103=c1, backoff1_103=0, backoff2_103=0, bc1_103=0, bc2_103=0, c1_103=0, c2_103=0, col_103=0, s1_103=1, s2_103=1, x1_103=0, x2_103=0, A_104=station1_cmd_7, A_105=station1_cmd_20, V_106=backoff1, backoff1_106=0, backoff2_106=0, bc1_106=0, bc2_106=0, c1_106=0, c2_106=0, col_106=0, s1_106=1, s2_106=1, x1_106=0, x2_106=0, V_107=x1, backoff1_107=0, backoff2_107=0, bc1_107=0, bc2_107=0, c1_107=0, c2_107=0, col_107=0, s1_107=1, s2_107=1, x1_107=0, x2_107=0, A_108=station2_cmd_74, A_109=send2, V_110=backoff1, backoff1_110=0, backoff2_110=0, bc1_110=0, bc2_110=0, c1_110=0, c2_110=0, col_110=0, s1_110=1, s2_110=1, x1_110=0, x2_110=0, A_111=station2_cmd_42, A_112=station1_cmd_7, V_113=bc1, backoff1_113=0, backoff2_113=0, bc1_113=0, bc2_113=0, c1_113=0, c2_113=0, col_113=0, s1_113=1, s2_113=1, x1_113=0, x2_113=0, V_114=backoff1, backoff1_114=0, backoff2_114=0, bc1_114=0, bc2_114=0, c1_114=0, c2_114=0, col_114=0, s1_114=1, s2_114=1, x1_114=0, x2_114=0, V_115=backoff2, backoff1_115=0, backoff2_115=0, bc1_115=0, bc2_115=0, c1_115=0, c2_115=0, col_115=0, s1_115=1, s2_115=1, x1_115=0, x2_115=0, A_116=__random__, A_117=station2_cmd_60, V_118=backoff1, backoff1_118=0, backoff2_118=0, bc1_118=0, bc2_118=0, c1_118=0, c2_118=0, col_118=0, s1_118=1, s2_118=1, x1_118=0, x2_118=0, A_119=station2_cmd_74, A_120=station2_cmd_45, V_121=backoff1, backoff1_121=0, backoff2_121=0, bc1_121=0, bc2_121=0, c1_121=0, c2_121=0, col_121=0, s1_121=1, s2_121=1, x1_121=0, x2_121=0, V_122=col, backoff1_122=0, backoff2_122=0, bc1_122=0, bc2_122=0, c1_122=0, c2_122=0, col_122=0, s1_122=1, s2_122=1, x1_122=0, x2_122=0, A_123=station2_cmd_43, A_124=station1_cmd_8, V_125=x1, backoff1_125=0, backoff2_125=0, bc1_125=0, bc2_125=0, c1_125=0, c2_125=0, col_125=0, s1_125=1, s2_125=1, x1_125=0, x2_125=0, A_126=station1_cmd_12, A_127=__random__, V_128=x2, backoff1_128=0, backoff2_128=0, bc1_128=0, bc2_128=0, c1_128=0, c2_128=0, col_128=0, s1_128=1, s2_128=1, x1_128=0, x2_128=1, V_129=x2, backoff1_129=0, backoff2_129=0, bc1_129=0, bc2_129=0, c1_129=0, c2_129=0, col_129=0, s1_129=1, s2_129=1, x1_129=0, x2_129=0, V_130=x2, backoff1_130=0, backoff2_130=0, bc1_130=0, bc2_130=0, c1_130=0, c2_130=0, col_130=0, s1_130=1, s2_130=1, x1_130=0, x2_130=0, V_131=s2, backoff1_131=0, backoff2_131=0, bc1_131=0, bc2_131=0, c1_131=0, c2_131=0, col_131=0, s1_131=1, s2_131=11, x1_131=0, x2_131=0, V_132=s2, backoff1_132=0, backoff2_132=0, bc1_132=0, bc2_132=0, c1_132=0, c2_132=0, col_132=0, s1_132=1, s2_132=11, x1_132=0, x2_132=0, V_133=col, backoff1_133=0, backoff2_133=0, bc1_133=0, bc2_133=0, c1_133=0, c2_133=0, col_133=1, s1_133=1, s2_133=1, x1_133=0, x2_133=0, A_134=send2, A_135=time, V_136=s1, backoff1_136=0, backoff2_136=0, bc1_136=0, bc2_136=0, c1_136=0, c2_136=0, col_136=0, s1_136=1, s2_136=1, x1_136=0, x2_136=0, A_137=station2_cmd_50, A_138=station1_cmd_15, V_139=backoff2, backoff1_139=0, backoff2_139=0, bc1_139=0, bc2_139=0, c1_139=0, c2_139=0, col_139=0, s1_139=1, s2_139=1, x1_139=0, x2_139=0, V_140=s2, backoff1_140=0, backoff2_140=0, bc1_140=0, bc2_140=0, c1_140=0, c2_140=0, col_140=0, s1_140=10, s2_140=1, x1_140=4, x2_140=0, A_141=send1, A_142=station2_cmd_74, V_143=backoff1, backoff1_143=0, backoff2_143=0, bc1_143=0, bc2_143=0, c1_143=0, c2_143=0, col_143=0, s1_143=1, s2_143=1, x1_143=0, x2_143=0, A_144=finish1, A_145=time, V_146=bc1, backoff1_146=0, backoff2_146=0, bc1_146=0, bc2_146=0, c1_146=0, c2_146=0, col_146=0, s1_146=1, s2_146=1, x1_146=0, x2_146=0, V_147=backoff1, backoff1_147=0, backoff2_147=0, bc1_147=0, bc2_147=0, c1_147=0, c2_147=0, col_147=0, s1_147=1, s2_147=1, x1_147=0, x2_147=0, V_148=bc2, backoff1_148=0, backoff2_148=0, bc1_148=0, bc2_148=0, c1_148=0, c2_148=0, col_148=0, s1_148=1, s2_148=1, x1_148=0, x2_148=0, A_149=station1_cmd_39, A_150=station2_cmd_57, V_151=bc1, backoff1_151=0, backoff2_151=0, bc1_151=0, bc2_151=0, c1_151=0, c2_151=0, col_151=0, s1_151=1, s2_151=1, x1_151=0, x2_151=0, A_152=station1_cmd_24, A_153=station2_cmd_50, V_154=backoff1, backoff1_154=0, backoff2_154=0, bc1_154=0, bc2_154=0, c1_154=0, c2_154=0, col_154=0, s1_154=1, s2_154=1, x1_154=0, x2_154=0, V_155=x1, backoff1_155=0, backoff2_155=0, bc1_155=0, bc2_155=0, c1_155=0, c2_155=0, col_155=0, s1_155=1, s2_155=1, x1_155=0, x2_155=0, A_156=station1_cmd_15, A_157=station1_cmd_12, V_158=s1, backoff1_158=0, backoff2_158=0, bc1_158=0, bc2_158=0, c1_158=0, c2_158=0, col_158=0, s1_158=1, s2_158=1, x1_158=0, x2_158=0, A_159=station2_cmd_55, A_160=time, V_161=s1, backoff1_161=0, backoff2_161=0, bc1_161=0, bc2_161=0, c1_161=0, c2_161=0, col_161=0, s1_161=9, s2_161=1, x1_161=0, x2_161=0, V_162=c1, backoff1_162=0, backoff2_162=0, bc1_162=0, bc2_162=0, c1_162=1, c2_162=0, col_162=0, s1_162=1, s2_162=1, x1_162=0, x2_162=0, V_163=s1, backoff1_163=0, backoff2_163=0, bc1_163=0, bc2_163=0, c1_163=0, c2_163=0, col_163=0, s1_163=9, s2_163=1, x1_163=0, x2_163=0, V_164=s2, backoff1_164=0, backoff2_164=0, bc1_164=0, bc2_164=0, c1_164=0, c2_164=0, col_164=0, s1_164=9, s2_164=5, x1_164=0, x2_164=0, A_165=station2_cmd_54, A_166=send2, V_167=backoff2, backoff1_167=0, backoff2_167=0, bc1_167=0, bc2_167=0, c1_167=0, c2_167=0, col_167=0, s1_167=1, s2_167=1, x1_167=0, x2_167=0, A_168=station1_cmd_8, A_169=station2_cmd_59, V_170=bc2, backoff1_170=0, backoff2_170=0, bc1_170=0, bc2_170=0, c1_170=0, c2_170=0, col_170=0, s1_170=1, s2_170=1, x1_170=0, x2_170=0, V_171=s1, backoff1_171=0, backoff2_171=0, bc1_171=0, bc2_171=0, c1_171=0, c2_171=0, col_171=0, s1_171=1, s2_171=1, x1_171=0, x2_171=0, A_172=station2_cmd_50, A_173=time, V_174=bc2, backoff1_174=0, backoff2_174=0, bc1_174=0, bc2_174=0, c1_174=0, c2_174=0, col_174=0, s1_174=1, s2_174=9, x1_174=0, x2_174=0, A_175=finish2, A_176=station2_cmd_50, V_177=backoff2, backoff1_177=0, backoff2_177=14, bc1_177=0, bc2_177=0, c1_177=0, c2_177=0, col_177=0, s1_177=1, s2_177=1, x1_177=0, x2_177=0, V_178=s1, backoff1_178=0, backoff2_178=0, bc1_178=0, bc2_178=0, c1_178=0, c2_178=0, col_178=0, s1_178=10, s2_178=1, x1_178=0, x2_178=0, V_179=bc1, backoff1_179=0, backoff2_179=14, bc1_179=0, bc2_179=0, c1_179=0, c2_179=0, col_179=0, s1_179=1, s2_179=1, x1_179=0, x2_179=0, A_180=station1_cmd_15, A_181=station2_cmd_71, V_182=s2, backoff1_182=0, backoff2_182=0, bc1_182=0, bc2_182=0, c1_182=0, c2_182=0, col_182=0, s1_182=1, s2_182=1, x1_182=0, x2_182=0, A_183=__random__, A_184=finish2, V_185=bc2, backoff1_185=0, backoff2_185=0, bc1_185=0, bc2_185=0, c1_185=0, c2_185=0, col_185=0, s1_185=1, s2_185=1, x1_185=0, x2_185=0, V_186=c2, backoff1_186=0, backoff2_186=0, bc1_186=0, bc2_186=0, c1_186=0, c2_186=0, col_186=0, s1_186=1, s2_186=1, x1_186=0, x2_186=0, A_187=station2_cmd_50, A_188=station2_cmd_54, V_189=backoff2, backoff1_189=0, backoff2_189=0, bc1_189=0, bc2_189=0, c1_189=0, c2_189=0, col_189=0, s1_189=1, s2_189=1, x1_189=0, x2_189=0, A_190=station2_cmd_43, A_191=station1_cmd_17, V_192=c1, backoff1_192=0, backoff2_192=0, bc1_192=0, bc2_192=0, c1_192=1, c2_192=0, col_192=0, s1_192=1, s2_192=1, x1_192=0, x2_192=0, V_193=col, backoff1_193=0, backoff2_193=0, bc1_193=0, bc2_193=0, c1_193=0, c2_193=0, col_193=0, s1_193=1, s2_193=1, x1_193=0, x2_193=0, V_194=backoff2, backoff1_194=0, backoff2_194=0, bc1_194=0, bc2_194=0, c1_194=0, c2_194=0, col_194=0, s1_194=1, s2_194=1, x1_194=0, x2_194=0, V_195=c2, backoff1_195=0, backoff2_195=0, bc1_195=0, bc2_195=0, c1_195=0, c2_195=0, col_195=0, s1_195=1, s2_195=1, x1_195=0, x2_195=0, V_196=bc2, backoff1_196=0, backoff2_196=0, bc1_196=0, bc2_196=0, c1_196=0, c2_196=0, col_196=0, s1_196=1, s2_196=1, x1_196=0, x2_196=0, A_197=__random__, A_198=station2_cmd_47, V_199=backoff2, backoff1_199=0, backoff2_199=0, bc1_199=0, bc2_199=0, c1_199=0, c2_199=0, col_199=0, s1_199=1, s2_199=1, x1_199=0, x2_199=0, A_200=send1, A_201=station1_cmd_24, V_202=backoff1, backoff1_202=0, backoff2_202=0, bc1_202=0, bc2_202=0, c1_202=0, c2_202=0, col_202=0, s1_202=1, s2_202=1, x1_202=0, x2_202=0, V_203=s1, backoff1_203=0, backoff2_203=0, bc1_203=0, bc2_203=0, c1_203=0, c2_203=0, col_203=0, s1_203=1, s2_203=1, x1_203=0, x2_203=0, A_204=station1_cmd_25, A_205=station1_cmd_15, V_206=bc2, backoff1_206=0, backoff2_206=0, bc1_206=0, bc2_206=0, c1_206=0, c2_206=0, col_206=0, s1_206=1, s2_206=1, x1_206=0, x2_206=0, A_207=station2_cmd_42, A_208=station1_cmd_15, V_209=bc2, backoff1_209=0, backoff2_209=0, bc1_209=0, bc2_209=0, c1_209=0, c2_209=0, col_209=0, s1_209=1, s2_209=1, x1_209=0, x2_209=0, V_210=backoff1, backoff1_210=0, backoff2_210=0, bc1_210=0, bc2_210=0, c1_210=0, c2_210=0, col_210=0, s1_210=1, s2_210=1, x1_210=0, x2_210=0, V_211=x1, backoff1_211=0, backoff2_211=0, bc1_211=0, bc2_211=0, c1_211=0, c2_211=0, col_211=0, s1_211=1, s2_211=1, x1_211=0, x2_211=0, A_212=station2_cmd_50, A_213=send1, V_214=x1, backoff1_214=0, backoff2_214=0, bc1_214=0, bc2_214=0, c1_214=0, c2_214=0, col_214=0, s1_214=1, s2_214=1, x1_214=0, x2_214=0, A_215=station2_cmd_59, A_216=station2_cmd_42, V_217=backoff1, backoff1_217=0, backoff2_217=0, bc1_217=0, bc2_217=0, c1_217=0, c2_217=0, col_217=0, s1_217=1, s2_217=1, x1_217=0, x2_217=0, V_218=bc1, backoff1_218=0, backoff2_218=0, bc1_218=0, bc2_218=0, c1_218=0, c2_218=0, col_218=0, s1_218=1, s2_218=1, x1_218=0, x2_218=0, A_219=station1_cmd_24, A_220=station2_cmd_74, V_221=col, backoff1_221=0, backoff2_221=0, bc1_221=0, bc2_221=0, c1_221=0, c2_221=0, col_221=0, s1_221=1, s2_221=1, x1_221=0, x2_221=0, A_222=station2_cmd_57, A_223=station2_cmd_55, V_224=x2, backoff1_224=0, backoff2_224=0, bc1_224=0, bc2_224=0, c1_224=0, c2_224=0, col_224=0, s1_224=1, s2_224=1, x1_224=0, x2_224=4, V_225=col, backoff1_225=0, backoff2_225=0, bc1_225=0, bc2_225=0, c1_225=0, c2_225=0, col_225=1, s1_225=1, s2_225=1, x1_225=0, x2_225=0, V_226=x2, backoff1_226=0, backoff2_226=0, bc1_226=0, bc2_226=0, c1_226=0, c2_226=0, col_226=0, s1_226=1, s2_226=1, x1_226=0, x2_226=0, V_227=c2, backoff1_227=0, backoff2_227=0, bc1_227=0, bc2_227=0, c1_227=0, c2_227=0, col_227=0, s1_227=1, s2_227=1, x1_227=0, x2_227=0, A_228=time, A_229=__random__, V_230=bc2, backoff1_230=0, backoff2_230=0, bc1_230=0, bc2_230=0, c1_230=0, c2_230=0, col_230=0, s1_230=1, s2_230=1, x1_230=0, x2_230=0, A_231=time, A_232=send1, V_233=backoff1, backoff1_233=0, backoff2_233=0, bc1_233=0, bc2_233=0, c1_233=0, c2_233=0, col_233=0, s1_233=1, s2_233=1, x1_233=0, x2_233=0, V_234=col, backoff1_234=0, backoff2_234=0, bc1_234=0, bc2_234=0, c1_234=0, c2_234=0, col_234=0, s1_234=1, s2_234=1, x1_234=0, x2_234=0, A_235=send1, A_236=send1, V_237=x1, backoff1_237=0, backoff2_237=0, bc1_237=0, bc2_237=0, c1_237=0, c2_237=0, col_237=0, s1_237=1, s2_237=1, x1_237=0, x2_237=0, A_238=__random__, A_239=station2_cmd_71, V_240=backoff2, backoff1_240=0, backoff2_240=0, bc1_240=0, bc2_240=0, c1_240=0, c2_240=0, col_240=0, s1_240=1, s2_240=1, x1_240=0, x2_240=0, V_241=bc2, backoff1_241=0, backoff2_241=0, bc1_241=0, bc2_241=0, c1_241=0, c2_241=0, col_241=0, s1_241=1, s2_241=1, x1_241=0, x2_241=0, V_242=x1, backoff1_242=0, backoff2_242=0, bc1_242=0, bc2_242=0, c1_242=0, c2_242=0, col_242=0, s1_242=1, s2_242=1, x1_242=0, x2_242=0, A_243=station2_cmd_48, A_244=finish1, V_245=backoff2, backoff1_245=0, backoff2_245=0, bc1_245=0, bc2_245=0, c1_245=0, c2_245=0, col_245=0, s1_245=1, s2_245=1, x1_245=0, x2_245=0, A_246=station2_cmd_71, A_247=station2_cmd_43, V_248=backoff1, backoff1_248=0, backoff2_248=0, bc1_248=0, bc2_248=0, c1_248=0, c2_248=0, col_248=0, s1_248=1, s2_248=1, x1_248=0, x2_248=0, V_249=backoff1, backoff1_249=0, backoff2_249=0, bc1_249=0, bc2_249=0, c1_249=0, c2_249=0, col_249=0, s1_249=1, s2_249=1, x1_249=0, x2_249=0, A_250=station1_cmd_10, A_251=station1_cmd_39, V_252=x2, backoff1_252=0, backoff2_252=0, bc1_252=0, bc2_252=0, c1_252=0, c2_252=0, col_252=0, s1_252=1, s2_252=1, x1_252=0, x2_252=0, A_253=finish1, A_254=station1_cmd_25
+2025-01-21 20:41:59,046 - decision_tree.py - double-checking specification satisfiability:  : 0.07468129159484445
+2025-01-21 20:41:59,046 - synthesizer.py - time limit reached, aborting...
+2025-01-21 20:41:59,047 - decision_tree.py - the optimal scheduler has value: 0.10827098374814313
+2025-01-21 20:41:59,047 - decision_tree.py - the random scheduler has value: 0.02730039610596835
+2025-01-21 20:41:59,049 - decision_tree.py - synthesized tree of depth 6 with 22 decision nodes
+2025-01-21 20:41:59,049 - decision_tree.py - the synthesized tree has value 0.07468129159484445
+2025-01-21 20:41:59,049 - decision_tree.py - the synthesized tree has relative value: 0.585161808362584
+2025-01-21 20:41:59,049 - decision_tree.py - printing the synthesized tree below:
+if c1<=0:
+  if x2<=4:
+    if x1<=2:
+      if x2<=2:
+        time
+      else:
+        station2_cmd_42
+    else:
+      if s2<=8:
+        if s2<=3:
+          station2_cmd_42
+        else:
+          send2
+      else:
+        if s1<=1:
+          station1_cmd_7
+        else:
+          time
+  else:
+    if s1<=11:
+      finish2
+    else:
+      station2_cmd_55
+else:
+  if x2<=1:
+    if x2<=0:
+      if s2<=11:
+        if col<=1:
+          send2
+        else:
+          time
+      else:
+        station2_cmd_74
+    else:
+      if s1<=9:
+        if c1<=1:
+          if s2<=5:
+            station2_cmd_54
+          else:
+            send2
+        else:
+          if bc2<=0:
+            time
+          else:
+            station2_cmd_50
+      else:
+        if backoff2<=14:
+          if bc1<=0:
+            station1_cmd_15
+          else:
+            station2_cmd_71
+        else:
+          station1_cmd_17
+  else:
+    if c1<=1:
+      if col<=0:
+        __random__
+      else:
+        if x1<=0:
+          station2_cmd_50
+        else:
+          send1
+    else:
+      if x2<=4:
+        time
+      else:
+        finish1
+
+2025-01-21 20:41:59,050 - decision_tree.py - exported decision tree to logs/01-21-all/7/qcomp-wlan-1-2/tree.dot
+2025-01-21 20:41:59,146 - decision_tree.py - exported decision tree visualization to logs/01-21-all/7/qcomp-wlan-1-2/tree.png
+2025-01-21 20:41:59,146 - decision_tree.py - synthesis finished after 1206.32 seconds
+
+ColoringSmt = 38.216 s (3.2 %)
+ColoringSmt:: create choice colors = 10.457 s (0.9 %)
+ColoringSmt:: create harmonizing variants = 27.738 s (2.3 %)
+areChoicesConsistent = 572.483 s (47.5 %)
+areChoicesConsistent::1 is scheduler consistent? = 27.53 s (2.3 %)
+areChoicesConsistent::2 better unsat core = 538.931 s (44.7 %)
+areChoicesConsistent::3 unsat core analysis = 5.646 s (0.5 %)
+check = 507.12 s (42.0 %)
+loadUnsatCore = 0.001 s (0.0 %)
+selectCompatibleChoices = 35.302 s (2.9 %)
+selectCompatibleChoices::1 is family sat = 29.864 s (2.5 %)
+selectCompatibleChoices::2 state exploration = 5.437 s (0.5 %)

@@ -1,0 +1,100 @@
+2025-01-21 15:51:52,433 - cli.py - This is Paynt version 0.1.0.
+2025-01-21 15:51:52,433 - sketch.py - loading sketch from /home/imacak/disk2/synthesis/models/dts/maze/steps/model-random.drn ...
+2025-01-21 15:51:52,433 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:26): Parsing error at 3:1:  expecting <model type>, here:
+	@type: MDP
+	^
+
+2025-01-21 15:51:52,436 - sketch.py - assuming sketch in DRN format...
+2025-01-21 15:51:52,439 - prism_parser.py - loading properties from /home/imacak/disk2/synthesis/models/dts/maze/steps/discounted.props ...
+2025-01-21 15:51:52,439 - prism_parser.py - found the following specification: optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 15:51:52,440 - sketch.py - found state valuations in /home/imacak/disk2/synthesis/models/dts/maze/steps/state-valuations.json, adding to the model...
+2025-01-21 15:51:52,440 - sketch.py - sketch parsing OK
+2025-01-21 15:51:52,440 - sketch.py - constructed explicit quotient having 198 states and 990 choices
+2025-01-21 15:51:52,440 - sketch.py - found the following specification optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 15:51:52,441 - mdp.py - MDP has 197/198 relevant states
+2025-01-21 15:51:52,442 - mdp.py - MDP has 5 actions
+2025-01-21 15:51:52,443 - mdp.py - found the following 5 variables: ['picked0:[0..1]', 'picked1:[0..1]', 'picked2:[0..1]', 'x:[0..7]', 'y:[0..5]']
+2025-01-21 15:51:52,447 - decision_tree.py - the optimal scheduler has value: -17.159493135476705
+2025-01-21 15:51:52,447 - decision_tree.py - the random scheduler has value: -74.95482618829989
+
+2025-01-21 15:51:52,447 - mdp.py - building tree of depth 0
+2025-01-21 15:51:52,452 - statistic.py - synthesis initiated, design space: 5
+2025-01-21 15:51:52,456 - synthesizer_ar.py - value -96.8908 achieved after 0.02 seconds
+2025-01-21 15:51:52,460 - synthesizer_ar.py - value -74.9548 achieved after 0.03 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.01 s
+number of holes: 1, family size: 5, quotient: 198 states / 990 actions
+explored: 100 %
+MDP stats: avg MDP size: 198, iterations: 7
+
+optimum: -74.954826
+--------------------
+2025-01-21 15:51:52,463 - decision_tree.py - families considered: 7
+2025-01-21 15:51:52,463 - decision_tree.py - families skipped by construction: 0
+2025-01-21 15:51:52,463 - decision_tree.py - families with schedulers preserved: 0
+2025-01-21 15:51:52,463 - decision_tree.py - families model checked: 7
+2025-01-21 15:51:52,463 - decision_tree.py - harmonizations attempted: 2
+2025-01-21 15:51:52,463 - decision_tree.py - harmonizations succeeded: 2
+
+2025-01-21 15:51:52,463 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 15:51:52,463 - decision_tree.py - A_0=__random__
+2025-01-21 15:51:52,463 - decision_tree.py - double-checking specification satisfiability:  : -74.95482618829989
+
+2025-01-21 15:51:52,463 - mdp.py - building tree of depth 1
+2025-01-21 15:51:52,475 - statistic.py - synthesis initiated, design space: 4375
+2025-01-21 15:51:52,520 - synthesizer_ar.py - value -73.6137 achieved after 0.09 seconds
+2025-01-21 15:51:52,685 - synthesizer_ar.py - value -67.6439 achieved after 0.25 seconds
+2025-01-21 15:51:52,722 - synthesizer_ar.py - value -65.5394 achieved after 0.29 seconds
+2025-01-21 15:51:52,756 - synthesizer_ar.py - value -63.2248 achieved after 0.32 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.86 s
+number of holes: 8, family size: 4375, quotient: 198 states / 990 actions
+explored: 200 %
+MDP stats: avg MDP size: 198, iterations: 336
+
+optimum: -63.224805
+--------------------
+2025-01-21 15:51:53,337 - decision_tree.py - families considered: 336
+2025-01-21 15:51:53,337 - decision_tree.py - families skipped by construction: 0
+2025-01-21 15:51:53,337 - decision_tree.py - families with schedulers preserved: 33
+2025-01-21 15:51:53,337 - decision_tree.py - families model checked: 303
+2025-01-21 15:51:53,337 - decision_tree.py - harmonizations attempted: 94
+2025-01-21 15:51:53,337 - decision_tree.py - harmonizations succeeded: 4
+
+2025-01-21 15:51:53,337 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 15:51:53,337 - decision_tree.py - V_0=picked2, picked0_0=0, picked1_0=0, picked2_0=0, x_0=0, y_0=0, A_1=u, A_2=d
+2025-01-21 15:51:53,338 - decision_tree.py - double-checking specification satisfiability:  : -63.22480497099268
+2025-01-21 15:51:53,338 - decision_tree.py - the optimal scheduler has value: -17.159493135476705
+2025-01-21 15:51:53,338 - decision_tree.py - the random scheduler has value: -74.95482618829989
+2025-01-21 15:51:53,338 - decision_tree.py - synthesized tree of depth 1 with 1 decision nodes
+2025-01-21 15:51:53,338 - decision_tree.py - the synthesized tree has value -63.22480497099268
+2025-01-21 15:51:53,338 - decision_tree.py - the synthesized tree has relative value: 0.20295793099048892
+2025-01-21 15:51:53,338 - decision_tree.py - printing the synthesized tree below:
+if picked2<=0:
+  u
+else:
+  d
+
+2025-01-21 15:51:53,339 - decision_tree.py - exported decision tree to logs/01-21-all/1/maze-steps/tree.dot
+2025-01-21 15:51:53,380 - decision_tree.py - exported decision tree visualization to logs/01-21-all/1/maze-steps/tree.png
+2025-01-21 15:51:53,380 - decision_tree.py - synthesis finished after 0.95 seconds
+
+ColoringSmt = 0.006 s (0.6 %)
+ColoringSmt:: create choice colors = 0.001 s (0.1 %)
+ColoringSmt:: create harmonizing variants = 0.004 s (0.4 %)
+areChoicesConsistent = 0.435 s (45.8 %)
+areChoicesConsistent::1 is scheduler consistent? = 0.252 s (26.5 %)
+areChoicesConsistent::2 better unsat core = 0.099 s (10.4 %)
+areChoicesConsistent::3 unsat core analysis = 0.068 s (7.2 %)
+check = 0.35 s (36.8 %)
+loadUnsatCore = 0.0 s (0.0 %)
+selectCompatibleChoices = 0.125 s (13.2 %)
+selectCompatibleChoices::1 is family sat = 0.104 s (10.9 %)
+selectCompatibleChoices::2 state exploration = 0.021 s (2.2 %)

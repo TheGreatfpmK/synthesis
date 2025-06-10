@@ -1,0 +1,218 @@
+2025-01-21 20:00:25,992 - cli.py - This is Paynt version 0.1.0.
+2025-01-21 20:00:25,992 - sketch.py - loading sketch from /home/imacak/disk2/synthesis/models/dts/omdt/inventory_management/model-random.drn ...
+2025-01-21 20:00:25,992 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:26): Parsing error at 3:1:  expecting <model type>, here:
+	@type: MDP
+	^
+
+2025-01-21 20:00:26,286 - sketch.py - assuming sketch in DRN format...
+2025-01-21 20:00:26,557 - prism_parser.py - loading properties from /home/imacak/disk2/synthesis/models/dts/omdt/inventory_management/discounted.props ...
+2025-01-21 20:00:26,557 - prism_parser.py - found the following specification: optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 20:00:26,557 - sketch.py - found state valuations in /home/imacak/disk2/synthesis/models/dts/omdt/inventory_management/state-valuations.json, adding to the model...
+2025-01-21 20:00:26,558 - sketch.py - sketch parsing OK
+2025-01-21 20:00:26,599 - sketch.py - constructed explicit quotient having 101 states and 10201 choices
+2025-01-21 20:00:26,599 - sketch.py - found the following specification optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 20:00:26,599 - mdp.py - MDP has 101/101 relevant states
+2025-01-21 20:00:26,725 - mdp.py - MDP has 101 actions
+2025-01-21 20:00:26,726 - mdp.py - found the following 1 variables: ['inventory:[0..100]']
+2025-01-21 20:00:27,077 - decision_tree.py - the optimal scheduler has value: 967.8226692269506
+2025-01-21 20:00:27,081 - decision_tree.py - the random scheduler has value: -960.240971558256
+
+2025-01-21 20:00:27,081 - mdp.py - building tree of depth 0
+2025-01-21 20:00:27,094 - statistic.py - synthesis initiated, design space: 101
+2025-01-21 20:00:27,457 - synthesizer_ar.py - value 927.6808 achieved after 1.46 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 1.03 s
+number of holes: 1, family size: 101, quotient: 101 states / 10201 actions
+explored: 100 %
+MDP stats: avg MDP size: 101, iterations: 7
+
+optimum: 927.680823
+--------------------
+2025-01-21 20:00:28,122 - decision_tree.py - families considered: 7
+2025-01-21 20:00:28,122 - decision_tree.py - families skipped by construction: 0
+2025-01-21 20:00:28,122 - decision_tree.py - families with schedulers preserved: 0
+2025-01-21 20:00:28,122 - decision_tree.py - families model checked: 7
+2025-01-21 20:00:28,122 - decision_tree.py - harmonizations attempted: 2
+2025-01-21 20:00:28,122 - decision_tree.py - harmonizations succeeded: 1
+
+2025-01-21 20:00:28,122 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 20:00:28,122 - decision_tree.py - A_0=(Buy_11)
+2025-01-21 20:00:28,126 - decision_tree.py - double-checking specification satisfiability:  : 927.6808229068353
+
+2025-01-21 20:00:28,126 - mdp.py - building tree of depth 1
+2025-01-21 20:00:28,149 - statistic.py - synthesis initiated, design space: 1e6
+2025-01-21 20:00:28,510 - synthesizer_ar.py - value 948.9069 achieved after 2.52 seconds
+2025-01-21 20:00:28,514 - synthesizer_ar.py - value 951.3556 achieved after 2.52 seconds
+2025-01-21 20:00:28,546 - synthesizer_ar.py - value 952.0958 achieved after 2.55 seconds
+2025-01-21 20:00:28,922 - synthesizer_ar.py - value 955.2716 achieved after 2.93 seconds
+> progress 100.99%, elapsed 3 s, estimated 3 s, iters = {MDP: 21}, opt = 955.2716
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 4.01 s
+number of holes: 4, family size: 1e6, quotient: 101 states / 10201 actions
+explored: 200 %
+MDP stats: avg MDP size: 101, iterations: 22
+
+optimum: 955.271598
+--------------------
+2025-01-21 20:00:32,160 - decision_tree.py - families considered: 22
+2025-01-21 20:00:32,160 - decision_tree.py - families skipped by construction: 0
+2025-01-21 20:00:32,160 - decision_tree.py - families with schedulers preserved: 3
+2025-01-21 20:00:32,160 - decision_tree.py - families model checked: 19
+2025-01-21 20:00:32,160 - decision_tree.py - harmonizations attempted: 4
+2025-01-21 20:00:32,160 - decision_tree.py - harmonizations succeeded: 2
+
+2025-01-21 20:00:32,160 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 20:00:32,160 - decision_tree.py - V_0=inventory, inventory_0=1, A_1=(Buy_12), A_2=(Buy_8)
+2025-01-21 20:00:32,163 - decision_tree.py - double-checking specification satisfiability:  : 955.2715976427129
+
+2025-01-21 20:00:32,164 - mdp.py - building tree of depth 2
+2025-01-21 20:00:32,207 - statistic.py - synthesis initiated, design space: 1e14
+2025-01-21 20:00:33,002 - synthesizer_ar.py - value 963.9164 achieved after 7.01 seconds
+2025-01-21 20:00:33,024 - synthesizer_ar.py - value 964.2478 achieved after 7.03 seconds
+> progress 0.038%, elapsed 3 s, estimated 8747 s (2 hours), iters = {MDP: 17}, opt = 964.2478
+2025-01-21 20:00:36,294 - synthesizer_ar.py - value 964.8321 achieved after 10.3 seconds
+2025-01-21 20:00:36,312 - synthesizer_ar.py - value 965.5214 achieved after 10.32 seconds
+> progress 0.97%, elapsed 6 s, estimated 679 s, iters = {MDP: 32}, opt = 965.5214
+> progress 1.932%, elapsed 9 s, estimated 512 s, iters = {MDP: 49}, opt = 965.5214
+> progress 97.95%, elapsed 13 s, estimated 13 s, iters = {MDP: 64}, opt = 965.5214
+> progress 98.9%, elapsed 16 s, estimated 16 s, iters = {MDP: 77}, opt = 965.5214
+2025-01-21 20:00:51,585 - synthesizer_ar.py - value 965.785 achieved after 25.59 seconds
+2025-01-21 20:00:51,606 - synthesizer_ar.py - value 966.0764 achieved after 25.61 seconds
+> progress 98.91%, elapsed 19 s, estimated 19 s, iters = {MDP: 92}, opt = 966.0764
+> progress 100.84%, elapsed 23 s, estimated 22 s, iters = {MDP: 109}, opt = 966.0764
+> progress 100.84%, elapsed 26 s, estimated 26 s, iters = {MDP: 120}, opt = 966.0764
+> progress 100.84%, elapsed 29 s, estimated 29 s, iters = {MDP: 135}, opt = 966.0764
+> progress 100.84%, elapsed 32 s, estimated 32 s, iters = {MDP: 152}, opt = 966.0764
+> progress 100.841%, elapsed 36 s, estimated 35 s, iters = {MDP: 168}, opt = 966.0764
+> progress 100.879%, elapsed 39 s, estimated 38 s, iters = {MDP: 181}, opt = 966.0764
+> progress 100.879%, elapsed 42 s, estimated 41 s, iters = {MDP: 192}, opt = 966.0764
+> progress 100.879%, elapsed 45 s, estimated 45 s, iters = {MDP: 203}, opt = 966.0764
+> progress 100.88%, elapsed 48 s, estimated 48 s, iters = {MDP: 217}, opt = 966.0764
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 52.16 s
+number of holes: 10, family size: 1e14, quotient: 101 states / 10201 actions
+explored: 101 %
+MDP stats: avg MDP size: 101, iterations: 232
+
+optimum: 966.076354
+--------------------
+2025-01-21 20:01:24,369 - decision_tree.py - families considered: 232
+2025-01-21 20:01:24,369 - decision_tree.py - families skipped by construction: 0
+2025-01-21 20:01:24,369 - decision_tree.py - families with schedulers preserved: 59
+2025-01-21 20:01:24,369 - decision_tree.py - families model checked: 173
+2025-01-21 20:01:24,369 - decision_tree.py - harmonizations attempted: 28
+2025-01-21 20:01:24,369 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-21 20:01:24,369 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 20:01:24,369 - decision_tree.py - V_0=inventory, inventory_0=2, V_1=inventory, inventory_1=0, A_2=(Buy_12), A_3=(Buy_10), V_4=inventory, inventory_4=4, A_5=(Buy_8), A_6=(Buy_5)
+2025-01-21 20:01:24,373 - decision_tree.py - double-checking specification satisfiability:  : 966.0763537849454
+
+2025-01-21 20:01:24,373 - mdp.py - building tree of depth 3
+2025-01-21 20:01:24,448 - statistic.py - synthesis initiated, design space: 1e30
+2025-01-21 20:01:25,286 - synthesizer_ar.py - value 967.2347 achieved after 59.29 seconds
+2025-01-21 20:01:25,326 - synthesizer_ar.py - value 967.2479 achieved after 59.33 seconds
+2025-01-21 20:01:26,454 - synthesizer_ar.py - value 967.3612 achieved after 60.46 seconds
+2025-01-21 20:01:26,487 - synthesizer_ar.py - value 967.3742 achieved after 60.5 seconds
+> progress 0.0%, elapsed 3 s, estimated 3430913 s (39 days), iters = {MDP: 17}, opt = 967.3742
+2025-01-21 20:01:27,665 - synthesizer_ar.py - value 967.505 achieved after 61.67 seconds
+2025-01-21 20:01:27,698 - synthesizer_ar.py - value 967.5474 achieved after 61.71 seconds
+2025-01-21 20:01:28,848 - synthesizer_ar.py - value 967.6131 achieved after 62.86 seconds
+> progress 0.007%, elapsed 6 s, estimated 86758 s (24 hours), iters = {MDP: 38}, opt = 967.6131
+> progress 0.788%, elapsed 9 s, estimated 1249 s, iters = {MDP: 52}, opt = 967.6131
+> progress 0.789%, elapsed 13 s, estimated 1663 s, iters = {MDP: 65}, opt = 967.6131
+> progress 0.813%, elapsed 16 s, estimated 1995 s, iters = {MDP: 82}, opt = 967.6131
+> progress 0.813%, elapsed 19 s, estimated 2396 s, iters = {MDP: 95}, opt = 967.6131
+> progress 0.853%, elapsed 22 s, estimated 2643 s, iters = {MDP: 110}, opt = 967.6131
+> progress 0.853%, elapsed 25 s, estimated 2998 s, iters = {MDP: 121}, opt = 967.6131
+> progress 0.854%, elapsed 28 s, estimated 3347 s, iters = {MDP: 135}, opt = 967.6131
+> progress 0.854%, elapsed 31 s, estimated 3704 s, iters = {MDP: 150}, opt = 967.6131
+> progress 0.854%, elapsed 34 s, estimated 4090 s, iters = {MDP: 163}, opt = 967.6131
+> progress 0.854%, elapsed 38 s, estimated 4484 s, iters = {MDP: 178}, opt = 967.6131
+> progress 0.854%, elapsed 41 s, estimated 4844 s, iters = {MDP: 193}, opt = 967.6131
+> progress 0.854%, elapsed 44 s, estimated 5226 s, iters = {MDP: 207}, opt = 967.6131
+> progress 0.856%, elapsed 47 s, estimated 5588 s, iters = {MDP: 217}, opt = 967.6131
+> progress 0.856%, elapsed 50 s, estimated 5944 s, iters = {MDP: 234}, opt = 967.6131
+> progress 0.882%, elapsed 54 s, estimated 6139 s, iters = {MDP: 246}, opt = 967.6131
+> progress 0.907%, elapsed 57 s, estimated 6306 s, iters = {MDP: 263}, opt = 967.6131
+> progress 0.909%, elapsed 60 s, estimated 6656 s, iters = {MDP: 277}, opt = 967.6131
+> progress 0.91%, elapsed 63 s, estimated 7010 s, iters = {MDP: 290}, opt = 967.6131
+> progress 0.91%, elapsed 67 s, estimated 7377 s (2 hours), iters = {MDP: 305}, opt = 967.6131
+> progress 0.91%, elapsed 70 s, estimated 7718 s (2 hours), iters = {MDP: 321}, opt = 967.6131
+> progress 0.91%, elapsed 73 s, estimated 8081 s (2 hours), iters = {MDP: 334}, opt = 967.6131
+> progress 0.91%, elapsed 76 s, estimated 8411 s (2 hours), iters = {MDP: 348}, opt = 967.6131
+> progress 0.918%, elapsed 79 s, estimated 8666 s (2 hours), iters = {MDP: 362}, opt = 967.6131
+> progress 0.918%, elapsed 82 s, estimated 9026 s (2 hours), iters = {MDP: 377}, opt = 967.6131
+2025-01-21 20:02:50,275 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 85.83 s
+number of holes: 22, family size: 1e30, quotient: 101 states / 10201 actions
+explored: 0 %
+MDP stats: avg MDP size: 101, iterations: 388
+
+optimum: 967.613055
+--------------------
+2025-01-21 20:02:50,276 - decision_tree.py - families considered: 388
+2025-01-21 20:02:50,276 - decision_tree.py - families skipped by construction: 0
+2025-01-21 20:02:50,276 - decision_tree.py - families with schedulers preserved: 151
+2025-01-21 20:02:50,276 - decision_tree.py - families model checked: 237
+2025-01-21 20:02:50,276 - decision_tree.py - harmonizations attempted: 5
+2025-01-21 20:02:50,276 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-21 20:02:50,276 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 20:02:50,276 - decision_tree.py - V_0=inventory, inventory_0=2, V_1=inventory, inventory_1=0, V_2=inventory, inventory_2=0, A_3=(Buy_12), A_4=(Buy_1), V_5=inventory, inventory_5=1, A_6=(Buy_11), A_7=(Buy_9), V_8=inventory, inventory_8=4, V_9=inventory, inventory_9=3, A_10=(Buy_8), A_11=(Buy_7), V_12=inventory, inventory_12=5, A_13=(Buy_6), A_14=(Buy_4)
+2025-01-21 20:02:50,280 - decision_tree.py - double-checking specification satisfiability:  : 967.6130551320725
+2025-01-21 20:02:50,280 - decision_tree.py - the optimal scheduler has value: 967.8226692269506
+2025-01-21 20:02:50,280 - decision_tree.py - the random scheduler has value: -960.240971558256
+2025-01-21 20:02:50,280 - decision_tree.py - synthesized tree of depth 3 with 6 decision nodes
+2025-01-21 20:02:50,280 - decision_tree.py - the synthesized tree has value 967.6130551320725
+2025-01-21 20:02:50,280 - decision_tree.py - the synthesized tree has relative value: 0.9998912825850537
+2025-01-21 20:02:50,280 - decision_tree.py - printing the synthesized tree below:
+if inventory<=2:
+  if inventory<=0:
+    (Buy_12)
+  else:
+    if inventory<=1:
+      (Buy_11)
+    else:
+      (Buy_9)
+else:
+  if inventory<=4:
+    if inventory<=3:
+      (Buy_8)
+    else:
+      (Buy_7)
+  else:
+    if inventory<=5:
+      (Buy_6)
+    else:
+      (Buy_4)
+
+2025-01-21 20:02:50,281 - decision_tree.py - exported decision tree to logs/01-21-all/7/omdt-inventory_management/tree.dot
+2025-01-21 20:02:50,335 - decision_tree.py - exported decision tree visualization to logs/01-21-all/7/omdt-inventory_management/tree.png
+2025-01-21 20:02:50,335 - decision_tree.py - synthesis finished after 144.34 seconds
+
+ColoringSmt = 0.057 s (0.0 %)
+ColoringSmt:: create choice colors = 0.025 s (0.0 %)
+ColoringSmt:: create harmonizing variants = 0.032 s (0.0 %)
+areChoicesConsistent = 2.521 s (1.7 %)
+areChoicesConsistent::1 is scheduler consistent? = 1.614 s (1.1 %)
+areChoicesConsistent::2 better unsat core = 0.499 s (0.3 %)
+areChoicesConsistent::3 unsat core analysis = 0.373 s (0.3 %)
+check = 2.782 s (1.9 %)
+loadUnsatCore = 0.001 s (0.0 %)
+selectCompatibleChoices = 2.977 s (2.1 %)
+selectCompatibleChoices::1 is family sat = 2.367 s (1.6 %)
+selectCompatibleChoices::2 state exploration = 0.61 s (0.4 %)

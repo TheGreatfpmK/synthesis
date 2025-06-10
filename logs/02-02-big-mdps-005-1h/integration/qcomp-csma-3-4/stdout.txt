@@ -1,0 +1,3111 @@
+2025-02-02 20:39:26,663 - cli.py - This is Paynt version 0.1.0.
+2025-02-02 20:39:26,663 - sketch.py - loading sketch from /home/fpmk/synthesis-playground/models/dts-integration-big/qcomp/csma-3-4/model.prism ...
+2025-02-02 20:39:26,663 - sketch.py - assuming sketch in PRISM format...
+2025-02-02 20:39:26,669 - prism_parser.py - PRISM model type: MDP
+2025-02-02 20:39:26,670 - prism_parser.py - loading properties from /home/fpmk/synthesis-playground/models/dts-integration-big/qcomp/csma-3-4/model.props ...
+2025-02-02 20:39:26,671 - prism_parser.py - found the following specification: optimality: R{"time"}max=? [F "all_delivered"] 
+2025-02-02 20:39:33,399 - sketch.py - sketch parsing OK
+2025-02-02 20:39:33,413 - sketch.py - tree helper loaded
+2025-02-02 20:39:35,498 - sketch.py - constructed explicit quotient having 1460287 states and 1471059 choices
+2025-02-02 20:39:35,498 - sketch.py - found the following specification optimality: R{"time"}max=? [F "all_delivered"] 
+2025-02-02 20:39:39,651 - mdp.py - MDP has 10622/1460287 relevant states
+2025-02-02 20:39:42,356 - mdp.py - adding explicit don't-care action to relevant states...
+2025-02-02 20:39:50,095 - mdp.py - MDP has 25 actions
+2025-02-02 20:40:00,991 - mdp.py - found the following 15 variables: ['b:[0..2]', 'bc1:[0..15]', 'bc2:[0..15]', 'bc3:[0..15]', 'cd1:[0..4]', 'cd2:[0..4]', 'cd3:[0..4]', 's1:[0..4]', 's2:[0..4]', 's3:[0..4]', 'x1:[0..30]', 'x2:[0..30]', 'x3:[0..30]', 'y1:[0..2]', 'y2:[0..1]']
+2025-02-02 20:40:02,850 - decision_tree.py - the optimal scheduler has value: 116.82672248985648
+2025-02-02 20:40:06,796 - decision_tree.py - the random scheduler has value: 111.13791477505458
+2025-02-02 20:40:06,809 - decision_tree.py - initial external tree has depth 19 and 236 nodes
+2025-02-02 20:40:06,809 - decision_tree.py - starting iteration with subtree depth 7
+2025-02-02 20:40:06,811 - decision_tree.py - starting iteration 0 with 7 nodes in node queue
+2025-02-02 20:40:06,811 - decision_tree.py - current tree size: 473 nodes
+2025-02-02 20:40:11,435 - decision_tree.py - subtree quotient has 473790 states and 473834 choices
+2025-02-02 20:40:12,691 - mdp.py - MDP has 22/473790 relevant states
+2025-02-02 20:40:14,562 - mdp.py - MDP has 25 actions
+2025-02-02 20:40:18,805 - mdp.py - found the following 3 variables: ['bc2:[6..15]', 'cd2:[3..4]', 'x2:[0..2]']
+
+2025-02-02 20:40:18,807 - mdp.py - building tree of depth 0
+2025-02-02 20:40:19,309 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:40:22,302 - synthesizer_ar.py - value 116.8115 achieved after 60.61 seconds
+> progress 0.0%, elapsed 4 s, estimated 4745049 s (54 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:40:26,645 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.34 s
+number of holes: 1, family size: 25, quotient: 473790 states / 473834 actions
+explored: 4 %
+MDP stats: avg MDP size: 473702, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:40:26,645 - decision_tree.py - families considered: 2
+2025-02-02 20:40:26,645 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:40:26,645 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:40:26,645 - decision_tree.py - families model checked: 2
+2025-02-02 20:40:26,645 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:40:26,645 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:40:26,645 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:40:26,646 - decision_tree.py - A_0=station1_cmd_24
+2025-02-02 20:40:25,576 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:40:25,581 - decision_tree.py - admissible subtree found from node 105
+2025-02-02 20:40:25,619 - decision_tree.py - new tree has depth 19 and 218 nodes
+2025-02-02 20:40:45,265 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:40:45,275 - decision_tree.py - new dtcontrol tree has depth 19 and 217 nodes
+2025-02-02 20:40:45,276 - decision_tree.py - New DtControl tree is smaller
+2025-02-02 20:40:45,281 - decision_tree.py - starting iteration 1 with 11 nodes in node queue
+2025-02-02 20:40:45,281 - decision_tree.py - current tree size: 435 nodes
+2025-02-02 20:40:49,591 - decision_tree.py - subtree quotient has 473718 states and 473766 choices
+2025-02-02 20:40:50,874 - mdp.py - MDP has 24/473718 relevant states
+2025-02-02 20:40:53,067 - mdp.py - MDP has 25 actions
+2025-02-02 20:40:54,913 - mdp.py - found the following 3 variables: ['bc1:[6..15]', 'cd1:[3..4]', 'x1:[0..2]']
+
+2025-02-02 20:40:54,914 - mdp.py - building tree of depth 0
+2025-02-02 20:40:55,345 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:40:58,249 - synthesizer_ar.py - value 116.8115 achieved after 101.51 seconds
+> progress 0.0%, elapsed 4 s, estimated 4665683 s (54 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:41:02,666 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.32 s
+number of holes: 1, family size: 25, quotient: 473718 states / 473766 actions
+explored: 4 %
+MDP stats: avg MDP size: 473622, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:41:02,666 - decision_tree.py - families considered: 2
+2025-02-02 20:41:02,666 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:41:02,666 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:41:02,666 - decision_tree.py - families model checked: 2
+2025-02-02 20:41:02,666 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:41:02,666 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:41:02,666 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:41:02,666 - decision_tree.py - A_0=station2_cmd_39
+2025-02-02 20:41:04,069 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:41:04,074 - decision_tree.py - admissible subtree found from node 204
+2025-02-02 20:41:04,105 - decision_tree.py - new tree has depth 19 and 199 nodes
+2025-02-02 20:41:22,699 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:41:22,709 - decision_tree.py - new dtcontrol tree has depth 19 and 199 nodes
+2025-02-02 20:41:22,710 - decision_tree.py - New DtControl tree is smaller
+2025-02-02 20:41:22,715 - decision_tree.py - starting iteration 2 with 11 nodes in node queue
+2025-02-02 20:41:22,715 - decision_tree.py - current tree size: 399 nodes
+2025-02-02 20:41:25,883 - decision_tree.py - subtree quotient has 475593 states and 476557 choices
+2025-02-02 20:41:24,660 - mdp.py - MDP has 482/475593 relevant states
+2025-02-02 20:41:26,630 - mdp.py - MDP has 25 actions
+2025-02-02 20:41:31,484 - mdp.py - found the following 8 variables: ['bc2:[0..15]', 'bc3:[0..15]', 'cd2:[1..4]', 'cd3:[1..4]', 's2:[1..4]', 's3:[1..4]', 'x2:[0..30]', 'x3:[0..30]']
+
+2025-02-02 20:41:31,485 - mdp.py - building tree of depth 0
+2025-02-02 20:41:31,792 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:41:34,546 - synthesizer_ar.py - value 116.8115 achieved after 140.29 seconds
+> progress 0.0%, elapsed 4 s, estimated 4413574 s (51 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:41:38,775 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 6.98 s
+number of holes: 1, family size: 25, quotient: 475593 states / 476557 actions
+explored: 4 %
+MDP stats: avg MDP size: 474713, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:41:38,775 - decision_tree.py - families considered: 2
+2025-02-02 20:41:38,775 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:41:38,775 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:41:38,775 - decision_tree.py - families model checked: 2
+2025-02-02 20:41:38,775 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:41:38,775 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:41:38,775 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:41:38,775 - decision_tree.py - A_0=busy2
+2025-02-02 20:41:40,190 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:41:40,195 - decision_tree.py - admissible subtree found from node 347
+2025-02-02 20:41:40,230 - decision_tree.py - new tree has depth 19 and 188 nodes
+2025-02-02 20:41:56,609 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:41:56,618 - decision_tree.py - new dtcontrol tree has depth 19 and 191 nodes
+2025-02-02 20:41:56,619 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:41:56,622 - decision_tree.py - starting iteration 3 with 10 nodes in node queue
+2025-02-02 20:41:56,622 - decision_tree.py - current tree size: 377 nodes
+2025-02-02 20:42:02,555 - decision_tree.py - subtree quotient has 473937 states and 473955 choices
+2025-02-02 20:42:03,815 - mdp.py - MDP has 9/473937 relevant states
+2025-02-02 20:42:05,707 - mdp.py - MDP has 25 actions
+2025-02-02 20:42:10,496 - mdp.py - found the following 1 variables: ['bc3:[7..15]']
+
+2025-02-02 20:42:10,497 - mdp.py - building tree of depth 0
+2025-02-02 20:42:10,824 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:42:13,548 - synthesizer_ar.py - value 116.8115 achieved after 181.77 seconds
+> progress 0.0%, elapsed 4 s, estimated 4367689 s (50 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:42:17,786 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 6.96 s
+number of holes: 1, family size: 25, quotient: 473937 states / 473955 actions
+explored: 4 %
+MDP stats: avg MDP size: 473865, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:42:17,786 - decision_tree.py - families considered: 2
+2025-02-02 20:42:17,786 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:42:17,787 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:42:17,787 - decision_tree.py - families model checked: 2
+2025-02-02 20:42:17,787 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:42:17,787 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:42:17,787 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:42:17,787 - decision_tree.py - A_0=cd
+2025-02-02 20:42:19,228 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:42:19,234 - decision_tree.py - admissible subtree found from node 57
+2025-02-02 20:42:19,269 - decision_tree.py - new tree has depth 16 and 182 nodes
+2025-02-02 20:42:37,788 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:42:37,798 - decision_tree.py - new dtcontrol tree has depth 18 and 188 nodes
+2025-02-02 20:42:37,799 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:42:37,802 - decision_tree.py - starting iteration 4 with 9 nodes in node queue
+2025-02-02 20:42:37,802 - decision_tree.py - current tree size: 365 nodes
+2025-02-02 20:42:42,569 - decision_tree.py - subtree quotient has 474185 states and 474229 choices
+2025-02-02 20:42:43,816 - mdp.py - MDP has 22/474185 relevant states
+2025-02-02 20:42:45,718 - mdp.py - MDP has 25 actions
+2025-02-02 20:42:50,461 - mdp.py - found the following 4 variables: ['bc2:[0..3]', 'cd2:[2..4]', 'cd3:[2..4]', 'x2:[0..2]']
+
+2025-02-02 20:42:50,463 - mdp.py - building tree of depth 0
+2025-02-02 20:42:50,755 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:42:53,549 - synthesizer_ar.py - value 116.8115 achieved after 224.26 seconds
+> progress 0.0%, elapsed 4 s, estimated 4481693 s (51 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:42:55,301 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.04 s
+number of holes: 1, family size: 25, quotient: 474185 states / 474229 actions
+explored: 4 %
+MDP stats: avg MDP size: 474051, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:42:55,301 - decision_tree.py - families considered: 2
+2025-02-02 20:42:55,301 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:42:55,301 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:42:55,301 - decision_tree.py - families model checked: 2
+2025-02-02 20:42:55,301 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:42:55,301 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:42:55,301 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:42:55,301 - decision_tree.py - A_0=busy3
+2025-02-02 20:42:56,738 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:42:56,744 - decision_tree.py - admissible subtree found from node 59
+2025-02-02 20:42:56,778 - decision_tree.py - new tree has depth 16 and 171 nodes
+2025-02-02 20:43:15,592 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:43:15,602 - decision_tree.py - new dtcontrol tree has depth 19 and 177 nodes
+2025-02-02 20:43:15,603 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:43:15,605 - decision_tree.py - starting iteration 5 with 8 nodes in node queue
+2025-02-02 20:43:15,606 - decision_tree.py - current tree size: 343 nodes
+2025-02-02 20:43:19,590 - decision_tree.py - subtree quotient has 474540 states and 474606 choices
+2025-02-02 20:43:20,850 - mdp.py - MDP has 33/474540 relevant states
+2025-02-02 20:43:22,760 - mdp.py - MDP has 25 actions
+2025-02-02 20:43:24,987 - mdp.py - found the following 4 variables: ['cd1:[1..4]', 'cd2:[2..3]', 'cd3:[1..4]', 'x1:[2..10]']
+
+2025-02-02 20:43:24,989 - mdp.py - building tree of depth 0
+2025-02-02 20:43:25,313 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:43:28,094 - synthesizer_ar.py - value 116.8115 achieved after 263.77 seconds
+> progress 0.0%, elapsed 4 s, estimated 4479035 s (51 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:43:32,326 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.01 s
+number of holes: 1, family size: 25, quotient: 474540 states / 474606 actions
+explored: 4 %
+MDP stats: avg MDP size: 474393, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:43:32,326 - decision_tree.py - families considered: 2
+2025-02-02 20:43:32,326 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:43:32,326 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:43:32,326 - decision_tree.py - families model checked: 2
+2025-02-02 20:43:32,326 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:43:32,326 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:43:32,326 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:43:32,326 - decision_tree.py - A_0=station2_cmd_38
+2025-02-02 20:43:33,780 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:43:33,786 - decision_tree.py - admissible subtree found from node 230
+2025-02-02 20:43:33,821 - decision_tree.py - new tree has depth 16 and 163 nodes
+2025-02-02 20:43:53,114 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:43:53,126 - decision_tree.py - new dtcontrol tree has depth 19 and 171 nodes
+2025-02-02 20:43:53,128 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:43:53,131 - decision_tree.py - starting iteration 6 with 7 nodes in node queue
+2025-02-02 20:43:53,132 - decision_tree.py - current tree size: 327 nodes
+2025-02-02 20:43:54,529 - decision_tree.py - subtree quotient has 474890 states and 474956 choices
+2025-02-02 20:43:55,825 - mdp.py - MDP has 33/474890 relevant states
+2025-02-02 20:43:58,494 - mdp.py - MDP has 25 actions
+2025-02-02 20:44:02,471 - mdp.py - found the following 4 variables: ['cd1:[2..3]', 'cd2:[1..4]', 'cd3:[1..4]', 'x2:[2..10]']
+
+2025-02-02 20:44:02,472 - mdp.py - building tree of depth 0
+2025-02-02 20:44:02,776 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:44:05,665 - synthesizer_ar.py - value 116.8115 achieved after 303.82 seconds
+> progress 0.0%, elapsed 4 s, estimated 4651469 s (53 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:44:09,983 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.21 s
+number of holes: 1, family size: 25, quotient: 474890 states / 474956 actions
+explored: 4 %
+MDP stats: avg MDP size: 474743, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:44:09,984 - decision_tree.py - families considered: 2
+2025-02-02 20:44:09,984 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:44:09,984 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:44:09,984 - decision_tree.py - families model checked: 2
+2025-02-02 20:44:09,984 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:44:09,984 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:44:09,984 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:44:09,984 - decision_tree.py - A_0=station1_cmd_23
+2025-02-02 20:44:11,425 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:44:11,430 - decision_tree.py - admissible subtree found from node 261
+2025-02-02 20:44:11,465 - decision_tree.py - new tree has depth 16 and 155 nodes
+2025-02-02 20:44:28,842 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:44:28,853 - decision_tree.py - new dtcontrol tree has depth 19 and 165 nodes
+2025-02-02 20:44:28,854 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:44:28,856 - decision_tree.py - starting iteration 7 with 6 nodes in node queue
+2025-02-02 20:44:28,856 - decision_tree.py - current tree size: 311 nodes
+2025-02-02 20:44:32,804 - decision_tree.py - subtree quotient has 475240 states and 475306 choices
+2025-02-02 20:44:34,097 - mdp.py - MDP has 33/475240 relevant states
+2025-02-02 20:44:35,992 - mdp.py - MDP has 25 actions
+2025-02-02 20:44:40,254 - mdp.py - found the following 4 variables: ['cd1:[2..3]', 'cd2:[1..4]', 'cd3:[1..4]', 'x3:[2..10]']
+
+2025-02-02 20:44:40,255 - mdp.py - building tree of depth 0
+2025-02-02 20:44:40,605 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:44:43,446 - synthesizer_ar.py - value 116.8115 achieved after 344.08 seconds
+> progress 0.0%, elapsed 4 s, estimated 4565751 s (52 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:44:47,729 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.12 s
+number of holes: 1, family size: 25, quotient: 475240 states / 475306 actions
+explored: 4 %
+MDP stats: avg MDP size: 475093, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:44:47,729 - decision_tree.py - families considered: 2
+2025-02-02 20:44:47,729 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:44:47,729 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:44:47,729 - decision_tree.py - families model checked: 2
+2025-02-02 20:44:47,729 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:44:47,729 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:44:47,729 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:44:47,729 - decision_tree.py - A_0=station1_cmd_23
+2025-02-02 20:44:49,155 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:44:49,160 - decision_tree.py - admissible subtree found from node 264
+2025-02-02 20:44:49,195 - decision_tree.py - new tree has depth 16 and 147 nodes
+2025-02-02 20:45:06,012 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:45:06,022 - decision_tree.py - new dtcontrol tree has depth 19 and 160 nodes
+2025-02-02 20:45:06,022 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:45:06,025 - decision_tree.py - starting iteration 8 with 5 nodes in node queue
+2025-02-02 20:45:06,025 - decision_tree.py - current tree size: 295 nodes
+2025-02-02 20:45:10,428 - decision_tree.py - subtree quotient has 475947 states and 476061 choices
+2025-02-02 20:45:11,770 - mdp.py - MDP has 57/475947 relevant states
+2025-02-02 20:45:13,723 - mdp.py - MDP has 25 actions
+2025-02-02 20:45:18,561 - mdp.py - found the following 4 variables: ['bc2:[1..15]', 'cd2:[2..4]', 'cd3:[3..4]', 'x2:[0..2]']
+
+2025-02-02 20:45:18,563 - mdp.py - building tree of depth 0
+2025-02-02 20:45:18,894 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:45:21,777 - synthesizer_ar.py - value 116.8115 achieved after 384.9 seconds
+> progress 0.0%, elapsed 4 s, estimated 4648734 s (53 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:45:23,662 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.25 s
+number of holes: 1, family size: 25, quotient: 475947 states / 476061 actions
+explored: 4 %
+MDP stats: avg MDP size: 475619, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:45:23,663 - decision_tree.py - families considered: 2
+2025-02-02 20:45:23,663 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:45:23,663 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:45:23,663 - decision_tree.py - families model checked: 2
+2025-02-02 20:45:23,663 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:45:23,663 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:45:23,663 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:45:23,663 - decision_tree.py - A_0=__random__
+2025-02-02 20:45:25,122 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:45:25,128 - decision_tree.py - admissible subtree found from node 96
+2025-02-02 20:45:25,175 - decision_tree.py - new tree has depth 16 and 137 nodes
+2025-02-02 20:45:44,631 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:45:44,641 - decision_tree.py - new dtcontrol tree has depth 18 and 146 nodes
+2025-02-02 20:45:44,642 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:45:44,644 - decision_tree.py - starting iteration 9 with 4 nodes in node queue
+2025-02-02 20:45:44,645 - decision_tree.py - current tree size: 275 nodes
+2025-02-02 20:45:49,412 - decision_tree.py - subtree quotient has 478147 states and 478379 choices
+2025-02-02 20:45:50,720 - mdp.py - MDP has 114/478147 relevant states
+2025-02-02 20:45:52,700 - mdp.py - MDP has 25 actions
+2025-02-02 20:45:55,206 - mdp.py - found the following 6 variables: ['bc3:[0..15]', 'cd2:[1..4]', 'cd3:[1..4]', 's2:[2..4]', 's3:[2..4]', 'x3:[0..2]']
+
+2025-02-02 20:45:55,208 - mdp.py - building tree of depth 0
+2025-02-02 20:45:55,563 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:45:58,553 - synthesizer_ar.py - value 116.8115 achieved after 426.64 seconds
+> progress 0.0%, elapsed 4 s, estimated 4806210 s (55 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:46:03,095 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.53 s
+number of holes: 1, family size: 25, quotient: 478147 states / 478379 actions
+explored: 4 %
+MDP stats: avg MDP size: 477727, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:46:03,095 - decision_tree.py - families considered: 2
+2025-02-02 20:46:03,095 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:46:03,095 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:46:03,095 - decision_tree.py - families model checked: 2
+2025-02-02 20:46:03,095 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:46:03,095 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:46:03,095 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:46:03,095 - decision_tree.py - A_0=station1_cmd_25
+2025-02-02 20:46:04,534 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:46:04,540 - decision_tree.py - admissible subtree found from node 73
+2025-02-02 20:46:04,541 - decision_tree.py - new tree has depth 16 and 126 nodes
+2025-02-02 20:46:24,207 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:46:24,218 - decision_tree.py - new dtcontrol tree has depth 18 and 134 nodes
+2025-02-02 20:46:24,219 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:46:24,221 - decision_tree.py - starting iteration 10 with 3 nodes in node queue
+2025-02-02 20:46:24,221 - decision_tree.py - current tree size: 253 nodes
+2025-02-02 20:46:26,364 - decision_tree.py - subtree quotient has 476451 states and 476539 choices
+2025-02-02 20:46:27,695 - mdp.py - MDP has 44/476451 relevant states
+2025-02-02 20:46:30,494 - mdp.py - MDP has 25 actions
+2025-02-02 20:46:34,945 - mdp.py - found the following 4 variables: ['bc1:[1..5]', 'cd1:[2..4]', 'cd3:[3..4]', 'x1:[0..2]']
+
+2025-02-02 20:46:34,946 - mdp.py - building tree of depth 0
+2025-02-02 20:46:35,300 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:46:38,252 - synthesizer_ar.py - value 116.8115 achieved after 468.82 seconds
+> progress 0.0%, elapsed 4 s, estimated 4768262 s (55 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:46:42,677 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.38 s
+number of holes: 1, family size: 25, quotient: 476451 states / 476539 actions
+explored: 4 %
+MDP stats: avg MDP size: 476183, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:46:42,677 - decision_tree.py - families considered: 2
+2025-02-02 20:46:42,678 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:46:42,678 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:46:42,678 - decision_tree.py - families model checked: 2
+2025-02-02 20:46:42,678 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:46:42,678 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:46:42,678 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:46:42,678 - decision_tree.py - A_0=__random__
+2025-02-02 20:46:44,190 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:46:44,196 - decision_tree.py - admissible subtree found from node 105
+2025-02-02 20:46:44,197 - decision_tree.py - new tree has depth 16 and 115 nodes
+2025-02-02 20:47:02,025 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:47:02,032 - decision_tree.py - new dtcontrol tree has depth 16 and 117 nodes
+2025-02-02 20:47:02,033 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:47:02,035 - decision_tree.py - starting iteration 11 with 2 nodes in node queue
+2025-02-02 20:47:02,035 - decision_tree.py - current tree size: 231 nodes
+2025-02-02 20:47:04,518 - decision_tree.py - subtree quotient has 483991 states and 486959 choices
+2025-02-02 20:47:06,027 - mdp.py - MDP has 1476/483991 relevant states
+2025-02-02 20:47:08,118 - mdp.py - MDP has 25 actions
+2025-02-02 20:47:13,364 - mdp.py - found the following 12 variables: ['bc1:[0..15]', 'bc2:[0..15]', 'bc3:[0..15]', 'cd1:[1..4]', 'cd2:[1..4]', 'cd3:[1..4]', 's1:[3..4]', 's2:[1..4]', 's3:[1..4]', 'x1:[0..2]', 'x2:[0..30]', 'x3:[0..30]']
+
+2025-02-02 20:47:13,366 - mdp.py - building tree of depth 0
+2025-02-02 20:47:13,725 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 5 s, estimated 5159456 s (59 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:47:19,501 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 5.78 s
+number of holes: 1, family size: 25, quotient: 483991 states / 486959 actions
+explored: 4 %
+MDP stats: avg MDP size: 482758, iterations: 2
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:47:19,501 - decision_tree.py - families considered: 2
+2025-02-02 20:47:19,501 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:47:19,502 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:47:19,502 - decision_tree.py - families model checked: 2
+2025-02-02 20:47:19,502 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:47:19,502 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:47:19,502 - mdp.py - building tree of depth 1
+2025-02-02 20:47:20,448 - statistic.py - synthesis initiated, design space: 1e12
+2025-02-02 20:47:23,153 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 5.19 s
+number of holes: 15, family size: 1e12, quotient: 483991 states / 486959 actions
+explored: 0 %
+MDP stats: avg MDP size: 483991, iterations: 1
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:47:23,153 - decision_tree.py - families considered: 1
+2025-02-02 20:47:23,153 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:47:23,153 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:47:23,153 - decision_tree.py - families model checked: 1
+2025-02-02 20:47:23,153 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:47:23,153 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:47:23,153 - mdp.py - building tree of depth 2
+2025-02-02 20:47:24,386 - statistic.py - synthesis initiated, design space: 1e33
+2025-02-02 20:47:29,620 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 5.23 s
+number of holes: 43, family size: 1e33, quotient: 483991 states / 486959 actions
+explored: 0 %
+MDP stats: avg MDP size: 483991, iterations: 1
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:47:29,621 - decision_tree.py - families considered: 1
+2025-02-02 20:47:29,621 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:47:29,621 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:47:29,621 - decision_tree.py - families model checked: 1
+2025-02-02 20:47:29,621 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:47:29,621 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:47:29,621 - mdp.py - building tree of depth 3
+2025-02-02 20:47:31,533 - statistic.py - synthesis initiated, design space: 1e76
+2025-02-02 20:47:37,724 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 6.19 s
+number of holes: 99, family size: 1e76, quotient: 483991 states / 486959 actions
+explored: 0 %
+MDP stats: avg MDP size: 483991, iterations: 1
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:47:37,725 - decision_tree.py - families considered: 1
+2025-02-02 20:47:37,725 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:47:37,725 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:47:37,725 - decision_tree.py - families model checked: 1
+2025-02-02 20:47:37,725 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:47:37,725 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:47:37,725 - mdp.py - building tree of depth 4
+2025-02-02 20:47:40,982 - statistic.py - synthesis initiated, design space: 1e162
+2025-02-02 20:47:51,361 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 10.38 s
+number of holes: 211, family size: 1e162, quotient: 483991 states / 486959 actions
+explored: 0 %
+MDP stats: avg MDP size: 483991, iterations: 1
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:47:51,362 - decision_tree.py - families considered: 1
+2025-02-02 20:47:51,362 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:47:51,362 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:47:51,362 - decision_tree.py - families model checked: 1
+2025-02-02 20:47:51,362 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:47:51,362 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:47:51,362 - mdp.py - building tree of depth 5
+2025-02-02 20:47:55,021 - statistic.py - synthesis initiated, design space: 1e334
+2025-02-02 20:48:47,045 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 54.51 s
+number of holes: 435, family size: 1e334, quotient: 483991 states / 486959 actions
+explored: 0 %
+MDP stats: avg MDP size: 483991, iterations: 1
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:48:47,046 - decision_tree.py - families considered: 1
+2025-02-02 20:48:47,046 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:48:47,046 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:48:47,046 - decision_tree.py - families model checked: 1
+2025-02-02 20:48:47,046 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:48:47,046 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 20:48:47,047 - decision_tree.py - no admissible subtree found from node 202
+2025-02-02 20:48:47,047 - decision_tree.py - starting iteration 12 with 1 nodes in node queue
+2025-02-02 20:48:47,047 - decision_tree.py - current tree size: 231 nodes
+2025-02-02 20:48:50,645 - decision_tree.py - subtree quotient has 477563 states and 477737 choices
+2025-02-02 20:48:51,973 - mdp.py - MDP has 87/477563 relevant states
+2025-02-02 20:48:51,574 - mdp.py - MDP has 25 actions
+2025-02-02 20:48:56,834 - mdp.py - found the following 4 variables: ['bc1:[1..15]', 'cd1:[2..4]', 'cd3:[3..4]', 'x1:[0..2]']
+
+2025-02-02 20:48:56,836 - mdp.py - building tree of depth 0
+2025-02-02 20:48:57,223 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:49:00,199 - synthesizer_ar.py - value 116.8115 achieved after 623.17 seconds
+> progress 0.0%, elapsed 4 s, estimated 4837199 s (55 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:49:04,735 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.51 s
+number of holes: 1, family size: 25, quotient: 477563 states / 477737 actions
+explored: 4 %
+MDP stats: avg MDP size: 477187, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:49:04,735 - decision_tree.py - families considered: 2
+2025-02-02 20:49:04,735 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:49:04,735 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:49:04,735 - decision_tree.py - families model checked: 2
+2025-02-02 20:49:04,735 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:49:04,735 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:49:04,735 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:49:04,735 - decision_tree.py - A_0=__random__
+2025-02-02 20:49:06,251 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:49:06,257 - decision_tree.py - admissible subtree found from node 107
+2025-02-02 20:49:06,258 - decision_tree.py - new tree has depth 16 and 95 nodes
+2025-02-02 20:49:23,834 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:49:23,843 - decision_tree.py - new dtcontrol tree has depth 16 and 98 nodes
+2025-02-02 20:49:23,843 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:49:23,845 - decision_tree.py - starting iteration with subtree depth 6
+2025-02-02 20:49:23,846 - decision_tree.py - starting iteration 13 with 4 nodes in node queue
+2025-02-02 20:49:23,846 - decision_tree.py - current tree size: 191 nodes
+2025-02-02 20:49:29,311 - decision_tree.py - subtree quotient has 478291 states and 478395 choices
+2025-02-02 20:49:30,656 - mdp.py - MDP has 51/478291 relevant states
+2025-02-02 20:49:32,703 - mdp.py - MDP has 25 actions
+2025-02-02 20:49:38,149 - mdp.py - found the following 4 variables: ['bc3:[0..15]', 'cd3:[2..4]', 's3:[2..3]', 'x3:[0..2]']
+
+2025-02-02 20:49:38,150 - mdp.py - building tree of depth 0
+2025-02-02 20:49:38,539 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:49:41,559 - synthesizer_ar.py - value 116.8115 achieved after 667.02 seconds
+> progress 0.0%, elapsed 4 s, estimated 4826565 s (55 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:49:46,084 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.55 s
+number of holes: 1, family size: 25, quotient: 478291 states / 478395 actions
+explored: 4 %
+MDP stats: avg MDP size: 477931, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:49:46,085 - decision_tree.py - families considered: 2
+2025-02-02 20:49:46,085 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:49:46,085 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:49:46,085 - decision_tree.py - families model checked: 2
+2025-02-02 20:49:46,085 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:49:46,085 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:49:46,085 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:49:46,085 - decision_tree.py - A_0=station1_cmd_24
+2025-02-02 20:49:47,572 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:49:47,578 - decision_tree.py - admissible subtree found from node 37
+2025-02-02 20:49:47,579 - decision_tree.py - new tree has depth 13 and 85 nodes
+2025-02-02 20:50:05,172 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:50:05,180 - decision_tree.py - new dtcontrol tree has depth 11 and 84 nodes
+2025-02-02 20:50:05,180 - decision_tree.py - New DtControl tree is smaller
+2025-02-02 20:50:05,183 - decision_tree.py - starting iteration 14 with 5 nodes in node queue
+2025-02-02 20:50:05,184 - decision_tree.py - current tree size: 169 nodes
+2025-02-02 20:50:08,953 - decision_tree.py - subtree quotient has 478155 states and 478387 choices
+2025-02-02 20:50:10,531 - mdp.py - MDP has 116/478155 relevant states
+2025-02-02 20:50:13,295 - mdp.py - MDP has 25 actions
+2025-02-02 20:50:17,884 - mdp.py - found the following 5 variables: ['bc1:[0..15]', 'cd1:[1..4]', 'cd2:[1..3]', 'cd3:[1..4]', 'x1:[0..2]']
+
+2025-02-02 20:50:17,886 - mdp.py - building tree of depth 0
+2025-02-02 20:50:18,268 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:50:21,255 - synthesizer_ar.py - value 116.8115 achieved after 709.19 seconds
+> progress 0.0%, elapsed 4 s, estimated 4812688 s (55 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:50:23,280 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.5 s
+number of holes: 1, family size: 25, quotient: 478155 states / 478387 actions
+explored: 4 %
+MDP stats: avg MDP size: 478101, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:50:23,280 - decision_tree.py - families considered: 2
+2025-02-02 20:50:23,280 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:50:23,280 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:50:23,280 - decision_tree.py - families model checked: 2
+2025-02-02 20:50:23,280 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:50:23,280 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:50:23,280 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:50:23,280 - decision_tree.py - A_0=station2_cmd_37
+2025-02-02 20:50:24,804 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:50:24,811 - decision_tree.py - admissible subtree found from node 24
+2025-02-02 20:50:24,811 - decision_tree.py - new tree has depth 10 and 73 nodes
+2025-02-02 20:50:44,920 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:50:44,926 - decision_tree.py - new dtcontrol tree has depth 10 and 75 nodes
+2025-02-02 20:50:44,927 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:50:44,929 - decision_tree.py - starting iteration 15 with 4 nodes in node queue
+2025-02-02 20:50:44,929 - decision_tree.py - current tree size: 147 nodes
+2025-02-02 20:50:48,394 - decision_tree.py - subtree quotient has 497866 states and 499286 choices
+2025-02-02 20:50:49,811 - mdp.py - MDP has 696/497866 relevant states
+2025-02-02 20:50:51,889 - mdp.py - MDP has 25 actions
+2025-02-02 20:50:54,994 - mdp.py - found the following 12 variables: ['b:[0..1]', 'bc2:[0..15]', 'bc3:[0..15]', 'cd1:[1..4]', 'cd2:[1..4]', 'cd3:[1..4]', 's1:[1..4]', 's2:[1..4]', 's3:[3..4]', 'x1:[0..2]', 'x2:[0..2]', 'x3:[0..2]']
+
+2025-02-02 20:50:54,996 - mdp.py - building tree of depth 0
+2025-02-02 20:50:55,456 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 4 s, estimated 4970110 s (57 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:51:01,889 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 6.43 s
+number of holes: 1, family size: 25, quotient: 497866 states / 499286 actions
+explored: 8 %
+MDP stats: avg MDP size: 491600, iterations: 3
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:51:01,889 - decision_tree.py - families considered: 3
+2025-02-02 20:51:01,889 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:51:01,889 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:51:01,889 - decision_tree.py - families model checked: 3
+2025-02-02 20:51:01,889 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:51:01,889 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:51:01,890 - mdp.py - building tree of depth 1
+2025-02-02 20:51:02,732 - statistic.py - synthesis initiated, design space: 1e8
+> progress 0.0%, elapsed 5 s, estimated 5188493 s (60 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:51:09,389 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 6.66 s
+number of holes: 15, family size: 1e8, quotient: 497866 states / 499286 actions
+explored: 0 %
+MDP stats: avg MDP size: 494795, iterations: 3
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:51:09,389 - decision_tree.py - families considered: 3
+2025-02-02 20:51:09,389 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:51:09,389 - decision_tree.py - families with schedulers preserved: 1
+2025-02-02 20:51:09,389 - decision_tree.py - families model checked: 2
+2025-02-02 20:51:09,389 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:51:09,389 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:51:09,389 - mdp.py - building tree of depth 2
+2025-02-02 20:51:10,432 - statistic.py - synthesis initiated, design space: 1e23
+2025-02-02 20:51:15,386 - synthesizer_ar.py - value 116.8115 achieved after 768.3 seconds
+> progress 0.0%, elapsed 5 s, estimated 5384047 s (62 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:51:16,512 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 6.08 s
+number of holes: 43, family size: 1e23, quotient: 497866 states / 499286 actions
+explored: 0 %
+MDP stats: avg MDP size: 497866, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:51:16,512 - decision_tree.py - families considered: 2
+2025-02-02 20:51:16,512 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:51:16,512 - decision_tree.py - families with schedulers preserved: 1
+2025-02-02 20:51:16,512 - decision_tree.py - families model checked: 1
+2025-02-02 20:51:16,512 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:51:16,512 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:51:16,512 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:51:16,512 - decision_tree.py - V_0=x3, b_0=0, bc2_0=1, bc3_0=1, cd1_0=1, cd2_0=1, cd3_0=2, s1_0=3, s2_0=1, s3_0=3, x1_0=0, x2_0=0, x3_0=0, V_1=b, b_1=0, bc2_1=0, bc3_1=1, cd1_1=2, cd2_1=1, cd3_1=1, s1_1=1, s2_1=1, s3_1=3, x1_1=0, x2_1=0, x3_1=0, A_2=busy1, A_3=station3_cmd_53, V_4=x1, b_4=0, bc2_4=0, bc3_4=0, cd1_4=1, cd2_4=1, cd3_4=1, s1_4=1, s2_4=1, s3_4=3, x1_4=0, x2_4=0, x3_4=0, A_5=send2, A_6=send1
+2025-02-02 20:51:18,111 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:51:18,120 - decision_tree.py - admissible subtree found from node 29
+2025-02-02 20:51:18,121 - decision_tree.py - new tree has depth 10 and 68 nodes
+2025-02-02 20:51:35,758 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:51:35,764 - decision_tree.py - new dtcontrol tree has depth 10 and 72 nodes
+2025-02-02 20:51:35,765 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:51:35,766 - decision_tree.py - starting iteration 16 with 3 nodes in node queue
+2025-02-02 20:51:35,766 - decision_tree.py - current tree size: 137 nodes
+2025-02-02 20:51:39,136 - decision_tree.py - subtree quotient has 480474 states and 481068 choices
+2025-02-02 20:51:40,536 - mdp.py - MDP has 297/480474 relevant states
+2025-02-02 20:51:42,580 - mdp.py - MDP has 25 actions
+2025-02-02 20:51:47,845 - mdp.py - found the following 7 variables: ['bc3:[0..15]', 'cd1:[1..4]', 'cd2:[2..4]', 'cd3:[1..4]', 's3:[2..4]', 'x1:[2..30]', 'x3:[0..2]']
+
+2025-02-02 20:51:47,847 - mdp.py - building tree of depth 0
+2025-02-02 20:51:48,245 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:51:51,432 - synthesizer_ar.py - value 116.8115 achieved after 806.82 seconds
+> progress 0.0%, elapsed 5 s, estimated 5118326 s (59 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:51:53,682 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.92 s
+number of holes: 1, family size: 25, quotient: 480474 states / 481068 actions
+explored: 4 %
+MDP stats: avg MDP size: 480327, iterations: 2
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:51:53,683 - decision_tree.py - families considered: 2
+2025-02-02 20:51:53,683 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:51:53,683 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:51:53,683 - decision_tree.py - families model checked: 2
+2025-02-02 20:51:53,683 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:51:53,683 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:51:53,683 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:51:53,683 - decision_tree.py - A_0=station2_cmd_38
+2025-02-02 20:51:55,333 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:51:55,340 - decision_tree.py - admissible subtree found from node 49
+2025-02-02 20:51:55,341 - decision_tree.py - new tree has depth 9 and 59 nodes
+2025-02-02 20:52:15,582 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:52:15,589 - decision_tree.py - new dtcontrol tree has depth 9 and 65 nodes
+2025-02-02 20:52:15,590 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:52:15,591 - decision_tree.py - starting iteration 17 with 2 nodes in node queue
+2025-02-02 20:52:15,591 - decision_tree.py - current tree size: 119 nodes
+2025-02-02 20:52:18,543 - decision_tree.py - subtree quotient has 486106 states and 488068 choices
+2025-02-02 20:52:20,010 - mdp.py - MDP has 977/486106 relevant states
+2025-02-02 20:52:19,609 - mdp.py - MDP has 25 actions
+2025-02-02 20:52:25,043 - mdp.py - found the following 11 variables: ['bc2:[0..15]', 'bc3:[0..15]', 'cd1:[1..4]', 'cd2:[1..4]', 'cd3:[1..4]', 's1:[1..2]', 's2:[3..4]', 's3:[1..4]', 'x1:[0..30]', 'x2:[0..2]', 'x3:[0..30]']
+
+2025-02-02 20:52:25,045 - mdp.py - building tree of depth 0
+2025-02-02 20:52:25,500 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 5 s, estimated 5178331 s (59 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:52:32,090 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 6.59 s
+number of holes: 1, family size: 25, quotient: 486106 states / 488068 actions
+explored: 8 %
+MDP stats: avg MDP size: 484607, iterations: 3
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:52:32,090 - decision_tree.py - families considered: 3
+2025-02-02 20:52:32,090 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:52:32,090 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:52:32,090 - decision_tree.py - families model checked: 3
+2025-02-02 20:52:32,090 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:52:32,090 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:52:32,091 - mdp.py - building tree of depth 1
+2025-02-02 20:52:32,952 - statistic.py - synthesis initiated, design space: 1e10
+> progress 0.0%, elapsed 5 s, estimated 5480832 s (63 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:52:38,974 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 6.02 s
+number of holes: 14, family size: 1e10, quotient: 486106 states / 488068 actions
+explored: 0 %
+MDP stats: avg MDP size: 486106, iterations: 2
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:52:38,974 - decision_tree.py - families considered: 2
+2025-02-02 20:52:38,975 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:52:38,975 - decision_tree.py - families with schedulers preserved: 1
+2025-02-02 20:52:38,975 - decision_tree.py - families model checked: 1
+2025-02-02 20:52:38,975 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:52:38,975 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:52:38,975 - mdp.py - building tree of depth 2
+2025-02-02 20:52:40,012 - statistic.py - synthesis initiated, design space: 1e28
+> progress 0.0%, elapsed 5 s, estimated 5724472 s (66 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:52:46,421 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 6.41 s
+number of holes: 40, family size: 1e28, quotient: 486106 states / 488068 actions
+explored: 0 %
+MDP stats: avg MDP size: 486106, iterations: 2
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:52:46,421 - decision_tree.py - families considered: 2
+2025-02-02 20:52:46,421 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:52:46,421 - decision_tree.py - families with schedulers preserved: 1
+2025-02-02 20:52:46,421 - decision_tree.py - families model checked: 1
+2025-02-02 20:52:46,421 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:52:46,421 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:52:46,421 - mdp.py - building tree of depth 3
+2025-02-02 20:52:47,909 - statistic.py - synthesis initiated, design space: 1e64
+2025-02-02 20:52:51,461 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 6.04 s
+number of holes: 92, family size: 1e64, quotient: 486106 states / 488068 actions
+explored: 0 %
+MDP stats: avg MDP size: 486106, iterations: 1
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:52:51,461 - decision_tree.py - families considered: 1
+2025-02-02 20:52:51,461 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:52:51,461 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:52:51,462 - decision_tree.py - families model checked: 1
+2025-02-02 20:52:51,462 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:52:51,462 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:52:51,462 - mdp.py - building tree of depth 4
+2025-02-02 20:52:53,804 - statistic.py - synthesis initiated, design space: 1e137
+2025-02-02 20:53:02,737 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 8.93 s
+number of holes: 196, family size: 1e137, quotient: 486106 states / 488068 actions
+explored: 0 %
+MDP stats: avg MDP size: 486106, iterations: 1
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:53:02,738 - decision_tree.py - families considered: 1
+2025-02-02 20:53:02,738 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:53:02,738 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:53:02,738 - decision_tree.py - families model checked: 1
+2025-02-02 20:53:02,738 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:53:02,738 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:53:02,738 - mdp.py - building tree of depth 5
+2025-02-02 20:53:06,602 - statistic.py - synthesis initiated, design space: 1e282
+2025-02-02 20:53:39,223 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 35.1 s
+number of holes: 404, family size: 1e282, quotient: 486106 states / 488068 actions
+explored: 0 %
+MDP stats: avg MDP size: 486106, iterations: 1
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:53:39,224 - decision_tree.py - families considered: 1
+2025-02-02 20:53:39,224 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:53:39,224 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:53:39,224 - decision_tree.py - families model checked: 1
+2025-02-02 20:53:39,224 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:53:39,224 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 20:53:39,224 - decision_tree.py - no admissible subtree found from node 65
+2025-02-02 20:53:39,225 - decision_tree.py - starting iteration 18 with 1 nodes in node queue
+2025-02-02 20:53:39,225 - decision_tree.py - current tree size: 119 nodes
+2025-02-02 20:53:41,636 - decision_tree.py - subtree quotient has 487948 states and 490916 choices
+2025-02-02 20:53:43,011 - mdp.py - MDP has 1476/487948 relevant states
+2025-02-02 20:53:46,038 - mdp.py - MDP has 25 actions
+2025-02-02 20:53:50,791 - mdp.py - found the following 12 variables: ['bc1:[0..15]', 'bc2:[0..15]', 'bc3:[0..15]', 'cd1:[1..4]', 'cd2:[1..4]', 'cd3:[1..4]', 's1:[3..4]', 's2:[1..4]', 's3:[1..4]', 'x1:[0..2]', 'x2:[0..30]', 'x3:[0..30]']
+
+2025-02-02 20:53:50,792 - mdp.py - building tree of depth 0
+2025-02-02 20:53:51,272 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 5 s, estimated 5363927 s (62 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:53:55,692 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 6.9 s
+number of holes: 1, family size: 25, quotient: 487948 states / 490916 actions
+explored: 8 %
+MDP stats: avg MDP size: 485538, iterations: 3
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:53:55,693 - decision_tree.py - families considered: 3
+2025-02-02 20:53:55,693 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:53:55,693 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:53:55,693 - decision_tree.py - families model checked: 3
+2025-02-02 20:53:55,693 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:53:55,693 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:53:55,693 - mdp.py - building tree of depth 1
+2025-02-02 20:53:56,576 - statistic.py - synthesis initiated, design space: 1e12
+> progress 0.0%, elapsed 5 s, estimated 5529250 s (63 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:54:02,699 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 6.12 s
+number of holes: 15, family size: 1e12, quotient: 487948 states / 490916 actions
+explored: 0 %
+MDP stats: avg MDP size: 487948, iterations: 2
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:54:02,700 - decision_tree.py - families considered: 2
+2025-02-02 20:54:02,700 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:54:02,700 - decision_tree.py - families with schedulers preserved: 1
+2025-02-02 20:54:02,700 - decision_tree.py - families model checked: 1
+2025-02-02 20:54:02,700 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:54:02,700 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:54:02,700 - mdp.py - building tree of depth 2
+2025-02-02 20:54:03,885 - statistic.py - synthesis initiated, design space: 1e33
+> progress 0.0%, elapsed 5 s, estimated 5796734 s (67 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:54:10,399 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 6.51 s
+number of holes: 43, family size: 1e33, quotient: 487948 states / 490916 actions
+explored: 0 %
+MDP stats: avg MDP size: 487948, iterations: 2
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:54:10,400 - decision_tree.py - families considered: 2
+2025-02-02 20:54:10,400 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:54:10,400 - decision_tree.py - families with schedulers preserved: 1
+2025-02-02 20:54:10,400 - decision_tree.py - families model checked: 1
+2025-02-02 20:54:10,400 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:54:10,400 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:54:10,400 - mdp.py - building tree of depth 3
+2025-02-02 20:54:12,346 - statistic.py - synthesis initiated, design space: 1e76
+2025-02-02 20:54:18,767 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 6.42 s
+number of holes: 99, family size: 1e76, quotient: 487948 states / 490916 actions
+explored: 0 %
+MDP stats: avg MDP size: 487948, iterations: 1
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:54:18,767 - decision_tree.py - families considered: 1
+2025-02-02 20:54:18,767 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:54:18,767 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:54:18,768 - decision_tree.py - families model checked: 1
+2025-02-02 20:54:18,768 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:54:18,768 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:54:18,768 - mdp.py - building tree of depth 4
+2025-02-02 20:54:19,745 - statistic.py - synthesis initiated, design space: 1e162
+2025-02-02 20:54:30,228 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 10.48 s
+number of holes: 211, family size: 1e162, quotient: 487948 states / 490916 actions
+explored: 0 %
+MDP stats: avg MDP size: 487948, iterations: 1
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:54:30,228 - decision_tree.py - families considered: 1
+2025-02-02 20:54:30,228 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:54:30,229 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:54:30,229 - decision_tree.py - families model checked: 1
+2025-02-02 20:54:30,229 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:54:30,229 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:54:30,229 - mdp.py - building tree of depth 5
+2025-02-02 20:54:36,267 - statistic.py - synthesis initiated, design space: 1e334
+2025-02-02 20:55:21,673 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 50.37 s
+number of holes: 435, family size: 1e334, quotient: 487948 states / 490916 actions
+explored: 0 %
+MDP stats: avg MDP size: 487948, iterations: 1
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:55:21,674 - decision_tree.py - families considered: 1
+2025-02-02 20:55:21,674 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:55:21,674 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:55:21,674 - decision_tree.py - families model checked: 1
+2025-02-02 20:55:21,674 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:55:21,674 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 20:55:21,674 - decision_tree.py - no admissible subtree found from node 90
+2025-02-02 20:55:21,674 - decision_tree.py - starting iteration with subtree depth 5
+2025-02-02 20:55:21,675 - decision_tree.py - starting iteration 19 with 4 nodes in node queue
+2025-02-02 20:55:21,675 - decision_tree.py - current tree size: 119 nodes
+2025-02-02 20:55:24,937 - decision_tree.py - subtree quotient has 542932 states and 543432 choices
+2025-02-02 20:55:26,499 - mdp.py - MDP has 242/542932 relevant states
+2025-02-02 20:55:28,835 - mdp.py - MDP has 25 actions
+2025-02-02 20:55:34,987 - mdp.py - found the following 9 variables: ['b:[0..1]', 'bc2:[0..15]', 'cd1:[0..4]', 'cd2:[0..4]', 'cd3:[0..4]', 's1:[0..2]', 's2:[0..4]', 's3:[0..2]', 'x2:[0..2]']
+
+2025-02-02 20:55:34,989 - mdp.py - building tree of depth 0
+2025-02-02 20:55:35,589 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 5 s, estimated 5740416 s (66 days), iters = {MDP: 2}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 8.29 s
+number of holes: 1, family size: 25, quotient: 542932 states / 543432 actions
+explored: 100 %
+MDP stats: avg MDP size: 527809, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:55:43,881 - decision_tree.py - families considered: 4
+2025-02-02 20:55:43,881 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:55:43,881 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:55:43,881 - decision_tree.py - families model checked: 4
+2025-02-02 20:55:43,881 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:55:43,882 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:55:43,882 - mdp.py - building tree of depth 1
+2025-02-02 20:55:44,783 - statistic.py - synthesis initiated, design space: 1e7
+2025-02-02 20:55:48,216 - synthesizer_ar.py - value 116.8115 achieved after 1063.46 seconds
+> progress 0.0%, elapsed 5 s, estimated 5628634 s (65 days), iters = {MDP: 2}, opt = 116.8115
+2025-02-02 20:55:50,583 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 8.29 s
+number of holes: 12, family size: 1e7, quotient: 542932 states / 543432 actions
+explored: 4 %
+MDP stats: avg MDP size: 527813, iterations: 4
+
+optimum: 116.811491
+--------------------
+2025-02-02 20:55:50,584 - decision_tree.py - families considered: 4
+2025-02-02 20:55:50,584 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:55:50,584 - decision_tree.py - families with schedulers preserved: 1
+2025-02-02 20:55:50,584 - decision_tree.py - families model checked: 3
+2025-02-02 20:55:50,584 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:55:50,584 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:55:50,584 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:55:50,584 - decision_tree.py - V_0=b, b_0=0, bc2_0=0, cd1_0=0, cd2_0=0, cd3_0=0, s1_0=0, s2_0=3, s3_0=0, x2_0=0, A_1=send1, A_2=send2
+2025-02-02 20:55:52,282 - decision_tree.py - double-checking specification satisfiability:  : 116.81149132400313
+2025-02-02 20:55:52,294 - decision_tree.py - admissible subtree found from node 4
+2025-02-02 20:55:52,295 - decision_tree.py - new tree has depth 9 and 51 nodes
+2025-02-02 20:56:12,137 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:56:12,143 - decision_tree.py - new dtcontrol tree has depth 9 and 59 nodes
+2025-02-02 20:56:12,144 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:56:12,145 - decision_tree.py - starting iteration 20 with 3 nodes in node queue
+2025-02-02 20:56:12,145 - decision_tree.py - current tree size: 103 nodes
+2025-02-02 20:56:15,186 - decision_tree.py - subtree quotient has 489736 states and 491864 choices
+2025-02-02 20:56:16,860 - mdp.py - MDP has 1056/489736 relevant states
+2025-02-02 20:56:19,024 - mdp.py - MDP has 25 actions
+2025-02-02 20:56:22,365 - mdp.py - found the following 11 variables: ['bc2:[0..15]', 'bc3:[0..15]', 'cd1:[1..4]', 'cd2:[1..4]', 'cd3:[1..4]', 's1:[3..4]', 's2:[1..4]', 's3:[1..4]', 'x1:[0..2]', 'x2:[0..30]', 'x3:[0..30]']
+
+2025-02-02 20:56:22,367 - mdp.py - building tree of depth 0
+2025-02-02 20:56:22,840 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 5 s, estimated 5380841 s (62 days), iters = {MDP: 2}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.97 s
+number of holes: 1, family size: 25, quotient: 489736 states / 491864 actions
+explored: 100 %
+MDP stats: avg MDP size: 487928, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:56:30,813 - decision_tree.py - families considered: 4
+2025-02-02 20:56:30,813 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:56:30,813 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:56:30,813 - decision_tree.py - families model checked: 4
+2025-02-02 20:56:30,813 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:56:30,813 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:56:30,813 - mdp.py - building tree of depth 1
+2025-02-02 20:56:31,668 - statistic.py - synthesis initiated, design space: 1e10
+> progress 0.0%, elapsed 5 s, estimated 5544666 s (64 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:56:43,762 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 12.09 s
+number of holes: 14, family size: 1e10, quotient: 489736 states / 491864 actions
+explored: 0 %
+MDP stats: avg MDP size: 487928, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:56:43,763 - decision_tree.py - families considered: 4
+2025-02-02 20:56:43,763 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:56:43,763 - decision_tree.py - families with schedulers preserved: 1
+2025-02-02 20:56:43,763 - decision_tree.py - families model checked: 3
+2025-02-02 20:56:43,763 - decision_tree.py - harmonizations attempted: 2
+2025-02-02 20:56:43,763 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:56:43,763 - mdp.py - building tree of depth 2
+2025-02-02 20:56:44,830 - statistic.py - synthesis initiated, design space: 1e29
+> progress 0.0%, elapsed 5 s, estimated 5723514 s (66 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:56:49,884 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.53 s
+number of holes: 40, family size: 1e29, quotient: 489736 states / 491864 actions
+explored: 0 %
+MDP stats: avg MDP size: 489736, iterations: 3
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:56:49,884 - decision_tree.py - families considered: 3
+2025-02-02 20:56:49,884 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:56:49,884 - decision_tree.py - families with schedulers preserved: 2
+2025-02-02 20:56:49,885 - decision_tree.py - families model checked: 1
+2025-02-02 20:56:49,885 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:56:49,885 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:56:49,885 - mdp.py - building tree of depth 3
+2025-02-02 20:56:51,511 - statistic.py - synthesis initiated, design space: 1e68
+> progress 0.0%, elapsed 7 s, estimated 7007116 s (81 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:56:59,469 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.96 s
+number of holes: 92, family size: 1e68, quotient: 489736 states / 491864 actions
+explored: 0 %
+MDP stats: avg MDP size: 489736, iterations: 2
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:56:59,470 - decision_tree.py - families considered: 2
+2025-02-02 20:56:59,470 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:56:59,470 - decision_tree.py - families with schedulers preserved: 1
+2025-02-02 20:56:59,470 - decision_tree.py - families model checked: 1
+2025-02-02 20:56:59,470 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:56:59,470 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:56:59,470 - mdp.py - building tree of depth 4
+2025-02-02 20:57:01,894 - statistic.py - synthesis initiated, design space: 1e144
+> progress 0.0%, elapsed 11 s, estimated 11128410 s (128 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.0%, elapsed 14 s, estimated 14332127 s (165 days), iters = {MDP: 3}, opt = 116.7698
+> progress 0.0%, elapsed 18 s, estimated 18416744 s (213 days), iters = {MDP: 5}, opt = 116.7698
+> progress 0.0%, elapsed 22 s, estimated 22865436 s (264 days), iters = {MDP: 8}, opt = 116.7698
+2025-02-02 20:57:26,924 - synthesizer_ar.py - value 116.7909 achieved after 1172.1 seconds
+> progress 0.0%, elapsed 28 s, estimated 169907361 s (5 years), iters = {MDP: 10}, opt = 116.7909
+2025-02-02 20:57:29,549 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 30.14 s
+number of holes: 196, family size: 1e144, quotient: 489736 states / 491864 actions
+explored: 0 %
+MDP stats: avg MDP size: 489079, iterations: 11
+
+optimum: 116.790904
+--------------------
+2025-02-02 20:57:29,550 - decision_tree.py - families considered: 11
+2025-02-02 20:57:29,550 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:57:29,550 - decision_tree.py - families with schedulers preserved: 7
+2025-02-02 20:57:29,550 - decision_tree.py - families model checked: 4
+2025-02-02 20:57:29,550 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:57:29,550 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 20:57:29,550 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:57:29,550 - decision_tree.py - V_0=x1, bc2_0=0, bc3_0=0, cd1_0=1, cd2_0=1, cd3_0=1, s1_0=3, s2_0=1, s3_0=1, x1_0=0, x2_0=0, x3_0=0, V_1=x1, bc2_1=0, bc3_1=0, cd1_1=1, cd2_1=1, cd3_1=1, s1_1=3, s2_1=1, s3_1=1, x1_1=0, x2_1=0, x3_1=0, V_2=x3, bc2_2=0, bc3_2=0, cd1_2=3, cd2_2=1, cd3_2=1, s1_2=3, s2_2=2, s3_2=3, x1_2=0, x2_2=0, x3_2=2, V_3=s3, bc2_3=0, bc3_3=0, cd1_3=3, cd2_3=1, cd3_3=1, s1_3=3, s2_3=1, s3_3=2, x1_3=0, x2_3=0, x3_3=0, A_4=station3_cmd_55, A_5=busy3, V_6=x2, bc2_6=0, bc3_6=0, cd1_6=3, cd2_6=1, cd3_6=1, s1_6=3, s2_6=1, s3_6=1, x1_6=0, x2_6=0, x3_6=0, A_7=station2_cmd_40, A_8=busy2, V_9=bc2, bc2_9=0, bc3_9=0, cd1_9=1, cd2_9=1, cd3_9=1, s1_9=3, s2_9=1, s3_9=1, x1_9=0, x2_9=0, x3_9=0, V_10=bc2, bc2_10=0, bc3_10=0, cd1_10=1, cd2_10=1, cd3_10=1, s1_10=3, s2_10=1, s3_10=1, x1_10=0, x2_10=0, x3_10=0, A_11=__no_label__, A_12=station2_cmd_40, V_13=bc2, bc2_13=0, bc3_13=0, cd1_13=1, cd2_13=1, cd3_13=1, s1_13=3, s2_13=1, s3_13=1, x1_13=0, x2_13=0, x3_13=0, A_14=__no_label__, A_15=__no_label__, V_16=x1, bc2_16=0, bc3_16=0, cd1_16=1, cd2_16=1, cd3_16=1, s1_16=3, s2_16=1, s3_16=1, x1_16=0, x2_16=0, x3_16=0, V_17=bc2, bc2_17=0, bc3_17=0, cd1_17=1, cd2_17=1, cd3_17=1, s1_17=3, s2_17=1, s3_17=1, x1_17=0, x2_17=0, x3_17=0, V_18=bc2, bc2_18=0, bc3_18=0, cd1_18=1, cd2_18=1, cd3_18=1, s1_18=3, s2_18=1, s3_18=1, x1_18=0, x2_18=0, x3_18=0, A_19=__no_label__, A_20=__no_label__, V_21=bc2, bc2_21=0, bc3_21=0, cd1_21=1, cd2_21=1, cd3_21=1, s1_21=3, s2_21=1, s3_21=1, x1_21=0, x2_21=0, x3_21=0, A_22=__no_label__, A_23=station2_cmd_38, V_24=x1, bc2_24=0, bc3_24=0, cd1_24=1, cd2_24=1, cd3_24=1, s1_24=3, s2_24=1, s3_24=1, x1_24=0, x2_24=0, x3_24=0, V_25=bc2, bc2_25=0, bc3_25=0, cd1_25=1, cd2_25=1, cd3_25=1, s1_25=3, s2_25=1, s3_25=1, x1_25=0, x2_25=0, x3_25=0, A_26=__no_label__, A_27=__no_label__, V_28=s3, bc2_28=0, bc3_28=0, cd1_28=1, cd2_28=1, cd3_28=1, s1_28=3, s2_28=1, s3_28=3, x1_28=0, x2_28=0, x3_28=0, A_29=busy1, A_30=busy1
+2025-02-02 20:57:31,291 - decision_tree.py - double-checking specification satisfiability:  : 116.79090431963837
+2025-02-02 20:57:31,298 - decision_tree.py - admissible subtree found from node 75
+2025-02-02 20:57:31,300 - decision_tree.py - new tree has depth 9 and 45 nodes
+2025-02-02 20:57:48,708 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:57:48,716 - decision_tree.py - new dtcontrol tree has depth 9 and 53 nodes
+2025-02-02 20:57:48,716 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:57:48,718 - decision_tree.py - starting iteration 21 with 2 nodes in node queue
+2025-02-02 20:57:48,718 - decision_tree.py - current tree size: 91 nodes
+2025-02-02 20:57:51,657 - decision_tree.py - subtree quotient has 484979 states and 486509 choices
+2025-02-02 20:57:53,125 - mdp.py - MDP has 759/484979 relevant states
+2025-02-02 20:57:56,220 - mdp.py - MDP has 25 actions
+2025-02-02 20:58:00,646 - mdp.py - found the following 10 variables: ['bc3:[0..15]', 'cd1:[1..4]', 'cd2:[1..4]', 'cd3:[1..4]', 's1:[1..2]', 's2:[1..2]', 's3:[1..4]', 'x1:[0..30]', 'x2:[0..30]', 'x3:[0..30]']
+
+2025-02-02 20:58:00,647 - mdp.py - building tree of depth 0
+2025-02-02 20:58:01,141 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 20:58:04,274 - synthesizer_ar.py - value 116.8048 achieved after 1211.93 seconds
+> progress 0.0%, elapsed 5 s, estimated 5068120 s (58 days), iters = {MDP: 2}, opt = 116.8048
+2025-02-02 20:58:09,013 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.87 s
+number of holes: 1, family size: 25, quotient: 484979 states / 486509 actions
+explored: 4 %
+MDP stats: avg MDP size: 484976, iterations: 2
+
+optimum: 116.804754
+--------------------
+2025-02-02 20:58:09,014 - decision_tree.py - families considered: 2
+2025-02-02 20:58:09,014 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:58:09,014 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:58:09,014 - decision_tree.py - families model checked: 2
+2025-02-02 20:58:09,014 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:58:09,014 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 20:58:09,014 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 20:58:09,014 - decision_tree.py - A_0=busy3
+2025-02-02 20:58:10,608 - decision_tree.py - double-checking specification satisfiability:  : 116.80475412040911
+2025-02-02 20:58:10,615 - decision_tree.py - admissible subtree found from node 32
+2025-02-02 20:58:10,616 - decision_tree.py - new tree has depth 9 and 37 nodes
+2025-02-02 20:58:27,854 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 20:58:28,919 - decision_tree.py - new dtcontrol tree has depth 9 and 46 nodes
+2025-02-02 20:58:28,919 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 20:58:28,921 - decision_tree.py - starting iteration 22 with 1 nodes in node queue
+2025-02-02 20:58:28,921 - decision_tree.py - current tree size: 75 nodes
+2025-02-02 20:58:32,364 - decision_tree.py - subtree quotient has 486307 states and 487681 choices
+2025-02-02 20:58:33,814 - mdp.py - MDP has 681/486307 relevant states
+2025-02-02 20:58:35,828 - mdp.py - MDP has 25 actions
+2025-02-02 20:58:40,648 - mdp.py - found the following 10 variables: ['bc3:[0..15]', 'cd1:[1..4]', 'cd2:[1..4]', 'cd3:[1..4]', 's1:[1..2]', 's2:[3..4]', 's3:[1..4]', 'x1:[0..30]', 'x2:[0..2]', 'x3:[0..30]']
+
+2025-02-02 20:58:40,649 - mdp.py - building tree of depth 0
+2025-02-02 20:58:41,115 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 5 s, estimated 5279876 s (61 days), iters = {MDP: 2}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.86 s
+number of holes: 1, family size: 25, quotient: 486307 states / 487681 actions
+explored: 100 %
+MDP stats: avg MDP size: 485155, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:58:48,979 - decision_tree.py - families considered: 4
+2025-02-02 20:58:48,979 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:58:48,979 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 20:58:48,979 - decision_tree.py - families model checked: 4
+2025-02-02 20:58:48,979 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:58:48,979 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:58:48,979 - mdp.py - building tree of depth 1
+2025-02-02 20:58:47,345 - statistic.py - synthesis initiated, design space: 1e9
+> progress 0.0%, elapsed 5 s, estimated 5635177 s (65 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:58:54,853 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.51 s
+number of holes: 13, family size: 1e9, quotient: 486307 states / 487681 actions
+explored: 0 %
+MDP stats: avg MDP size: 486305, iterations: 3
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:58:54,854 - decision_tree.py - families considered: 3
+2025-02-02 20:58:54,854 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:58:54,854 - decision_tree.py - families with schedulers preserved: 1
+2025-02-02 20:58:54,854 - decision_tree.py - families model checked: 2
+2025-02-02 20:58:54,854 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:58:54,854 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:58:54,854 - mdp.py - building tree of depth 2
+2025-02-02 20:58:55,847 - statistic.py - synthesis initiated, design space: 1e24
+> progress 0.0%, elapsed 5 s, estimated 5971386 s (69 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:59:03,473 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.63 s
+number of holes: 37, family size: 1e24, quotient: 486307 states / 487681 actions
+explored: 0 %
+MDP stats: avg MDP size: 486307, iterations: 3
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:59:03,473 - decision_tree.py - families considered: 3
+2025-02-02 20:59:03,473 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:59:03,474 - decision_tree.py - families with schedulers preserved: 2
+2025-02-02 20:59:03,474 - decision_tree.py - families model checked: 1
+2025-02-02 20:59:03,474 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:59:03,474 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:59:03,474 - mdp.py - building tree of depth 3
+2025-02-02 20:59:04,687 - statistic.py - synthesis initiated, design space: 1e56
+> progress 0.0%, elapsed 6 s, estimated 6366308 s (73 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 20:59:12,291 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.6 s
+number of holes: 85, family size: 1e56, quotient: 486307 states / 487681 actions
+explored: 0 %
+MDP stats: avg MDP size: 486307, iterations: 2
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:59:12,291 - decision_tree.py - families considered: 2
+2025-02-02 20:59:12,291 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:59:12,291 - decision_tree.py - families with schedulers preserved: 1
+2025-02-02 20:59:12,291 - decision_tree.py - families model checked: 1
+2025-02-02 20:59:12,291 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 20:59:12,291 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 20:59:12,292 - mdp.py - building tree of depth 4
+2025-02-02 20:59:13,983 - statistic.py - synthesis initiated, design space: 1e118
+> progress 0.0%, elapsed 8 s, estimated 8885082 s (102 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.0%, elapsed 12 s, estimated 12568660 s (145 days), iters = {MDP: 4}, opt = 116.7698
+> progress 0.0%, elapsed 17 s, estimated 17010419 s (196 days), iters = {MDP: 7}, opt = 116.7698
+> progress 0.0%, elapsed 23 s, estimated 6889775 s (79 days), iters = {MDP: 9}, opt = 116.7698
+2025-02-02 20:59:41,928 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 30.42 s
+number of holes: 181, family size: 1e118, quotient: 486307 states / 487681 actions
+explored: 0 %
+MDP stats: avg MDP size: 485430, iterations: 10
+
+optimum: 116.769834
+--------------------
+2025-02-02 20:59:41,930 - decision_tree.py - families considered: 10
+2025-02-02 20:59:41,930 - decision_tree.py - families skipped by construction: 0
+2025-02-02 20:59:41,930 - decision_tree.py - families with schedulers preserved: 6
+2025-02-02 20:59:41,930 - decision_tree.py - families model checked: 4
+2025-02-02 20:59:41,930 - decision_tree.py - harmonizations attempted: 3
+2025-02-02 20:59:41,930 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 20:59:41,930 - decision_tree.py - no admissible subtree found from node 34
+2025-02-02 20:59:41,930 - decision_tree.py - starting iteration with subtree depth 4
+2025-02-02 20:59:41,931 - decision_tree.py - starting iteration 23 with 4 nodes in node queue
+2025-02-02 20:59:41,931 - decision_tree.py - current tree size: 75 nodes
+2025-02-02 20:59:44,610 - decision_tree.py - subtree quotient has 559622 states and 563966 choices
+2025-02-02 20:59:46,154 - mdp.py - MDP has 2135/559622 relevant states
+2025-02-02 20:59:46,247 - mdp.py - MDP has 25 actions
+2025-02-02 20:59:52,355 - mdp.py - found the following 13 variables: ['b:[0..1]', 'bc1:[0..15]', 'bc2:[0..15]', 'bc3:[0..15]', 'cd1:[0..4]', 'cd2:[0..4]', 'cd3:[0..4]', 's1:[0..4]', 's2:[0..4]', 's3:[0..4]', 'x1:[0..2]', 'x2:[0..2]', 'x3:[0..2]']
+
+2025-02-02 20:59:52,357 - mdp.py - building tree of depth 0
+2025-02-02 20:59:53,068 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 5 s, estimated 5853705 s (67 days), iters = {MDP: 2}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 8.43 s
+number of holes: 1, family size: 25, quotient: 559622 states / 563966 actions
+explored: 100 %
+MDP stats: avg MDP size: 539846, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:00:01,495 - decision_tree.py - families considered: 4
+2025-02-02 21:00:01,495 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:00:01,495 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:00:01,495 - decision_tree.py - families model checked: 4
+2025-02-02 21:00:01,495 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:00:01,495 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:00:01,496 - mdp.py - building tree of depth 1
+2025-02-02 21:00:02,578 - statistic.py - synthesis initiated, design space: 1e11
+> progress 0.0%, elapsed 5 s, estimated 5977127 s (69 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 21:00:13,543 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 10.96 s
+number of holes: 16, family size: 1e11, quotient: 559622 states / 563966 actions
+explored: 0 %
+MDP stats: avg MDP size: 544614, iterations: 2
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:00:13,543 - decision_tree.py - families considered: 2
+2025-02-02 21:00:13,544 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:00:13,544 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:00:13,544 - decision_tree.py - families model checked: 2
+2025-02-02 21:00:13,544 - decision_tree.py - harmonizations attempted: 2
+2025-02-02 21:00:13,544 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:00:13,544 - mdp.py - building tree of depth 2
+2025-02-02 21:00:15,010 - statistic.py - synthesis initiated, design space: 1e30
+> progress 0.0%, elapsed 6 s, estimated 6291477 s (72 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 21:00:24,086 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 11.55 s
+number of holes: 46, family size: 1e30, quotient: 559622 states / 563966 actions
+explored: 0 %
+MDP stats: avg MDP size: 544614, iterations: 2
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:00:24,087 - decision_tree.py - families considered: 2
+2025-02-02 21:00:24,087 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:00:24,087 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:00:24,087 - decision_tree.py - families model checked: 2
+2025-02-02 21:00:24,087 - decision_tree.py - harmonizations attempted: 2
+2025-02-02 21:00:24,087 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:00:24,087 - mdp.py - building tree of depth 3
+2025-02-02 21:00:26,772 - statistic.py - synthesis initiated, design space: 1e68
+> progress 0.0%, elapsed 7 s, estimated 7551631 s (87 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.0%, elapsed 12 s, estimated 12027608 s (139 days), iters = {MDP: 4}, opt = 116.7698
+> progress 0.0%, elapsed 16 s, estimated 16158394 s (187 days), iters = {MDP: 6}, opt = 116.7698
+> progress 0.0%, elapsed 20 s, estimated 20032367 s (231 days), iters = {MDP: 8}, opt = 116.7698
+> progress 0.0%, elapsed 23 s, estimated 23789145 s (275 days), iters = {MDP: 10}, opt = 116.7698
+> progress 0.0%, elapsed 27 s, estimated 27560461 s (318 days), iters = {MDP: 12}, opt = 116.7698
+2025-02-02 21:00:54,497 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 30.21 s
+number of holes: 106, family size: 1e68, quotient: 559622 states / 563966 actions
+explored: 0 %
+MDP stats: avg MDP size: 559622, iterations: 13
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:00:54,497 - decision_tree.py - families considered: 13
+2025-02-02 21:00:54,498 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:00:54,498 - decision_tree.py - families with schedulers preserved: 12
+2025-02-02 21:00:54,498 - decision_tree.py - families model checked: 1
+2025-02-02 21:00:54,498 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:00:54,498 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 21:00:54,499 - decision_tree.py - no admissible subtree found from node 2
+2025-02-02 21:00:54,499 - decision_tree.py - starting iteration 24 with 3 nodes in node queue
+2025-02-02 21:00:54,499 - decision_tree.py - current tree size: 75 nodes
+2025-02-02 21:00:56,994 - decision_tree.py - subtree quotient has 485613 states and 488453 choices
+2025-02-02 21:00:58,403 - mdp.py - MDP has 1412/485613 relevant states
+2025-02-02 21:01:01,917 - mdp.py - MDP has 25 actions
+2025-02-02 21:01:06,849 - mdp.py - found the following 12 variables: ['bc1:[0..15]', 'bc2:[0..15]', 'bc3:[0..15]', 'cd1:[1..4]', 'cd2:[1..4]', 'cd3:[1..4]', 's1:[3..4]', 's2:[1..4]', 's3:[1..4]', 'x1:[0..2]', 'x2:[0..30]', 'x3:[0..30]']
+
+2025-02-02 21:01:06,850 - mdp.py - building tree of depth 0
+2025-02-02 21:01:07,361 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 5 s, estimated 5245239 s (60 days), iters = {MDP: 2}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 8.0 s
+number of holes: 1, family size: 25, quotient: 485613 states / 488453 actions
+explored: 100 %
+MDP stats: avg MDP size: 484322, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:01:15,365 - decision_tree.py - families considered: 4
+2025-02-02 21:01:15,365 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:01:15,365 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:01:15,365 - decision_tree.py - families model checked: 4
+2025-02-02 21:01:15,365 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:01:15,365 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:01:15,365 - mdp.py - building tree of depth 1
+2025-02-02 21:01:16,282 - statistic.py - synthesis initiated, design space: 1e12
+> progress 0.0%, elapsed 5 s, estimated 5539248 s (64 days), iters = {MDP: 2}, opt = 116.7698
+> progress 8.333%, elapsed 9 s, estimated 114 s, iters = {MDP: 6}, opt = 116.7698
+2025-02-02 21:01:23,872 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 10.07 s
+number of holes: 15, family size: 1e12, quotient: 485613 states / 488453 actions
+explored: 8 %
+MDP stats: avg MDP size: 484753, iterations: 6
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:01:23,873 - decision_tree.py - families considered: 6
+2025-02-02 21:01:23,873 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:01:23,873 - decision_tree.py - families with schedulers preserved: 2
+2025-02-02 21:01:23,873 - decision_tree.py - families model checked: 4
+2025-02-02 21:01:23,873 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:01:23,873 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:01:23,873 - mdp.py - building tree of depth 2
+2025-02-02 21:01:25,070 - statistic.py - synthesis initiated, design space: 1e33
+> progress 0.0%, elapsed 5 s, estimated 5829277 s (67 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.027%, elapsed 9 s, estimated 32538 s (9 hours), iters = {MDP: 5}, opt = 116.7698
+2025-02-02 21:01:35,933 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 10.86 s
+number of holes: 43, family size: 1e33, quotient: 485613 states / 488453 actions
+explored: 0 %
+MDP stats: avg MDP size: 484753, iterations: 6
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:01:35,933 - decision_tree.py - families considered: 6
+2025-02-02 21:01:35,933 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:01:35,933 - decision_tree.py - families with schedulers preserved: 2
+2025-02-02 21:01:35,933 - decision_tree.py - families model checked: 4
+2025-02-02 21:01:35,934 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:01:35,934 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:01:35,934 - mdp.py - building tree of depth 3
+2025-02-02 21:01:38,305 - statistic.py - synthesis initiated, design space: 1e76
+> progress 0.0%, elapsed 6 s, estimated 6903649 s (79 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.0%, elapsed 10 s, estimated 10154146 s (117 days), iters = {MDP: 4}, opt = 116.7698
+> progress 0.0%, elapsed 14 s, estimated 14350783 s (166 days), iters = {MDP: 7}, opt = 116.7698
+> progress 0.0%, elapsed 21 s, estimated 21445413 s (248 days), iters = {MDP: 9}, opt = 116.7698
+> progress 0.0%, elapsed 25 s, estimated 18802379 s (217 days), iters = {MDP: 12}, opt = 116.7698
+> progress 0.0%, elapsed 28 s, estimated 9023178 s (104 days), iters = {MDP: 15}, opt = 116.7698
+2025-02-02 21:02:11,311 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 35.49 s
+number of holes: 99, family size: 1e76, quotient: 485613 states / 488453 actions
+explored: 0 %
+MDP stats: avg MDP size: 485520, iterations: 16
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:02:11,312 - decision_tree.py - families considered: 16
+2025-02-02 21:02:11,313 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:02:11,313 - decision_tree.py - families with schedulers preserved: 7
+2025-02-02 21:02:11,313 - decision_tree.py - families model checked: 9
+2025-02-02 21:02:11,313 - decision_tree.py - harmonizations attempted: 3
+2025-02-02 21:02:11,313 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 21:02:11,313 - decision_tree.py - no admissible subtree found from node 58
+2025-02-02 21:02:11,313 - decision_tree.py - starting iteration 25 with 2 nodes in node queue
+2025-02-02 21:02:11,313 - decision_tree.py - current tree size: 75 nodes
+2025-02-02 21:02:14,944 - decision_tree.py - subtree quotient has 483830 states and 484544 choices
+2025-02-02 21:02:16,344 - mdp.py - MDP has 355/483830 relevant states
+2025-02-02 21:02:16,396 - mdp.py - MDP has 25 actions
+2025-02-02 21:02:21,810 - mdp.py - found the following 9 variables: ['bc3:[0..15]', 'cd1:[1..4]', 'cd2:[1..4]', 'cd3:[1..4]', 's2:[3..4]', 's3:[3..4]', 'x1:[2..30]', 'x2:[0..2]', 'x3:[0..2]']
+
+2025-02-02 21:02:21,811 - mdp.py - building tree of depth 0
+2025-02-02 21:02:22,267 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 5 s, estimated 5140677 s (59 days), iters = {MDP: 2}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.65 s
+number of holes: 1, family size: 25, quotient: 483830 states / 484544 actions
+explored: 100 %
+MDP stats: avg MDP size: 483324, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:02:29,918 - decision_tree.py - families considered: 4
+2025-02-02 21:02:29,918 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:02:29,918 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:02:29,918 - decision_tree.py - families model checked: 4
+2025-02-02 21:02:29,918 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:02:29,918 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:02:29,918 - mdp.py - building tree of depth 1
+2025-02-02 21:02:30,732 - statistic.py - synthesis initiated, design space: 1e7
+> progress 0.0%, elapsed 5 s, estimated 5215319 s (60 days), iters = {MDP: 2}, opt = 116.7698
+> progress 11.111%, elapsed 8 s, estimated 79 s, iters = {MDP: 6}, opt = 116.7698
+2025-02-02 21:02:41,033 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 10.3 s
+number of holes: 12, family size: 1e7, quotient: 483830 states / 484544 actions
+explored: 11 %
+MDP stats: avg MDP size: 483520, iterations: 7
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:02:41,033 - decision_tree.py - families considered: 7
+2025-02-02 21:02:41,033 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:02:41,034 - decision_tree.py - families with schedulers preserved: 2
+2025-02-02 21:02:41,034 - decision_tree.py - families model checked: 5
+2025-02-02 21:02:41,034 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:02:41,034 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:02:41,034 - mdp.py - building tree of depth 2
+2025-02-02 21:02:41,904 - statistic.py - synthesis initiated, design space: 1e19
+> progress 0.0%, elapsed 5 s, estimated 5379853 s (62 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.098%, elapsed 9 s, estimated 9437 s (2 hours), iters = {MDP: 6}, opt = 116.7698
+2025-02-02 21:02:50,303 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 10.88 s
+number of holes: 34, family size: 1e19, quotient: 483830 states / 484544 actions
+explored: 1 %
+MDP stats: avg MDP size: 483541, iterations: 7
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:02:50,304 - decision_tree.py - families considered: 7
+2025-02-02 21:02:50,304 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:02:50,304 - decision_tree.py - families with schedulers preserved: 3
+2025-02-02 21:02:50,304 - decision_tree.py - families model checked: 4
+2025-02-02 21:02:50,304 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:02:50,304 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:02:50,304 - mdp.py - building tree of depth 3
+2025-02-02 21:02:51,327 - statistic.py - synthesis initiated, design space: 1e44
+> progress 0.0%, elapsed 6 s, estimated 6407833 s (74 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.0%, elapsed 9 s, estimated 9783471 s (113 days), iters = {MDP: 5}, opt = 116.7698
+2025-02-02 21:03:06,246 - synthesizer_ar.py - value 116.8014 achieved after 1538.72 seconds
+> progress 0.0%, elapsed 15 s, estimated 3509892 s (40 days), iters = {MDP: 8}, opt = 116.8014
+> progress 0.005%, elapsed 18 s, estimated 338483 s (3 days), iters = {MDP: 11}, opt = 116.8014
+> progress 0.005%, elapsed 23 s, estimated 430254 s (4 days), iters = {MDP: 12}, opt = 116.8014
+> progress 0.005%, elapsed 28 s, estimated 511809 s (5 days), iters = {MDP: 14}, opt = 116.8014
+2025-02-02 21:03:22,759 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 33.92 s
+number of holes: 78, family size: 1e44, quotient: 483830 states / 484544 actions
+explored: 0 %
+MDP stats: avg MDP size: 483553, iterations: 15
+
+optimum: 116.801386
+--------------------
+2025-02-02 21:03:22,760 - decision_tree.py - families considered: 15
+2025-02-02 21:03:22,760 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:03:22,761 - decision_tree.py - families with schedulers preserved: 6
+2025-02-02 21:03:22,761 - decision_tree.py - families model checked: 9
+2025-02-02 21:03:22,761 - decision_tree.py - harmonizations attempted: 3
+2025-02-02 21:03:22,761 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 21:03:22,761 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 21:03:22,761 - decision_tree.py - V_0=x3, bc3_0=0, cd1_0=1, cd2_0=1, cd3_0=1, s2_0=3, s3_0=3, x1_0=2, x2_0=0, x3_0=0, V_1=cd3, bc3_1=0, cd1_1=1, cd2_1=1, cd3_1=3, s2_1=3, s3_1=3, x1_1=2, x2_1=0, x3_1=0, V_2=cd3, bc3_2=0, cd1_2=1, cd2_2=1, cd3_2=3, s2_2=3, s3_2=3, x1_2=2, x2_2=0, x3_2=0, A_3=busy2, A_4=busy2, V_5=cd3, bc3_5=0, cd1_5=1, cd2_5=1, cd3_5=3, s2_5=3, s3_5=3, x1_5=2, x2_5=0, x3_5=0, A_6=send3, A_7=busy2, V_8=x2, bc3_8=0, cd1_8=1, cd2_8=1, cd3_8=1, s2_8=3, s3_8=3, x1_8=2, x2_8=0, x3_8=0, V_9=cd2, bc3_9=0, cd1_9=1, cd2_9=3, cd3_9=1, s2_9=3, s3_9=3, x1_9=2, x2_9=0, x3_9=0, A_10=busy3, A_11=busy3, V_12=s2, bc3_12=0, cd1_12=1, cd2_12=1, cd3_12=1, s2_12=3, s3_12=3, x1_12=2, x2_12=0, x3_12=0, A_13=busy2, A_14=station3_cmd_55
+2025-02-02 21:03:24,441 - decision_tree.py - double-checking specification satisfiability:  : 116.8013855186121
+2025-02-02 21:03:24,447 - decision_tree.py - admissible subtree found from node 44
+2025-02-02 21:03:24,449 - decision_tree.py - new tree has depth 8 and 35 nodes
+2025-02-02 21:03:44,880 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 21:03:44,886 - decision_tree.py - new dtcontrol tree has depth 9 and 44 nodes
+2025-02-02 21:03:44,887 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 21:03:44,888 - decision_tree.py - starting iteration 26 with 1 nodes in node queue
+2025-02-02 21:03:44,888 - decision_tree.py - current tree size: 71 nodes
+2025-02-02 21:03:45,966 - decision_tree.py - subtree quotient has 1358032 states and 1360028 choices
+2025-02-02 21:03:49,815 - mdp.py - MDP has 998/1358032 relevant states
+2025-02-02 21:03:56,756 - mdp.py - MDP has 25 actions
+2025-02-02 21:04:10,480 - mdp.py - found the following 14 variables: ['bc1:[0..15]', 'bc2:[0..15]', 'bc3:[0..15]', 'cd1:[0..4]', 'cd2:[0..4]', 'cd3:[0..4]', 's1:[1..4]', 's2:[1..4]', 's3:[0..4]', 'x1:[0..2]', 'x2:[0..2]', 'x3:[0..2]', 'y1:[0..1]', 'y2:[0..1]']
+
+2025-02-02 21:04:10,483 - mdp.py - building tree of depth 0
+2025-02-02 21:04:11,845 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 21:04:21,990 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 12.62 s
+number of holes: 1, family size: 25, quotient: 1358032 states / 1360028 actions
+explored: 0 %
+MDP stats: avg MDP size: 1358032, iterations: 1
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:04:21,990 - decision_tree.py - families considered: 1
+2025-02-02 21:04:21,990 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:04:21,990 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:04:21,990 - decision_tree.py - families model checked: 1
+2025-02-02 21:04:21,990 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:04:21,990 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:04:21,990 - mdp.py - building tree of depth 1
+2025-02-02 21:04:24,231 - statistic.py - synthesis initiated, design space: 1e11
+2025-02-02 21:04:38,278 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 14.05 s
+number of holes: 17, family size: 1e11, quotient: 1358032 states / 1360028 actions
+explored: 0 %
+MDP stats: avg MDP size: 1358032, iterations: 1
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:04:38,278 - decision_tree.py - families considered: 1
+2025-02-02 21:04:38,278 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:04:38,278 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:04:38,278 - decision_tree.py - families model checked: 1
+2025-02-02 21:04:38,278 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:04:38,278 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:04:38,279 - mdp.py - building tree of depth 2
+2025-02-02 21:04:40,584 - statistic.py - synthesis initiated, design space: 1e32
+2025-02-02 21:04:52,300 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 14.2 s
+number of holes: 49, family size: 1e32, quotient: 1358032 states / 1360028 actions
+explored: 0 %
+MDP stats: avg MDP size: 1358032, iterations: 1
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:04:52,300 - decision_tree.py - families considered: 1
+2025-02-02 21:04:52,300 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:04:52,300 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:04:52,300 - decision_tree.py - families model checked: 1
+2025-02-02 21:04:52,300 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:04:52,300 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:04:52,300 - mdp.py - building tree of depth 3
+2025-02-02 21:04:55,068 - statistic.py - synthesis initiated, design space: 1e73
+> progress 0.0%, elapsed 16 s, estimated 16334011 s (189 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.0%, elapsed 19 s, estimated 19941923 s (230 days), iters = {MDP: 3}, opt = 116.7698
+> progress 0.0%, elapsed 23 s, estimated 23187437 s (268 days), iters = {MDP: 4}, opt = 116.7698
+> progress 0.071%, elapsed 26 s, estimated 36990 s (10 hours), iters = {MDP: 5}, opt = 116.7698
+> progress 0.071%, elapsed 29 s, estimated 41524 s (11 hours), iters = {MDP: 6}, opt = 116.7698
+2025-02-02 21:05:23,801 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 31.21 s
+number of holes: 113, family size: 1e73, quotient: 1358032 states / 1360028 actions
+explored: 0 %
+MDP stats: avg MDP size: 1347995, iterations: 6
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:05:23,801 - decision_tree.py - families considered: 6
+2025-02-02 21:05:23,801 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:05:23,801 - decision_tree.py - families with schedulers preserved: 4
+2025-02-02 21:05:23,802 - decision_tree.py - families model checked: 2
+2025-02-02 21:05:23,802 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:05:23,802 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 21:05:23,802 - decision_tree.py - no admissible subtree found from node 19
+2025-02-02 21:05:23,802 - decision_tree.py - starting iteration with subtree depth 3
+2025-02-02 21:05:23,802 - decision_tree.py - starting iteration 27 with 5 nodes in node queue
+2025-02-02 21:05:23,802 - decision_tree.py - current tree size: 71 nodes
+2025-02-02 21:05:26,894 - decision_tree.py - subtree quotient has 541984 states and 542926 choices
+2025-02-02 21:05:28,371 - mdp.py - MDP has 463/541984 relevant states
+2025-02-02 21:05:30,981 - mdp.py - MDP has 25 actions
+2025-02-02 21:05:35,830 - mdp.py - found the following 11 variables: ['b:[0..1]', 'bc1:[0..15]', 'bc2:[0..15]', 'cd1:[0..4]', 'cd2:[0..4]', 'cd3:[0..4]', 's1:[0..4]', 's2:[0..4]', 's3:[0..2]', 'x1:[0..2]', 'x2:[0..2]']
+
+2025-02-02 21:05:35,833 - mdp.py - building tree of depth 0
+2025-02-02 21:05:36,355 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 5 s, estimated 5412637 s (62 days), iters = {MDP: 2}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.93 s
+number of holes: 1, family size: 25, quotient: 541984 states / 542926 actions
+explored: 100 %
+MDP stats: avg MDP size: 526976, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:05:44,285 - decision_tree.py - families considered: 4
+2025-02-02 21:05:44,285 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:05:44,285 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:05:44,285 - decision_tree.py - families model checked: 4
+2025-02-02 21:05:44,286 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:05:44,286 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:05:44,286 - mdp.py - building tree of depth 1
+2025-02-02 21:05:45,187 - statistic.py - synthesis initiated, design space: 1e9
+> progress 0.0%, elapsed 5 s, estimated 5638388 s (65 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.0%, elapsed 10 s, estimated 10783532 s (124 days), iters = {MDP: 3}, opt = 116.7698
+> progress 0.545%, elapsed 14 s, estimated 2710 s, iters = {MDP: 7}, opt = 116.7698
+2025-02-02 21:05:58,043 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 15.34 s
+number of holes: 14, family size: 1e9, quotient: 541984 states / 542926 actions
+explored: 0 %
+MDP stats: avg MDP size: 516255, iterations: 7
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:05:58,043 - decision_tree.py - families considered: 7
+2025-02-02 21:05:58,043 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:05:58,043 - decision_tree.py - families with schedulers preserved: 2
+2025-02-02 21:05:58,043 - decision_tree.py - families model checked: 5
+2025-02-02 21:05:58,043 - decision_tree.py - harmonizations attempted: 2
+2025-02-02 21:05:58,043 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:05:58,043 - mdp.py - building tree of depth 2
+2025-02-02 21:05:59,139 - statistic.py - synthesis initiated, design space: 1e25
+2025-02-02 21:06:02,885 - synthesizer_ar.py - value 116.8014 achieved after 1730.25 seconds
+> progress 0.0%, elapsed 5 s, estimated 5871198 s (67 days), iters = {MDP: 2}, opt = 116.8014
+> progress 0.0%, elapsed 13 s, estimated 13641853 s (157 days), iters = {MDP: 5}, opt = 116.8014
+> progress 0.003%, elapsed 17 s, estimated 544911 s (6 days), iters = {MDP: 8}, opt = 116.8014
+> progress 0.003%, elapsed 22 s, estimated 720975 s (8 days), iters = {MDP: 9}, opt = 116.8014
+> progress 0.003%, elapsed 27 s, estimated 877884 s (10 days), iters = {MDP: 11}, opt = 116.8014
+2025-02-02 21:06:27,257 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 30.6 s
+number of holes: 40, family size: 1e25, quotient: 541984 states / 542926 actions
+explored: 0 %
+MDP stats: avg MDP size: 520149, iterations: 11
+
+optimum: 116.801386
+--------------------
+2025-02-02 21:06:27,257 - decision_tree.py - families considered: 11
+2025-02-02 21:06:27,257 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:06:27,257 - decision_tree.py - families with schedulers preserved: 4
+2025-02-02 21:06:27,257 - decision_tree.py - families model checked: 7
+2025-02-02 21:06:27,257 - decision_tree.py - harmonizations attempted: 3
+2025-02-02 21:06:27,257 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 21:06:27,257 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 21:06:27,257 - decision_tree.py - V_0=s1, b_0=0, bc1_0=0, bc2_0=0, cd1_0=0, cd2_0=0, cd3_0=0, s1_0=0, s2_0=1, s3_0=0, x1_0=0, x2_0=0, V_1=bc2, b_1=0, bc1_1=0, bc2_1=0, cd1_1=0, cd2_1=3, cd3_1=0, s1_1=1, s2_1=1, s3_1=0, x1_1=0, x2_1=0, A_2=send1, A_3=__random__, V_4=cd1, b_4=0, bc1_4=0, bc2_4=0, cd1_4=2, cd2_4=1, cd3_4=0, s1_4=1, s2_4=1, s3_4=0, x1_4=0, x2_4=0, A_5=send2, A_6=__no_label__
+2025-02-02 21:06:29,034 - decision_tree.py - double-checking specification satisfiability:  : 116.8013855186121
+2025-02-02 21:06:29,043 - decision_tree.py - admissible subtree found from node 3
+2025-02-02 21:06:29,691 - decision_tree.py - new tree has depth 8 and 34 nodes
+2025-02-02 21:06:47,195 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 21:06:47,200 - decision_tree.py - new dtcontrol tree has depth 9 and 36 nodes
+2025-02-02 21:06:47,200 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 21:06:47,202 - decision_tree.py - starting iteration 28 with 4 nodes in node queue
+2025-02-02 21:06:47,202 - decision_tree.py - current tree size: 69 nodes
+2025-02-02 21:06:50,905 - decision_tree.py - subtree quotient has 1077793 states and 1079115 choices
+2025-02-02 21:06:53,936 - mdp.py - MDP has 661/1077793 relevant states
+2025-02-02 21:07:00,523 - mdp.py - MDP has 25 actions
+2025-02-02 21:07:11,238 - mdp.py - found the following 13 variables: ['bc1:[0..15]', 'bc2:[0..15]', 'cd1:[0..4]', 'cd2:[0..4]', 'cd3:[0..4]', 's1:[1..4]', 's2:[1..4]', 's3:[0..4]', 'x1:[0..2]', 'x2:[0..2]', 'x3:[0..1]', 'y1:[0..1]', 'y2:[0..1]']
+
+2025-02-02 21:07:11,241 - mdp.py - building tree of depth 0
+2025-02-02 21:07:12,125 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 10 s, estimated 10875331 s (125 days), iters = {MDP: 2}, opt = 116.7698
+> progress 8.0%, elapsed 15 s, estimated 198 s, iters = {MDP: 4}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 17.6 s
+number of holes: 1, family size: 25, quotient: 1077793 states / 1079115 actions
+explored: 100 %
+MDP stats: avg MDP size: 1029942, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:07:27,242 - decision_tree.py - families considered: 4
+2025-02-02 21:07:27,242 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:07:27,242 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:07:27,242 - decision_tree.py - families model checked: 4
+2025-02-02 21:07:27,242 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:07:27,242 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:07:27,243 - mdp.py - building tree of depth 1
+2025-02-02 21:07:28,985 - statistic.py - synthesis initiated, design space: 1e9
+> progress 0.0%, elapsed 7 s, estimated 7687376 s (88 days), iters = {MDP: 2}, opt = 116.7698
+> progress 4.0%, elapsed 11 s, estimated 297 s, iters = {MDP: 4}, opt = 116.7698
+2025-02-02 21:07:44,500 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 15.52 s
+number of holes: 16, family size: 1e9, quotient: 1077793 states / 1079115 actions
+explored: 4 %
+MDP stats: avg MDP size: 1059726, iterations: 5
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:07:44,501 - decision_tree.py - families considered: 5
+2025-02-02 21:07:44,501 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:07:44,501 - decision_tree.py - families with schedulers preserved: 2
+2025-02-02 21:07:44,501 - decision_tree.py - families model checked: 3
+2025-02-02 21:07:44,501 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:07:44,501 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:07:44,501 - mdp.py - building tree of depth 2
+2025-02-02 21:07:43,980 - statistic.py - synthesis initiated, design space: 1e26
+> progress 0.0%, elapsed 12 s, estimated 12196024 s (141 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.0%, elapsed 16 s, estimated 16680786 s (193 days), iters = {MDP: 4}, opt = 116.7698
+> progress 0.0%, elapsed 21 s, estimated 4461893 s (51 days), iters = {MDP: 6}, opt = 116.7698
+> progress 0.0%, elapsed 26 s, estimated 5398442 s (62 days), iters = {MDP: 8}, opt = 116.7698
+2025-02-02 21:08:14,460 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 30.48 s
+number of holes: 46, family size: 1e26, quotient: 1077793 states / 1079115 actions
+explored: 0 %
+MDP stats: avg MDP size: 1064410, iterations: 9
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:08:14,460 - decision_tree.py - families considered: 9
+2025-02-02 21:08:14,461 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:08:14,461 - decision_tree.py - families with schedulers preserved: 6
+2025-02-02 21:08:14,461 - decision_tree.py - families model checked: 3
+2025-02-02 21:08:14,461 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:08:14,461 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 21:08:14,461 - decision_tree.py - no admissible subtree found from node 18
+2025-02-02 21:08:14,461 - decision_tree.py - starting iteration 29 with 3 nodes in node queue
+2025-02-02 21:08:14,461 - decision_tree.py - current tree size: 69 nodes
+2025-02-02 21:08:14,940 - decision_tree.py - subtree quotient has 500973 states and 503493 choices
+2025-02-02 21:08:16,314 - mdp.py - MDP has 1246/500973 relevant states
+2025-02-02 21:08:19,445 - mdp.py - MDP has 25 actions
+2025-02-02 21:08:24,888 - mdp.py - found the following 13 variables: ['b:[0..1]', 'bc1:[0..15]', 'bc2:[0..15]', 'bc3:[0..15]', 'cd1:[1..4]', 'cd2:[1..4]', 'cd3:[1..4]', 's1:[1..4]', 's2:[1..4]', 's3:[3..4]', 'x1:[0..2]', 'x2:[0..2]', 'x3:[0..2]']
+
+2025-02-02 21:08:24,890 - mdp.py - building tree of depth 0
+2025-02-02 21:08:25,263 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 5 s, estimated 5497848 s (63 days), iters = {MDP: 2}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 8.01 s
+number of holes: 1, family size: 25, quotient: 500973 states / 503493 actions
+explored: 100 %
+MDP stats: avg MDP size: 498553, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:08:33,275 - decision_tree.py - families considered: 4
+2025-02-02 21:08:33,275 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:08:33,275 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:08:33,275 - decision_tree.py - families model checked: 4
+2025-02-02 21:08:33,275 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:08:33,275 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:08:33,275 - mdp.py - building tree of depth 1
+2025-02-02 21:08:34,004 - statistic.py - synthesis initiated, design space: 1e9
+> progress 0.0%, elapsed 5 s, estimated 5284422 s (61 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.205%, elapsed 8 s, estimated 4333 s, iters = {MDP: 6}, opt = 116.7698
+2025-02-02 21:08:45,978 - synthesizer_ar.py - value 116.8014 achieved after 1908.24 seconds
+2025-02-02 21:08:47,518 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 16.0 s
+number of holes: 16, family size: 1e9, quotient: 500973 states / 503493 actions
+explored: 2 %
+MDP stats: avg MDP size: 497754, iterations: 9
+
+optimum: 116.801386
+--------------------
+2025-02-02 21:08:47,519 - decision_tree.py - families considered: 9
+2025-02-02 21:08:47,519 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:08:47,519 - decision_tree.py - families with schedulers preserved: 3
+2025-02-02 21:08:47,519 - decision_tree.py - families model checked: 6
+2025-02-02 21:08:47,519 - decision_tree.py - harmonizations attempted: 2
+2025-02-02 21:08:47,519 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 21:08:47,519 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 21:08:47,519 - decision_tree.py - V_0=s1, b_0=0, bc1_0=0, bc2_0=0, bc3_0=0, cd1_0=1, cd2_0=1, cd3_0=1, s1_0=1, s2_0=2, s3_0=3, x1_0=0, x2_0=0, x3_0=0, A_1=send2, A_2=send1
+2025-02-02 21:08:49,098 - decision_tree.py - double-checking specification satisfiability:  : 116.8013855186121
+2025-02-02 21:08:49,104 - decision_tree.py - admissible subtree found from node 10
+2025-02-02 21:08:49,105 - decision_tree.py - new tree has depth 8 and 32 nodes
+2025-02-02 21:09:09,013 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 21:09:09,018 - decision_tree.py - new dtcontrol tree has depth 9 and 34 nodes
+2025-02-02 21:09:09,018 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 21:09:09,020 - decision_tree.py - starting iteration 30 with 2 nodes in node queue
+2025-02-02 21:09:09,020 - decision_tree.py - current tree size: 65 nodes
+2025-02-02 21:09:12,113 - decision_tree.py - subtree quotient has 486925 states and 489045 choices
+2025-02-02 21:09:13,579 - mdp.py - MDP has 1052/486925 relevant states
+2025-02-02 21:09:13,114 - mdp.py - MDP has 25 actions
+2025-02-02 21:09:18,701 - mdp.py - found the following 11 variables: ['bc2:[0..15]', 'bc3:[0..15]', 'cd1:[1..4]', 'cd2:[1..4]', 'cd3:[1..4]', 's1:[3..4]', 's2:[1..4]', 's3:[1..4]', 'x1:[0..2]', 'x2:[0..30]', 'x3:[0..30]']
+
+2025-02-02 21:09:18,703 - mdp.py - building tree of depth 0
+2025-02-02 21:09:19,092 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 5 s, estimated 5226147 s (60 days), iters = {MDP: 2}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.91 s
+number of holes: 1, family size: 25, quotient: 486925 states / 489045 actions
+explored: 100 %
+MDP stats: avg MDP size: 485634, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:09:26,999 - decision_tree.py - families considered: 4
+2025-02-02 21:09:26,999 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:09:26,999 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:09:26,999 - decision_tree.py - families model checked: 4
+2025-02-02 21:09:26,999 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:09:26,999 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:09:26,999 - mdp.py - building tree of depth 1
+2025-02-02 21:09:27,664 - statistic.py - synthesis initiated, design space: 1e10
+> progress 0.0%, elapsed 5 s, estimated 5348742 s (61 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.63%, elapsed 9 s, estimated 1473 s, iters = {MDP: 6}, opt = 116.7698
+> progress 7.927%, elapsed 12 s, estimated 155 s, iters = {MDP: 9}, opt = 116.7698
+2025-02-02 21:09:42,697 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 15.03 s
+number of holes: 14, family size: 1e10, quotient: 486925 states / 489045 actions
+explored: 9 %
+MDP stats: avg MDP size: 486421, iterations: 11
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:09:42,698 - decision_tree.py - families considered: 11
+2025-02-02 21:09:42,698 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:09:42,698 - decision_tree.py - families with schedulers preserved: 4
+2025-02-02 21:09:42,698 - decision_tree.py - families model checked: 7
+2025-02-02 21:09:42,698 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:09:42,698 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:09:42,698 - mdp.py - building tree of depth 2
+2025-02-02 21:09:43,587 - statistic.py - synthesis initiated, design space: 1e29
+> progress 0.0%, elapsed 5 s, estimated 5539856 s (64 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.0%, elapsed 8 s, estimated 8658991 s (100 days), iters = {MDP: 5}, opt = 116.7698
+> progress 0.003%, elapsed 14 s, estimated 496707 s (5 days), iters = {MDP: 7}, opt = 116.7698
+> progress 0.003%, elapsed 20 s, estimated 692323 s (8 days), iters = {MDP: 9}, opt = 116.7698
+> progress 0.003%, elapsed 25 s, estimated 855779 s (9 days), iters = {MDP: 10}, opt = 116.7698
+> progress 0.005%, elapsed 29 s, estimated 574696 s (6 days), iters = {MDP: 13}, opt = 116.7698
+2025-02-02 21:10:11,868 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 30.77 s
+number of holes: 40, family size: 1e29, quotient: 486925 states / 489045 actions
+explored: 0 %
+MDP stats: avg MDP size: 484966, iterations: 14
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:10:11,876 - decision_tree.py - families considered: 14
+2025-02-02 21:10:11,876 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:10:11,876 - decision_tree.py - families with schedulers preserved: 5
+2025-02-02 21:10:11,876 - decision_tree.py - families model checked: 9
+2025-02-02 21:10:11,876 - decision_tree.py - harmonizations attempted: 4
+2025-02-02 21:10:11,876 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 21:10:11,877 - decision_tree.py - no admissible subtree found from node 49
+2025-02-02 21:10:11,877 - decision_tree.py - starting iteration 31 with 1 nodes in node queue
+2025-02-02 21:10:11,877 - decision_tree.py - current tree size: 65 nodes
+2025-02-02 21:10:12,883 - decision_tree.py - subtree quotient has 484140 states and 484470 choices
+2025-02-02 21:10:14,236 - mdp.py - MDP has 163/484140 relevant states
+2025-02-02 21:10:16,444 - mdp.py - MDP has 25 actions
+2025-02-02 21:10:21,523 - mdp.py - found the following 9 variables: ['cd1:[1..4]', 'cd2:[1..4]', 'cd3:[1..4]', 's1:[1..2]', 's2:[3..4]', 's3:[1..2]', 'x1:[0..30]', 'x2:[0..2]', 'x3:[0..30]']
+
+2025-02-02 21:10:21,525 - mdp.py - building tree of depth 0
+2025-02-02 21:10:21,863 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 21:10:24,922 - synthesizer_ar.py - value 116.8014 achieved after 2014.63 seconds
+> progress 0.0%, elapsed 4 s, estimated 4977960 s (57 days), iters = {MDP: 2}, opt = 116.8014
+> progress 4.0%, elapsed 8 s, estimated 201 s, iters = {MDP: 3}, opt = 116.8014
+> progress 8.0%, elapsed 11 s, estimated 139 s, iters = {MDP: 4}, opt = 116.8014
+2025-02-02 21:10:37,290 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 15.43 s
+number of holes: 1, family size: 25, quotient: 484140 states / 484470 actions
+explored: 8 %
+MDP stats: avg MDP size: 483510, iterations: 4
+
+optimum: 116.801386
+--------------------
+2025-02-02 21:10:37,290 - decision_tree.py - families considered: 4
+2025-02-02 21:10:37,290 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:10:37,290 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:10:37,290 - decision_tree.py - families model checked: 4
+2025-02-02 21:10:37,290 - decision_tree.py - harmonizations attempted: 2
+2025-02-02 21:10:37,290 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 21:10:37,290 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 21:10:37,290 - decision_tree.py - A_0=busy2
+2025-02-02 21:10:38,850 - decision_tree.py - double-checking specification satisfiability:  : 116.8013855186121
+2025-02-02 21:10:38,858 - decision_tree.py - admissible subtree found from node 29
+2025-02-02 21:10:38,859 - decision_tree.py - new tree has depth 7 and 28 nodes
+2025-02-02 21:10:56,037 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 21:10:56,041 - decision_tree.py - new dtcontrol tree has depth 7 and 29 nodes
+2025-02-02 21:10:56,041 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 21:10:56,043 - decision_tree.py - starting iteration with subtree depth 2
+2025-02-02 21:10:56,043 - decision_tree.py - starting iteration 32 with 6 nodes in node queue
+2025-02-02 21:10:56,043 - decision_tree.py - current tree size: 57 nodes
+2025-02-02 21:10:59,028 - decision_tree.py - subtree quotient has 541943 states and 542885 choices
+2025-02-02 21:11:00,771 - mdp.py - MDP has 463/541943 relevant states
+2025-02-02 21:11:03,099 - mdp.py - MDP has 25 actions
+2025-02-02 21:11:08,735 - mdp.py - found the following 11 variables: ['b:[0..1]', 'bc1:[0..15]', 'bc2:[0..15]', 'cd1:[0..4]', 'cd2:[0..4]', 'cd3:[0..4]', 's1:[0..4]', 's2:[0..4]', 's3:[0..2]', 'x1:[0..2]', 'x2:[0..2]']
+
+2025-02-02 21:11:08,736 - mdp.py - building tree of depth 0
+2025-02-02 21:11:09,196 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 5 s, estimated 5476787 s (63 days), iters = {MDP: 2}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.92 s
+number of holes: 1, family size: 25, quotient: 541943 states / 542885 actions
+explored: 100 %
+MDP stats: avg MDP size: 526935, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:11:14,641 - decision_tree.py - families considered: 4
+2025-02-02 21:11:14,641 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:11:14,641 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:11:14,641 - decision_tree.py - families model checked: 4
+2025-02-02 21:11:14,641 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:11:14,641 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:11:14,641 - mdp.py - building tree of depth 1
+2025-02-02 21:11:15,391 - statistic.py - synthesis initiated, design space: 1e9
+> progress 0.0%, elapsed 5 s, estimated 5453121 s (63 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.0%, elapsed 10 s, estimated 10523418 s (121 days), iters = {MDP: 3}, opt = 116.7698
+2025-02-02 21:11:31,600 - synthesizer_ar.py - value 116.8014 achieved after 2086.27 seconds
+> progress 0.392%, elapsed 16 s, estimated 4221 s, iters = {MDP: 7}, opt = 116.8014
+> progress 1.454%, elapsed 22 s, estimated 1562 s, iters = {MDP: 11}, opt = 116.8014
+> progress 4.014%, elapsed 26 s, estimated 661 s, iters = {MDP: 15}, opt = 116.8014
+> progress 4.029%, elapsed 29 s, estimated 739 s, iters = {MDP: 16}, opt = 116.8014
+2025-02-02 21:11:43,282 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 30.38 s
+number of holes: 14, family size: 1e9, quotient: 541943 states / 542885 actions
+explored: 4 %
+MDP stats: avg MDP size: 513802, iterations: 16
+
+optimum: 116.801386
+--------------------
+2025-02-02 21:11:43,283 - decision_tree.py - families considered: 16
+2025-02-02 21:11:43,283 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:11:43,283 - decision_tree.py - families with schedulers preserved: 4
+2025-02-02 21:11:43,283 - decision_tree.py - families model checked: 12
+2025-02-02 21:11:43,283 - decision_tree.py - harmonizations attempted: 2
+2025-02-02 21:11:43,283 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 21:11:43,283 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 21:11:43,283 - decision_tree.py - V_0=s2, b_0=0, bc1_0=0, bc2_0=0, cd1_0=0, cd2_0=0, cd3_0=0, s1_0=0, s2_0=0, s3_0=0, x1_0=0, x2_0=0, A_1=send2, A_2=send1
+2025-02-02 21:11:44,930 - decision_tree.py - double-checking specification satisfiability:  : 116.8013855186121
+2025-02-02 21:11:44,936 - decision_tree.py - admissible subtree found from node 3
+2025-02-02 21:11:44,937 - decision_tree.py - new tree has depth 7 and 26 nodes
+2025-02-02 21:12:04,863 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 21:12:04,868 - decision_tree.py - new dtcontrol tree has depth 7 and 30 nodes
+2025-02-02 21:12:04,868 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 21:12:04,870 - decision_tree.py - starting iteration 33 with 5 nodes in node queue
+2025-02-02 21:12:04,870 - decision_tree.py - current tree size: 53 nodes
+2025-02-02 21:12:08,586 - decision_tree.py - subtree quotient has 797817 states and 798521 choices
+2025-02-02 21:12:10,844 - mdp.py - MDP has 352/797817 relevant states
+2025-02-02 21:12:12,440 - mdp.py - MDP has 25 actions
+2025-02-02 21:12:19,872 - mdp.py - found the following 12 variables: ['bc2:[0..15]', 'cd1:[0..4]', 'cd2:[0..4]', 'cd3:[0..4]', 's1:[1..4]', 's2:[1..4]', 's3:[0..4]', 'x1:[0..1]', 'x2:[0..2]', 'x3:[0..1]', 'y1:[0..1]', 'y2:[0..1]']
+
+2025-02-02 21:12:19,875 - mdp.py - building tree of depth 0
+2025-02-02 21:12:20,462 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 8 s, estimated 8186033 s (94 days), iters = {MDP: 2}, opt = 116.7698
+> progress 8.0%, elapsed 11 s, estimated 143 s, iters = {MDP: 4}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 12.74 s
+number of holes: 1, family size: 25, quotient: 797817 states / 798521 actions
+explored: 100 %
+MDP stats: avg MDP size: 778614, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:12:33,205 - decision_tree.py - families considered: 4
+2025-02-02 21:12:33,206 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:12:33,206 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:12:33,206 - decision_tree.py - families model checked: 4
+2025-02-02 21:12:33,206 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:12:33,206 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:12:33,206 - mdp.py - building tree of depth 1
+2025-02-02 21:12:34,322 - statistic.py - synthesis initiated, design space: 1e7
+> progress 0.0%, elapsed 8 s, estimated 8250715 s (95 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.0%, elapsed 11 s, estimated 11269529 s (130 days), iters = {MDP: 4}, opt = 116.7698
+> progress 0.013%, elapsed 16 s, estimated 121377 s (33 hours), iters = {MDP: 7}, opt = 116.7698
+> progress 0.333%, elapsed 19 s, estimated 5959 s, iters = {MDP: 9}, opt = 116.7698
+> progress 0.333%, elapsed 28 s, estimated 8448 s (2 hours), iters = {MDP: 10}, opt = 116.7698
+2025-02-02 21:13:03,330 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 31.49 s
+number of holes: 15, family size: 1e7, quotient: 797817 states / 798521 actions
+explored: 0 %
+MDP stats: avg MDP size: 783850, iterations: 11
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:13:03,330 - decision_tree.py - families considered: 11
+2025-02-02 21:13:03,330 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:13:03,330 - decision_tree.py - families with schedulers preserved: 3
+2025-02-02 21:13:03,330 - decision_tree.py - families model checked: 8
+2025-02-02 21:13:03,330 - decision_tree.py - harmonizations attempted: 2
+2025-02-02 21:13:03,330 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 21:13:03,330 - decision_tree.py - no admissible subtree found from node 11
+2025-02-02 21:13:03,331 - decision_tree.py - starting iteration 34 with 4 nodes in node queue
+2025-02-02 21:13:03,331 - decision_tree.py - current tree size: 53 nodes
+2025-02-02 21:13:06,578 - decision_tree.py - subtree quotient has 481972 states and 482572 choices
+2025-02-02 21:13:07,890 - mdp.py - MDP has 300/481972 relevant states
+2025-02-02 21:13:10,516 - mdp.py - MDP has 25 actions
+2025-02-02 21:13:13,057 - mdp.py - found the following 8 variables: ['bc2:[1..15]', 'cd1:[1..4]', 'cd3:[1..4]', 's1:[1..2]', 's3:[1..3]', 'x1:[0..30]', 'x2:[0..2]', 'x3:[0..30]']
+
+2025-02-02 21:13:13,059 - mdp.py - building tree of depth 0
+2025-02-02 21:13:13,412 - statistic.py - synthesis initiated, design space: 25
+2025-02-02 21:13:16,702 - synthesizer_ar.py - value 116.8014 achieved after 2201.3 seconds
+> progress 0.0%, elapsed 5 s, estimated 5144886 s (59 days), iters = {MDP: 2}, opt = 116.8014
+> progress 8.0%, elapsed 9 s, estimated 117 s, iters = {MDP: 4}, opt = 116.8014
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 10.05 s
+number of holes: 1, family size: 25, quotient: 481972 states / 482572 actions
+explored: 100 %
+MDP stats: avg MDP size: 481957, iterations: 4
+
+optimum: 116.801386
+--------------------
+2025-02-02 21:13:23,458 - decision_tree.py - families considered: 4
+2025-02-02 21:13:23,458 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:13:23,458 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:13:23,458 - decision_tree.py - families model checked: 4
+2025-02-02 21:13:23,458 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:13:23,458 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 21:13:23,458 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 21:13:23,458 - decision_tree.py - A_0=busy3
+2025-02-02 21:13:25,036 - decision_tree.py - double-checking specification satisfiability:  : 116.8013855186121
+2025-02-02 21:13:25,041 - decision_tree.py - admissible subtree found from node 31
+2025-02-02 21:13:25,042 - decision_tree.py - new tree has depth 7 and 24 nodes
+2025-02-02 21:13:42,853 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 21:13:42,857 - decision_tree.py - new dtcontrol tree has depth 7 and 29 nodes
+2025-02-02 21:13:42,857 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 21:13:42,859 - decision_tree.py - starting iteration 35 with 3 nodes in node queue
+2025-02-02 21:13:42,859 - decision_tree.py - current tree size: 49 nodes
+2025-02-02 21:13:45,638 - decision_tree.py - subtree quotient has 482092 states and 482812 choices
+2025-02-02 21:13:47,035 - mdp.py - MDP has 360/482092 relevant states
+2025-02-02 21:13:50,275 - mdp.py - MDP has 25 actions
+2025-02-02 21:13:54,474 - mdp.py - found the following 8 variables: ['bc1:[1..15]', 'cd2:[1..4]', 'cd3:[1..4]', 's2:[1..3]', 's3:[1..3]', 'x1:[0..2]', 'x2:[0..30]', 'x3:[0..30]']
+
+2025-02-02 21:13:54,476 - mdp.py - building tree of depth 0
+2025-02-02 21:13:54,831 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 5 s, estimated 5253753 s (60 days), iters = {MDP: 2}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 8.1 s
+number of holes: 1, family size: 25, quotient: 482092 states / 482812 actions
+explored: 100 %
+MDP stats: avg MDP size: 482092, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:14:02,932 - decision_tree.py - families considered: 4
+2025-02-02 21:14:02,932 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:14:02,932 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:14:02,932 - decision_tree.py - families model checked: 4
+2025-02-02 21:14:02,932 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:14:02,932 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:14:02,932 - mdp.py - building tree of depth 1
+2025-02-02 21:14:03,540 - statistic.py - synthesis initiated, design space: 1e7
+> progress 0.0%, elapsed 5 s, estimated 5264399 s (60 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 21:14:12,394 - synthesizer_ar.py - value 116.8014 achieved after 2261.97 seconds
+> progress 0.5%, elapsed 11 s, estimated 2337 s, iters = {MDP: 6}, opt = 116.8014
+> progress 6.5%, elapsed 14 s, estimated 230 s, iters = {MDP: 9}, opt = 116.8014
+> progress 6.5%, elapsed 20 s, estimated 309 s, iters = {MDP: 10}, opt = 116.8014
+> progress 6.519%, elapsed 24 s, estimated 373 s, iters = {MDP: 12}, opt = 116.8014
+> progress 12.5%, elapsed 27 s, estimated 219 s, iters = {MDP: 15}, opt = 116.8014
+2025-02-02 21:14:34,466 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 33.42 s
+number of holes: 11, family size: 1e7, quotient: 482092 states / 482812 actions
+explored: 13 %
+MDP stats: avg MDP size: 482080, iterations: 16
+
+optimum: 116.801386
+--------------------
+2025-02-02 21:14:34,466 - decision_tree.py - families considered: 16
+2025-02-02 21:14:34,466 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:14:34,466 - decision_tree.py - families with schedulers preserved: 4
+2025-02-02 21:14:34,466 - decision_tree.py - families model checked: 12
+2025-02-02 21:14:34,466 - decision_tree.py - harmonizations attempted: 3
+2025-02-02 21:14:34,466 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 21:14:34,466 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 21:14:34,466 - decision_tree.py - V_0=s3, bc1_0=1, cd2_0=1, cd3_0=1, s2_0=1, s3_0=2, x1_0=0, x2_0=0, x3_0=0, A_1=busy2, A_2=busy3
+2025-02-02 21:14:36,037 - decision_tree.py - double-checking specification satisfiability:  : 116.8013855186121
+2025-02-02 21:14:36,043 - decision_tree.py - admissible subtree found from node 42
+2025-02-02 21:14:36,044 - decision_tree.py - new tree has depth 7 and 22 nodes
+2025-02-02 21:14:53,465 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 21:14:53,469 - decision_tree.py - new dtcontrol tree has depth 7 and 28 nodes
+2025-02-02 21:14:53,469 - decision_tree.py - Current PAYNT tree is smaller
+2025-02-02 21:14:53,471 - decision_tree.py - starting iteration 36 with 2 nodes in node queue
+2025-02-02 21:14:53,471 - decision_tree.py - current tree size: 45 nodes
+2025-02-02 21:14:57,246 - decision_tree.py - subtree quotient has 482239 states and 482857 choices
+2025-02-02 21:14:58,606 - mdp.py - MDP has 307/482239 relevant states
+2025-02-02 21:15:01,379 - mdp.py - MDP has 25 actions
+2025-02-02 21:15:06,025 - mdp.py - found the following 9 variables: ['bc3:[0..15]', 'cd1:[1..4]', 'cd2:[1..4]', 'cd3:[1..4]', 's2:[3..4]', 's3:[3..4]', 'x1:[2..30]', 'x2:[0..2]', 'x3:[0..2]']
+
+2025-02-02 21:15:06,027 - mdp.py - building tree of depth 0
+2025-02-02 21:15:06,397 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 4 s, estimated 4940683 s (57 days), iters = {MDP: 2}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 7.49 s
+number of holes: 1, family size: 25, quotient: 482239 states / 482857 actions
+explored: 100 %
+MDP stats: avg MDP size: 481340, iterations: 4
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:15:11,402 - decision_tree.py - families considered: 4
+2025-02-02 21:15:11,402 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:15:11,403 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:15:11,403 - decision_tree.py - families model checked: 4
+2025-02-02 21:15:11,403 - decision_tree.py - harmonizations attempted: 1
+2025-02-02 21:15:11,403 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:15:11,403 - mdp.py - building tree of depth 1
+2025-02-02 21:15:12,031 - statistic.py - synthesis initiated, design space: 1e7
+> progress 0.0%, elapsed 5 s, estimated 5163544 s (59 days), iters = {MDP: 2}, opt = 116.7698
+> progress 0.888%, elapsed 8 s, estimated 934 s, iters = {MDP: 5}, opt = 116.7698
+> progress 11.555%, elapsed 16 s, estimated 138 s, iters = {MDP: 9}, opt = 116.7698
+> progress 11.555%, elapsed 20 s, estimated 181 s, iters = {MDP: 10}, opt = 116.7698
+> progress 11.555%, elapsed 25 s, estimated 223 s, iters = {MDP: 11}, opt = 116.7698
+> progress 11.703%, elapsed 28 s, estimated 246 s, iters = {MDP: 14}, opt = 116.7698
+2025-02-02 21:15:40,060 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 30.51 s
+number of holes: 12, family size: 1e7, quotient: 482239 states / 482857 actions
+explored: 11 %
+MDP stats: avg MDP size: 481711, iterations: 15
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:15:40,061 - decision_tree.py - families considered: 15
+2025-02-02 21:15:40,061 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:15:40,061 - decision_tree.py - families with schedulers preserved: 3
+2025-02-02 21:15:40,061 - decision_tree.py - families model checked: 12
+2025-02-02 21:15:40,061 - decision_tree.py - harmonizations attempted: 4
+2025-02-02 21:15:40,061 - decision_tree.py - harmonizations succeeded: 0
+
+2025-02-02 21:15:40,061 - decision_tree.py - no admissible subtree found from node 26
+2025-02-02 21:15:40,061 - decision_tree.py - starting iteration 37 with 1 nodes in node queue
+2025-02-02 21:15:40,061 - decision_tree.py - current tree size: 45 nodes
+2025-02-02 21:15:43,238 - decision_tree.py - subtree quotient has 482098 states and 482146 choices
+2025-02-02 21:15:44,549 - mdp.py - MDP has 24/482098 relevant states
+2025-02-02 21:15:47,060 - mdp.py - MDP has 25 actions
+2025-02-02 21:15:52,057 - mdp.py - found the following 8 variables: ['cd1:[1..4]', 'cd2:[1..4]', 'cd3:[1..4]', 's1:[3..4]', 's2:[1..3]', 's3:[1..3]', 'x2:[0..30]', 'x3:[0..30]']
+
+2025-02-02 21:15:52,058 - mdp.py - building tree of depth 0
+2025-02-02 21:15:52,401 - statistic.py - synthesis initiated, design space: 25
+> progress 0.0%, elapsed 4 s, estimated 4984342 s (57 days), iters = {MDP: 2}, opt = 116.7698
+> progress 8.0%, elapsed 12 s, estimated 153 s, iters = {MDP: 5}, opt = 116.7698
+> progress 16.0%, elapsed 19 s, estimated 122 s, iters = {MDP: 8}, opt = 116.7698
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 22.49 s
+number of holes: 1, family size: 25, quotient: 482098 states / 482146 actions
+explored: 100 %
+MDP stats: avg MDP size: 482073, iterations: 10
+
+optimum: 116.769834
+--------------------
+2025-02-02 21:16:12,404 - decision_tree.py - families considered: 10
+2025-02-02 21:16:12,404 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:16:12,404 - decision_tree.py - families with schedulers preserved: 0
+2025-02-02 21:16:12,404 - decision_tree.py - families model checked: 10
+2025-02-02 21:16:12,404 - decision_tree.py - harmonizations attempted: 3
+2025-02-02 21:16:12,405 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-02-02 21:16:12,405 - mdp.py - building tree of depth 1
+2025-02-02 21:16:12,966 - statistic.py - synthesis initiated, design space: 1e6
+> progress 0.0%, elapsed 5 s, estimated 5052051 s (58 days), iters = {MDP: 2}, opt = 116.7698
+2025-02-02 21:16:22,884 - synthesizer_ar.py - value 116.8014 achieved after 2402.37 seconds
+> progress 0.5%, elapsed 11 s, estimated 2369 s, iters = {MDP: 5}, opt = 116.8014
+> progress 0.54%, elapsed 16 s, estimated 2989 s, iters = {MDP: 7}, opt = 116.8014
+> progress 13.0%, elapsed 20 s, estimated 155 s, iters = {MDP: 11}, opt = 116.8014
+> progress 13.5%, elapsed 26 s, estimated 194 s, iters = {MDP: 13}, opt = 116.8014
+2025-02-02 21:16:44,105 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"time"}max=? [F "all_delivered"] 
+
+method: AR (decision tree), synthesis time: 33.62 s
+number of holes: 11, family size: 1e6, quotient: 482098 states / 482146 actions
+explored: 14 %
+MDP stats: avg MDP size: 482081, iterations: 15
+
+optimum: 116.801386
+--------------------
+2025-02-02 21:16:44,105 - decision_tree.py - families considered: 15
+2025-02-02 21:16:44,105 - decision_tree.py - families skipped by construction: 0
+2025-02-02 21:16:44,105 - decision_tree.py - families with schedulers preserved: 2
+2025-02-02 21:16:44,105 - decision_tree.py - families model checked: 13
+2025-02-02 21:16:44,105 - decision_tree.py - harmonizations attempted: 4
+2025-02-02 21:16:44,105 - decision_tree.py - harmonizations succeeded: 1
+
+2025-02-02 21:16:44,105 - decision_tree.py - printing synthesized assignment below:
+2025-02-02 21:16:44,105 - decision_tree.py - V_0=s3, cd1_0=1, cd2_0=1, cd3_0=1, s1_0=3, s2_0=1, s3_0=1, x2_0=0, x3_0=0, A_1=busy2, A_2=busy3
+2025-02-02 21:16:45,779 - decision_tree.py - double-checking specification satisfiability:  : 116.8013855186121
+2025-02-02 21:16:45,785 - decision_tree.py - admissible subtree found from node 34
+2025-02-02 21:16:45,785 - decision_tree.py - new tree has depth 7 and 20 nodes
+2025-02-02 21:17:06,094 - decision_tree.py - parsing new dtcontrol tree
+2025-02-02 21:17:06,099 - decision_tree.py - new dtcontrol tree has depth 7 and 27 nodes
+2025-02-02 21:17:06,099 - decision_tree.py - Current PAYNT tree is smaller
+ : 116.81656681370566
+ : 116.81656681370566
+
+2025-02-02 21:17:08,843 - decision_tree.py - final tree has value 116.81656681370566 with depth 7 and 20 nodes
+116.81656681370566 2402.97 7 20
+2025-02-02 21:17:08,899 - decision_tree.py - the optimal scheduler has value: 116.82672248985648
+2025-02-02 21:17:08,900 - decision_tree.py - the random scheduler has value: 111.13791477505458
+2025-02-02 21:17:08,912 - decision_tree.py - synthesized tree of depth 7 with 20 decision nodes
+2025-02-02 21:17:08,912 - decision_tree.py - the synthesized tree has value 116.81656681370566
+2025-02-02 21:17:08,912 - decision_tree.py - the synthesized tree has relative value: 0.9982147970787636
+2025-02-02 21:17:08,912 - decision_tree.py - printing the synthesized tree below:
+2025-02-02 21:17:08,912 - decision_tree.py - dtcontrol calls: 27
+2025-02-02 21:17:08,912 - decision_tree.py - dtcontrol successes: 3
+2025-02-02 21:17:08,912 - decision_tree.py - paynt calls: 38
+2025-02-02 21:17:08,912 - decision_tree.py - paynt successes smaller: 24
+2025-02-02 21:17:08,912 - decision_tree.py - paynt tree found: 27
+2025-02-02 21:17:08,912 - decision_tree.py - both larger: 0
+2025-02-02 21:17:08,915 - decision_tree.py - exported decision tree to logs/02-02-big-mdps-005-1h/integration/qcomp-csma-3-4/tree.dot
+2025-02-02 21:17:09,054 - decision_tree.py - exported decision tree visualization to logs/02-02-big-mdps-005-1h/integration/qcomp-csma-3-4/tree.png
+2025-02-02 21:17:09,054 - decision_tree.py - synthesis finished after 2451.03 seconds
+
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.321.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.305.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.302.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.314.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.299.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.341.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.316.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.310.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.353.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.318.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.298.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.290.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.279.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.269.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.272.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.247.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.222.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.224.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.243.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.233.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.205.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.199.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.209.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.200.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.228.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.200.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.206.
+All benchmarks completed. Shutting down dtControl.

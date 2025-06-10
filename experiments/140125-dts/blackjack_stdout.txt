@@ -1,0 +1,2009 @@
+2025-01-14 12:21:01,113 - cli.py - This is Paynt version 0.1.0.
+2025-01-14 12:21:01,113 - sketch.py - loading sketch from models/dts-helpers/omdt/blackjack/model.drn ...
+2025-01-14 12:21:01,113 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:26): Parsing error at 3:1:  expecting <model type>, here:
+	@type: MDP
+	^
+
+2025-01-14 12:21:01,119 - sketch.py - assuming sketch in DRN format...
+2025-01-14 12:21:01,156 - prism_parser.py - loading properties from models/dts-helpers/omdt/blackjack/discounted.props ...
+2025-01-14 12:21:01,157 - prism_parser.py - found the following specification: optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-14 12:21:01,158 - sketch.py - found state valuations in models/dts-helpers/omdt/blackjack/state-valuations.json, adding to the model...
+2025-01-14 12:21:01,158 - sketch.py - sketch parsing OK
+2025-01-14 12:21:01,159 - sketch.py - tree helper loaded
+2025-01-14 12:21:01,159 - sketch.py - constructed explicit quotient having 533 states and 1066 choices
+2025-01-14 12:21:01,159 - sketch.py - found the following specification optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-14 12:21:01,161 - mdp.py - MDP has 533/533 relevant states
+2025-01-14 12:21:01,162 - mdp.py - MDP has 2 actions
+2025-01-14 12:21:01,164 - mdp.py - found the following 3 variables: ['dealer_total:[0..22]', 'player_total:[0..22]', 'skipped:[0..1]']
+2025-01-14 12:21:01,170 - decision_tree.py - the optimal scheduler has value: -2.1731936661844773
+2025-01-14 12:21:01,170 - decision_tree.py - initial external tree has depth 7 and 8 nodes
+2025-01-14 12:21:01,170 - decision_tree.py - starting iteration 0 with 1 nodes in node queue
+// decision tree
+digraph {
+	3 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	2 [label="dealer_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 4 [label=F]
+	7 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	10 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	9 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	9 -> 10 [label=T]
+	9 -> 11 [label=F]
+	14 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	8 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	8 -> 9 [label=T]
+	8 -> 14 [label=F]
+	6 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	6 -> 7 [label=T]
+	6 -> 8 [label=F]
+	15 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	5 [label="player_total<=14" margin="0.05,0.05" shape=box style=rounded]
+	5 -> 6 [label=T]
+	5 -> 15 [label=F]
+	1 [label="player_total<=11" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 5 [label=F]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 16 [label=F]
+}
+
+2025-01-14 12:21:01,176 - decision_tree.py - subtree quotient has 533 states and 724 choices
+2025-01-14 12:21:01,178 - mdp.py - MDP has 191/533 relevant states
+2025-01-14 12:21:01,179 - mdp.py - MDP has 2 actions
+2025-01-14 12:21:01,181 - mdp.py - found the following 2 variables: ['dealer_total:[0..11]', 'player_total:[0..22]']
+
+2025-01-14 12:21:01,181 - mdp.py - building tree of depth 0
+2025-01-14 12:21:01,190 - statistic.py - synthesis initiated, design space: 2
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.02 s
+number of holes: 1, family size: 2, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:21:01,208 - decision_tree.py - families considered: 3
+2025-01-14 12:21:01,208 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:01,208 - decision_tree.py - families with schedulers preserved: 0
+2025-01-14 12:21:01,208 - decision_tree.py - families model checked: 3
+2025-01-14 12:21:01,208 - decision_tree.py - harmonizations attempted: 1
+2025-01-14 12:21:01,208 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:21:01,208 - mdp.py - building tree of depth 1
+2025-01-14 12:21:01,224 - statistic.py - synthesis initiated, design space: 1520
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.15 s
+number of holes: 5, family size: 1520, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:21:01,376 - decision_tree.py - families considered: 17
+2025-01-14 12:21:01,376 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:01,376 - decision_tree.py - families with schedulers preserved: 3
+2025-01-14 12:21:01,376 - decision_tree.py - families model checked: 14
+2025-01-14 12:21:01,376 - decision_tree.py - harmonizations attempted: 5
+2025-01-14 12:21:01,376 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:21:01,376 - mdp.py - building tree of depth 2
+2025-01-14 12:21:01,393 - statistic.py - synthesis initiated, design space: 1e8
+2025-01-14 12:21:07,411 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.02 s
+number of holes: 13, family size: 1e8, quotient: 533 states / 724 actions
+explored: 70 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:21:07,411 - decision_tree.py - families considered: 329
+2025-01-14 12:21:07,411 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:07,411 - decision_tree.py - families with schedulers preserved: 128
+2025-01-14 12:21:07,411 - decision_tree.py - families model checked: 201
+2025-01-14 12:21:07,411 - decision_tree.py - harmonizations attempted: 39
+2025-01-14 12:21:07,411 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:21:07,411 - mdp.py - building tree of depth 3
+2025-01-14 12:21:07,448 - statistic.py - synthesis initiated, design space: 1e20
+2025-01-14 12:21:13,473 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.03 s
+number of holes: 29, family size: 1e20, quotient: 533 states / 724 actions
+explored: 0 %
+
+optimum: -2.245591
+--------------------
+2025-01-14 12:21:13,474 - decision_tree.py - families considered: 232
+2025-01-14 12:21:13,474 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:13,474 - decision_tree.py - families with schedulers preserved: 90
+2025-01-14 12:21:13,474 - decision_tree.py - families model checked: 142
+2025-01-14 12:21:13,474 - decision_tree.py - harmonizations attempted: 35
+2025-01-14 12:21:13,474 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:21:13,474 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:21:13,474 - decision_tree.py - V_0=dealer_total, dealer_total_0=7, player_total_0=12, V_1=player_total, dealer_total_1=0, player_total_1=12, V_2=player_total, dealer_total_2=0, player_total_2=11, A_3=(Draw), A_4=(Skip), V_5=player_total, dealer_total_5=0, player_total_5=14, A_6=(Skip), A_7=(Skip), V_8=player_total, dealer_total_8=0, player_total_8=14, V_9=player_total, dealer_total_9=0, player_total_9=13, A_10=(Draw), A_11=(Skip), V_12=player_total, dealer_total_12=0, player_total_12=13, A_13=(Skip), A_14=(Skip)
+2025-01-14 12:21:13,476 - decision_tree.py - double-checking specification satisfiability:  : -2.2455910026588675
+
+2025-01-14 12:21:13,476 - mdp.py - building tree of depth 4
+2025-01-14 12:21:13,534 - statistic.py - synthesis initiated, design space: 1e43
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.71 s
+number of holes: 61, family size: 1e43, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.173194
+--------------------
+2025-01-14 12:21:14,246 - decision_tree.py - families considered: 24
+2025-01-14 12:21:14,246 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:14,246 - decision_tree.py - families with schedulers preserved: 8
+2025-01-14 12:21:14,246 - decision_tree.py - families model checked: 16
+2025-01-14 12:21:14,246 - decision_tree.py - harmonizations attempted: 3
+2025-01-14 12:21:14,246 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:21:14,246 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:21:14,246 - decision_tree.py - V_0=player_total, dealer_total_0=0, player_total_0=14, V_1=dealer_total, dealer_total_1=9, player_total_1=11, V_2=player_total, dealer_total_2=6, player_total_2=11, V_3=player_total, dealer_total_3=0, player_total_3=0, A_4=(Skip), A_5=(Draw), V_6=dealer_total, dealer_total_6=6, player_total_6=11, A_7=(Skip), A_8=(Draw), V_9=dealer_total, dealer_total_9=10, player_total_9=12, V_10=player_total, dealer_total_10=7, player_total_10=13, A_11=(Draw), A_12=(Skip), V_13=player_total, dealer_total_13=10, player_total_13=11, A_14=(Draw), A_15=(Skip), V_16=player_total, dealer_total_16=0, player_total_16=14, V_17=player_total, dealer_total_17=0, player_total_17=14, V_18=player_total, dealer_total_18=0, player_total_18=21, A_19=(Skip), A_20=(Draw), V_21=player_total, dealer_total_21=0, player_total_21=21, A_22=(Skip), A_23=(Draw), V_24=player_total, dealer_total_24=0, player_total_24=14, V_25=player_total, dealer_total_25=0, player_total_25=16, A_26=(Skip), A_27=(Draw), V_28=player_total, dealer_total_28=0, player_total_28=14, A_29=(Draw), A_30=(Skip)
+2025-01-14 12:21:14,249 - decision_tree.py - double-checking specification satisfiability:  : -2.1731936661844773
+2025-01-14 12:21:14,249 - decision_tree.py - admissible subtree found from node 1
+2025-01-14 12:21:14,250 - decision_tree.py - new tree has depth 5 and 9 nodes
+// decision tree
+digraph {
+	5 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	6 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="player_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	4 -> 5 [label=T]
+	4 -> 6 [label=F]
+	8 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	9 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	7 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	7 -> 8 [label=T]
+	7 -> 9 [label=F]
+	3 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	3 -> 4 [label=T]
+	3 -> 7 [label=F]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	15 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	14 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	14 -> 15 [label=T]
+	14 -> 16 [label=F]
+	10 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	10 -> 11 [label=T]
+	10 -> 14 [label=F]
+	2 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 10 [label=F]
+	17 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	1 [label="player_total<=14" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 17 [label=F]
+	18 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 18 [label=F]
+}
+
+2025-01-14 12:21:15,487 - decision_tree.py - new dtcontrol tree has depth 7 and 8 nodes
+2025-01-14 12:21:15,488 - decision_tree.py - New DtControl tree is smaller
+2025-01-14 12:21:15,489 - decision_tree.py - starting iteration 1 with 1 nodes in node queue
+// decision tree
+digraph {
+	3 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	2 [label="dealer_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 4 [label=F]
+	7 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	10 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	9 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	9 -> 10 [label=T]
+	9 -> 11 [label=F]
+	14 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	8 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	8 -> 9 [label=T]
+	8 -> 14 [label=F]
+	6 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	6 -> 7 [label=T]
+	6 -> 8 [label=F]
+	15 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	5 [label="player_total<=14" margin="0.05,0.05" shape=box style=rounded]
+	5 -> 6 [label=T]
+	5 -> 15 [label=F]
+	1 [label="player_total<=11" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 5 [label=F]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 16 [label=F]
+}
+
+2025-01-14 12:21:15,495 - decision_tree.py - subtree quotient has 533 states and 724 choices
+2025-01-14 12:21:15,498 - mdp.py - MDP has 191/533 relevant states
+2025-01-14 12:21:15,498 - mdp.py - MDP has 2 actions
+2025-01-14 12:21:15,501 - mdp.py - found the following 2 variables: ['dealer_total:[0..11]', 'player_total:[0..22]']
+
+2025-01-14 12:21:15,502 - mdp.py - building tree of depth 0
+2025-01-14 12:21:15,507 - statistic.py - synthesis initiated, design space: 2
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.02 s
+number of holes: 1, family size: 2, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:21:15,530 - decision_tree.py - families considered: 3
+2025-01-14 12:21:15,530 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:15,530 - decision_tree.py - families with schedulers preserved: 0
+2025-01-14 12:21:15,530 - decision_tree.py - families model checked: 3
+2025-01-14 12:21:15,530 - decision_tree.py - harmonizations attempted: 1
+2025-01-14 12:21:15,530 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:21:15,531 - mdp.py - building tree of depth 1
+2025-01-14 12:21:15,547 - statistic.py - synthesis initiated, design space: 1520
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.17 s
+number of holes: 5, family size: 1520, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:21:15,719 - decision_tree.py - families considered: 17
+2025-01-14 12:21:15,719 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:15,720 - decision_tree.py - families with schedulers preserved: 3
+2025-01-14 12:21:15,720 - decision_tree.py - families model checked: 14
+2025-01-14 12:21:15,720 - decision_tree.py - harmonizations attempted: 5
+2025-01-14 12:21:15,720 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:21:15,720 - mdp.py - building tree of depth 2
+2025-01-14 12:21:15,736 - statistic.py - synthesis initiated, design space: 1e8
+2025-01-14 12:21:20,575 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.0 s
+number of holes: 13, family size: 1e8, quotient: 533 states / 724 actions
+explored: 75 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:21:20,575 - decision_tree.py - families considered: 347
+2025-01-14 12:21:20,575 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:20,575 - decision_tree.py - families with schedulers preserved: 135
+2025-01-14 12:21:20,575 - decision_tree.py - families model checked: 212
+2025-01-14 12:21:20,576 - decision_tree.py - harmonizations attempted: 42
+2025-01-14 12:21:20,576 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:21:20,576 - mdp.py - building tree of depth 3
+2025-01-14 12:21:20,615 - statistic.py - synthesis initiated, design space: 1e20
+2025-01-14 12:21:26,692 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.08 s
+number of holes: 29, family size: 1e20, quotient: 533 states / 724 actions
+explored: 0 %
+
+optimum: -2.245591
+--------------------
+2025-01-14 12:21:26,693 - decision_tree.py - families considered: 197
+2025-01-14 12:21:26,693 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:26,693 - decision_tree.py - families with schedulers preserved: 83
+2025-01-14 12:21:26,693 - decision_tree.py - families model checked: 114
+2025-01-14 12:21:26,693 - decision_tree.py - harmonizations attempted: 26
+2025-01-14 12:21:26,693 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:21:26,693 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:21:26,693 - decision_tree.py - V_0=dealer_total, dealer_total_0=7, player_total_0=12, V_1=player_total, dealer_total_1=0, player_total_1=12, V_2=player_total, dealer_total_2=0, player_total_2=11, A_3=(Draw), A_4=(Skip), V_5=player_total, dealer_total_5=0, player_total_5=14, A_6=(Skip), A_7=(Skip), V_8=player_total, dealer_total_8=0, player_total_8=14, V_9=player_total, dealer_total_9=0, player_total_9=13, A_10=(Draw), A_11=(Skip), V_12=player_total, dealer_total_12=0, player_total_12=13, A_13=(Skip), A_14=(Skip)
+2025-01-14 12:21:26,697 - decision_tree.py - double-checking specification satisfiability:  : -2.2455910026588675
+
+2025-01-14 12:21:26,697 - mdp.py - building tree of depth 4
+2025-01-14 12:21:26,776 - statistic.py - synthesis initiated, design space: 1e43
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.82 s
+number of holes: 61, family size: 1e43, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.173194
+--------------------
+2025-01-14 12:21:27,595 - decision_tree.py - families considered: 24
+2025-01-14 12:21:27,595 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:27,596 - decision_tree.py - families with schedulers preserved: 8
+2025-01-14 12:21:27,596 - decision_tree.py - families model checked: 16
+2025-01-14 12:21:27,596 - decision_tree.py - harmonizations attempted: 3
+2025-01-14 12:21:27,596 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:21:27,596 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:21:27,596 - decision_tree.py - V_0=player_total, dealer_total_0=0, player_total_0=14, V_1=dealer_total, dealer_total_1=9, player_total_1=11, V_2=player_total, dealer_total_2=6, player_total_2=11, V_3=player_total, dealer_total_3=0, player_total_3=0, A_4=(Skip), A_5=(Draw), V_6=dealer_total, dealer_total_6=6, player_total_6=11, A_7=(Skip), A_8=(Draw), V_9=dealer_total, dealer_total_9=10, player_total_9=12, V_10=player_total, dealer_total_10=7, player_total_10=13, A_11=(Draw), A_12=(Skip), V_13=player_total, dealer_total_13=10, player_total_13=11, A_14=(Draw), A_15=(Skip), V_16=player_total, dealer_total_16=0, player_total_16=14, V_17=player_total, dealer_total_17=0, player_total_17=14, V_18=player_total, dealer_total_18=0, player_total_18=21, A_19=(Skip), A_20=(Draw), V_21=player_total, dealer_total_21=0, player_total_21=21, A_22=(Skip), A_23=(Draw), V_24=player_total, dealer_total_24=0, player_total_24=14, V_25=player_total, dealer_total_25=0, player_total_25=16, A_26=(Skip), A_27=(Draw), V_28=player_total, dealer_total_28=0, player_total_28=14, A_29=(Draw), A_30=(Skip)
+2025-01-14 12:21:27,599 - decision_tree.py - double-checking specification satisfiability:  : -2.1731936661844773
+2025-01-14 12:21:27,599 - decision_tree.py - admissible subtree found from node 1
+2025-01-14 12:21:27,599 - decision_tree.py - new tree has depth 5 and 9 nodes
+// decision tree
+digraph {
+	5 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	6 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="player_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	4 -> 5 [label=T]
+	4 -> 6 [label=F]
+	8 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	9 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	7 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	7 -> 8 [label=T]
+	7 -> 9 [label=F]
+	3 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	3 -> 4 [label=T]
+	3 -> 7 [label=F]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	15 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	14 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	14 -> 15 [label=T]
+	14 -> 16 [label=F]
+	10 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	10 -> 11 [label=T]
+	10 -> 14 [label=F]
+	2 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 10 [label=F]
+	17 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	1 [label="player_total<=14" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 17 [label=F]
+	18 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 18 [label=F]
+}
+
+2025-01-14 12:21:29,138 - decision_tree.py - new dtcontrol tree has depth 7 and 8 nodes
+2025-01-14 12:21:29,138 - decision_tree.py - New DtControl tree is smaller
+2025-01-14 12:21:29,140 - decision_tree.py - starting iteration 2 with 1 nodes in node queue
+// decision tree
+digraph {
+	3 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	2 [label="dealer_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 4 [label=F]
+	7 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	10 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	9 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	9 -> 10 [label=T]
+	9 -> 11 [label=F]
+	14 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	8 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	8 -> 9 [label=T]
+	8 -> 14 [label=F]
+	6 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	6 -> 7 [label=T]
+	6 -> 8 [label=F]
+	15 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	5 [label="player_total<=14" margin="0.05,0.05" shape=box style=rounded]
+	5 -> 6 [label=T]
+	5 -> 15 [label=F]
+	1 [label="player_total<=11" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 5 [label=F]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 16 [label=F]
+}
+
+2025-01-14 12:21:29,148 - decision_tree.py - subtree quotient has 533 states and 724 choices
+2025-01-14 12:21:29,152 - mdp.py - MDP has 191/533 relevant states
+2025-01-14 12:21:29,153 - mdp.py - MDP has 2 actions
+2025-01-14 12:21:29,156 - mdp.py - found the following 2 variables: ['dealer_total:[0..11]', 'player_total:[0..22]']
+
+2025-01-14 12:21:29,156 - mdp.py - building tree of depth 0
+2025-01-14 12:21:29,161 - statistic.py - synthesis initiated, design space: 2
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.02 s
+number of holes: 1, family size: 2, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:21:29,181 - decision_tree.py - families considered: 3
+2025-01-14 12:21:29,181 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:29,181 - decision_tree.py - families with schedulers preserved: 0
+2025-01-14 12:21:29,181 - decision_tree.py - families model checked: 3
+2025-01-14 12:21:29,181 - decision_tree.py - harmonizations attempted: 1
+2025-01-14 12:21:29,181 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:21:29,181 - mdp.py - building tree of depth 1
+2025-01-14 12:21:29,199 - statistic.py - synthesis initiated, design space: 1520
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.19 s
+number of holes: 5, family size: 1520, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:21:29,389 - decision_tree.py - families considered: 17
+2025-01-14 12:21:29,389 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:29,389 - decision_tree.py - families with schedulers preserved: 3
+2025-01-14 12:21:29,389 - decision_tree.py - families model checked: 14
+2025-01-14 12:21:29,389 - decision_tree.py - harmonizations attempted: 5
+2025-01-14 12:21:29,389 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:21:29,389 - mdp.py - building tree of depth 2
+2025-01-14 12:21:29,405 - statistic.py - synthesis initiated, design space: 1e8
+2025-01-14 12:21:35,424 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.02 s
+number of holes: 13, family size: 1e8, quotient: 533 states / 724 actions
+explored: 67 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:21:35,424 - decision_tree.py - families considered: 320
+2025-01-14 12:21:35,424 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:35,424 - decision_tree.py - families with schedulers preserved: 126
+2025-01-14 12:21:35,424 - decision_tree.py - families model checked: 194
+2025-01-14 12:21:35,424 - decision_tree.py - harmonizations attempted: 38
+2025-01-14 12:21:35,424 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:21:35,425 - mdp.py - building tree of depth 3
+2025-01-14 12:21:35,458 - statistic.py - synthesis initiated, design space: 1e20
+2025-01-14 12:21:41,475 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.02 s
+number of holes: 29, family size: 1e20, quotient: 533 states / 724 actions
+explored: 0 %
+
+optimum: -2.245591
+--------------------
+2025-01-14 12:21:41,476 - decision_tree.py - families considered: 182
+2025-01-14 12:21:41,476 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:41,476 - decision_tree.py - families with schedulers preserved: 78
+2025-01-14 12:21:41,476 - decision_tree.py - families model checked: 104
+2025-01-14 12:21:41,476 - decision_tree.py - harmonizations attempted: 23
+2025-01-14 12:21:41,476 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:21:41,476 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:21:41,476 - decision_tree.py - V_0=dealer_total, dealer_total_0=7, player_total_0=12, V_1=player_total, dealer_total_1=0, player_total_1=12, V_2=player_total, dealer_total_2=0, player_total_2=11, A_3=(Draw), A_4=(Skip), V_5=player_total, dealer_total_5=0, player_total_5=14, A_6=(Skip), A_7=(Skip), V_8=player_total, dealer_total_8=0, player_total_8=14, V_9=player_total, dealer_total_9=0, player_total_9=13, A_10=(Draw), A_11=(Skip), V_12=player_total, dealer_total_12=0, player_total_12=13, A_13=(Skip), A_14=(Skip)
+2025-01-14 12:21:41,480 - decision_tree.py - double-checking specification satisfiability:  : -2.2455910026588675
+
+2025-01-14 12:21:41,480 - mdp.py - building tree of depth 4
+2025-01-14 12:21:41,548 - statistic.py - synthesis initiated, design space: 1e43
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.79 s
+number of holes: 61, family size: 1e43, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.173194
+--------------------
+2025-01-14 12:21:42,339 - decision_tree.py - families considered: 24
+2025-01-14 12:21:42,339 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:42,339 - decision_tree.py - families with schedulers preserved: 8
+2025-01-14 12:21:42,339 - decision_tree.py - families model checked: 16
+2025-01-14 12:21:42,339 - decision_tree.py - harmonizations attempted: 3
+2025-01-14 12:21:42,339 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:21:42,339 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:21:42,339 - decision_tree.py - V_0=player_total, dealer_total_0=0, player_total_0=14, V_1=dealer_total, dealer_total_1=9, player_total_1=11, V_2=player_total, dealer_total_2=6, player_total_2=11, V_3=player_total, dealer_total_3=0, player_total_3=0, A_4=(Skip), A_5=(Draw), V_6=dealer_total, dealer_total_6=6, player_total_6=11, A_7=(Skip), A_8=(Draw), V_9=dealer_total, dealer_total_9=10, player_total_9=12, V_10=player_total, dealer_total_10=7, player_total_10=13, A_11=(Draw), A_12=(Skip), V_13=player_total, dealer_total_13=10, player_total_13=11, A_14=(Draw), A_15=(Skip), V_16=player_total, dealer_total_16=0, player_total_16=14, V_17=player_total, dealer_total_17=0, player_total_17=14, V_18=player_total, dealer_total_18=0, player_total_18=21, A_19=(Skip), A_20=(Draw), V_21=player_total, dealer_total_21=0, player_total_21=21, A_22=(Skip), A_23=(Draw), V_24=player_total, dealer_total_24=0, player_total_24=14, V_25=player_total, dealer_total_25=0, player_total_25=16, A_26=(Skip), A_27=(Draw), V_28=player_total, dealer_total_28=0, player_total_28=14, A_29=(Draw), A_30=(Skip)
+2025-01-14 12:21:42,344 - decision_tree.py - double-checking specification satisfiability:  : -2.1731936661844773
+2025-01-14 12:21:42,344 - decision_tree.py - admissible subtree found from node 1
+2025-01-14 12:21:42,345 - decision_tree.py - new tree has depth 5 and 9 nodes
+// decision tree
+digraph {
+	5 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	6 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="player_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	4 -> 5 [label=T]
+	4 -> 6 [label=F]
+	8 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	9 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	7 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	7 -> 8 [label=T]
+	7 -> 9 [label=F]
+	3 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	3 -> 4 [label=T]
+	3 -> 7 [label=F]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	15 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	14 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	14 -> 15 [label=T]
+	14 -> 16 [label=F]
+	10 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	10 -> 11 [label=T]
+	10 -> 14 [label=F]
+	2 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 10 [label=F]
+	17 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	1 [label="player_total<=14" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 17 [label=F]
+	18 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 18 [label=F]
+}
+
+2025-01-14 12:21:43,638 - decision_tree.py - new dtcontrol tree has depth 7 and 8 nodes
+2025-01-14 12:21:43,638 - decision_tree.py - New DtControl tree is smaller
+2025-01-14 12:21:43,639 - decision_tree.py - starting iteration 3 with 1 nodes in node queue
+// decision tree
+digraph {
+	3 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	2 [label="dealer_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 4 [label=F]
+	7 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	10 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	9 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	9 -> 10 [label=T]
+	9 -> 11 [label=F]
+	14 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	8 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	8 -> 9 [label=T]
+	8 -> 14 [label=F]
+	6 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	6 -> 7 [label=T]
+	6 -> 8 [label=F]
+	15 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	5 [label="player_total<=14" margin="0.05,0.05" shape=box style=rounded]
+	5 -> 6 [label=T]
+	5 -> 15 [label=F]
+	1 [label="player_total<=11" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 5 [label=F]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 16 [label=F]
+}
+
+2025-01-14 12:21:43,647 - decision_tree.py - subtree quotient has 533 states and 724 choices
+2025-01-14 12:21:43,650 - mdp.py - MDP has 191/533 relevant states
+2025-01-14 12:21:43,654 - mdp.py - MDP has 2 actions
+2025-01-14 12:21:43,657 - mdp.py - found the following 2 variables: ['dealer_total:[0..11]', 'player_total:[0..22]']
+
+2025-01-14 12:21:43,657 - mdp.py - building tree of depth 0
+2025-01-14 12:21:43,660 - statistic.py - synthesis initiated, design space: 2
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.02 s
+number of holes: 1, family size: 2, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:21:43,681 - decision_tree.py - families considered: 3
+2025-01-14 12:21:43,681 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:43,681 - decision_tree.py - families with schedulers preserved: 0
+2025-01-14 12:21:43,681 - decision_tree.py - families model checked: 3
+2025-01-14 12:21:43,681 - decision_tree.py - harmonizations attempted: 1
+2025-01-14 12:21:43,681 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:21:43,681 - mdp.py - building tree of depth 1
+2025-01-14 12:21:43,692 - statistic.py - synthesis initiated, design space: 1520
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.19 s
+number of holes: 5, family size: 1520, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:21:43,884 - decision_tree.py - families considered: 17
+2025-01-14 12:21:43,884 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:43,884 - decision_tree.py - families with schedulers preserved: 3
+2025-01-14 12:21:43,884 - decision_tree.py - families model checked: 14
+2025-01-14 12:21:43,884 - decision_tree.py - harmonizations attempted: 5
+2025-01-14 12:21:43,884 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:21:43,884 - mdp.py - building tree of depth 2
+2025-01-14 12:21:43,900 - statistic.py - synthesis initiated, design space: 1e8
+2025-01-14 12:21:49,938 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.04 s
+number of holes: 13, family size: 1e8, quotient: 533 states / 724 actions
+explored: 67 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:21:49,939 - decision_tree.py - families considered: 317
+2025-01-14 12:21:49,939 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:49,939 - decision_tree.py - families with schedulers preserved: 124
+2025-01-14 12:21:49,939 - decision_tree.py - families model checked: 193
+2025-01-14 12:21:49,939 - decision_tree.py - harmonizations attempted: 38
+2025-01-14 12:21:49,939 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:21:49,939 - mdp.py - building tree of depth 3
+2025-01-14 12:21:49,980 - statistic.py - synthesis initiated, design space: 1e20
+2025-01-14 12:21:54,703 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.01 s
+number of holes: 29, family size: 1e20, quotient: 533 states / 724 actions
+explored: 0 %
+
+optimum: -2.245591
+--------------------
+2025-01-14 12:21:54,703 - decision_tree.py - families considered: 215
+2025-01-14 12:21:54,703 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:54,703 - decision_tree.py - families with schedulers preserved: 86
+2025-01-14 12:21:54,703 - decision_tree.py - families model checked: 129
+2025-01-14 12:21:54,703 - decision_tree.py - harmonizations attempted: 31
+2025-01-14 12:21:54,703 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:21:54,703 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:21:54,703 - decision_tree.py - V_0=dealer_total, dealer_total_0=7, player_total_0=12, V_1=player_total, dealer_total_1=0, player_total_1=12, V_2=player_total, dealer_total_2=0, player_total_2=11, A_3=(Draw), A_4=(Skip), V_5=player_total, dealer_total_5=0, player_total_5=14, A_6=(Skip), A_7=(Skip), V_8=player_total, dealer_total_8=0, player_total_8=14, V_9=player_total, dealer_total_9=0, player_total_9=13, A_10=(Draw), A_11=(Skip), V_12=player_total, dealer_total_12=0, player_total_12=13, A_13=(Skip), A_14=(Skip)
+2025-01-14 12:21:54,706 - decision_tree.py - double-checking specification satisfiability:  : -2.2455910026588675
+
+2025-01-14 12:21:54,706 - mdp.py - building tree of depth 4
+2025-01-14 12:21:54,763 - statistic.py - synthesis initiated, design space: 1e43
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.78 s
+number of holes: 61, family size: 1e43, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.173194
+--------------------
+2025-01-14 12:21:55,545 - decision_tree.py - families considered: 24
+2025-01-14 12:21:55,545 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:55,545 - decision_tree.py - families with schedulers preserved: 8
+2025-01-14 12:21:55,545 - decision_tree.py - families model checked: 16
+2025-01-14 12:21:55,545 - decision_tree.py - harmonizations attempted: 3
+2025-01-14 12:21:55,545 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:21:55,545 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:21:55,545 - decision_tree.py - V_0=player_total, dealer_total_0=0, player_total_0=14, V_1=dealer_total, dealer_total_1=9, player_total_1=11, V_2=player_total, dealer_total_2=6, player_total_2=11, V_3=player_total, dealer_total_3=0, player_total_3=0, A_4=(Skip), A_5=(Draw), V_6=dealer_total, dealer_total_6=6, player_total_6=11, A_7=(Skip), A_8=(Draw), V_9=dealer_total, dealer_total_9=10, player_total_9=12, V_10=player_total, dealer_total_10=7, player_total_10=13, A_11=(Draw), A_12=(Skip), V_13=player_total, dealer_total_13=10, player_total_13=11, A_14=(Draw), A_15=(Skip), V_16=player_total, dealer_total_16=0, player_total_16=14, V_17=player_total, dealer_total_17=0, player_total_17=14, V_18=player_total, dealer_total_18=0, player_total_18=21, A_19=(Skip), A_20=(Draw), V_21=player_total, dealer_total_21=0, player_total_21=21, A_22=(Skip), A_23=(Draw), V_24=player_total, dealer_total_24=0, player_total_24=14, V_25=player_total, dealer_total_25=0, player_total_25=16, A_26=(Skip), A_27=(Draw), V_28=player_total, dealer_total_28=0, player_total_28=14, A_29=(Draw), A_30=(Skip)
+2025-01-14 12:21:55,548 - decision_tree.py - double-checking specification satisfiability:  : -2.1731936661844773
+2025-01-14 12:21:55,548 - decision_tree.py - admissible subtree found from node 1
+2025-01-14 12:21:55,549 - decision_tree.py - new tree has depth 5 and 9 nodes
+// decision tree
+digraph {
+	5 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	6 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="player_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	4 -> 5 [label=T]
+	4 -> 6 [label=F]
+	8 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	9 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	7 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	7 -> 8 [label=T]
+	7 -> 9 [label=F]
+	3 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	3 -> 4 [label=T]
+	3 -> 7 [label=F]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	15 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	14 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	14 -> 15 [label=T]
+	14 -> 16 [label=F]
+	10 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	10 -> 11 [label=T]
+	10 -> 14 [label=F]
+	2 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 10 [label=F]
+	17 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	1 [label="player_total<=14" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 17 [label=F]
+	18 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 18 [label=F]
+}
+
+2025-01-14 12:21:56,761 - decision_tree.py - new dtcontrol tree has depth 7 and 8 nodes
+2025-01-14 12:21:56,762 - decision_tree.py - New DtControl tree is smaller
+2025-01-14 12:21:56,763 - decision_tree.py - starting iteration 4 with 1 nodes in node queue
+// decision tree
+digraph {
+	3 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	2 [label="dealer_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 4 [label=F]
+	7 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	10 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	9 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	9 -> 10 [label=T]
+	9 -> 11 [label=F]
+	14 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	8 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	8 -> 9 [label=T]
+	8 -> 14 [label=F]
+	6 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	6 -> 7 [label=T]
+	6 -> 8 [label=F]
+	15 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	5 [label="player_total<=14" margin="0.05,0.05" shape=box style=rounded]
+	5 -> 6 [label=T]
+	5 -> 15 [label=F]
+	1 [label="player_total<=11" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 5 [label=F]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 16 [label=F]
+}
+
+2025-01-14 12:21:56,771 - decision_tree.py - subtree quotient has 533 states and 724 choices
+2025-01-14 12:21:56,774 - mdp.py - MDP has 191/533 relevant states
+2025-01-14 12:21:56,774 - mdp.py - MDP has 2 actions
+2025-01-14 12:21:56,777 - mdp.py - found the following 2 variables: ['dealer_total:[0..11]', 'player_total:[0..22]']
+
+2025-01-14 12:21:56,777 - mdp.py - building tree of depth 0
+2025-01-14 12:21:56,780 - statistic.py - synthesis initiated, design space: 2
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.02 s
+number of holes: 1, family size: 2, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:21:56,801 - decision_tree.py - families considered: 3
+2025-01-14 12:21:56,802 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:56,802 - decision_tree.py - families with schedulers preserved: 0
+2025-01-14 12:21:56,802 - decision_tree.py - families model checked: 3
+2025-01-14 12:21:56,802 - decision_tree.py - harmonizations attempted: 1
+2025-01-14 12:21:56,802 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:21:56,802 - mdp.py - building tree of depth 1
+2025-01-14 12:21:56,817 - statistic.py - synthesis initiated, design space: 1520
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.21 s
+number of holes: 5, family size: 1520, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:21:57,032 - decision_tree.py - families considered: 17
+2025-01-14 12:21:57,032 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:21:57,032 - decision_tree.py - families with schedulers preserved: 3
+2025-01-14 12:21:57,032 - decision_tree.py - families model checked: 14
+2025-01-14 12:21:57,032 - decision_tree.py - harmonizations attempted: 5
+2025-01-14 12:21:57,032 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:21:57,032 - mdp.py - building tree of depth 2
+2025-01-14 12:21:57,048 - statistic.py - synthesis initiated, design space: 1e8
+2025-01-14 12:22:03,063 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.01 s
+number of holes: 13, family size: 1e8, quotient: 533 states / 724 actions
+explored: 67 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:22:03,063 - decision_tree.py - families considered: 316
+2025-01-14 12:22:03,063 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:03,063 - decision_tree.py - families with schedulers preserved: 124
+2025-01-14 12:22:03,063 - decision_tree.py - families model checked: 192
+2025-01-14 12:22:03,063 - decision_tree.py - harmonizations attempted: 37
+2025-01-14 12:22:03,063 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:22:03,063 - mdp.py - building tree of depth 3
+2025-01-14 12:22:03,099 - statistic.py - synthesis initiated, design space: 1e20
+2025-01-14 12:22:09,106 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.01 s
+number of holes: 29, family size: 1e20, quotient: 533 states / 724 actions
+explored: 0 %
+
+optimum: -2.245591
+--------------------
+2025-01-14 12:22:09,107 - decision_tree.py - families considered: 213
+2025-01-14 12:22:09,107 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:09,107 - decision_tree.py - families with schedulers preserved: 86
+2025-01-14 12:22:09,107 - decision_tree.py - families model checked: 127
+2025-01-14 12:22:09,107 - decision_tree.py - harmonizations attempted: 30
+2025-01-14 12:22:09,107 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:22:09,107 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:22:09,107 - decision_tree.py - V_0=dealer_total, dealer_total_0=7, player_total_0=12, V_1=player_total, dealer_total_1=0, player_total_1=12, V_2=player_total, dealer_total_2=0, player_total_2=11, A_3=(Draw), A_4=(Skip), V_5=player_total, dealer_total_5=0, player_total_5=14, A_6=(Skip), A_7=(Skip), V_8=player_total, dealer_total_8=0, player_total_8=14, V_9=player_total, dealer_total_9=0, player_total_9=13, A_10=(Draw), A_11=(Skip), V_12=player_total, dealer_total_12=0, player_total_12=13, A_13=(Skip), A_14=(Skip)
+2025-01-14 12:22:09,109 - decision_tree.py - double-checking specification satisfiability:  : -2.2455910026588675
+
+2025-01-14 12:22:09,109 - mdp.py - building tree of depth 4
+2025-01-14 12:22:09,166 - statistic.py - synthesis initiated, design space: 1e43
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.74 s
+number of holes: 61, family size: 1e43, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.173194
+--------------------
+2025-01-14 12:22:09,905 - decision_tree.py - families considered: 24
+2025-01-14 12:22:09,905 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:09,905 - decision_tree.py - families with schedulers preserved: 8
+2025-01-14 12:22:09,905 - decision_tree.py - families model checked: 16
+2025-01-14 12:22:09,905 - decision_tree.py - harmonizations attempted: 3
+2025-01-14 12:22:09,905 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:22:09,905 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:22:09,905 - decision_tree.py - V_0=player_total, dealer_total_0=0, player_total_0=14, V_1=dealer_total, dealer_total_1=9, player_total_1=11, V_2=player_total, dealer_total_2=6, player_total_2=11, V_3=player_total, dealer_total_3=0, player_total_3=0, A_4=(Skip), A_5=(Draw), V_6=dealer_total, dealer_total_6=6, player_total_6=11, A_7=(Skip), A_8=(Draw), V_9=dealer_total, dealer_total_9=10, player_total_9=12, V_10=player_total, dealer_total_10=7, player_total_10=13, A_11=(Draw), A_12=(Skip), V_13=player_total, dealer_total_13=10, player_total_13=11, A_14=(Draw), A_15=(Skip), V_16=player_total, dealer_total_16=0, player_total_16=14, V_17=player_total, dealer_total_17=0, player_total_17=14, V_18=player_total, dealer_total_18=0, player_total_18=21, A_19=(Skip), A_20=(Draw), V_21=player_total, dealer_total_21=0, player_total_21=21, A_22=(Skip), A_23=(Draw), V_24=player_total, dealer_total_24=0, player_total_24=14, V_25=player_total, dealer_total_25=0, player_total_25=16, A_26=(Skip), A_27=(Draw), V_28=player_total, dealer_total_28=0, player_total_28=14, A_29=(Draw), A_30=(Skip)
+2025-01-14 12:22:09,908 - decision_tree.py - double-checking specification satisfiability:  : -2.1731936661844773
+2025-01-14 12:22:09,908 - decision_tree.py - admissible subtree found from node 1
+2025-01-14 12:22:09,909 - decision_tree.py - new tree has depth 5 and 9 nodes
+// decision tree
+digraph {
+	5 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	6 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="player_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	4 -> 5 [label=T]
+	4 -> 6 [label=F]
+	8 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	9 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	7 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	7 -> 8 [label=T]
+	7 -> 9 [label=F]
+	3 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	3 -> 4 [label=T]
+	3 -> 7 [label=F]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	15 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	14 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	14 -> 15 [label=T]
+	14 -> 16 [label=F]
+	10 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	10 -> 11 [label=T]
+	10 -> 14 [label=F]
+	2 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 10 [label=F]
+	17 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	1 [label="player_total<=14" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 17 [label=F]
+	18 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 18 [label=F]
+}
+
+2025-01-14 12:22:11,350 - decision_tree.py - new dtcontrol tree has depth 7 and 8 nodes
+2025-01-14 12:22:11,350 - decision_tree.py - New DtControl tree is smaller
+2025-01-14 12:22:11,353 - decision_tree.py - starting iteration 5 with 1 nodes in node queue
+// decision tree
+digraph {
+	3 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	2 [label="dealer_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 4 [label=F]
+	7 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	10 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	9 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	9 -> 10 [label=T]
+	9 -> 11 [label=F]
+	14 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	8 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	8 -> 9 [label=T]
+	8 -> 14 [label=F]
+	6 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	6 -> 7 [label=T]
+	6 -> 8 [label=F]
+	15 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	5 [label="player_total<=14" margin="0.05,0.05" shape=box style=rounded]
+	5 -> 6 [label=T]
+	5 -> 15 [label=F]
+	1 [label="player_total<=11" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 5 [label=F]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 16 [label=F]
+}
+
+2025-01-14 12:22:11,365 - decision_tree.py - subtree quotient has 533 states and 724 choices
+2025-01-14 12:22:11,369 - mdp.py - MDP has 191/533 relevant states
+2025-01-14 12:22:11,370 - mdp.py - MDP has 2 actions
+2025-01-14 12:22:11,376 - mdp.py - found the following 2 variables: ['dealer_total:[0..11]', 'player_total:[0..22]']
+
+2025-01-14 12:22:11,376 - mdp.py - building tree of depth 0
+2025-01-14 12:22:11,384 - statistic.py - synthesis initiated, design space: 2
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.03 s
+number of holes: 1, family size: 2, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:22:11,418 - decision_tree.py - families considered: 3
+2025-01-14 12:22:11,418 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:11,418 - decision_tree.py - families with schedulers preserved: 0
+2025-01-14 12:22:11,418 - decision_tree.py - families model checked: 3
+2025-01-14 12:22:11,418 - decision_tree.py - harmonizations attempted: 1
+2025-01-14 12:22:11,419 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:22:11,419 - mdp.py - building tree of depth 1
+2025-01-14 12:22:11,441 - statistic.py - synthesis initiated, design space: 1520
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.22 s
+number of holes: 5, family size: 1520, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:22:11,660 - decision_tree.py - families considered: 17
+2025-01-14 12:22:11,660 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:11,660 - decision_tree.py - families with schedulers preserved: 3
+2025-01-14 12:22:11,660 - decision_tree.py - families model checked: 14
+2025-01-14 12:22:11,660 - decision_tree.py - harmonizations attempted: 5
+2025-01-14 12:22:11,660 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:22:11,660 - mdp.py - building tree of depth 2
+2025-01-14 12:22:11,698 - statistic.py - synthesis initiated, design space: 1e8
+2025-01-14 12:22:17,702 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.0 s
+number of holes: 13, family size: 1e8, quotient: 533 states / 724 actions
+explored: 71 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:22:17,703 - decision_tree.py - families considered: 334
+2025-01-14 12:22:17,703 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:17,703 - decision_tree.py - families with schedulers preserved: 131
+2025-01-14 12:22:17,703 - decision_tree.py - families model checked: 203
+2025-01-14 12:22:17,703 - decision_tree.py - harmonizations attempted: 39
+2025-01-14 12:22:17,703 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:22:17,703 - mdp.py - building tree of depth 3
+2025-01-14 12:22:17,735 - statistic.py - synthesis initiated, design space: 1e20
+2025-01-14 12:22:22,471 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.02 s
+number of holes: 29, family size: 1e20, quotient: 533 states / 724 actions
+explored: 0 %
+
+optimum: -2.245591
+--------------------
+2025-01-14 12:22:22,472 - decision_tree.py - families considered: 223
+2025-01-14 12:22:22,472 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:22,472 - decision_tree.py - families with schedulers preserved: 88
+2025-01-14 12:22:22,472 - decision_tree.py - families model checked: 135
+2025-01-14 12:22:22,472 - decision_tree.py - harmonizations attempted: 33
+2025-01-14 12:22:22,472 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:22:22,472 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:22:22,472 - decision_tree.py - V_0=dealer_total, dealer_total_0=7, player_total_0=12, V_1=player_total, dealer_total_1=0, player_total_1=12, V_2=player_total, dealer_total_2=0, player_total_2=11, A_3=(Draw), A_4=(Skip), V_5=player_total, dealer_total_5=0, player_total_5=14, A_6=(Skip), A_7=(Skip), V_8=player_total, dealer_total_8=0, player_total_8=14, V_9=player_total, dealer_total_9=0, player_total_9=13, A_10=(Draw), A_11=(Skip), V_12=player_total, dealer_total_12=0, player_total_12=13, A_13=(Skip), A_14=(Skip)
+2025-01-14 12:22:22,474 - decision_tree.py - double-checking specification satisfiability:  : -2.2455910026588675
+
+2025-01-14 12:22:22,474 - mdp.py - building tree of depth 4
+2025-01-14 12:22:22,533 - statistic.py - synthesis initiated, design space: 1e43
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.71 s
+number of holes: 61, family size: 1e43, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.173194
+--------------------
+2025-01-14 12:22:23,248 - decision_tree.py - families considered: 24
+2025-01-14 12:22:23,248 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:23,248 - decision_tree.py - families with schedulers preserved: 8
+2025-01-14 12:22:23,248 - decision_tree.py - families model checked: 16
+2025-01-14 12:22:23,248 - decision_tree.py - harmonizations attempted: 3
+2025-01-14 12:22:23,248 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:22:23,248 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:22:23,248 - decision_tree.py - V_0=player_total, dealer_total_0=0, player_total_0=14, V_1=dealer_total, dealer_total_1=9, player_total_1=11, V_2=player_total, dealer_total_2=6, player_total_2=11, V_3=player_total, dealer_total_3=0, player_total_3=0, A_4=(Skip), A_5=(Draw), V_6=dealer_total, dealer_total_6=6, player_total_6=11, A_7=(Skip), A_8=(Draw), V_9=dealer_total, dealer_total_9=10, player_total_9=12, V_10=player_total, dealer_total_10=7, player_total_10=13, A_11=(Draw), A_12=(Skip), V_13=player_total, dealer_total_13=10, player_total_13=11, A_14=(Draw), A_15=(Skip), V_16=player_total, dealer_total_16=0, player_total_16=14, V_17=player_total, dealer_total_17=0, player_total_17=14, V_18=player_total, dealer_total_18=0, player_total_18=21, A_19=(Skip), A_20=(Draw), V_21=player_total, dealer_total_21=0, player_total_21=21, A_22=(Skip), A_23=(Draw), V_24=player_total, dealer_total_24=0, player_total_24=14, V_25=player_total, dealer_total_25=0, player_total_25=16, A_26=(Skip), A_27=(Draw), V_28=player_total, dealer_total_28=0, player_total_28=14, A_29=(Draw), A_30=(Skip)
+2025-01-14 12:22:23,251 - decision_tree.py - double-checking specification satisfiability:  : -2.1731936661844773
+2025-01-14 12:22:23,251 - decision_tree.py - admissible subtree found from node 1
+2025-01-14 12:22:23,251 - decision_tree.py - new tree has depth 5 and 9 nodes
+// decision tree
+digraph {
+	5 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	6 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="player_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	4 -> 5 [label=T]
+	4 -> 6 [label=F]
+	8 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	9 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	7 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	7 -> 8 [label=T]
+	7 -> 9 [label=F]
+	3 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	3 -> 4 [label=T]
+	3 -> 7 [label=F]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	15 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	14 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	14 -> 15 [label=T]
+	14 -> 16 [label=F]
+	10 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	10 -> 11 [label=T]
+	10 -> 14 [label=F]
+	2 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 10 [label=F]
+	17 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	1 [label="player_total<=14" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 17 [label=F]
+	18 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 18 [label=F]
+}
+
+2025-01-14 12:22:24,568 - decision_tree.py - new dtcontrol tree has depth 7 and 8 nodes
+2025-01-14 12:22:24,568 - decision_tree.py - New DtControl tree is smaller
+2025-01-14 12:22:24,569 - decision_tree.py - starting iteration 6 with 1 nodes in node queue
+// decision tree
+digraph {
+	3 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	2 [label="dealer_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 4 [label=F]
+	7 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	10 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	9 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	9 -> 10 [label=T]
+	9 -> 11 [label=F]
+	14 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	8 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	8 -> 9 [label=T]
+	8 -> 14 [label=F]
+	6 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	6 -> 7 [label=T]
+	6 -> 8 [label=F]
+	15 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	5 [label="player_total<=14" margin="0.05,0.05" shape=box style=rounded]
+	5 -> 6 [label=T]
+	5 -> 15 [label=F]
+	1 [label="player_total<=11" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 5 [label=F]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 16 [label=F]
+}
+
+2025-01-14 12:22:24,579 - decision_tree.py - subtree quotient has 533 states and 724 choices
+2025-01-14 12:22:24,581 - mdp.py - MDP has 191/533 relevant states
+2025-01-14 12:22:24,582 - mdp.py - MDP has 2 actions
+2025-01-14 12:22:24,585 - mdp.py - found the following 2 variables: ['dealer_total:[0..11]', 'player_total:[0..22]']
+
+2025-01-14 12:22:24,585 - mdp.py - building tree of depth 0
+2025-01-14 12:22:24,589 - statistic.py - synthesis initiated, design space: 2
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.02 s
+number of holes: 1, family size: 2, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:22:24,611 - decision_tree.py - families considered: 3
+2025-01-14 12:22:24,611 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:24,611 - decision_tree.py - families with schedulers preserved: 0
+2025-01-14 12:22:24,611 - decision_tree.py - families model checked: 3
+2025-01-14 12:22:24,611 - decision_tree.py - harmonizations attempted: 1
+2025-01-14 12:22:24,611 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:22:24,611 - mdp.py - building tree of depth 1
+2025-01-14 12:22:24,624 - statistic.py - synthesis initiated, design space: 1520
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.19 s
+number of holes: 5, family size: 1520, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:22:24,814 - decision_tree.py - families considered: 17
+2025-01-14 12:22:24,814 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:24,814 - decision_tree.py - families with schedulers preserved: 3
+2025-01-14 12:22:24,814 - decision_tree.py - families model checked: 14
+2025-01-14 12:22:24,814 - decision_tree.py - harmonizations attempted: 5
+2025-01-14 12:22:24,814 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:22:24,814 - mdp.py - building tree of depth 2
+2025-01-14 12:22:24,831 - statistic.py - synthesis initiated, design space: 1e8
+2025-01-14 12:22:30,850 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.02 s
+number of holes: 13, family size: 1e8, quotient: 533 states / 724 actions
+explored: 65 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:22:30,851 - decision_tree.py - families considered: 295
+2025-01-14 12:22:30,851 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:30,851 - decision_tree.py - families with schedulers preserved: 115
+2025-01-14 12:22:30,851 - decision_tree.py - families model checked: 180
+2025-01-14 12:22:30,851 - decision_tree.py - harmonizations attempted: 36
+2025-01-14 12:22:30,851 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:22:30,851 - mdp.py - building tree of depth 3
+2025-01-14 12:22:30,885 - statistic.py - synthesis initiated, design space: 1e20
+2025-01-14 12:22:36,922 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.04 s
+number of holes: 29, family size: 1e20, quotient: 533 states / 724 actions
+explored: 0 %
+
+optimum: -2.245591
+--------------------
+2025-01-14 12:22:36,923 - decision_tree.py - families considered: 222
+2025-01-14 12:22:36,923 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:36,923 - decision_tree.py - families with schedulers preserved: 88
+2025-01-14 12:22:36,923 - decision_tree.py - families model checked: 134
+2025-01-14 12:22:36,924 - decision_tree.py - harmonizations attempted: 32
+2025-01-14 12:22:36,924 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:22:36,924 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:22:36,924 - decision_tree.py - V_0=dealer_total, dealer_total_0=7, player_total_0=12, V_1=player_total, dealer_total_1=0, player_total_1=12, V_2=player_total, dealer_total_2=0, player_total_2=11, A_3=(Draw), A_4=(Skip), V_5=player_total, dealer_total_5=0, player_total_5=14, A_6=(Skip), A_7=(Skip), V_8=player_total, dealer_total_8=0, player_total_8=14, V_9=player_total, dealer_total_9=0, player_total_9=13, A_10=(Draw), A_11=(Skip), V_12=player_total, dealer_total_12=0, player_total_12=13, A_13=(Skip), A_14=(Skip)
+2025-01-14 12:22:36,927 - decision_tree.py - double-checking specification satisfiability:  : -2.2455910026588675
+
+2025-01-14 12:22:36,927 - mdp.py - building tree of depth 4
+2025-01-14 12:22:36,987 - statistic.py - synthesis initiated, design space: 1e43
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.74 s
+number of holes: 61, family size: 1e43, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.173194
+--------------------
+2025-01-14 12:22:37,732 - decision_tree.py - families considered: 24
+2025-01-14 12:22:37,732 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:37,732 - decision_tree.py - families with schedulers preserved: 8
+2025-01-14 12:22:37,732 - decision_tree.py - families model checked: 16
+2025-01-14 12:22:37,732 - decision_tree.py - harmonizations attempted: 3
+2025-01-14 12:22:37,732 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:22:37,732 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:22:37,732 - decision_tree.py - V_0=player_total, dealer_total_0=0, player_total_0=14, V_1=dealer_total, dealer_total_1=9, player_total_1=11, V_2=player_total, dealer_total_2=6, player_total_2=11, V_3=player_total, dealer_total_3=0, player_total_3=0, A_4=(Skip), A_5=(Draw), V_6=dealer_total, dealer_total_6=6, player_total_6=11, A_7=(Skip), A_8=(Draw), V_9=dealer_total, dealer_total_9=10, player_total_9=12, V_10=player_total, dealer_total_10=7, player_total_10=13, A_11=(Draw), A_12=(Skip), V_13=player_total, dealer_total_13=10, player_total_13=11, A_14=(Draw), A_15=(Skip), V_16=player_total, dealer_total_16=0, player_total_16=14, V_17=player_total, dealer_total_17=0, player_total_17=14, V_18=player_total, dealer_total_18=0, player_total_18=21, A_19=(Skip), A_20=(Draw), V_21=player_total, dealer_total_21=0, player_total_21=21, A_22=(Skip), A_23=(Draw), V_24=player_total, dealer_total_24=0, player_total_24=14, V_25=player_total, dealer_total_25=0, player_total_25=16, A_26=(Skip), A_27=(Draw), V_28=player_total, dealer_total_28=0, player_total_28=14, A_29=(Draw), A_30=(Skip)
+2025-01-14 12:22:37,735 - decision_tree.py - double-checking specification satisfiability:  : -2.1731936661844773
+2025-01-14 12:22:37,735 - decision_tree.py - admissible subtree found from node 1
+2025-01-14 12:22:37,736 - decision_tree.py - new tree has depth 5 and 9 nodes
+// decision tree
+digraph {
+	5 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	6 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="player_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	4 -> 5 [label=T]
+	4 -> 6 [label=F]
+	8 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	9 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	7 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	7 -> 8 [label=T]
+	7 -> 9 [label=F]
+	3 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	3 -> 4 [label=T]
+	3 -> 7 [label=F]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	15 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	14 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	14 -> 15 [label=T]
+	14 -> 16 [label=F]
+	10 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	10 -> 11 [label=T]
+	10 -> 14 [label=F]
+	2 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 10 [label=F]
+	17 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	1 [label="player_total<=14" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 17 [label=F]
+	18 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 18 [label=F]
+}
+
+2025-01-14 12:22:38,982 - decision_tree.py - new dtcontrol tree has depth 7 and 8 nodes
+2025-01-14 12:22:38,982 - decision_tree.py - New DtControl tree is smaller
+2025-01-14 12:22:38,984 - decision_tree.py - starting iteration 7 with 1 nodes in node queue
+// decision tree
+digraph {
+	3 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	2 [label="dealer_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 4 [label=F]
+	7 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	10 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	9 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	9 -> 10 [label=T]
+	9 -> 11 [label=F]
+	14 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	8 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	8 -> 9 [label=T]
+	8 -> 14 [label=F]
+	6 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	6 -> 7 [label=T]
+	6 -> 8 [label=F]
+	15 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	5 [label="player_total<=14" margin="0.05,0.05" shape=box style=rounded]
+	5 -> 6 [label=T]
+	5 -> 15 [label=F]
+	1 [label="player_total<=11" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 5 [label=F]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 16 [label=F]
+}
+
+2025-01-14 12:22:38,993 - decision_tree.py - subtree quotient has 533 states and 724 choices
+2025-01-14 12:22:38,995 - mdp.py - MDP has 191/533 relevant states
+2025-01-14 12:22:38,996 - mdp.py - MDP has 2 actions
+2025-01-14 12:22:38,999 - mdp.py - found the following 2 variables: ['dealer_total:[0..11]', 'player_total:[0..22]']
+
+2025-01-14 12:22:38,999 - mdp.py - building tree of depth 0
+2025-01-14 12:22:39,005 - statistic.py - synthesis initiated, design space: 2
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.02 s
+number of holes: 1, family size: 2, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:22:39,027 - decision_tree.py - families considered: 3
+2025-01-14 12:22:39,027 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:39,027 - decision_tree.py - families with schedulers preserved: 0
+2025-01-14 12:22:39,027 - decision_tree.py - families model checked: 3
+2025-01-14 12:22:39,027 - decision_tree.py - harmonizations attempted: 1
+2025-01-14 12:22:39,027 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:22:39,027 - mdp.py - building tree of depth 1
+2025-01-14 12:22:39,046 - statistic.py - synthesis initiated, design space: 1520
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.18 s
+number of holes: 5, family size: 1520, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:22:39,229 - decision_tree.py - families considered: 17
+2025-01-14 12:22:39,229 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:39,229 - decision_tree.py - families with schedulers preserved: 3
+2025-01-14 12:22:39,229 - decision_tree.py - families model checked: 14
+2025-01-14 12:22:39,229 - decision_tree.py - harmonizations attempted: 5
+2025-01-14 12:22:39,229 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:22:39,229 - mdp.py - building tree of depth 2
+2025-01-14 12:22:39,246 - statistic.py - synthesis initiated, design space: 1e8
+2025-01-14 12:22:45,250 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.0 s
+number of holes: 13, family size: 1e8, quotient: 533 states / 724 actions
+explored: 73 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:22:45,250 - decision_tree.py - families considered: 341
+2025-01-14 12:22:45,250 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:45,250 - decision_tree.py - families with schedulers preserved: 133
+2025-01-14 12:22:45,250 - decision_tree.py - families model checked: 208
+2025-01-14 12:22:45,251 - decision_tree.py - harmonizations attempted: 40
+2025-01-14 12:22:45,251 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:22:45,251 - mdp.py - building tree of depth 3
+2025-01-14 12:22:45,287 - statistic.py - synthesis initiated, design space: 1e20
+2025-01-14 12:22:51,297 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.01 s
+number of holes: 29, family size: 1e20, quotient: 533 states / 724 actions
+explored: 0 %
+
+optimum: -2.245591
+--------------------
+2025-01-14 12:22:51,297 - decision_tree.py - families considered: 231
+2025-01-14 12:22:51,297 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:51,297 - decision_tree.py - families with schedulers preserved: 90
+2025-01-14 12:22:51,297 - decision_tree.py - families model checked: 141
+2025-01-14 12:22:51,297 - decision_tree.py - harmonizations attempted: 34
+2025-01-14 12:22:51,297 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:22:51,297 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:22:51,297 - decision_tree.py - V_0=dealer_total, dealer_total_0=7, player_total_0=12, V_1=player_total, dealer_total_1=0, player_total_1=12, V_2=player_total, dealer_total_2=0, player_total_2=11, A_3=(Draw), A_4=(Skip), V_5=player_total, dealer_total_5=0, player_total_5=14, A_6=(Skip), A_7=(Skip), V_8=player_total, dealer_total_8=0, player_total_8=14, V_9=player_total, dealer_total_9=0, player_total_9=13, A_10=(Draw), A_11=(Skip), V_12=player_total, dealer_total_12=0, player_total_12=13, A_13=(Skip), A_14=(Skip)
+2025-01-14 12:22:51,300 - decision_tree.py - double-checking specification satisfiability:  : -2.2455910026588675
+
+2025-01-14 12:22:51,300 - mdp.py - building tree of depth 4
+2025-01-14 12:22:51,357 - statistic.py - synthesis initiated, design space: 1e43
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.74 s
+number of holes: 61, family size: 1e43, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.173194
+--------------------
+2025-01-14 12:22:52,101 - decision_tree.py - families considered: 24
+2025-01-14 12:22:52,101 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:52,101 - decision_tree.py - families with schedulers preserved: 8
+2025-01-14 12:22:52,101 - decision_tree.py - families model checked: 16
+2025-01-14 12:22:52,101 - decision_tree.py - harmonizations attempted: 3
+2025-01-14 12:22:52,101 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:22:52,101 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:22:52,101 - decision_tree.py - V_0=player_total, dealer_total_0=0, player_total_0=14, V_1=dealer_total, dealer_total_1=9, player_total_1=11, V_2=player_total, dealer_total_2=6, player_total_2=11, V_3=player_total, dealer_total_3=0, player_total_3=0, A_4=(Skip), A_5=(Draw), V_6=dealer_total, dealer_total_6=6, player_total_6=11, A_7=(Skip), A_8=(Draw), V_9=dealer_total, dealer_total_9=10, player_total_9=12, V_10=player_total, dealer_total_10=7, player_total_10=13, A_11=(Draw), A_12=(Skip), V_13=player_total, dealer_total_13=10, player_total_13=11, A_14=(Draw), A_15=(Skip), V_16=player_total, dealer_total_16=0, player_total_16=14, V_17=player_total, dealer_total_17=0, player_total_17=14, V_18=player_total, dealer_total_18=0, player_total_18=21, A_19=(Skip), A_20=(Draw), V_21=player_total, dealer_total_21=0, player_total_21=21, A_22=(Skip), A_23=(Draw), V_24=player_total, dealer_total_24=0, player_total_24=14, V_25=player_total, dealer_total_25=0, player_total_25=16, A_26=(Skip), A_27=(Draw), V_28=player_total, dealer_total_28=0, player_total_28=14, A_29=(Draw), A_30=(Skip)
+2025-01-14 12:22:52,104 - decision_tree.py - double-checking specification satisfiability:  : -2.1731936661844773
+2025-01-14 12:22:52,104 - decision_tree.py - admissible subtree found from node 1
+2025-01-14 12:22:52,105 - decision_tree.py - new tree has depth 5 and 9 nodes
+// decision tree
+digraph {
+	5 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	6 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="player_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	4 -> 5 [label=T]
+	4 -> 6 [label=F]
+	8 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	9 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	7 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	7 -> 8 [label=T]
+	7 -> 9 [label=F]
+	3 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	3 -> 4 [label=T]
+	3 -> 7 [label=F]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	15 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	14 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	14 -> 15 [label=T]
+	14 -> 16 [label=F]
+	10 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	10 -> 11 [label=T]
+	10 -> 14 [label=F]
+	2 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 10 [label=F]
+	17 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	1 [label="player_total<=14" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 17 [label=F]
+	18 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 18 [label=F]
+}
+
+2025-01-14 12:22:53,378 - decision_tree.py - new dtcontrol tree has depth 7 and 8 nodes
+2025-01-14 12:22:53,378 - decision_tree.py - New DtControl tree is smaller
+2025-01-14 12:22:53,380 - decision_tree.py - starting iteration 8 with 1 nodes in node queue
+// decision tree
+digraph {
+	3 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	2 [label="dealer_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 4 [label=F]
+	7 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	10 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	9 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	9 -> 10 [label=T]
+	9 -> 11 [label=F]
+	14 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	8 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	8 -> 9 [label=T]
+	8 -> 14 [label=F]
+	6 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	6 -> 7 [label=T]
+	6 -> 8 [label=F]
+	15 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	5 [label="player_total<=14" margin="0.05,0.05" shape=box style=rounded]
+	5 -> 6 [label=T]
+	5 -> 15 [label=F]
+	1 [label="player_total<=11" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 5 [label=F]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 16 [label=F]
+}
+
+2025-01-14 12:22:53,387 - decision_tree.py - subtree quotient has 533 states and 724 choices
+2025-01-14 12:22:53,390 - mdp.py - MDP has 191/533 relevant states
+2025-01-14 12:22:53,390 - mdp.py - MDP has 2 actions
+2025-01-14 12:22:53,398 - mdp.py - found the following 2 variables: ['dealer_total:[0..11]', 'player_total:[0..22]']
+
+2025-01-14 12:22:53,398 - mdp.py - building tree of depth 0
+2025-01-14 12:22:53,404 - statistic.py - synthesis initiated, design space: 2
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.02 s
+number of holes: 1, family size: 2, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:22:53,425 - decision_tree.py - families considered: 3
+2025-01-14 12:22:53,425 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:53,425 - decision_tree.py - families with schedulers preserved: 0
+2025-01-14 12:22:53,425 - decision_tree.py - families model checked: 3
+2025-01-14 12:22:53,425 - decision_tree.py - harmonizations attempted: 1
+2025-01-14 12:22:53,425 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:22:53,425 - mdp.py - building tree of depth 1
+2025-01-14 12:22:53,446 - statistic.py - synthesis initiated, design space: 1520
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.25 s
+number of holes: 5, family size: 1520, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:22:53,694 - decision_tree.py - families considered: 17
+2025-01-14 12:22:53,694 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:53,694 - decision_tree.py - families with schedulers preserved: 3
+2025-01-14 12:22:53,694 - decision_tree.py - families model checked: 14
+2025-01-14 12:22:53,694 - decision_tree.py - harmonizations attempted: 5
+2025-01-14 12:22:53,694 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:22:53,694 - mdp.py - building tree of depth 2
+2025-01-14 12:22:53,714 - statistic.py - synthesis initiated, design space: 1e8
+2025-01-14 12:22:58,393 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.02 s
+number of holes: 13, family size: 1e8, quotient: 533 states / 724 actions
+explored: 70 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:22:58,393 - decision_tree.py - families considered: 330
+2025-01-14 12:22:58,393 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:22:58,394 - decision_tree.py - families with schedulers preserved: 129
+2025-01-14 12:22:58,394 - decision_tree.py - families model checked: 201
+2025-01-14 12:22:58,394 - decision_tree.py - harmonizations attempted: 39
+2025-01-14 12:22:58,394 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:22:58,394 - mdp.py - building tree of depth 3
+2025-01-14 12:22:58,438 - statistic.py - synthesis initiated, design space: 1e20
+2025-01-14 12:23:04,474 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.04 s
+number of holes: 29, family size: 1e20, quotient: 533 states / 724 actions
+explored: 0 %
+
+optimum: -2.245591
+--------------------
+2025-01-14 12:23:04,474 - decision_tree.py - families considered: 217
+2025-01-14 12:23:04,474 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:23:04,474 - decision_tree.py - families with schedulers preserved: 86
+2025-01-14 12:23:04,474 - decision_tree.py - families model checked: 131
+2025-01-14 12:23:04,474 - decision_tree.py - harmonizations attempted: 32
+2025-01-14 12:23:04,474 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:23:04,474 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:23:04,474 - decision_tree.py - V_0=dealer_total, dealer_total_0=7, player_total_0=12, V_1=player_total, dealer_total_1=0, player_total_1=12, V_2=player_total, dealer_total_2=0, player_total_2=11, A_3=(Draw), A_4=(Skip), V_5=player_total, dealer_total_5=0, player_total_5=14, A_6=(Skip), A_7=(Skip), V_8=player_total, dealer_total_8=0, player_total_8=14, V_9=player_total, dealer_total_9=0, player_total_9=13, A_10=(Draw), A_11=(Skip), V_12=player_total, dealer_total_12=0, player_total_12=13, A_13=(Skip), A_14=(Skip)
+2025-01-14 12:23:04,477 - decision_tree.py - double-checking specification satisfiability:  : -2.2455910026588675
+
+2025-01-14 12:23:04,477 - mdp.py - building tree of depth 4
+2025-01-14 12:23:04,536 - statistic.py - synthesis initiated, design space: 1e43
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.73 s
+number of holes: 61, family size: 1e43, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.173194
+--------------------
+2025-01-14 12:23:05,262 - decision_tree.py - families considered: 24
+2025-01-14 12:23:05,262 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:23:05,262 - decision_tree.py - families with schedulers preserved: 8
+2025-01-14 12:23:05,262 - decision_tree.py - families model checked: 16
+2025-01-14 12:23:05,262 - decision_tree.py - harmonizations attempted: 3
+2025-01-14 12:23:05,262 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:23:05,262 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:23:05,262 - decision_tree.py - V_0=player_total, dealer_total_0=0, player_total_0=14, V_1=dealer_total, dealer_total_1=9, player_total_1=11, V_2=player_total, dealer_total_2=6, player_total_2=11, V_3=player_total, dealer_total_3=0, player_total_3=0, A_4=(Skip), A_5=(Draw), V_6=dealer_total, dealer_total_6=6, player_total_6=11, A_7=(Skip), A_8=(Draw), V_9=dealer_total, dealer_total_9=10, player_total_9=12, V_10=player_total, dealer_total_10=7, player_total_10=13, A_11=(Draw), A_12=(Skip), V_13=player_total, dealer_total_13=10, player_total_13=11, A_14=(Draw), A_15=(Skip), V_16=player_total, dealer_total_16=0, player_total_16=14, V_17=player_total, dealer_total_17=0, player_total_17=14, V_18=player_total, dealer_total_18=0, player_total_18=21, A_19=(Skip), A_20=(Draw), V_21=player_total, dealer_total_21=0, player_total_21=21, A_22=(Skip), A_23=(Draw), V_24=player_total, dealer_total_24=0, player_total_24=14, V_25=player_total, dealer_total_25=0, player_total_25=16, A_26=(Skip), A_27=(Draw), V_28=player_total, dealer_total_28=0, player_total_28=14, A_29=(Draw), A_30=(Skip)
+2025-01-14 12:23:05,265 - decision_tree.py - double-checking specification satisfiability:  : -2.1731936661844773
+2025-01-14 12:23:05,266 - decision_tree.py - admissible subtree found from node 1
+2025-01-14 12:23:05,266 - decision_tree.py - new tree has depth 5 and 9 nodes
+// decision tree
+digraph {
+	5 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	6 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="player_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	4 -> 5 [label=T]
+	4 -> 6 [label=F]
+	8 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	9 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	7 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	7 -> 8 [label=T]
+	7 -> 9 [label=F]
+	3 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	3 -> 4 [label=T]
+	3 -> 7 [label=F]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	15 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	14 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	14 -> 15 [label=T]
+	14 -> 16 [label=F]
+	10 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	10 -> 11 [label=T]
+	10 -> 14 [label=F]
+	2 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 10 [label=F]
+	17 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	1 [label="player_total<=14" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 17 [label=F]
+	18 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 18 [label=F]
+}
+
+2025-01-14 12:23:06,617 - decision_tree.py - new dtcontrol tree has depth 7 and 8 nodes
+2025-01-14 12:23:06,617 - decision_tree.py - New DtControl tree is smaller
+2025-01-14 12:23:06,619 - decision_tree.py - starting iteration 9 with 1 nodes in node queue
+// decision tree
+digraph {
+	3 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	2 [label="dealer_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 4 [label=F]
+	7 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	10 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	9 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	9 -> 10 [label=T]
+	9 -> 11 [label=F]
+	14 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	8 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	8 -> 9 [label=T]
+	8 -> 14 [label=F]
+	6 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	6 -> 7 [label=T]
+	6 -> 8 [label=F]
+	15 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	5 [label="player_total<=14" margin="0.05,0.05" shape=box style=rounded]
+	5 -> 6 [label=T]
+	5 -> 15 [label=F]
+	1 [label="player_total<=11" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 5 [label=F]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 16 [label=F]
+}
+
+2025-01-14 12:23:06,629 - decision_tree.py - subtree quotient has 533 states and 724 choices
+2025-01-14 12:23:06,632 - mdp.py - MDP has 191/533 relevant states
+2025-01-14 12:23:06,632 - mdp.py - MDP has 2 actions
+2025-01-14 12:23:06,636 - mdp.py - found the following 2 variables: ['dealer_total:[0..11]', 'player_total:[0..22]']
+
+2025-01-14 12:23:06,636 - mdp.py - building tree of depth 0
+2025-01-14 12:23:06,643 - statistic.py - synthesis initiated, design space: 2
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.02 s
+number of holes: 1, family size: 2, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:23:06,665 - decision_tree.py - families considered: 3
+2025-01-14 12:23:06,666 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:23:06,666 - decision_tree.py - families with schedulers preserved: 0
+2025-01-14 12:23:06,666 - decision_tree.py - families model checked: 3
+2025-01-14 12:23:06,666 - decision_tree.py - harmonizations attempted: 1
+2025-01-14 12:23:06,666 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:23:06,666 - mdp.py - building tree of depth 1
+2025-01-14 12:23:06,686 - statistic.py - synthesis initiated, design space: 1520
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.21 s
+number of holes: 5, family size: 1520, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:23:06,893 - decision_tree.py - families considered: 17
+2025-01-14 12:23:06,894 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:23:06,894 - decision_tree.py - families with schedulers preserved: 3
+2025-01-14 12:23:06,894 - decision_tree.py - families model checked: 14
+2025-01-14 12:23:06,894 - decision_tree.py - harmonizations attempted: 5
+2025-01-14 12:23:06,894 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:23:06,894 - mdp.py - building tree of depth 2
+2025-01-14 12:23:06,912 - statistic.py - synthesis initiated, design space: 1e8
+2025-01-14 12:23:12,914 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.0 s
+number of holes: 13, family size: 1e8, quotient: 533 states / 724 actions
+explored: 73 %
+
+optimum: -2.281853
+--------------------
+2025-01-14 12:23:12,914 - decision_tree.py - families considered: 343
+2025-01-14 12:23:12,915 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:23:12,915 - decision_tree.py - families with schedulers preserved: 134
+2025-01-14 12:23:12,915 - decision_tree.py - families model checked: 209
+2025-01-14 12:23:12,915 - decision_tree.py - harmonizations attempted: 41
+2025-01-14 12:23:12,915 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:23:12,915 - mdp.py - building tree of depth 3
+2025-01-14 12:23:12,956 - statistic.py - synthesis initiated, design space: 1e20
+2025-01-14 12:23:18,974 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.02 s
+number of holes: 29, family size: 1e20, quotient: 533 states / 724 actions
+explored: 0 %
+
+optimum: -2.245591
+--------------------
+2025-01-14 12:23:18,974 - decision_tree.py - families considered: 192
+2025-01-14 12:23:18,974 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:23:18,974 - decision_tree.py - families with schedulers preserved: 82
+2025-01-14 12:23:18,974 - decision_tree.py - families model checked: 110
+2025-01-14 12:23:18,974 - decision_tree.py - harmonizations attempted: 25
+2025-01-14 12:23:18,974 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:23:18,974 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:23:18,974 - decision_tree.py - V_0=dealer_total, dealer_total_0=7, player_total_0=12, V_1=player_total, dealer_total_1=0, player_total_1=12, V_2=player_total, dealer_total_2=0, player_total_2=11, A_3=(Draw), A_4=(Skip), V_5=player_total, dealer_total_5=0, player_total_5=14, A_6=(Skip), A_7=(Skip), V_8=player_total, dealer_total_8=0, player_total_8=14, V_9=player_total, dealer_total_9=0, player_total_9=13, A_10=(Draw), A_11=(Skip), V_12=player_total, dealer_total_12=0, player_total_12=13, A_13=(Skip), A_14=(Skip)
+2025-01-14 12:23:18,977 - decision_tree.py - double-checking specification satisfiability:  : -2.2455910026588675
+
+2025-01-14 12:23:18,977 - mdp.py - building tree of depth 4
+2025-01-14 12:23:19,035 - statistic.py - synthesis initiated, design space: 1e43
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.79 s
+number of holes: 61, family size: 1e43, quotient: 533 states / 724 actions
+explored: 100 %
+
+optimum: -2.173194
+--------------------
+2025-01-14 12:23:19,820 - decision_tree.py - families considered: 24
+2025-01-14 12:23:19,821 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:23:19,821 - decision_tree.py - families with schedulers preserved: 8
+2025-01-14 12:23:19,821 - decision_tree.py - families model checked: 16
+2025-01-14 12:23:19,821 - decision_tree.py - harmonizations attempted: 3
+2025-01-14 12:23:19,821 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:23:19,821 - decision_tree.py - printing synthesized assignment below:
+2025-01-14 12:23:19,821 - decision_tree.py - V_0=player_total, dealer_total_0=0, player_total_0=14, V_1=dealer_total, dealer_total_1=9, player_total_1=11, V_2=player_total, dealer_total_2=6, player_total_2=11, V_3=player_total, dealer_total_3=0, player_total_3=0, A_4=(Skip), A_5=(Draw), V_6=dealer_total, dealer_total_6=6, player_total_6=11, A_7=(Skip), A_8=(Draw), V_9=dealer_total, dealer_total_9=10, player_total_9=12, V_10=player_total, dealer_total_10=7, player_total_10=13, A_11=(Draw), A_12=(Skip), V_13=player_total, dealer_total_13=10, player_total_13=11, A_14=(Draw), A_15=(Skip), V_16=player_total, dealer_total_16=0, player_total_16=14, V_17=player_total, dealer_total_17=0, player_total_17=14, V_18=player_total, dealer_total_18=0, player_total_18=21, A_19=(Skip), A_20=(Draw), V_21=player_total, dealer_total_21=0, player_total_21=21, A_22=(Skip), A_23=(Draw), V_24=player_total, dealer_total_24=0, player_total_24=14, V_25=player_total, dealer_total_25=0, player_total_25=16, A_26=(Skip), A_27=(Draw), V_28=player_total, dealer_total_28=0, player_total_28=14, A_29=(Draw), A_30=(Skip)
+2025-01-14 12:23:19,823 - decision_tree.py - double-checking specification satisfiability:  : -2.1731936661844773
+2025-01-14 12:23:19,824 - decision_tree.py - admissible subtree found from node 1
+2025-01-14 12:23:19,824 - decision_tree.py - new tree has depth 5 and 9 nodes
+// decision tree
+digraph {
+	5 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	6 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="player_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	4 -> 5 [label=T]
+	4 -> 6 [label=F]
+	8 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	9 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	7 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	7 -> 8 [label=T]
+	7 -> 9 [label=F]
+	3 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	3 -> 4 [label=T]
+	3 -> 7 [label=F]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	15 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	14 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	14 -> 15 [label=T]
+	14 -> 16 [label=F]
+	10 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	10 -> 11 [label=T]
+	10 -> 14 [label=F]
+	2 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 10 [label=F]
+	17 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	1 [label="player_total<=14" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	1 -> 2 [label=T]
+	1 -> 17 [label=F]
+	18 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 18 [label=F]
+}
+
+2025-01-14 12:23:21,125 - decision_tree.py - new dtcontrol tree has depth 7 and 8 nodes
+2025-01-14 12:23:21,125 - decision_tree.py - New DtControl tree is smaller
+// decision tree
+digraph {
+	3 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	4 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	2 [label="dealer_total<=0" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 4 [label=F]
+	7 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	10 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	12 [label="(Draw)" margin="0.05,0.05" shape=box style=rounded]
+	13 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="player_total<=13" margin="0.05,0.05" shape=box style=rounded]
+	11 -> 12 [label=T]
+	11 -> 13 [label=F]
+	9 [label="dealer_total<=9" margin="0.05,0.05" shape=box style=rounded]
+	9 -> 10 [label=T]
+	9 -> 11 [label=F]
+	14 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	8 [label="dealer_total<=10" margin="0.05,0.05" shape=box style=rounded]
+	8 -> 9 [label=T]
+	8 -> 14 [label=F]
+	6 [label="dealer_total<=6" margin="0.05,0.05" shape=box style=rounded]
+	6 -> 7 [label=T]
+	6 -> 8 [label=F]
+	15 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	5 [label="player_total<=14" margin="0.05,0.05" shape=box style=rounded]
+	5 -> 6 [label=T]
+	5 -> 15 [label=F]
+	1 [label="player_total<=11" margin="0.05,0.05" shape=box style=rounded]
+	1 -> 2 [label=T]
+	1 -> 5 [label=F]
+	16 [label="(Skip)" margin="0.05,0.05" shape=box style=rounded]
+	0 [label="skipped<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 16 [label=F]
+}
+
+2025-01-14 12:23:21,141 - decision_tree.py - final tree has value -2.1731936661844773 with depth 7 and 8 nodes
+-2.1731936661844773 145.03 7 8

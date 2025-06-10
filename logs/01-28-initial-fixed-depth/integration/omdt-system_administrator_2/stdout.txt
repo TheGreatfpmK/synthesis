@@ -1,0 +1,385 @@
+2025-01-28 12:04:34,407 - cli.py - This is Paynt version 0.1.0.
+2025-01-28 12:04:34,407 - sketch.py - loading sketch from /home/fpmk/synthesis-playground/models/dts-backup/omdt/system_administrator_2/model-random.drn ...
+2025-01-28 12:04:34,407 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:26): Parsing error at 3:1:  expecting <model type>, here:
+	@type: MDP
+	^
+
+2025-01-28 12:04:34,621 - sketch.py - assuming sketch in DRN format...
+2025-01-28 12:04:34,770 - prism_parser.py - loading properties from /home/fpmk/synthesis-playground/models/dts-backup/omdt/system_administrator_2/discounted.props ...
+2025-01-28 12:04:34,775 - prism_parser.py - found the following specification: optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-28 12:04:34,777 - sketch.py - found state valuations in /home/fpmk/synthesis-playground/models/dts-backup/omdt/system_administrator_2/state-valuations.json, adding to the model...
+2025-01-28 12:04:34,778 - sketch.py - sketch parsing OK
+2025-01-28 12:04:34,779 - sketch.py - tree helper loaded
+2025-01-28 12:04:34,782 - sketch.py - constructed explicit quotient having 256 states and 2560 choices
+2025-01-28 12:04:34,782 - sketch.py - found the following specification optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-28 12:04:34,783 - mdp.py - MDP has 256/256 relevant states
+2025-01-28 12:04:34,791 - mdp.py - MDP has 10 actions
+2025-01-28 12:04:34,794 - mdp.py - found the following 8 variables: ['computer_0_running:[0..1]', 'computer_1_running:[0..1]', 'computer_2_running:[0..1]', 'computer_3_running:[0..1]', 'computer_4_running:[0..1]', 'computer_5_running:[0..1]', 'computer_6_running:[0..1]', 'computer_7_running:[0..1]']
+2025-01-28 12:04:34,906 - decision_tree.py - the optimal scheduler has value: 241.14546064109567
+2025-01-28 12:04:34,936 - decision_tree.py - the random scheduler has value: 111.61154666209073
+2025-01-28 12:04:34,937 - decision_tree.py - initial external tree has depth 8 and 41 nodes
+2025-01-28 12:04:34,937 - decision_tree.py - starting iteration with subtree depth 7
+2025-01-28 12:04:34,937 - decision_tree.py - starting iteration 0 with 2 nodes in node queue
+2025-01-28 12:04:34,937 - decision_tree.py - current tree size: 83 nodes
+2025-01-28 12:04:34,944 - decision_tree.py - subtree quotient has 256 states and 1408 choices
+2025-01-28 12:04:34,945 - mdp.py - MDP has 128/256 relevant states
+2025-01-28 12:04:34,951 - mdp.py - MDP has 10 actions
+2025-01-28 12:04:34,954 - mdp.py - found the following 7 variables: ['computer_0_running:[0..1]', 'computer_2_running:[0..1]', 'computer_3_running:[0..1]', 'computer_4_running:[0..1]', 'computer_5_running:[0..1]', 'computer_6_running:[0..1]', 'computer_7_running:[0..1]']
+
+2025-01-28 12:04:34,954 - mdp.py - building tree of depth 0
+2025-01-28 12:04:34,959 - statistic.py - synthesis initiated, design space: 10
+2025-01-28 12:04:35,028 - synthesizer_ar.py - value 241.0418 achieved after 0.62 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.17 s
+number of holes: 1, family size: 10, quotient: 256 states / 1408 actions
+explored: 100 %
+MDP stats: avg MDP size: 256, iterations: 4
+
+optimum: 241.041827
+--------------------
+2025-01-28 12:04:35,131 - decision_tree.py - families considered: 4
+2025-01-28 12:04:35,132 - decision_tree.py - families skipped by construction: 0
+2025-01-28 12:04:35,132 - decision_tree.py - families with schedulers preserved: 0
+2025-01-28 12:04:35,132 - decision_tree.py - families model checked: 4
+2025-01-28 12:04:35,132 - decision_tree.py - harmonizations attempted: 1
+2025-01-28 12:04:35,132 - decision_tree.py - harmonizations succeeded: 1
+
+2025-01-28 12:04:35,132 - decision_tree.py - printing synthesized assignment below:
+2025-01-28 12:04:35,132 - decision_tree.py - A_0=(reboot_computer_1)
+2025-01-28 12:04:35,142 - decision_tree.py - double-checking specification satisfiability:  : 241.04182650687022
+2025-01-28 12:04:35,142 - decision_tree.py - admissible subtree found from node 1
+2025-01-28 12:04:35,143 - decision_tree.py - new tree has depth 8 and 14 nodes
+2025-01-28 12:04:36,415 - decision_tree.py - new dtcontrol tree has depth 8 and 14 nodes
+2025-01-28 12:04:36,415 - decision_tree.py - New DtControl tree is smaller
+2025-01-28 12:04:36,416 - decision_tree.py - starting iteration 1 with 2 nodes in node queue
+2025-01-28 12:04:36,417 - decision_tree.py - current tree size: 29 nodes
+2025-01-28 12:04:36,422 - decision_tree.py - subtree quotient has 256 states and 832 choices
+2025-01-28 12:04:36,424 - mdp.py - MDP has 64/256 relevant states
+2025-01-28 12:04:36,427 - mdp.py - MDP has 10 actions
+2025-01-28 12:04:36,429 - mdp.py - found the following 6 variables: ['computer_0_running:[0..1]', 'computer_2_running:[0..1]', 'computer_3_running:[0..1]', 'computer_5_running:[0..1]', 'computer_6_running:[0..1]', 'computer_7_running:[0..1]']
+
+2025-01-28 12:04:36,429 - mdp.py - building tree of depth 0
+2025-01-28 12:04:36,436 - statistic.py - synthesis initiated, design space: 10
+2025-01-28 12:04:36,509 - synthesizer_ar.py - value 240.67 achieved after 2.1 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.14 s
+number of holes: 1, family size: 10, quotient: 256 states / 832 actions
+explored: 100 %
+MDP stats: avg MDP size: 255, iterations: 4
+
+optimum: 240.67005
+--------------------
+2025-01-28 12:04:36,579 - decision_tree.py - families considered: 4
+2025-01-28 12:04:36,579 - decision_tree.py - families skipped by construction: 0
+2025-01-28 12:04:36,579 - decision_tree.py - families with schedulers preserved: 0
+2025-01-28 12:04:36,579 - decision_tree.py - families model checked: 4
+2025-01-28 12:04:36,579 - decision_tree.py - harmonizations attempted: 1
+2025-01-28 12:04:36,579 - decision_tree.py - harmonizations succeeded: 1
+
+2025-01-28 12:04:36,579 - decision_tree.py - printing synthesized assignment below:
+2025-01-28 12:04:36,579 - decision_tree.py - A_0=(reboot_computer_4)
+2025-01-28 12:04:36,592 - decision_tree.py - double-checking specification satisfiability:  : 240.67004974301852
+
+2025-01-28 12:04:36,592 - mdp.py - building tree of depth 1
+2025-01-28 12:04:36,611 - statistic.py - synthesis initiated, design space: 600
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 1.98 s
+number of holes: 9, family size: 600, quotient: 256 states / 832 actions
+explored: 200 %
+MDP stats: avg MDP size: 256, iterations: 65
+
+optimum: 240.67005
+--------------------
+2025-01-28 12:04:38,592 - decision_tree.py - families considered: 65
+2025-01-28 12:04:38,592 - decision_tree.py - families skipped by construction: 0
+2025-01-28 12:04:38,592 - decision_tree.py - families with schedulers preserved: 5
+2025-01-28 12:04:38,593 - decision_tree.py - families model checked: 60
+2025-01-28 12:04:38,593 - decision_tree.py - harmonizations attempted: 16
+2025-01-28 12:04:38,593 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-28 12:04:38,593 - mdp.py - building tree of depth 2
+2025-01-28 12:04:38,612 - statistic.py - synthesis initiated, design space: 1e6
+> progress 0.833%, elapsed 3 s, estimated 362 s, iters = {MDP: 112}, opt = 240.67
+2025-01-28 12:04:42,987 - synthesizer_ar.py - value 241.009 achieved after 8.58 seconds
+2025-01-28 12:04:43,688 - synthesizer.py - time limit reached, aborting...
+2025-01-28 12:04:43,688 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 5.08 s
+number of holes: 25, family size: 1e6, quotient: 256 states / 832 actions
+explored: 2 %
+MDP stats: avg MDP size: 256, iterations: 186
+
+optimum: 241.00897
+--------------------
+2025-01-28 12:04:43,688 - decision_tree.py - families considered: 186
+2025-01-28 12:04:43,688 - decision_tree.py - families skipped by construction: 0
+2025-01-28 12:04:43,689 - decision_tree.py - families with schedulers preserved: 36
+2025-01-28 12:04:43,689 - decision_tree.py - families model checked: 150
+2025-01-28 12:04:43,689 - decision_tree.py - harmonizations attempted: 31
+2025-01-28 12:04:43,689 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-28 12:04:43,689 - decision_tree.py - printing synthesized assignment below:
+2025-01-28 12:04:43,689 - decision_tree.py - V_0=computer_3_running, computer_0_running_0=0, computer_2_running_0=0, computer_3_running_0=0, computer_5_running_0=0, computer_6_running_0=0, computer_7_running_0=0, V_1=computer_6_running, computer_0_running_1=0, computer_2_running_1=0, computer_3_running_1=0, computer_5_running_1=0, computer_6_running_1=0, computer_7_running_1=0, A_2=(reboot_computer_4), A_3=(reboot_computer_4), V_4=computer_2_running, computer_0_running_4=0, computer_2_running_4=0, computer_3_running_4=0, computer_5_running_4=0, computer_6_running_4=0, computer_7_running_4=0, A_5=(reboot_computer_2), A_6=(reboot_computer_4)
+2025-01-28 12:04:43,705 - decision_tree.py - double-checking specification satisfiability:  : 241.00897022278707
+2025-01-28 12:04:43,706 - decision_tree.py - admissible subtree found from node 3
+2025-01-28 12:04:43,706 - decision_tree.py - new tree has depth 8 and 10 nodes
+2025-01-28 12:04:45,407 - decision_tree.py - new dtcontrol tree has depth 8 and 10 nodes
+2025-01-28 12:04:45,407 - decision_tree.py - New DtControl tree is smaller
+2025-01-28 12:04:45,408 - decision_tree.py - starting iteration 2 with 1 nodes in node queue
+2025-01-28 12:04:45,408 - decision_tree.py - current tree size: 21 nodes
+2025-01-28 12:04:45,416 - decision_tree.py - subtree quotient has 256 states and 832 choices
+2025-01-28 12:04:45,417 - mdp.py - MDP has 64/256 relevant states
+2025-01-28 12:04:45,421 - mdp.py - MDP has 10 actions
+2025-01-28 12:04:45,423 - mdp.py - found the following 6 variables: ['computer_0_running:[0..1]', 'computer_3_running:[0..1]', 'computer_4_running:[0..1]', 'computer_5_running:[0..1]', 'computer_6_running:[0..1]', 'computer_7_running:[0..1]']
+
+2025-01-28 12:04:45,423 - mdp.py - building tree of depth 0
+2025-01-28 12:04:45,427 - statistic.py - synthesis initiated, design space: 10
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.14 s
+number of holes: 1, family size: 10, quotient: 256 states / 832 actions
+explored: 100 %
+MDP stats: avg MDP size: 240, iterations: 4
+
+optimum: 238.734006
+--------------------
+2025-01-28 12:04:45,565 - decision_tree.py - families considered: 4
+2025-01-28 12:04:45,565 - decision_tree.py - families skipped by construction: 0
+2025-01-28 12:04:45,565 - decision_tree.py - families with schedulers preserved: 0
+2025-01-28 12:04:45,565 - decision_tree.py - families model checked: 4
+2025-01-28 12:04:45,565 - decision_tree.py - harmonizations attempted: 1
+2025-01-28 12:04:45,565 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-28 12:04:45,565 - mdp.py - building tree of depth 1
+2025-01-28 12:04:45,582 - statistic.py - synthesis initiated, design space: 600
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.37 s
+number of holes: 9, family size: 600, quotient: 256 states / 832 actions
+explored: 100 %
+MDP stats: avg MDP size: 251, iterations: 10
+
+optimum: 238.734006
+--------------------
+2025-01-28 12:04:45,948 - decision_tree.py - families considered: 10
+2025-01-28 12:04:45,948 - decision_tree.py - families skipped by construction: 0
+2025-01-28 12:04:45,948 - decision_tree.py - families with schedulers preserved: 2
+2025-01-28 12:04:45,948 - decision_tree.py - families model checked: 8
+2025-01-28 12:04:45,948 - decision_tree.py - harmonizations attempted: 1
+2025-01-28 12:04:45,948 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-28 12:04:45,949 - mdp.py - building tree of depth 2
+2025-01-28 12:04:45,967 - statistic.py - synthesis initiated, design space: 1e6
+> progress 10.74%, elapsed 3 s, estimated 27 s, iters = {MDP: 75}, opt = 238.734
+2025-01-28 12:04:48,493 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 5.01 s
+number of holes: 25, family size: 1e6, quotient: 256 states / 832 actions
+explored: 33 %
+MDP stats: avg MDP size: 256, iterations: 132
+
+optimum: 238.734006
+--------------------
+2025-01-28 12:04:48,493 - decision_tree.py - families considered: 132
+2025-01-28 12:04:48,493 - decision_tree.py - families skipped by construction: 0
+2025-01-28 12:04:48,493 - decision_tree.py - families with schedulers preserved: 38
+2025-01-28 12:04:48,493 - decision_tree.py - families model checked: 94
+2025-01-28 12:04:48,493 - decision_tree.py - harmonizations attempted: 8
+2025-01-28 12:04:48,493 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-28 12:04:48,494 - mdp.py - building tree of depth 3
+2025-01-28 12:04:48,521 - statistic.py - synthesis initiated, design space: 1e13
+> progress 10.518%, elapsed 3 s, estimated 28 s, iters = {MDP: 54}, opt = 238.734
+2025-01-28 12:04:53,562 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 5.04 s
+number of holes: 57, family size: 1e13, quotient: 256 states / 832 actions
+explored: 11 %
+MDP stats: avg MDP size: 256, iterations: 101
+
+optimum: 238.734006
+--------------------
+2025-01-28 12:04:53,563 - decision_tree.py - families considered: 101
+2025-01-28 12:04:53,563 - decision_tree.py - families skipped by construction: 0
+2025-01-28 12:04:53,563 - decision_tree.py - families with schedulers preserved: 25
+2025-01-28 12:04:53,563 - decision_tree.py - families model checked: 76
+2025-01-28 12:04:53,563 - decision_tree.py - harmonizations attempted: 12
+2025-01-28 12:04:53,563 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-28 12:04:53,563 - mdp.py - building tree of depth 4
+2025-01-28 12:04:53,622 - statistic.py - synthesis initiated, design space: 1e27
+> progress 0.001%, elapsed 3 s, estimated 232051 s (2 days), iters = {MDP: 44}, opt = 238.734
+2025-01-28 12:04:58,654 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 5.03 s
+number of holes: 121, family size: 1e27, quotient: 256 states / 832 actions
+explored: 0 %
+MDP stats: avg MDP size: 256, iterations: 86
+
+optimum: 238.734006
+--------------------
+2025-01-28 12:04:58,655 - decision_tree.py - families considered: 86
+2025-01-28 12:04:58,655 - decision_tree.py - families skipped by construction: 0
+2025-01-28 12:04:58,655 - decision_tree.py - families with schedulers preserved: 34
+2025-01-28 12:04:58,655 - decision_tree.py - families model checked: 52
+2025-01-28 12:04:58,655 - decision_tree.py - harmonizations attempted: 1
+2025-01-28 12:04:58,655 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-28 12:04:58,655 - mdp.py - building tree of depth 5
+2025-01-28 12:04:58,764 - statistic.py - synthesis initiated, design space: 1e56
+> progress 0.001%, elapsed 3 s, estimated 233801 s (2 days), iters = {MDP: 16}, opt = 238.734
+2025-01-28 12:05:03,936 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 5.17 s
+number of holes: 249, family size: 1e56, quotient: 256 states / 832 actions
+explored: 0 %
+MDP stats: avg MDP size: 256, iterations: 34
+
+optimum: 238.734006
+--------------------
+2025-01-28 12:05:03,939 - decision_tree.py - families considered: 34
+2025-01-28 12:05:03,940 - decision_tree.py - families skipped by construction: 0
+2025-01-28 12:05:03,940 - decision_tree.py - families with schedulers preserved: 16
+2025-01-28 12:05:03,940 - decision_tree.py - families model checked: 18
+2025-01-28 12:05:03,940 - decision_tree.py - harmonizations attempted: 3
+2025-01-28 12:05:03,940 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-28 12:05:03,940 - mdp.py - building tree of depth 6
+2025-01-28 12:05:04,253 - statistic.py - synthesis initiated, design space: 1e113
+2025-01-28 12:05:04,610 - synthesizer_ar.py - value 241.009 achieved after 32.68 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.36 s
+number of holes: 505, family size: 1e113, quotient: 256 states / 832 actions
+explored: 100 %
+MDP stats: avg MDP size: 256, iterations: 1
+
+optimum: 241.00897
+--------------------
+2025-01-28 12:05:04,611 - decision_tree.py - families considered: 1
+2025-01-28 12:05:04,611 - decision_tree.py - families skipped by construction: 0
+2025-01-28 12:05:04,611 - decision_tree.py - families with schedulers preserved: 0
+2025-01-28 12:05:04,611 - decision_tree.py - families model checked: 1
+2025-01-28 12:05:04,611 - decision_tree.py - harmonizations attempted: 0
+2025-01-28 12:05:04,611 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-28 12:05:04,611 - decision_tree.py - printing synthesized assignment below:
+2025-01-28 12:05:04,611 - decision_tree.py - V_0=computer_7_running, computer_0_running_0=0, computer_3_running_0=0, computer_4_running_0=0, computer_5_running_0=0, computer_6_running_0=0, computer_7_running_0=0, V_1=computer_4_running, computer_0_running_1=0, computer_3_running_1=0, computer_4_running_1=0, computer_5_running_1=0, computer_6_running_1=0, computer_7_running_1=0, V_2=computer_0_running, computer_0_running_2=0, computer_3_running_2=0, computer_4_running_2=0, computer_5_running_2=0, computer_6_running_2=0, computer_7_running_2=0, V_3=computer_0_running, computer_0_running_3=0, computer_3_running_3=0, computer_4_running_3=0, computer_5_running_3=0, computer_6_running_3=0, computer_7_running_3=0, V_4=computer_0_running, computer_0_running_4=0, computer_3_running_4=0, computer_4_running_4=0, computer_5_running_4=0, computer_6_running_4=0, computer_7_running_4=0, V_5=computer_4_running, computer_0_running_5=0, computer_3_running_5=0, computer_4_running_5=0, computer_5_running_5=0, computer_6_running_5=0, computer_7_running_5=0, A_6=(reboot_computer_4), A_7=(reboot_computer_1), V_8=computer_0_running, computer_0_running_8=0, computer_3_running_8=0, computer_4_running_8=0, computer_5_running_8=0, computer_6_running_8=0, computer_7_running_8=0, A_9=(reboot_computer_3), A_10=(reboot_computer_0), V_11=computer_0_running, computer_0_running_11=0, computer_3_running_11=0, computer_4_running_11=0, computer_5_running_11=0, computer_6_running_11=0, computer_7_running_11=0, V_12=computer_0_running, computer_0_running_12=0, computer_3_running_12=0, computer_4_running_12=0, computer_5_running_12=0, computer_6_running_12=0, computer_7_running_12=0, A_13=(reboot_computer_0), A_14=(reboot_computer_0), V_15=computer_0_running, computer_0_running_15=0, computer_3_running_15=0, computer_4_running_15=0, computer_5_running_15=0, computer_6_running_15=0, computer_7_running_15=0, A_16=(reboot_computer_0), A_17=(reboot_computer_0), V_18=computer_0_running, computer_0_running_18=0, computer_3_running_18=0, computer_4_running_18=0, computer_5_running_18=0, computer_6_running_18=0, computer_7_running_18=0, V_19=computer_0_running, computer_0_running_19=0, computer_3_running_19=0, computer_4_running_19=0, computer_5_running_19=0, computer_6_running_19=0, computer_7_running_19=0, V_20=computer_0_running, computer_0_running_20=0, computer_3_running_20=0, computer_4_running_20=0, computer_5_running_20=0, computer_6_running_20=0, computer_7_running_20=0, A_21=(reboot_computer_1), A_22=(reboot_computer_4), V_23=computer_0_running, computer_0_running_23=0, computer_3_running_23=0, computer_4_running_23=0, computer_5_running_23=0, computer_6_running_23=0, computer_7_running_23=0, A_24=(reboot_computer_0), A_25=(reboot_computer_0), V_26=computer_0_running, computer_0_running_26=0, computer_3_running_26=0, computer_4_running_26=0, computer_5_running_26=0, computer_6_running_26=0, computer_7_running_26=0, V_27=computer_0_running, computer_0_running_27=0, computer_3_running_27=0, computer_4_running_27=0, computer_5_running_27=0, computer_6_running_27=0, computer_7_running_27=0, A_28=(reboot_computer_0), A_29=(reboot_computer_2), V_30=computer_0_running, computer_0_running_30=0, computer_3_running_30=0, computer_4_running_30=0, computer_5_running_30=0, computer_6_running_30=0, computer_7_running_30=0, A_31=(reboot_computer_2), A_32=(reboot_computer_4), V_33=computer_3_running, computer_0_running_33=0, computer_3_running_33=0, computer_4_running_33=0, computer_5_running_33=0, computer_6_running_33=0, computer_7_running_33=0, V_34=computer_0_running, computer_0_running_34=0, computer_3_running_34=0, computer_4_running_34=0, computer_5_running_34=0, computer_6_running_34=0, computer_7_running_34=0, V_35=computer_0_running, computer_0_running_35=0, computer_3_running_35=0, computer_4_running_35=0, computer_5_running_35=0, computer_6_running_35=0, computer_7_running_35=0, V_36=computer_0_running, computer_0_running_36=0, computer_3_running_36=0, computer_4_running_36=0, computer_5_running_36=0, computer_6_running_36=0, computer_7_running_36=0, A_37=(reboot_computer_3), A_38=(reboot_computer_0), V_39=computer_0_running, computer_0_running_39=0, computer_3_running_39=0, computer_4_running_39=0, computer_5_running_39=0, computer_6_running_39=0, computer_7_running_39=0, A_40=(reboot_computer_4), A_41=(wait), V_42=computer_0_running, computer_0_running_42=0, computer_3_running_42=0, computer_4_running_42=0, computer_5_running_42=0, computer_6_running_42=0, computer_7_running_42=0, V_43=computer_0_running, computer_0_running_43=0, computer_3_running_43=0, computer_4_running_43=0, computer_5_running_43=0, computer_6_running_43=0, computer_7_running_43=0, A_44=(reboot_computer_0), A_45=(reboot_computer_0), V_46=computer_0_running, computer_0_running_46=0, computer_3_running_46=0, computer_4_running_46=0, computer_5_running_46=0, computer_6_running_46=0, computer_7_running_46=0, A_47=(reboot_computer_0), A_48=(reboot_computer_3), V_49=computer_0_running, computer_0_running_49=0, computer_3_running_49=0, computer_4_running_49=0, computer_5_running_49=0, computer_6_running_49=0, computer_7_running_49=0, V_50=computer_0_running, computer_0_running_50=0, computer_3_running_50=0, computer_4_running_50=0, computer_5_running_50=0, computer_6_running_50=0, computer_7_running_50=0, V_51=computer_0_running, computer_0_running_51=0, computer_3_running_51=0, computer_4_running_51=0, computer_5_running_51=0, computer_6_running_51=0, computer_7_running_51=0, A_52=(reboot_computer_7), A_53=(reboot_computer_0), V_54=computer_0_running, computer_0_running_54=0, computer_3_running_54=0, computer_4_running_54=0, computer_5_running_54=0, computer_6_running_54=0, computer_7_running_54=0, A_55=(reboot_computer_0), A_56=(reboot_computer_0), V_57=computer_0_running, computer_0_running_57=0, computer_3_running_57=0, computer_4_running_57=0, computer_5_running_57=0, computer_6_running_57=0, computer_7_running_57=0, V_58=computer_0_running, computer_0_running_58=0, computer_3_running_58=0, computer_4_running_58=0, computer_5_running_58=0, computer_6_running_58=0, computer_7_running_58=0, A_59=(reboot_computer_0), A_60=(reboot_computer_0), V_61=computer_0_running, computer_0_running_61=0, computer_3_running_61=0, computer_4_running_61=0, computer_5_running_61=0, computer_6_running_61=0, computer_7_running_61=0, A_62=(reboot_computer_0), A_63=(reboot_computer_7), V_64=computer_3_running, computer_0_running_64=0, computer_3_running_64=0, computer_4_running_64=0, computer_5_running_64=0, computer_6_running_64=0, computer_7_running_64=0, V_65=computer_3_running, computer_0_running_65=0, computer_3_running_65=0, computer_4_running_65=0, computer_5_running_65=0, computer_6_running_65=0, computer_7_running_65=0, V_66=computer_3_running, computer_0_running_66=0, computer_3_running_66=0, computer_4_running_66=0, computer_5_running_66=0, computer_6_running_66=0, computer_7_running_66=0, V_67=computer_7_running, computer_0_running_67=0, computer_3_running_67=0, computer_4_running_67=0, computer_5_running_67=0, computer_6_running_67=0, computer_7_running_67=0, V_68=computer_7_running, computer_0_running_68=0, computer_3_running_68=0, computer_4_running_68=0, computer_5_running_68=0, computer_6_running_68=0, computer_7_running_68=0, A_69=__random__, A_70=(reboot_computer_0), V_71=computer_4_running, computer_0_running_71=0, computer_3_running_71=0, computer_4_running_71=0, computer_5_running_71=0, computer_6_running_71=0, computer_7_running_71=0, A_72=(reboot_computer_4), A_73=(reboot_computer_3), V_74=computer_0_running, computer_0_running_74=0, computer_3_running_74=0, computer_4_running_74=0, computer_5_running_74=0, computer_6_running_74=0, computer_7_running_74=0, V_75=computer_0_running, computer_0_running_75=0, computer_3_running_75=0, computer_4_running_75=0, computer_5_running_75=0, computer_6_running_75=0, computer_7_running_75=0, A_76=(reboot_computer_0), A_77=(reboot_computer_0), V_78=computer_0_running, computer_0_running_78=0, computer_3_running_78=0, computer_4_running_78=0, computer_5_running_78=0, computer_6_running_78=0, computer_7_running_78=0, A_79=(reboot_computer_0), A_80=(reboot_computer_1), V_81=computer_7_running, computer_0_running_81=0, computer_3_running_81=0, computer_4_running_81=0, computer_5_running_81=0, computer_6_running_81=0, computer_7_running_81=0, V_82=computer_0_running, computer_0_running_82=0, computer_3_running_82=0, computer_4_running_82=0, computer_5_running_82=0, computer_6_running_82=0, computer_7_running_82=0, V_83=computer_0_running, computer_0_running_83=0, computer_3_running_83=0, computer_4_running_83=0, computer_5_running_83=0, computer_6_running_83=0, computer_7_running_83=0, A_84=(reboot_computer_7), A_85=(reboot_computer_0), V_86=computer_0_running, computer_0_running_86=0, computer_3_running_86=0, computer_4_running_86=0, computer_5_running_86=0, computer_6_running_86=0, computer_7_running_86=0, A_87=(reboot_computer_0), A_88=(reboot_computer_0), V_89=computer_7_running, computer_0_running_89=0, computer_3_running_89=0, computer_4_running_89=0, computer_5_running_89=0, computer_6_running_89=0, computer_7_running_89=0, V_90=computer_6_running, computer_0_running_90=0, computer_3_running_90=0, computer_4_running_90=0, computer_5_running_90=0, computer_6_running_90=0, computer_7_running_90=0, A_91=(reboot_computer_0), A_92=(wait), V_93=computer_7_running, computer_0_running_93=0, computer_3_running_93=0, computer_4_running_93=0, computer_5_running_93=0, computer_6_running_93=0, computer_7_running_93=0, A_94=(reboot_computer_0), A_95=(reboot_computer_0), V_96=computer_6_running, computer_0_running_96=0, computer_3_running_96=0, computer_4_running_96=0, computer_5_running_96=0, computer_6_running_96=0, computer_7_running_96=0, V_97=computer_7_running, computer_0_running_97=0, computer_3_running_97=0, computer_4_running_97=0, computer_5_running_97=0, computer_6_running_97=0, computer_7_running_97=0, V_98=computer_7_running, computer_0_running_98=0, computer_3_running_98=0, computer_4_running_98=0, computer_5_running_98=0, computer_6_running_98=0, computer_7_running_98=0, V_99=computer_5_running, computer_0_running_99=0, computer_3_running_99=0, computer_4_running_99=0, computer_5_running_99=0, computer_6_running_99=0, computer_7_running_99=0, A_100=(reboot_computer_0), A_101=(reboot_computer_0), V_102=computer_5_running, computer_0_running_102=0, computer_3_running_102=0, computer_4_running_102=0, computer_5_running_102=0, computer_6_running_102=0, computer_7_running_102=0, A_103=(reboot_computer_0), A_104=(reboot_computer_0), V_105=computer_4_running, computer_0_running_105=0, computer_3_running_105=0, computer_4_running_105=0, computer_5_running_105=0, computer_6_running_105=0, computer_7_running_105=0, V_106=computer_5_running, computer_0_running_106=0, computer_3_running_106=0, computer_4_running_106=0, computer_5_running_106=0, computer_6_running_106=0, computer_7_running_106=0, A_107=(reboot_computer_4), A_108=(reboot_computer_4), V_109=computer_5_running, computer_0_running_109=0, computer_3_running_109=0, computer_4_running_109=0, computer_5_running_109=0, computer_6_running_109=0, computer_7_running_109=0, A_110=(reboot_computer_5), A_111=(reboot_computer_6), V_112=computer_5_running, computer_0_running_112=0, computer_3_running_112=0, computer_4_running_112=0, computer_5_running_112=0, computer_6_running_112=0, computer_7_running_112=0, V_113=computer_7_running, computer_0_running_113=0, computer_3_running_113=0, computer_4_running_113=0, computer_5_running_113=0, computer_6_running_113=0, computer_7_running_113=0, V_114=computer_0_running, computer_0_running_114=0, computer_3_running_114=0, computer_4_running_114=0, computer_5_running_114=0, computer_6_running_114=0, computer_7_running_114=0, A_115=(reboot_computer_0), A_116=(reboot_computer_0), V_117=computer_4_running, computer_0_running_117=0, computer_3_running_117=0, computer_4_running_117=0, computer_5_running_117=0, computer_6_running_117=0, computer_7_running_117=0, A_118=(reboot_computer_4), A_119=(reboot_computer_5), V_120=computer_4_running, computer_0_running_120=0, computer_3_running_120=0, computer_4_running_120=0, computer_5_running_120=0, computer_6_running_120=0, computer_7_running_120=0, V_121=computer_5_running, computer_0_running_121=0, computer_3_running_121=0, computer_4_running_121=0, computer_5_running_121=0, computer_6_running_121=0, computer_7_running_121=0, A_122=(reboot_computer_0), A_123=(reboot_computer_4), V_124=computer_0_running, computer_0_running_124=0, computer_3_running_124=0, computer_4_running_124=0, computer_5_running_124=0, computer_6_running_124=0, computer_7_running_124=0, A_125=(reboot_computer_0), A_126=(reboot_computer_1)
+2025-01-28 12:05:04,631 - decision_tree.py - double-checking specification satisfiability:  : 241.00897022278707
+2025-01-28 12:05:04,632 - decision_tree.py - admissible subtree found from node 8
+2025-01-28 12:05:04,632 - decision_tree.py - new tree has depth 8 and 16 nodes
+2025-01-28 12:05:06,129 - decision_tree.py - new dtcontrol tree has depth 8 and 10 nodes
+2025-01-28 12:05:06,130 - decision_tree.py - None of the new trees are smaller, continuing with current tree
+2025-01-28 12:05:06,150 - decision_tree.py - final tree has value 241.00897022278707 with depth 8 and 10 nodes
+241.00897022278707 33.68 8 10
+2025-01-28 12:05:06,151 - decision_tree.py - the optimal scheduler has value: 241.14546064109567
+2025-01-28 12:05:06,151 - decision_tree.py - the random scheduler has value: 111.61154666209073
+2025-01-28 12:05:06,151 - decision_tree.py - synthesized tree of depth 8 with 10 decision nodes
+2025-01-28 12:05:06,151 - decision_tree.py - the synthesized tree has value 241.00897022278707
+2025-01-28 12:05:06,151 - decision_tree.py - the synthesized tree has relative value: 0.9989462958840978
+2025-01-28 12:05:06,151 - decision_tree.py - printing the synthesized tree below:
+2025-01-28 12:05:06,151 - decision_tree.py - dtcontrol calls: 3
+2025-01-28 12:05:06,151 - decision_tree.py - dtcontrol successes: 2
+2025-01-28 12:05:06,151 - decision_tree.py - paynt calls: 3
+2025-01-28 12:05:06,151 - decision_tree.py - paynt successes smaller: 0
+2025-01-28 12:05:06,152 - decision_tree.py - paynt tree found: 3
+2025-01-28 12:05:06,152 - decision_tree.py - both larger: 1
+2025-01-28 12:05:06,153 - decision_tree.py - exported decision tree to logs/01-28-initial-fixed-depth/integration/omdt-system_administrator_2/tree.dot
+2025-01-28 12:05:06,267 - decision_tree.py - exported decision tree visualization to logs/01-28-initial-fixed-depth/integration/omdt-system_administrator_2/tree.png
+2025-01-28 12:05:06,267 - decision_tree.py - synthesis finished after 34.34 seconds
+
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.007.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.008.
+All benchmarks completed. Shutting down dtControl.
+--benchmark-file/-b was not set. Defaulting to use 'benchmark.json'
+INFO: Benchmark statistics will be available in benchmark.json and benchmark.html.
+INFO: Constructed trees will be written to decision_trees.
+
+The following configurations would now be run:
+
+ name    | numeric-predicates   | categorical-predicates   | determinize   | impurity   |   tolerance | safe-pruning
+---------+----------------------+--------------------------+---------------+------------+-------------+----------------
+ default | ['axisonly']         | ['multisplit']           | none          | entropy    |       1e-05 | False
+
+
+1/1: Evaluating default on scheduler... 
+Reading from scheduler.storm.json
+INFO: Writing DOT file into decision_trees.
+
+INFO: Writing C file into decision_trees.
+
+1/1: Finished in 00:00:00.006.
+All benchmarks completed. Shutting down dtControl.

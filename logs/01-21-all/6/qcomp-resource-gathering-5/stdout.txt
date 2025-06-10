@@ -1,0 +1,195 @@
+2025-01-21 19:38:43,857 - cli.py - This is Paynt version 0.1.0.
+2025-01-21 19:38:43,857 - sketch.py - loading sketch from /home/imacak/disk2/synthesis/models/dts/qcomp/resource-gathering-5/model-random-enabled.drn ...
+2025-01-21 19:38:43,857 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:26): Parsing error at 3:1:  expecting <model type>, here:
+	@type: MDP
+	^
+
+2025-01-21 19:38:43,879 - sketch.py - assuming sketch in DRN format...
+2025-01-21 19:38:43,901 - prism_parser.py - loading properties from /home/imacak/disk2/synthesis/models/dts/qcomp/resource-gathering-5/discounted.props ...
+2025-01-21 19:38:43,902 - prism_parser.py - found the following specification: optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 19:38:43,905 - sketch.py - found state valuations in /home/imacak/disk2/synthesis/models/dts/qcomp/resource-gathering-5/state-valuations.json, adding to the model...
+2025-01-21 19:38:43,909 - sketch.py - sketch parsing OK
+2025-01-21 19:38:43,913 - sketch.py - constructed explicit quotient having 3292 states and 16460 choices
+2025-01-21 19:38:43,913 - sketch.py - found the following specification optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 19:38:43,920 - mdp.py - MDP has 3291/3292 relevant states
+2025-01-21 19:38:43,940 - mdp.py - MDP has 5 actions
+2025-01-21 19:38:43,957 - mdp.py - found the following 7 variables: ['attacked:[0..1]', 'gem:[0..1]', 'gold:[0..1]', 'required_gem:[0..5]', 'required_gold:[0..5]', 'x:[1..5]', 'y:[1..5]']
+2025-01-21 19:38:43,963 - decision_tree.py - the optimal scheduler has value: -47.71054759664841
+2025-01-21 19:38:43,968 - decision_tree.py - the random scheduler has value: -99.87697400578439
+
+2025-01-21 19:38:43,968 - mdp.py - building tree of depth 0
+2025-01-21 19:38:43,994 - statistic.py - synthesis initiated, design space: 5
+2025-01-21 19:38:44,003 - synthesizer_ar.py - value -99.9956 achieved after 0.15 seconds
+2025-01-21 19:38:44,027 - synthesizer_ar.py - value -99.877 achieved after 0.17 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.04 s
+number of holes: 1, family size: 5, quotient: 3292 states / 16460 actions
+explored: 100 %
+MDP stats: avg MDP size: 1420, iterations: 7
+
+optimum: -99.876974
+--------------------
+2025-01-21 19:38:44,033 - decision_tree.py - families considered: 7
+2025-01-21 19:38:44,033 - decision_tree.py - families skipped by construction: 0
+2025-01-21 19:38:44,033 - decision_tree.py - families with schedulers preserved: 0
+2025-01-21 19:38:44,033 - decision_tree.py - families model checked: 7
+2025-01-21 19:38:44,033 - decision_tree.py - harmonizations attempted: 2
+2025-01-21 19:38:44,033 - decision_tree.py - harmonizations succeeded: 2
+
+2025-01-21 19:38:44,033 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 19:38:44,033 - decision_tree.py - A_0=__random__
+2025-01-21 19:38:44,038 - decision_tree.py - double-checking specification satisfiability:  : -99.87697400578439
+
+2025-01-21 19:38:44,038 - mdp.py - building tree of depth 1
+2025-01-21 19:38:44,175 - statistic.py - synthesis initiated, design space: 70000
+2025-01-21 19:38:44,259 - synthesizer_ar.py - value -99.874 achieved after 0.4 seconds
+2025-01-21 19:38:44,421 - synthesizer_ar.py - value -99.8542 achieved after 0.56 seconds
+2025-01-21 19:38:44,478 - synthesizer_ar.py - value -95.1392 achieved after 0.62 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 2.85 s
+number of holes: 10, family size: 70000, quotient: 3292 states / 16460 actions
+explored: 200 %
+MDP stats: avg MDP size: 1793, iterations: 286
+
+optimum: -95.139217
+--------------------
+2025-01-21 19:38:47,024 - decision_tree.py - families considered: 286
+2025-01-21 19:38:47,025 - decision_tree.py - families skipped by construction: 0
+2025-01-21 19:38:47,025 - decision_tree.py - families with schedulers preserved: 33
+2025-01-21 19:38:47,025 - decision_tree.py - families model checked: 253
+2025-01-21 19:38:47,025 - decision_tree.py - harmonizations attempted: 72
+2025-01-21 19:38:47,025 - decision_tree.py - harmonizations succeeded: 3
+
+2025-01-21 19:38:47,025 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 19:38:47,025 - decision_tree.py - V_0=gem, attacked_0=0, gem_0=0, gold_0=0, required_gem_0=0, required_gold_0=0, x_0=1, y_0=1, A_1=top, A_2=down
+2025-01-21 19:38:47,025 - decision_tree.py - double-checking specification satisfiability:  : -95.13921708639764
+
+2025-01-21 19:38:47,026 - mdp.py - building tree of depth 2
+2025-01-21 19:38:47,426 - statistic.py - synthesis initiated, design space: 1e13
+2025-01-21 19:38:48,349 - synthesizer_ar.py - value -94.1246 achieved after 4.49 seconds
+2025-01-21 19:38:49,727 - synthesizer_ar.py - value -92.8589 achieved after 5.87 seconds
+> progress 0.109%, elapsed 3 s, estimated 2744 s, iters = {MDP: 360}, opt = -92.8589
+2025-01-21 19:38:51,132 - synthesizer_ar.py - value -91.6598 achieved after 7.28 seconds
+> progress 0.314%, elapsed 6 s, estimated 1913 s, iters = {MDP: 695}, opt = -91.6598
+2025-01-21 19:38:54,250 - synthesizer_ar.py - value -90.4542 achieved after 10.39 seconds
+> progress 0.784%, elapsed 9 s, estimated 1150 s, iters = {MDP: 1004}, opt = -90.4542
+> progress 1.457%, elapsed 12 s, estimated 825 s, iters = {MDP: 1236}, opt = -90.4542
+> progress 1.54%, elapsed 15 s, estimated 976 s, iters = {MDP: 1416}, opt = -90.4542
+> progress 4.166%, elapsed 18 s, estimated 433 s, iters = {MDP: 1727}, opt = -90.4542
+> progress 4.335%, elapsed 21 s, estimated 485 s, iters = {MDP: 2069}, opt = -90.4542
+> progress 4.624%, elapsed 24 s, estimated 520 s, iters = {MDP: 2424}, opt = -90.4542
+> progress 4.809%, elapsed 27 s, estimated 566 s, iters = {MDP: 2672}, opt = -90.4542
+> progress 4.867%, elapsed 30 s, estimated 621 s, iters = {MDP: 2975}, opt = -90.4542
+> progress 5.436%, elapsed 33 s, estimated 611 s, iters = {MDP: 3170}, opt = -90.4542
+> progress 5.542%, elapsed 36 s, estimated 654 s, iters = {MDP: 3281}, opt = -90.4542
+> progress 5.578%, elapsed 39 s, estimated 704 s, iters = {MDP: 3395}, opt = -90.4542
+> progress 5.634%, elapsed 42 s, estimated 752 s, iters = {MDP: 3506}, opt = -90.4542
+2025-01-21 19:39:32,360 - synthesizer_ar.py - value -90.1493 achieved after 48.5 seconds
+2025-01-21 19:39:32,807 - synthesizer_ar.py - value -68.6287 achieved after 48.95 seconds
+> progress 8.164%, elapsed 45 s, estimated 555 s, iters = {MDP: 3686}, opt = -68.6287
+2025-01-21 19:39:32,864 - synthesizer_ar.py - value -53.9064 achieved after 49.01 seconds
+> progress 17.142%, elapsed 48 s, estimated 282 s, iters = {MDP: 4096}, opt = -53.9064
+> progress 30.612%, elapsed 51 s, estimated 167 s, iters = {MDP: 4465}, opt = -53.9064
+> progress 43.892%, elapsed 54 s, estimated 123 s, iters = {MDP: 4835}, opt = -53.9064
+> progress 49.344%, elapsed 57 s, estimated 116 s, iters = {MDP: 5241}, opt = -53.9064
+> progress 58.491%, elapsed 60 s, estimated 103 s, iters = {MDP: 5609}, opt = -53.9064
+> progress 64.723%, elapsed 63 s, estimated 97 s, iters = {MDP: 6000}, opt = -53.9064
+> progress 70.956%, elapsed 66 s, estimated 93 s, iters = {MDP: 6371}, opt = -53.9064
+> progress 82.988%, elapsed 69 s, estimated 83 s, iters = {MDP: 6774}, opt = -53.9064
+> progress 89.62%, elapsed 72 s, estimated 80 s, iters = {MDP: 7136}, opt = -53.9064
+> progress 93.997%, elapsed 75 s, estimated 80 s, iters = {MDP: 7540}, opt = -53.9064
+> progress 97.157%, elapsed 78 s, estimated 80 s, iters = {MDP: 7893}, opt = -53.9064
+> progress 100.668%, elapsed 81 s, estimated 80 s, iters = {MDP: 8282}, opt = -53.9064
+> progress 107.192%, elapsed 84 s, estimated 78 s, iters = {MDP: 8635}, opt = -53.9064
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 86.73 s
+number of holes: 28, family size: 1e13, quotient: 3292 states / 16460 actions
+explored: 114 %
+MDP stats: avg MDP size: 1660, iterations: 8881
+
+optimum: -53.906396
+--------------------
+2025-01-21 19:40:14,160 - decision_tree.py - families considered: 8881
+2025-01-21 19:40:14,160 - decision_tree.py - families skipped by construction: 0
+2025-01-21 19:40:14,160 - decision_tree.py - families with schedulers preserved: 1739
+2025-01-21 19:40:14,160 - decision_tree.py - families model checked: 7142
+2025-01-21 19:40:14,160 - decision_tree.py - harmonizations attempted: 1583
+2025-01-21 19:40:14,160 - decision_tree.py - harmonizations succeeded: 4
+
+2025-01-21 19:40:14,160 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 19:40:14,160 - decision_tree.py - V_0=gem, attacked_0=0, gem_0=0, gold_0=0, required_gem_0=0, required_gold_0=0, x_0=1, y_0=1, V_1=y, attacked_1=0, gem_1=0, gold_1=0, required_gem_1=0, required_gold_1=0, x_1=1, y_1=4, A_2=top, A_3=right, V_4=y, attacked_4=0, gem_4=0, gold_4=0, required_gem_4=0, required_gold_4=0, x_4=1, y_4=1, A_5=left, A_6=down
+2025-01-21 19:40:14,161 - decision_tree.py - double-checking specification satisfiability:  : -53.90639575082535
+
+2025-01-21 19:40:14,161 - mdp.py - building tree of depth 3
+2025-01-21 19:40:15,016 - statistic.py - synthesis initiated, design space: 1e29
+2025-01-21 19:40:15,090 - synthesizer_ar.py - value -47.7105 achieved after 91.23 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.48 s
+number of holes: 64, family size: 1e29, quotient: 3292 states / 16460 actions
+explored: 100 %
+MDP stats: avg MDP size: 3032, iterations: 36
+
+optimum: -47.710539
+--------------------
+2025-01-21 19:40:15,493 - decision_tree.py - families considered: 36
+2025-01-21 19:40:15,493 - decision_tree.py - families skipped by construction: 0
+2025-01-21 19:40:15,493 - decision_tree.py - families with schedulers preserved: 11
+2025-01-21 19:40:15,493 - decision_tree.py - families model checked: 25
+2025-01-21 19:40:15,493 - decision_tree.py - harmonizations attempted: 1
+2025-01-21 19:40:15,493 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-21 19:40:15,493 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 19:40:15,493 - decision_tree.py - V_0=gem, attacked_0=0, gem_0=0, gold_0=0, required_gem_0=0, required_gold_0=0, x_0=1, y_0=1, V_1=y, attacked_1=0, gem_1=0, gold_1=0, required_gem_1=0, required_gold_1=0, x_1=1, y_1=4, V_2=required_gold, attacked_2=0, gem_2=0, gold_2=0, required_gem_2=0, required_gold_2=0, x_2=1, y_2=1, A_3=down, A_4=top, V_5=x, attacked_5=0, gem_5=0, gold_5=0, required_gem_5=0, required_gold_5=4, x_5=4, y_5=1, A_6=right, A_7=down, V_8=y, attacked_8=0, gem_8=0, gold_8=0, required_gem_8=0, required_gold_8=0, x_8=1, y_8=1, V_9=required_gold, attacked_9=0, gem_9=0, gold_9=0, required_gem_9=0, required_gold_9=1, x_9=1, y_9=1, A_10=left, A_11=left, V_12=gem, attacked_12=0, gem_12=0, gold_12=0, required_gem_12=0, required_gold_12=0, x_12=1, y_12=1, A_13=__random__, A_14=down
+2025-01-21 19:40:15,495 - decision_tree.py - double-checking specification satisfiability:  : -47.71053916989508
+2025-01-21 19:40:15,495 - decision_tree.py - the optimal scheduler has value: -47.71054759664841
+2025-01-21 19:40:15,495 - decision_tree.py - the random scheduler has value: -99.87697400578439
+2025-01-21 19:40:15,496 - decision_tree.py - synthesized tree of depth 3 with 5 decision nodes
+2025-01-21 19:40:15,496 - decision_tree.py - the synthesized tree has value -47.71053916989508
+2025-01-21 19:40:15,496 - decision_tree.py - the synthesized tree has relative value: 1.0000001615359517
+2025-01-21 19:40:15,496 - decision_tree.py - printing the synthesized tree below:
+if gem<=0:
+  if y<=4:
+    if required_gold<=0:
+      down
+    else:
+      top
+  else:
+    if x<=4:
+      right
+    else:
+      down
+else:
+  if y<=1:
+    left
+  else:
+    down
+
+2025-01-21 19:40:15,497 - decision_tree.py - exported decision tree to logs/01-21-all/6/qcomp-resource-gathering-5/tree.dot
+2025-01-21 19:40:15,548 - decision_tree.py - exported decision tree visualization to logs/01-21-all/6/qcomp-resource-gathering-5/tree.png
+2025-01-21 19:40:15,548 - decision_tree.py - synthesis finished after 91.69 seconds
+
+ColoringSmt = 0.815 s (0.9 %)
+ColoringSmt:: create choice colors = 0.187 s (0.2 %)
+ColoringSmt:: create harmonizing variants = 0.625 s (0.7 %)
+areChoicesConsistent = 0.153 s (0.2 %)
+areChoicesConsistent::1 is scheduler consistent? = 0.08 s (0.1 %)
+areChoicesConsistent::2 better unsat core = 0.044 s (0.0 %)
+areChoicesConsistent::3 unsat core analysis = 0.026 s (0.0 %)
+check = 0.131 s (0.1 %)
+loadUnsatCore = 0.0 s (0.0 %)
+selectCompatibleChoices = 0.163 s (0.2 %)
+selectCompatibleChoices::1 is family sat = 0.096 s (0.1 %)
+selectCompatibleChoices::2 state exploration = 0.066 s (0.1 %)

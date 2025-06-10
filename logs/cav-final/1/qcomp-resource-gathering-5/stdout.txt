@@ -1,0 +1,99 @@
+2025-01-21 15:52:18,190 - cli.py - This is Paynt version 0.1.0.
+2025-01-21 15:52:18,190 - sketch.py - loading sketch from /home/imacak/disk2/synthesis/models/dts/qcomp/resource-gathering-5/model-random-enabled.drn ...
+2025-01-21 15:52:18,190 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:26): Parsing error at 3:1:  expecting <model type>, here:
+	@type: MDP
+	^
+
+2025-01-21 15:52:18,213 - sketch.py - assuming sketch in DRN format...
+2025-01-21 15:52:18,236 - prism_parser.py - loading properties from /home/imacak/disk2/synthesis/models/dts/qcomp/resource-gathering-5/discounted.props ...
+2025-01-21 15:52:18,236 - prism_parser.py - found the following specification: optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 15:52:18,240 - sketch.py - found state valuations in /home/imacak/disk2/synthesis/models/dts/qcomp/resource-gathering-5/state-valuations.json, adding to the model...
+2025-01-21 15:52:18,243 - sketch.py - sketch parsing OK
+2025-01-21 15:52:18,247 - sketch.py - constructed explicit quotient having 3292 states and 16460 choices
+2025-01-21 15:52:18,247 - sketch.py - found the following specification optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 15:52:18,255 - mdp.py - MDP has 3291/3292 relevant states
+2025-01-21 15:52:18,275 - mdp.py - MDP has 5 actions
+2025-01-21 15:52:18,291 - mdp.py - found the following 7 variables: ['attacked:[0..1]', 'gem:[0..1]', 'gold:[0..1]', 'required_gem:[0..5]', 'required_gold:[0..5]', 'x:[1..5]', 'y:[1..5]']
+2025-01-21 15:52:18,297 - decision_tree.py - the optimal scheduler has value: -47.71054759664841
+2025-01-21 15:52:18,302 - decision_tree.py - the random scheduler has value: -99.87697400578439
+
+2025-01-21 15:52:18,302 - mdp.py - building tree of depth 0
+2025-01-21 15:52:18,329 - statistic.py - synthesis initiated, design space: 5
+2025-01-21 15:52:18,338 - synthesizer_ar.py - value -99.9956 achieved after 0.15 seconds
+2025-01-21 15:52:18,362 - synthesizer_ar.py - value -99.877 achieved after 0.17 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.04 s
+number of holes: 1, family size: 5, quotient: 3292 states / 16460 actions
+explored: 100 %
+MDP stats: avg MDP size: 1420, iterations: 7
+
+optimum: -99.876974
+--------------------
+2025-01-21 15:52:18,368 - decision_tree.py - families considered: 7
+2025-01-21 15:52:18,368 - decision_tree.py - families skipped by construction: 0
+2025-01-21 15:52:18,368 - decision_tree.py - families with schedulers preserved: 0
+2025-01-21 15:52:18,368 - decision_tree.py - families model checked: 7
+2025-01-21 15:52:18,368 - decision_tree.py - harmonizations attempted: 2
+2025-01-21 15:52:18,368 - decision_tree.py - harmonizations succeeded: 2
+
+2025-01-21 15:52:18,368 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 15:52:18,368 - decision_tree.py - A_0=__random__
+2025-01-21 15:52:18,373 - decision_tree.py - double-checking specification satisfiability:  : -99.87697400578439
+
+2025-01-21 15:52:18,373 - mdp.py - building tree of depth 1
+2025-01-21 15:52:18,512 - statistic.py - synthesis initiated, design space: 70000
+2025-01-21 15:52:18,596 - synthesizer_ar.py - value -99.874 achieved after 0.41 seconds
+2025-01-21 15:52:18,758 - synthesizer_ar.py - value -99.8542 achieved after 0.57 seconds
+2025-01-21 15:52:18,815 - synthesizer_ar.py - value -95.1392 achieved after 0.63 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 2.84 s
+number of holes: 10, family size: 70000, quotient: 3292 states / 16460 actions
+explored: 200 %
+MDP stats: avg MDP size: 1793, iterations: 286
+
+optimum: -95.139217
+--------------------
+2025-01-21 15:52:21,355 - decision_tree.py - families considered: 286
+2025-01-21 15:52:21,355 - decision_tree.py - families skipped by construction: 0
+2025-01-21 15:52:21,355 - decision_tree.py - families with schedulers preserved: 33
+2025-01-21 15:52:21,355 - decision_tree.py - families model checked: 253
+2025-01-21 15:52:21,355 - decision_tree.py - harmonizations attempted: 72
+2025-01-21 15:52:21,355 - decision_tree.py - harmonizations succeeded: 3
+
+2025-01-21 15:52:21,355 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 15:52:21,355 - decision_tree.py - V_0=gem, attacked_0=0, gem_0=0, gold_0=0, required_gem_0=0, required_gold_0=0, x_0=1, y_0=1, A_1=top, A_2=down
+2025-01-21 15:52:21,356 - decision_tree.py - double-checking specification satisfiability:  : -95.13921708639764
+2025-01-21 15:52:21,356 - decision_tree.py - the optimal scheduler has value: -47.71054759664841
+2025-01-21 15:52:21,356 - decision_tree.py - the random scheduler has value: -99.87697400578439
+2025-01-21 15:52:21,357 - decision_tree.py - synthesized tree of depth 1 with 1 decision nodes
+2025-01-21 15:52:21,357 - decision_tree.py - the synthesized tree has value -95.13921708639764
+2025-01-21 15:52:21,357 - decision_tree.py - the synthesized tree has relative value: 0.09082003973645825
+2025-01-21 15:52:21,357 - decision_tree.py - printing the synthesized tree below:
+if gem<=0:
+  top
+else:
+  down
+
+2025-01-21 15:52:21,357 - decision_tree.py - exported decision tree to logs/01-21-all/1/qcomp-resource-gathering-5/tree.dot
+2025-01-21 15:52:21,395 - decision_tree.py - exported decision tree visualization to logs/01-21-all/1/qcomp-resource-gathering-5/tree.png
+2025-01-21 15:52:21,395 - decision_tree.py - synthesis finished after 3.21 seconds
+
+ColoringSmt = 0.128 s (4.0 %)
+ColoringSmt:: create choice colors = 0.03 s (0.9 %)
+ColoringSmt:: create harmonizing variants = 0.095 s (3.0 %)
+areChoicesConsistent = 1.444 s (45.0 %)
+areChoicesConsistent::1 is scheduler consistent? = 0.78 s (24.3 %)
+areChoicesConsistent::2 better unsat core = 0.536 s (16.7 %)
+areChoicesConsistent::3 unsat core analysis = 0.085 s (2.6 %)
+check = 1.045 s (32.6 %)
+loadUnsatCore = 0.0 s (0.0 %)
+selectCompatibleChoices = 0.327 s (10.2 %)
+selectCompatibleChoices::1 is family sat = 0.193 s (6.0 %)
+selectCompatibleChoices::2 state exploration = 0.134 s (4.2 %)

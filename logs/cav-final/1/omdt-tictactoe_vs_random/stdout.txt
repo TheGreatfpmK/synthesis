@@ -1,0 +1,106 @@
+2025-01-21 15:51:53,421 - cli.py - This is Paynt version 0.1.0.
+2025-01-21 15:51:53,421 - sketch.py - loading sketch from /home/imacak/disk2/synthesis/models/dts/omdt/tictactoe_vs_random/model-random.drn ...
+2025-01-21 15:51:53,421 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:26): Parsing error at 3:1:  expecting <model type>, here:
+	@type: MDP
+	^
+
+2025-01-21 15:51:53,467 - sketch.py - assuming sketch in DRN format...
+2025-01-21 15:51:53,504 - prism_parser.py - loading properties from /home/imacak/disk2/synthesis/models/dts/omdt/tictactoe_vs_random/discounted.props ...
+2025-01-21 15:51:53,504 - prism_parser.py - found the following specification: optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 15:51:53,527 - sketch.py - found state valuations in /home/imacak/disk2/synthesis/models/dts/omdt/tictactoe_vs_random/state-valuations.json, adding to the model...
+2025-01-21 15:51:53,538 - sketch.py - sketch parsing OK
+2025-01-21 15:51:53,548 - sketch.py - constructed explicit quotient having 2424 states and 24240 choices
+2025-01-21 15:51:53,548 - sketch.py - found the following specification optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 15:51:53,554 - mdp.py - MDP has 2423/2424 relevant states
+2025-01-21 15:51:53,586 - mdp.py - MDP has 10 actions
+2025-01-21 15:51:53,620 - mdp.py - found the following 27 variables: ['bottom_center_circle:[0..1]', 'bottom_center_cross:[0..1]', 'bottom_center_free:[0..1]', 'bottom_left_circle:[0..1]', 'bottom_left_cross:[0..1]', 'bottom_left_free:[0..1]', 'bottom_right_circle:[0..1]', 'bottom_right_cross:[0..1]', 'bottom_right_free:[0..1]', 'center_circle:[0..1]', 'center_cross:[0..1]', 'center_free:[0..1]', 'center_left_circle:[0..1]', 'center_left_cross:[0..1]', 'center_left_free:[0..1]', 'center_right_circle:[0..1]', 'center_right_cross:[0..1]', 'center_right_free:[0..1]', 'top_center_circle:[0..1]', 'top_center_cross:[0..1]', 'top_center_free:[0..1]', 'top_left_circle:[0..1]', 'top_left_cross:[0..1]', 'top_left_free:[0..1]', 'top_right_circle:[0..1]', 'top_right_cross:[0..1]', 'top_right_free:[0..1]']
+2025-01-21 15:51:53,628 - decision_tree.py - the optimal scheduler has value: 0.9734128595696825
+2025-01-21 15:51:53,631 - decision_tree.py - the random scheduler has value: -0.8149295734467253
+
+2025-01-21 15:51:53,631 - mdp.py - building tree of depth 0
+2025-01-21 15:51:53,664 - statistic.py - synthesis initiated, design space: 10
+2025-01-21 15:51:53,677 - synthesizer_ar.py - value -0.99 achieved after 0.26 seconds
+2025-01-21 15:51:53,701 - synthesizer_ar.py - value -0.8149 achieved after 0.28 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.04 s
+number of holes: 1, family size: 10, quotient: 2424 states / 24240 actions
+explored: 100 %
+MDP stats: avg MDP size: 998, iterations: 10
+
+optimum: -0.81493
+--------------------
+2025-01-21 15:51:53,705 - decision_tree.py - families considered: 10
+2025-01-21 15:51:53,705 - decision_tree.py - families skipped by construction: 0
+2025-01-21 15:51:53,705 - decision_tree.py - families with schedulers preserved: 0
+2025-01-21 15:51:53,705 - decision_tree.py - families model checked: 10
+2025-01-21 15:51:53,705 - decision_tree.py - harmonizations attempted: 3
+2025-01-21 15:51:53,705 - decision_tree.py - harmonizations succeeded: 2
+
+2025-01-21 15:51:53,705 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 15:51:53,705 - decision_tree.py - A_0=__random__
+2025-01-21 15:51:53,708 - decision_tree.py - double-checking specification satisfiability:  : -0.8149295734467253
+
+2025-01-21 15:51:53,708 - mdp.py - building tree of depth 1
+2025-01-21 15:51:55,045 - statistic.py - synthesis initiated, design space: 2700
+2025-01-21 15:51:57,035 - synthesizer_ar.py - value -0.7553 achieved after 3.61 seconds
+> progress 18.518%, elapsed 3 s, estimated 16 s, iters = {MDP: 339}, opt = -0.7553
+> progress 39.407%, elapsed 6 s, estimated 15 s, iters = {MDP: 678}, opt = -0.7553
+> progress 60.592%, elapsed 9 s, estimated 14 s, iters = {MDP: 986}, opt = -0.7553
+> progress 84.518%, elapsed 12 s, estimated 14 s, iters = {MDP: 1301}, opt = -0.7553
+> progress 100.222%, elapsed 15 s, estimated 15 s, iters = {MDP: 1525}, opt = -0.7553
+> progress 121.629%, elapsed 18 s, estimated 14 s, iters = {MDP: 1916}, opt = -0.7553
+> progress 142.0%, elapsed 21 s, estimated 14 s, iters = {MDP: 2210}, opt = -0.7553
+> progress 163.851%, elapsed 24 s, estimated 14 s, iters = {MDP: 2505}, opt = -0.7553
+> progress 180.814%, elapsed 27 s, estimated 15 s, iters = {MDP: 2694}, opt = -0.7553
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 30.0 s
+number of holes: 30, family size: 2700, quotient: 2424 states / 24240 actions
+explored: 200 %
+MDP stats: avg MDP size: 947, iterations: 2855
+
+optimum: -0.755302
+--------------------
+2025-01-21 15:52:25,049 - decision_tree.py - families considered: 2855
+2025-01-21 15:52:25,049 - decision_tree.py - families skipped by construction: 0
+2025-01-21 15:52:25,049 - decision_tree.py - families with schedulers preserved: 71
+2025-01-21 15:52:25,049 - decision_tree.py - families model checked: 2784
+2025-01-21 15:52:25,049 - decision_tree.py - harmonizations attempted: 890
+2025-01-21 15:52:25,049 - decision_tree.py - harmonizations succeeded: 1
+
+2025-01-21 15:52:25,049 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 15:52:25,049 - decision_tree.py - V_0=center_free, bottom_center_circle_0=0, bottom_center_cross_0=0, bottom_center_free_0=0, bottom_left_circle_0=0, bottom_left_cross_0=0, bottom_left_free_0=0, bottom_right_circle_0=0, bottom_right_cross_0=0, bottom_right_free_0=0, center_circle_0=0, center_cross_0=0, center_free_0=0, center_left_circle_0=0, center_left_cross_0=0, center_left_free_0=0, center_right_circle_0=0, center_right_cross_0=0, center_right_free_0=0, top_center_circle_0=0, top_center_cross_0=0, top_center_free_0=0, top_left_circle_0=0, top_left_cross_0=0, top_left_free_0=0, top_right_circle_0=0, top_right_cross_0=0, top_right_free_0=0, A_1=__random__, A_2=(center)
+2025-01-21 15:52:25,051 - decision_tree.py - double-checking specification satisfiability:  : -0.755302185033212
+2025-01-21 15:52:25,051 - decision_tree.py - the optimal scheduler has value: 0.9734128595696825
+2025-01-21 15:52:25,051 - decision_tree.py - the random scheduler has value: -0.8149295734467253
+2025-01-21 15:52:25,052 - decision_tree.py - synthesized tree of depth 1 with 1 decision nodes
+2025-01-21 15:52:25,052 - decision_tree.py - the synthesized tree has value -0.755302185033212
+2025-01-21 15:52:25,052 - decision_tree.py - the synthesized tree has relative value: 0.033342265615729685
+2025-01-21 15:52:25,052 - decision_tree.py - printing the synthesized tree below:
+if center_free<=0:
+  __random__
+else:
+  (center)
+
+2025-01-21 15:52:25,052 - decision_tree.py - exported decision tree to logs/01-21-all/1/omdt-tictactoe_vs_random/tree.dot
+2025-01-21 15:52:25,093 - decision_tree.py - exported decision tree visualization to logs/01-21-all/1/omdt-tictactoe_vs_random/tree.png
+2025-01-21 15:52:25,093 - decision_tree.py - synthesis finished after 31.67 seconds
+
+ColoringSmt = 1.323 s (4.2 %)
+ColoringSmt:: create choice colors = 0.054 s (0.2 %)
+ColoringSmt:: create harmonizing variants = 1.265 s (4.0 %)
+areChoicesConsistent = 18.288 s (57.7 %)
+areChoicesConsistent::1 is scheduler consistent? = 13.632 s (43.0 %)
+areChoicesConsistent::2 better unsat core = 2.411 s (7.6 %)
+areChoicesConsistent::3 unsat core analysis = 1.639 s (5.2 %)
+check = 14.03 s (44.3 %)
+loadUnsatCore = 0.006 s (0.0 %)
+selectCompatibleChoices = 5.451 s (17.2 %)
+selectCompatibleChoices::1 is family sat = 3.048 s (9.6 %)
+selectCompatibleChoices::2 state exploration = 2.4 s (7.6 %)

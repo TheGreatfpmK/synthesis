@@ -1,0 +1,216 @@
+2025-02-06 17:55:27,667 - cli.py:170 - This is Paynt version 0.1.0.
+2025-02-06 17:55:27,668 - sketch.py:84 - loading sketch from /home/fpmk/synthesis-playground/models/dts-uai-subset/undiscounted/consensus-4-2/model.prism ...
+2025-02-06 17:55:27,668 - sketch.py:88 - assuming sketch in PRISM format...
+2025-02-06 17:55:27,691 - prism_parser.py:31 - PRISM model type: MDP
+2025-02-06 17:55:27,692 - prism_parser.py:202 - loading properties from /home/fpmk/synthesis-playground/models/dts-uai-subset/undiscounted/consensus-4-2/model.props ...
+2025-02-06 17:55:27,696 - prism_parser.py:218 - found the following specification: optimality: R{"steps"}max=? [F "finished"] 
+2025-02-06 17:55:27,865 - sketch.py:149 - sketch parsing OK
+2025-02-06 17:55:27,869 - sketch.py:154 - tree helper loaded
+2025-02-06 17:55:27,971 - sketch.py:43 - converting state rewards 'steps' to state-action rewards
+2025-02-06 17:55:27,994 - sketch.py:170 - constructed explicit quotient having 22656 states and 60544 choices
+2025-02-06 17:55:27,995 - sketch.py:176 - found the following specification optimality: R{"steps"}max=? [F "finished"] 
+2025-02-06 17:55:28,068 - mdp.py:497 - MDP has 20224/22656 relevant states
+2025-02-06 17:55:28,070 - mdp.py:501 - adding explicit don't-care action to relevant states...
+2025-02-06 17:55:28,171 - mdp.py:507 - MDP has 26 actions
+2025-02-06 17:55:28,398 - mdp.py:532 - found the following 9 variables: ['coin1:[0..1]', 'coin2:[0..1]', 'coin3:[0..1]', 'coin4:[0..1]', 'counter:[1..23]', 'pc1:[0..3]', 'pc2:[0..3]', 'pc3:[0..3]', 'pc4:[0..3]']
+2025-02-06 17:55:28,726 - decision_tree.py:609 - the optimal scheduler has value: 363.02025779641826
+2025-02-06 17:55:28,851 - decision_tree.py:616 - the random scheduler has value: 234.81967466939795
+2025-02-06 17:55:28,851 - synthesizer.py:109 - optimality threshold set to 350.20019948371623
+
+2025-02-06 17:55:28,851 - mdp.py:825 - building tree of depth 0
+2025-02-06 17:55:29,010 - statistic.py:67 - synthesis initiated, design space: 26
+> progress 15.384%, elapsed 3 s, estimated 22 s, iters = {MDP: 8}, opt = 350.2002
+--------------------
+Synthesis summary:
+optimality objective: R{"steps"}max=? [F "finished"] 
+
+method: AR (decision tree), synthesis time: 4.0 s
+number of holes: 1, family size: 26, quotient: 22656 states / 80768 actions
+explored: 100 %
+MDP stats: avg MDP size: 22526, iterations: 10
+
+optimum: 350.200199
+--------------------
+2025-02-06 17:55:33,015 - decision_tree.py:120 - families considered: 10
+2025-02-06 17:55:33,015 - decision_tree.py:121 - families skipped by construction: 0
+2025-02-06 17:55:33,015 - decision_tree.py:122 - families with schedulers preserved: 0
+2025-02-06 17:55:33,015 - decision_tree.py:123 - families model checked: 10
+2025-02-06 17:55:33,015 - decision_tree.py:124 - harmonizations attempted: 3
+2025-02-06 17:55:33,015 - decision_tree.py:125 - harmonizations succeeded: 0
+
+
+2025-02-06 17:55:33,015 - mdp.py:825 - building tree of depth 1
+2025-02-06 17:55:33,942 - statistic.py:67 - synthesis initiated, design space: 1e7
+> progress 0.854%, elapsed 3 s, estimated 371 s, iters = {MDP: 9}, opt = 350.2002
+> progress 5.555%, elapsed 6 s, estimated 115 s, iters = {MDP: 16}, opt = 350.2002
+> progress 6.41%, elapsed 9 s, estimated 146 s, iters = {MDP: 23}, opt = 350.2002
+> progress 11.965%, elapsed 13 s, estimated 108 s, iters = {MDP: 33}, opt = 350.2002
+> progress 14.529%, elapsed 17 s, estimated 120 s, iters = {MDP: 42}, opt = 350.2002
+> progress 23.076%, elapsed 20 s, estimated 89 s, iters = {MDP: 52}, opt = 350.2002
+> progress 23.931%, elapsed 24 s, estimated 100 s, iters = {MDP: 57}, opt = 350.2002
+> progress 26.999%, elapsed 27 s, estimated 100 s, iters = {MDP: 64}, opt = 350.2002
+> progress 29.914%, elapsed 31 s, estimated 103 s, iters = {MDP: 72}, opt = 350.2002
+> progress 30.199%, elapsed 34 s, estimated 113 s, iters = {MDP: 76}, opt = 350.2002
+> progress 30.44%, elapsed 38 s, estimated 124 s, iters = {MDP: 84}, opt = 350.2002
+> progress 30.681%, elapsed 41 s, estimated 134 s, iters = {MDP: 90}, opt = 350.2002
+> progress 35.042%, elapsed 44 s, estimated 127 s, iters = {MDP: 100}, opt = 350.2002
+2025-02-06 17:56:14,222 - synthesizer.py:93 - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"steps"}max=? [F "finished"] 
+
+method: AR (decision tree), synthesis time: 45.94 s
+number of holes: 12, family size: 1e7, quotient: 22656 states / 80768 actions
+explored: 35 %
+MDP stats: avg MDP size: 22568, iterations: 102
+
+optimum: 350.200199
+--------------------
+2025-02-06 17:56:14,222 - decision_tree.py:120 - families considered: 102
+2025-02-06 17:56:14,222 - decision_tree.py:121 - families skipped by construction: 0
+2025-02-06 17:56:14,222 - decision_tree.py:122 - families with schedulers preserved: 10
+2025-02-06 17:56:14,222 - decision_tree.py:123 - families model checked: 92
+2025-02-06 17:56:14,222 - decision_tree.py:124 - harmonizations attempted: 26
+2025-02-06 17:56:14,222 - decision_tree.py:125 - harmonizations succeeded: 0
+
+
+2025-02-06 17:56:14,223 - mdp.py:825 - building tree of depth 2
+2025-02-06 17:56:16,551 - statistic.py:67 - synthesis initiated, design space: 1e18
+> progress 0.0%, elapsed 4 s, estimated 4162730 s (48 days), iters = {MDP: 5}, opt = 350.2002
+> progress 0.021%, elapsed 8 s, estimated 37767 s (10 hours), iters = {MDP: 11}, opt = 350.2002
+> progress 0.031%, elapsed 11 s, estimated 35874 s (9 hours), iters = {MDP: 17}, opt = 350.2002
+> progress 0.031%, elapsed 14 s, estimated 45644 s (12 hours), iters = {MDP: 20}, opt = 350.2002
+> progress 0.031%, elapsed 19 s, estimated 60722 s (16 hours), iters = {MDP: 29}, opt = 350.2002
+> progress 0.031%, elapsed 22 s, estimated 71469 s (19 hours), iters = {MDP: 35}, opt = 350.2002
+> progress 0.032%, elapsed 25 s, estimated 79020 s (21 hours), iters = {MDP: 40}, opt = 350.2002
+> progress 0.033%, elapsed 30 s, estimated 91947 s (25 hours), iters = {MDP: 48}, opt = 350.2002
+> progress 0.033%, elapsed 34 s, estimated 102383 s (28 hours), iters = {MDP: 54}, opt = 350.2002
+> progress 0.033%, elapsed 37 s, estimated 112495 s (31 hours), iters = {MDP: 59}, opt = 350.2002
+> progress 0.033%, elapsed 41 s, estimated 122579 s (34 hours), iters = {MDP: 63}, opt = 350.2002
+2025-02-06 17:56:58,804 - synthesizer.py:93 - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"steps"}max=? [F "finished"] 
+
+method: AR (decision tree), synthesis time: 45.04 s
+number of holes: 34, family size: 1e18, quotient: 22656 states / 80768 actions
+explored: 0 %
+MDP stats: avg MDP size: 22530, iterations: 71
+
+optimum: 350.200199
+--------------------
+2025-02-06 17:56:58,805 - decision_tree.py:120 - families considered: 71
+2025-02-06 17:56:58,805 - decision_tree.py:121 - families skipped by construction: 0
+2025-02-06 17:56:58,805 - decision_tree.py:122 - families with schedulers preserved: 16
+2025-02-06 17:56:58,805 - decision_tree.py:123 - families model checked: 55
+2025-02-06 17:56:58,805 - decision_tree.py:124 - harmonizations attempted: 14
+2025-02-06 17:56:58,805 - decision_tree.py:125 - harmonizations succeeded: 0
+
+
+2025-02-06 17:56:58,805 - mdp.py:825 - building tree of depth 3
+2025-02-06 17:57:04,892 - statistic.py:67 - synthesis initiated, design space: 1e40
+> progress 0.0%, elapsed 3 s, estimated 3719341 s (43 days), iters = {MDP: 3}, opt = 350.2002
+> progress 0.0%, elapsed 6 s, estimated 6751335 s (78 days), iters = {MDP: 6}, opt = 350.2002
+> progress 0.0%, elapsed 13 s, estimated 13086315 s (151 days), iters = {MDP: 7}, opt = 350.2002
+> progress 0.0%, elapsed 18 s, estimated 18371019 s (212 days), iters = {MDP: 8}, opt = 350.2002
+> progress 0.0%, elapsed 21 s, estimated 21572255 s (249 days), iters = {MDP: 9}, opt = 350.2002
+> progress 0.0%, elapsed 24 s, estimated 24904119 s (288 days), iters = {MDP: 10}, opt = 350.2002
+> progress 0.0%, elapsed 28 s, estimated 2595115808 s (82 years), iters = {MDP: 13}, opt = 350.2002
+> progress 0.0%, elapsed 32 s, estimated 2802557245 s (88 years), iters = {MDP: 16}, opt = 350.2002
+> progress 0.0%, elapsed 37 s, estimated 2490577606 s (78 years), iters = {MDP: 23}, opt = 350.2002
+> progress 0.0%, elapsed 41 s, estimated 2485754195 s (78 years), iters = {MDP: 27}, opt = 350.2002
+2025-02-06 17:57:44,879 - synthesizer.py:93 - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"steps"}max=? [F "finished"] 
+
+method: AR (decision tree), synthesis time: 45.62 s
+number of holes: 78, family size: 1e40, quotient: 22656 states / 80768 actions
+explored: 0 %
+MDP stats: avg MDP size: 22626, iterations: 29
+
+optimum: 350.200199
+--------------------
+2025-02-06 17:57:44,880 - decision_tree.py:120 - families considered: 29
+2025-02-06 17:57:44,880 - decision_tree.py:121 - families skipped by construction: 0
+2025-02-06 17:57:44,880 - decision_tree.py:122 - families with schedulers preserved: 13
+2025-02-06 17:57:44,880 - decision_tree.py:123 - families model checked: 16
+2025-02-06 17:57:44,880 - decision_tree.py:124 - harmonizations attempted: 4
+2025-02-06 17:57:44,880 - decision_tree.py:125 - harmonizations succeeded: 0
+
+
+2025-02-06 17:57:44,880 - mdp.py:825 - building tree of depth 4
+2025-02-06 17:57:58,924 - statistic.py:67 - synthesis initiated, design space: 1e85
+> progress 0.0%, elapsed 9 s, estimated 9483672 s (109 days), iters = {MDP: 2}, opt = 350.2002
+> progress 0.0%, elapsed 12 s, estimated 12868946 s (148 days), iters = {MDP: 3}, opt = 350.2002
+> progress 0.0%, elapsed 16 s, estimated 16648948 s (192 days), iters = {MDP: 4}, opt = 350.2002
+> progress 0.0%, elapsed 20 s, estimated 20522569 s (237 days), iters = {MDP: 5}, opt = 350.2002
+> progress 0.0%, elapsed 25 s, estimated 25730574 s (297 days), iters = {MDP: 7}, opt = 350.2002
+> progress 0.0%, elapsed 30 s, estimated 30310091 s (350 days), iters = {MDP: 9}, opt = 350.2002
+> progress 0.0%, elapsed 37 s, estimated 37900966 s (1 year), iters = {MDP: 11}, opt = 350.2002
+> progress 0.0%, elapsed 41 s, estimated 41708473 s (1 year), iters = {MDP: 12}, opt = 350.2002
+2025-02-06 17:58:38,374 - synthesizer.py:93 - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"steps"}max=? [F "finished"] 
+
+method: AR (decision tree), synthesis time: 45.06 s
+number of holes: 166, family size: 1e85, quotient: 22656 states / 80768 actions
+explored: 0 %
+MDP stats: avg MDP size: 22656, iterations: 12
+
+optimum: 350.200199
+--------------------
+2025-02-06 17:58:38,377 - decision_tree.py:120 - families considered: 12
+2025-02-06 17:58:38,377 - decision_tree.py:121 - families skipped by construction: 0
+2025-02-06 17:58:38,377 - decision_tree.py:122 - families with schedulers preserved: 9
+2025-02-06 17:58:38,377 - decision_tree.py:123 - families model checked: 3
+2025-02-06 17:58:38,377 - decision_tree.py:124 - harmonizations attempted: 3
+2025-02-06 17:58:38,377 - decision_tree.py:125 - harmonizations succeeded: 0
+
+
+2025-02-06 17:58:38,377 - mdp.py:825 - building tree of depth 5
+2025-02-06 17:59:07,940 - statistic.py:67 - synthesis initiated, design space: 1e175
+2025-02-06 17:59:50,836 - synthesizer.py:93 - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"steps"}max=? [F "finished"] 
+
+method: AR (decision tree), synthesis time: 45.71 s
+number of holes: 342, family size: 1e175, quotient: 22656 states / 80768 actions
+explored: 0 %
+MDP stats: avg MDP size: 22656, iterations: 1
+
+optimum: 350.200199
+--------------------
+2025-02-06 17:59:50,837 - decision_tree.py:120 - families considered: 1
+2025-02-06 17:59:50,837 - decision_tree.py:121 - families skipped by construction: 0
+2025-02-06 17:59:50,837 - decision_tree.py:122 - families with schedulers preserved: 0
+2025-02-06 17:59:50,837 - decision_tree.py:123 - families model checked: 1
+2025-02-06 17:59:50,837 - decision_tree.py:124 - harmonizations attempted: 1
+2025-02-06 17:59:50,837 - decision_tree.py:125 - harmonizations succeeded: 0
+
+
+2025-02-06 17:59:50,837 - mdp.py:825 - building tree of depth 6
+2025-02-06 18:01:06,282 - statistic.py:67 - synthesis initiated, design space: 1e355
+2025-02-06 18:13:03,464 - synthesizer.py:93 - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"steps"}max=? [F "finished"] 
+
+method: AR (decision tree), synthesis time: 787.38 s
+number of holes: 694, family size: 1e355, quotient: 22656 states / 80768 actions
+explored: 0 %
+MDP stats: avg MDP size: 22656, iterations: 1
+
+optimum: 350.200199
+--------------------
+2025-02-06 18:13:03,465 - decision_tree.py:120 - families considered: 1
+2025-02-06 18:13:03,465 - decision_tree.py:121 - families skipped by construction: 0
+2025-02-06 18:13:03,465 - decision_tree.py:122 - families with schedulers preserved: 0
+2025-02-06 18:13:03,465 - decision_tree.py:123 - families model checked: 1
+2025-02-06 18:13:03,465 - decision_tree.py:124 - harmonizations attempted: 1
+2025-02-06 18:13:03,465 - decision_tree.py:125 - harmonizations succeeded: 0
+
+
+2025-02-06 18:13:03,465 - mdp.py:825 - building tree of depth 7

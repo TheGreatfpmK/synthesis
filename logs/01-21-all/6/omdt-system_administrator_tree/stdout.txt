@@ -1,0 +1,716 @@
+2025-01-21 19:18:43,400 - cli.py - This is Paynt version 0.1.0.
+2025-01-21 19:18:43,400 - sketch.py - loading sketch from /home/imacak/disk2/synthesis/models/dts/omdt/system_administrator_tree/model-random.drn ...
+2025-01-21 19:18:43,400 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:26): Parsing error at 3:1:  expecting <model type>, here:
+	@type: MDP
+	^
+
+2025-01-21 19:18:43,414 - sketch.py - assuming sketch in DRN format...
+2025-01-21 19:18:43,425 - prism_parser.py - loading properties from /home/imacak/disk2/synthesis/models/dts/omdt/system_administrator_tree/discounted.props ...
+2025-01-21 19:18:43,426 - prism_parser.py - found the following specification: optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 19:18:43,426 - sketch.py - found state valuations in /home/imacak/disk2/synthesis/models/dts/omdt/system_administrator_tree/state-valuations.json, adding to the model...
+2025-01-21 19:18:43,426 - sketch.py - sketch parsing OK
+2025-01-21 19:18:43,427 - sketch.py - constructed explicit quotient having 128 states and 1152 choices
+2025-01-21 19:18:43,427 - sketch.py - found the following specification optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 19:18:43,427 - mdp.py - MDP has 128/128 relevant states
+2025-01-21 19:18:43,430 - mdp.py - MDP has 9 actions
+2025-01-21 19:18:43,431 - mdp.py - found the following 7 variables: ['computer_0_running:[0..1]', 'computer_1_running:[0..1]', 'computer_2_running:[0..1]', 'computer_3_running:[0..1]', 'computer_4_running:[0..1]', 'computer_5_running:[0..1]', 'computer_6_running:[0..1]']
+2025-01-21 19:18:43,445 - decision_tree.py - the optimal scheduler has value: 557.6929679094094
+2025-01-21 19:18:43,448 - decision_tree.py - the random scheduler has value: 332.2622643222469
+
+2025-01-21 19:18:43,448 - mdp.py - building tree of depth 0
+2025-01-21 19:18:43,453 - statistic.py - synthesis initiated, design space: 9
+2025-01-21 19:18:43,468 - synthesizer_ar.py - value 261.7559 achieved after 0.07 seconds
+2025-01-21 19:18:43,469 - synthesizer_ar.py - value 266.9786 achieved after 0.07 seconds
+2025-01-21 19:18:43,488 - synthesizer_ar.py - value 332.2623 achieved after 0.09 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.05 s
+number of holes: 1, family size: 9, quotient: 128 states / 1152 actions
+explored: 100 %
+MDP stats: avg MDP size: 100, iterations: 10
+
+optimum: 332.262264
+--------------------
+2025-01-21 19:18:43,507 - decision_tree.py - families considered: 10
+2025-01-21 19:18:43,507 - decision_tree.py - families skipped by construction: 0
+2025-01-21 19:18:43,507 - decision_tree.py - families with schedulers preserved: 0
+2025-01-21 19:18:43,507 - decision_tree.py - families model checked: 10
+2025-01-21 19:18:43,507 - decision_tree.py - harmonizations attempted: 3
+2025-01-21 19:18:43,507 - decision_tree.py - harmonizations succeeded: 3
+
+2025-01-21 19:18:43,507 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 19:18:43,507 - decision_tree.py - A_0=__random__
+2025-01-21 19:18:43,511 - decision_tree.py - double-checking specification satisfiability:  : 332.2622643222469
+
+2025-01-21 19:18:43,511 - mdp.py - building tree of depth 1
+2025-01-21 19:18:43,521 - statistic.py - synthesis initiated, design space: 567
+2025-01-21 19:18:43,629 - synthesizer_ar.py - value 345.1816 achieved after 0.23 seconds
+2025-01-21 19:18:43,970 - synthesizer_ar.py - value 377.9102 achieved after 0.57 seconds
+> progress 180.952%, elapsed 3 s, estimated 1 s, iters = {MDP: 424}, opt = 377.9102
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 3.41 s
+number of holes: 10, family size: 567, quotient: 128 states / 1152 actions
+explored: 200 %
+MDP stats: avg MDP size: 115, iterations: 479
+
+optimum: 377.910181
+--------------------
+2025-01-21 19:18:46,931 - decision_tree.py - families considered: 479
+2025-01-21 19:18:46,931 - decision_tree.py - families skipped by construction: 0
+2025-01-21 19:18:46,931 - decision_tree.py - families with schedulers preserved: 12
+2025-01-21 19:18:46,931 - decision_tree.py - families model checked: 467
+2025-01-21 19:18:46,931 - decision_tree.py - harmonizations attempted: 147
+2025-01-21 19:18:46,931 - decision_tree.py - harmonizations succeeded: 1
+
+2025-01-21 19:18:46,931 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 19:18:46,931 - decision_tree.py - V_0=computer_0_running, computer_0_running_0=0, computer_1_running_0=0, computer_2_running_0=0, computer_3_running_0=0, computer_4_running_0=0, computer_5_running_0=0, computer_6_running_0=0, A_1=(reboot_computer_0), A_2=__random__
+2025-01-21 19:18:46,934 - decision_tree.py - double-checking specification satisfiability:  : 377.9101809047169
+
+2025-01-21 19:18:46,934 - mdp.py - building tree of depth 2
+2025-01-21 19:18:46,953 - statistic.py - synthesis initiated, design space: 1e6
+2025-01-21 19:18:47,152 - synthesizer_ar.py - value 415.2189 achieved after 3.75 seconds
+> progress 5.06%, elapsed 3 s, estimated 59 s, iters = {MDP: 265}, opt = 415.2189
+> progress 5.189%, elapsed 6 s, estimated 115 s, iters = {MDP: 538}, opt = 415.2189
+> progress 5.509%, elapsed 9 s, estimated 163 s, iters = {MDP: 810}, opt = 415.2189
+> progress 9.593%, elapsed 12 s, estimated 125 s, iters = {MDP: 1055}, opt = 415.2189
+> progress 10.085%, elapsed 15 s, estimated 149 s, iters = {MDP: 1312}, opt = 415.2189
+> progress 10.488%, elapsed 18 s, estimated 172 s, iters = {MDP: 1579}, opt = 415.2189
+> progress 10.751%, elapsed 21 s, estimated 196 s, iters = {MDP: 1846}, opt = 415.2189
+> progress 11.129%, elapsed 24 s, estimated 216 s, iters = {MDP: 2088}, opt = 415.2189
+> progress 11.272%, elapsed 27 s, estimated 240 s, iters = {MDP: 2375}, opt = 415.2189
+> progress 12.14%, elapsed 30 s, estimated 248 s, iters = {MDP: 2609}, opt = 415.2189
+> progress 12.59%, elapsed 33 s, estimated 263 s, iters = {MDP: 2847}, opt = 415.2189
+> progress 12.785%, elapsed 36 s, estimated 282 s, iters = {MDP: 3120}, opt = 415.2189
+> progress 13.171%, elapsed 39 s, estimated 297 s, iters = {MDP: 3376}, opt = 415.2189
+> progress 13.475%, elapsed 42 s, estimated 313 s, iters = {MDP: 3649}, opt = 415.2189
+> progress 13.979%, elapsed 45 s, estimated 323 s, iters = {MDP: 3900}, opt = 415.2189
+> progress 14.526%, elapsed 48 s, estimated 332 s, iters = {MDP: 4172}, opt = 415.2189
+> progress 14.795%, elapsed 51 s, estimated 346 s, iters = {MDP: 4492}, opt = 415.2189
+2025-01-21 19:19:38,553 - synthesizer_ar.py - value 419.3028 achieved after 55.15 seconds
+> progress 16.172%, elapsed 54 s, estimated 335 s, iters = {MDP: 4817}, opt = 419.3028
+2025-01-21 19:19:43,016 - synthesizer_ar.py - value 438.9329 achieved after 59.62 seconds
+> progress 18.433%, elapsed 57 s, estimated 310 s, iters = {MDP: 5120}, opt = 438.9329
+> progress 19.118%, elapsed 60 s, estimated 315 s, iters = {MDP: 5460}, opt = 438.9329
+> progress 19.699%, elapsed 63 s, estimated 321 s, iters = {MDP: 5798}, opt = 438.9329
+> progress 19.994%, elapsed 66 s, estimated 331 s, iters = {MDP: 6147}, opt = 438.9329
+> progress 20.912%, elapsed 69 s, estimated 331 s, iters = {MDP: 6465}, opt = 438.9329
+> progress 24.263%, elapsed 72 s, estimated 297 s, iters = {MDP: 6735}, opt = 438.9329
+> progress 26.303%, elapsed 75 s, estimated 286 s, iters = {MDP: 7015}, opt = 438.9329
+> progress 28.644%, elapsed 78 s, estimated 273 s, iters = {MDP: 7333}, opt = 438.9329
+> progress 29.183%, elapsed 81 s, estimated 278 s, iters = {MDP: 7671}, opt = 438.9329
+> progress 30.294%, elapsed 84 s, estimated 278 s, iters = {MDP: 7993}, opt = 438.9329
+> progress 30.789%, elapsed 87 s, estimated 283 s, iters = {MDP: 8341}, opt = 438.9329
+> progress 31.099%, elapsed 90 s, estimated 290 s, iters = {MDP: 8686}, opt = 438.9329
+> progress 31.947%, elapsed 93 s, estimated 292 s, iters = {MDP: 9013}, opt = 438.9329
+> progress 33.177%, elapsed 96 s, estimated 290 s, iters = {MDP: 9261}, opt = 438.9329
+> progress 34.237%, elapsed 99 s, estimated 290 s, iters = {MDP: 9538}, opt = 438.9329
+2025-01-21 19:20:26,977 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 100.02 s
+number of holes: 28, family size: 1e6, quotient: 128 states / 1152 actions
+explored: 34 %
+MDP stats: avg MDP size: 124, iterations: 9596
+
+optimum: 438.93292
+--------------------
+2025-01-21 19:20:26,977 - decision_tree.py - families considered: 9596
+2025-01-21 19:20:26,977 - decision_tree.py - families skipped by construction: 0
+2025-01-21 19:20:26,977 - decision_tree.py - families with schedulers preserved: 288
+2025-01-21 19:20:26,977 - decision_tree.py - families model checked: 9308
+2025-01-21 19:20:26,977 - decision_tree.py - harmonizations attempted: 2914
+2025-01-21 19:20:26,977 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-21 19:20:26,977 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 19:20:26,977 - decision_tree.py - V_0=computer_2_running, computer_0_running_0=0, computer_1_running_0=0, computer_2_running_0=0, computer_3_running_0=0, computer_4_running_0=0, computer_5_running_0=0, computer_6_running_0=0, V_1=computer_0_running, computer_0_running_1=0, computer_1_running_1=0, computer_2_running_1=0, computer_3_running_1=0, computer_4_running_1=0, computer_5_running_1=0, computer_6_running_1=0, A_2=(reboot_computer_0), A_3=(reboot_computer_2), V_4=computer_1_running, computer_0_running_4=0, computer_1_running_4=0, computer_2_running_4=0, computer_3_running_4=0, computer_4_running_4=0, computer_5_running_4=0, computer_6_running_4=0, A_5=(reboot_computer_1), A_6=__random__
+2025-01-21 19:20:26,980 - decision_tree.py - double-checking specification satisfiability:  : 438.93292041460614
+
+2025-01-21 19:20:26,980 - mdp.py - building tree of depth 3
+2025-01-21 19:20:27,018 - statistic.py - synthesis initiated, design space: 1e13
+> progress 0.001%, elapsed 3 s, estimated 224302 s (2 days), iters = {MDP: 228}, opt = 438.9329
+> progress 0.001%, elapsed 6 s, estimated 384947 s (4 days), iters = {MDP: 465}, opt = 438.9329
+> progress 0.002%, elapsed 9 s, estimated 432734 s (5 days), iters = {MDP: 710}, opt = 438.9329
+> progress 0.002%, elapsed 12 s, estimated 569299 s (6 days), iters = {MDP: 946}, opt = 438.9329
+> progress 0.002%, elapsed 15 s, estimated 627394 s (7 days), iters = {MDP: 1170}, opt = 438.9329
+> progress 0.002%, elapsed 18 s, estimated 628627 s (7 days), iters = {MDP: 1405}, opt = 438.9329
+> progress 0.002%, elapsed 21 s, estimated 723192 s (8 days), iters = {MDP: 1635}, opt = 438.9329
+> progress 0.003%, elapsed 24 s, estimated 692111 s (8 days), iters = {MDP: 1860}, opt = 438.9329
+> progress 0.004%, elapsed 27 s, estimated 645679 s (7 days), iters = {MDP: 2097}, opt = 438.9329
+> progress 0.004%, elapsed 30 s, estimated 713051 s (8 days), iters = {MDP: 2337}, opt = 438.9329
+> progress 0.004%, elapsed 33 s, estimated 752501 s (8 days), iters = {MDP: 2563}, opt = 438.9329
+> progress 0.004%, elapsed 36 s, estimated 739511 s (8 days), iters = {MDP: 2804}, opt = 438.9329
+> progress 0.006%, elapsed 39 s, estimated 633145 s (7 days), iters = {MDP: 3043}, opt = 438.9329
+> progress 0.006%, elapsed 42 s, estimated 614252 s (7 days), iters = {MDP: 3284}, opt = 438.9329
+> progress 0.007%, elapsed 45 s, estimated 611817 s (7 days), iters = {MDP: 3543}, opt = 438.9329
+> progress 0.007%, elapsed 48 s, estimated 639166 s (7 days), iters = {MDP: 3784}, opt = 438.9329
+> progress 0.008%, elapsed 51 s, estimated 580110 s (6 days), iters = {MDP: 4027}, opt = 438.9329
+> progress 0.009%, elapsed 54 s, estimated 583782 s (6 days), iters = {MDP: 4246}, opt = 438.9329
+> progress 0.009%, elapsed 57 s, estimated 614484 s (7 days), iters = {MDP: 4468}, opt = 438.9329
+2025-01-21 19:21:26,802 - synthesizer_ar.py - value 443.1256 achieved after 163.4 seconds
+2025-01-21 19:21:27,065 - synthesizer_ar.py - value 445.5313 achieved after 163.66 seconds
+> progress 0.009%, elapsed 60 s, estimated 637066 s (7 days), iters = {MDP: 4704}, opt = 445.5313
+2025-01-21 19:21:27,908 - synthesizer_ar.py - value 447.0857 achieved after 164.51 seconds
+2025-01-21 19:21:28,797 - synthesizer_ar.py - value 451.2624 achieved after 165.4 seconds
+> progress 0.011%, elapsed 63 s, estimated 558478 s (6 days), iters = {MDP: 4949}, opt = 451.2624
+2025-01-21 19:21:30,988 - synthesizer_ar.py - value 454.736 achieved after 167.59 seconds
+2025-01-21 19:21:31,428 - synthesizer_ar.py - value 455.7074 achieved after 168.03 seconds
+2025-01-21 19:21:33,186 - synthesizer_ar.py - value 456.5867 achieved after 169.79 seconds
+> progress 0.011%, elapsed 66 s, estimated 583522 s (6 days), iters = {MDP: 5117}, opt = 456.5867
+2025-01-21 19:21:33,663 - synthesizer_ar.py - value 457.5058 achieved after 170.26 seconds
+> progress 0.011%, elapsed 69 s, estimated 604146 s (6 days), iters = {MDP: 5271}, opt = 457.5058
+2025-01-21 19:21:36,310 - synthesizer_ar.py - value 461.0756 achieved after 172.91 seconds
+> progress 0.011%, elapsed 72 s, estimated 626193 s (7 days), iters = {MDP: 5448}, opt = 461.0756
+> progress 0.011%, elapsed 75 s, estimated 647314 s (7 days), iters = {MDP: 5619}, opt = 461.0756
+> progress 0.011%, elapsed 78 s, estimated 664501 s (7 days), iters = {MDP: 5790}, opt = 461.0756
+> progress 0.016%, elapsed 81 s, estimated 488634 s (5 days), iters = {MDP: 6021}, opt = 461.0756
+> progress 0.025%, elapsed 84 s, estimated 328500 s (3 days), iters = {MDP: 6220}, opt = 461.0756
+> progress 0.025%, elapsed 87 s, estimated 338169 s (3 days), iters = {MDP: 6425}, opt = 461.0756
+> progress 0.032%, elapsed 90 s, estimated 274679 s (3 days), iters = {MDP: 6619}, opt = 461.0756
+> progress 0.033%, elapsed 93 s, estimated 279450 s (3 days), iters = {MDP: 6812}, opt = 461.0756
+> progress 0.033%, elapsed 96 s, estimated 287261 s (3 days), iters = {MDP: 7015}, opt = 461.0756
+> progress 0.033%, elapsed 99 s, estimated 293512 s (3 days), iters = {MDP: 7211}, opt = 461.0756
+2025-01-21 19:22:07,030 - synthesizer.py - time limit reached, aborting...
+2025-01-21 19:22:07,030 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 100.01 s
+number of holes: 64, family size: 1e13, quotient: 128 states / 1152 actions
+explored: 0 %
+MDP stats: avg MDP size: 128, iterations: 7259
+
+optimum: 461.075602
+--------------------
+2025-01-21 19:22:07,030 - decision_tree.py - families considered: 7259
+2025-01-21 19:22:07,030 - decision_tree.py - families skipped by construction: 0
+2025-01-21 19:22:07,030 - decision_tree.py - families with schedulers preserved: 789
+2025-01-21 19:22:07,030 - decision_tree.py - families model checked: 6470
+2025-01-21 19:22:07,030 - decision_tree.py - harmonizations attempted: 1633
+2025-01-21 19:22:07,030 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-21 19:22:07,030 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 19:22:07,030 - decision_tree.py - V_0=computer_2_running, computer_0_running_0=0, computer_1_running_0=0, computer_2_running_0=0, computer_3_running_0=0, computer_4_running_0=0, computer_5_running_0=0, computer_6_running_0=0, V_1=computer_0_running, computer_0_running_1=0, computer_1_running_1=0, computer_2_running_1=0, computer_3_running_1=0, computer_4_running_1=0, computer_5_running_1=0, computer_6_running_1=0, V_2=computer_2_running, computer_0_running_2=0, computer_1_running_2=0, computer_2_running_2=0, computer_3_running_2=0, computer_4_running_2=0, computer_5_running_2=0, computer_6_running_2=0, A_3=(reboot_computer_0), A_4=(reboot_computer_2), V_5=computer_4_running, computer_0_running_5=0, computer_1_running_5=0, computer_2_running_5=0, computer_3_running_5=0, computer_4_running_5=0, computer_5_running_5=0, computer_6_running_5=0, A_6=(reboot_computer_2), A_7=(reboot_computer_2), V_8=computer_1_running, computer_0_running_8=0, computer_1_running_8=0, computer_2_running_8=0, computer_3_running_8=0, computer_4_running_8=0, computer_5_running_8=0, computer_6_running_8=0, V_9=computer_6_running, computer_0_running_9=0, computer_1_running_9=0, computer_2_running_9=0, computer_3_running_9=0, computer_4_running_9=0, computer_5_running_9=0, computer_6_running_9=0, A_10=(reboot_computer_6), A_11=(reboot_computer_1), V_12=computer_5_running, computer_0_running_12=0, computer_1_running_12=0, computer_2_running_12=0, computer_3_running_12=0, computer_4_running_12=0, computer_5_running_12=0, computer_6_running_12=0, A_13=(reboot_computer_5), A_14=__random__
+2025-01-21 19:22:07,032 - decision_tree.py - double-checking specification satisfiability:  : 461.07560208470744
+
+2025-01-21 19:22:07,032 - mdp.py - building tree of depth 4
+2025-01-21 19:22:07,112 - statistic.py - synthesis initiated, design space: 1e27
+> progress 0.0%, elapsed 3 s, estimated 526698268307 s (16701 years), iters = {MDP: 125}, opt = 461.0756
+> progress 0.0%, elapsed 6 s, estimated 1052239023918 s (33366 years), iters = {MDP: 270}, opt = 461.0756
+> progress 0.0%, elapsed 9 s, estimated 1576466224273 s (49989 years), iters = {MDP: 407}, opt = 461.0756
+> progress 0.0%, elapsed 12 s, estimated 2105242322905 s (66756 years), iters = {MDP: 560}, opt = 461.0756
+> progress 0.0%, elapsed 15 s, estimated 2619453997859 s (83062 years), iters = {MDP: 707}, opt = 461.0756
+> progress 0.0%, elapsed 18 s, estimated 3106064086799 s (98492 years), iters = {MDP: 854}, opt = 461.0756
+> progress 0.0%, elapsed 21 s, estimated 1450715955518 s (46001 years), iters = {MDP: 993}, opt = 461.0756
+> progress 0.0%, elapsed 24 s, estimated 1356389963600 s (43010 years), iters = {MDP: 1119}, opt = 461.0756
+> progress 0.0%, elapsed 27 s, estimated 1287526916339 s (40827 years), iters = {MDP: 1254}, opt = 461.0756
+> progress 0.0%, elapsed 30 s, estimated 1431146420065 s (45381 years), iters = {MDP: 1418}, opt = 461.0756
+> progress 0.0%, elapsed 33 s, estimated 1574258206146 s (49919 years), iters = {MDP: 1581}, opt = 461.0756
+> progress 0.0%, elapsed 36 s, estimated 1717302342557 s (54455 years), iters = {MDP: 1742}, opt = 461.0756
+> progress 0.0%, elapsed 39 s, estimated 1860870345024 s (59007 years), iters = {MDP: 1898}, opt = 461.0756
+> progress 0.0%, elapsed 42 s, estimated 2002460195164 s (63497 years), iters = {MDP: 2045}, opt = 461.0756
+> progress 0.0%, elapsed 45 s, estimated 2146000348002 s (68049 years), iters = {MDP: 2181}, opt = 461.0756
+> progress 0.0%, elapsed 48 s, estimated 2288475763561 s (72567 years), iters = {MDP: 2308}, opt = 461.0756
+> progress 0.0%, elapsed 51 s, estimated 2430551290014 s (77072 years), iters = {MDP: 2436}, opt = 461.0756
+> progress 0.0%, elapsed 54 s, estimated 2572564977047 s (81575 years), iters = {MDP: 2569}, opt = 461.0756
+> progress 0.0%, elapsed 57 s, estimated 2715478442453 s (86107 years), iters = {MDP: 2699}, opt = 461.0756
+> progress 0.0%, elapsed 60 s, estimated 2857333278406 s (90605 years), iters = {MDP: 2833}, opt = 461.0756
+> progress 0.0%, elapsed 63 s, estimated 3000952921212 s (95159 years), iters = {MDP: 2966}, opt = 461.0756
+> progress 0.0%, elapsed 66 s, estimated 3144144174619 s (99700 years), iters = {MDP: 3104}, opt = 461.0756
+> progress 0.0%, elapsed 69 s, estimated 3287452388779 s (104244 years), iters = {MDP: 3239}, opt = 461.0756
+> progress 0.0%, elapsed 72 s, estimated 3428255079374 s (108709 years), iters = {MDP: 3377}, opt = 461.0756
+> progress 0.0%, elapsed 75 s, estimated 3538720928188 s (112212 years), iters = {MDP: 3516}, opt = 461.0756
+> progress 0.0%, elapsed 78 s, estimated 3618913925058 s (114755 years), iters = {MDP: 3651}, opt = 461.0756
+> progress 0.0%, elapsed 81 s, estimated 3653346087420 s (115846 years), iters = {MDP: 3782}, opt = 461.0756
+> progress 0.0%, elapsed 84 s, estimated 3035025561335 s (96240 years), iters = {MDP: 3907}, opt = 461.0756
+> progress 0.0%, elapsed 87 s, estimated 2532033412819 s (80290 years), iters = {MDP: 4045}, opt = 461.0756
+> progress 0.0%, elapsed 90 s, estimated 2617804367450 s (83010 years), iters = {MDP: 4185}, opt = 461.0756
+> progress 0.0%, elapsed 93 s, estimated 2703104954643 s (85714 years), iters = {MDP: 4319}, opt = 461.0756
+> progress 0.0%, elapsed 96 s, estimated 2789807124848 s (88464 years), iters = {MDP: 4465}, opt = 461.0756
+> progress 0.0%, elapsed 99 s, estimated 2876270525439 s (91205 years), iters = {MDP: 4604}, opt = 461.0756
+2025-01-21 19:23:47,118 - synthesizer.py - time limit reached, aborting...
+2025-01-21 19:23:47,118 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 100.01 s
+number of holes: 136, family size: 1e27, quotient: 128 states / 1152 actions
+explored: 0 %
+MDP stats: avg MDP size: 128, iterations: 4623
+
+optimum: 461.075602
+--------------------
+2025-01-21 19:23:47,119 - decision_tree.py - families considered: 4623
+2025-01-21 19:23:47,119 - decision_tree.py - families skipped by construction: 0
+2025-01-21 19:23:47,119 - decision_tree.py - families with schedulers preserved: 331
+2025-01-21 19:23:47,119 - decision_tree.py - families model checked: 4292
+2025-01-21 19:23:47,119 - decision_tree.py - harmonizations attempted: 1215
+2025-01-21 19:23:47,119 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-21 19:23:47,119 - mdp.py - building tree of depth 5
+2025-01-21 19:23:47,291 - statistic.py - synthesis initiated, design space: 1e56
+2025-01-21 19:23:47,426 - synthesizer_ar.py - value 473.1268 achieved after 304.03 seconds
+> progress 0.0%, elapsed 3 s, estimated 484893388185 s (15375 years), iters = {MDP: 52}, opt = 473.1268
+> progress 0.0%, elapsed 6 s, estimated 376993820206 s (11954 years), iters = {MDP: 112}, opt = 473.1268
+> progress 0.0%, elapsed 9 s, estimated 531663891645 s (16858 years), iters = {MDP: 167}, opt = 473.1268
+> progress 0.0%, elapsed 12 s, estimated 706593549262 s (22405 years), iters = {MDP: 218}, opt = 473.1268
+> progress 0.0%, elapsed 15 s, estimated 864085506867 s (27399 years), iters = {MDP: 278}, opt = 473.1268
+2025-01-21 19:24:03,064 - synthesizer_ar.py - value 474.528 achieved after 319.66 seconds
+2025-01-21 19:24:03,105 - synthesizer_ar.py - value 475.7599 achieved after 319.7 seconds
+> progress 0.0%, elapsed 18 s, estimated 1035317366445 s (32829 years), iters = {MDP: 338}, opt = 475.7599
+> progress 0.0%, elapsed 21 s, estimated 1176074380697 s (37293 years), iters = {MDP: 384}, opt = 475.7599
+> progress 0.0%, elapsed 24 s, estimated 1224469118581 s (38827 years), iters = {MDP: 442}, opt = 475.7599
+> progress 0.0%, elapsed 27 s, estimated 1353579008510 s (42921 years), iters = {MDP: 504}, opt = 475.7599
+> progress 0.0%, elapsed 30 s, estimated 1450072652538 s (45981 years), iters = {MDP: 562}, opt = 475.7599
+> progress 0.0%, elapsed 33 s, estimated 1588135808284 s (50359 years), iters = {MDP: 618}, opt = 475.7599
+> progress 0.0%, elapsed 36 s, estimated 1722650399063 s (54624 years), iters = {MDP: 681}, opt = 475.7599
+> progress 0.0%, elapsed 39 s, estimated 1735712832762 s (55039 years), iters = {MDP: 736}, opt = 475.7599
+> progress 0.0%, elapsed 42 s, estimated 1863626094359 s (59095 years), iters = {MDP: 798}, opt = 475.7599
+> progress 0.0%, elapsed 45 s, estimated 1918102239012 s (60822 years), iters = {MDP: 859}, opt = 475.7599
+> progress 0.0%, elapsed 48 s, estimated 1681669997994 s (53325 years), iters = {MDP: 916}, opt = 475.7599
+> progress 0.0%, elapsed 51 s, estimated 1647642324643 s (52246 years), iters = {MDP: 976}, opt = 475.7599
+> progress 0.0%, elapsed 54 s, estimated 1521405005771 s (48243 years), iters = {MDP: 1032}, opt = 475.7599
+> progress 0.0%, elapsed 57 s, estimated 1603311495400 s (50840 years), iters = {MDP: 1090}, opt = 475.7599
+> progress 0.0%, elapsed 60 s, estimated 1390702404627 s (44098 years), iters = {MDP: 1151}, opt = 475.7599
+2025-01-21 19:24:49,146 - synthesizer_ar.py - value 486.1361 achieved after 365.75 seconds
+> progress 0.0%, elapsed 63 s, estimated 1426709569868 s (45240 years), iters = {MDP: 1211}, opt = 486.1361
+> progress 0.0%, elapsed 66 s, estimated 1462502987690 s (46375 years), iters = {MDP: 1271}, opt = 486.1361
+> progress 0.0%, elapsed 69 s, estimated 1522138488806 s (48266 years), iters = {MDP: 1332}, opt = 486.1361
+2025-01-21 19:24:58,079 - synthesizer_ar.py - value 490.0379 achieved after 374.68 seconds
+> progress 0.0%, elapsed 72 s, estimated 1583856371880 s (50223 years), iters = {MDP: 1391}, opt = 490.0379
+> progress 0.0%, elapsed 75 s, estimated 1642234234771 s (52074 years), iters = {MDP: 1451}, opt = 490.0379
+> progress 0.0%, elapsed 78 s, estimated 1701094253007 s (53941 years), iters = {MDP: 1512}, opt = 490.0379
+> progress 0.0%, elapsed 81 s, estimated 1685020746657 s (53431 years), iters = {MDP: 1574}, opt = 490.0379
+> progress 0.0%, elapsed 85 s, estimated 1589735096742 s (50410 years), iters = {MDP: 1640}, opt = 490.0379
+> progress 0.0%, elapsed 88 s, estimated 1392314843725 s (44150 years), iters = {MDP: 1707}, opt = 490.0379
+> progress 0.0%, elapsed 91 s, estimated 1320371143113 s (41868 years), iters = {MDP: 1769}, opt = 490.0379
+> progress 0.0%, elapsed 94 s, estimated 1335856082576 s (42359 years), iters = {MDP: 1834}, opt = 490.0379
+> progress 0.0%, elapsed 97 s, estimated 1355190679732 s (42972 years), iters = {MDP: 1896}, opt = 490.0379
+2025-01-21 19:25:27,376 - synthesizer.py - time limit reached, aborting...
+2025-01-21 19:25:27,377 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 100.09 s
+number of holes: 280, family size: 1e56, quotient: 128 states / 1152 actions
+explored: 0 %
+MDP stats: avg MDP size: 128, iterations: 1945
+
+optimum: 490.037932
+--------------------
+2025-01-21 19:25:27,377 - decision_tree.py - families considered: 1945
+2025-01-21 19:25:27,377 - decision_tree.py - families skipped by construction: 0
+2025-01-21 19:25:27,377 - decision_tree.py - families with schedulers preserved: 365
+2025-01-21 19:25:27,377 - decision_tree.py - families model checked: 1580
+2025-01-21 19:25:27,377 - decision_tree.py - harmonizations attempted: 290
+2025-01-21 19:25:27,377 - decision_tree.py - harmonizations succeeded: 2
+
+2025-01-21 19:25:27,377 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 19:25:27,377 - decision_tree.py - V_0=computer_2_running, computer_0_running_0=0, computer_1_running_0=0, computer_2_running_0=0, computer_3_running_0=0, computer_4_running_0=0, computer_5_running_0=0, computer_6_running_0=0, V_1=computer_0_running, computer_0_running_1=0, computer_1_running_1=0, computer_2_running_1=0, computer_3_running_1=0, computer_4_running_1=0, computer_5_running_1=0, computer_6_running_1=0, V_2=computer_2_running, computer_0_running_2=0, computer_1_running_2=0, computer_2_running_2=0, computer_3_running_2=0, computer_4_running_2=0, computer_5_running_2=0, computer_6_running_2=0, V_3=computer_1_running, computer_0_running_3=0, computer_1_running_3=0, computer_2_running_3=0, computer_3_running_3=0, computer_4_running_3=0, computer_5_running_3=0, computer_6_running_3=0, V_4=computer_1_running, computer_0_running_4=0, computer_1_running_4=0, computer_2_running_4=0, computer_3_running_4=0, computer_4_running_4=0, computer_5_running_4=0, computer_6_running_4=0, A_5=(reboot_computer_0), A_6=(reboot_computer_0), V_7=computer_1_running, computer_0_running_7=0, computer_1_running_7=0, computer_2_running_7=0, computer_3_running_7=0, computer_4_running_7=0, computer_5_running_7=0, computer_6_running_7=0, A_8=(reboot_computer_6), A_9=(reboot_computer_0), V_10=computer_3_running, computer_0_running_10=0, computer_1_running_10=0, computer_2_running_10=0, computer_3_running_10=0, computer_4_running_10=0, computer_5_running_10=0, computer_6_running_10=0, V_11=computer_0_running, computer_0_running_11=0, computer_1_running_11=0, computer_2_running_11=0, computer_3_running_11=0, computer_4_running_11=0, computer_5_running_11=0, computer_6_running_11=0, A_12=(reboot_computer_0), A_13=(reboot_computer_0), V_14=computer_0_running, computer_0_running_14=0, computer_1_running_14=0, computer_2_running_14=0, computer_3_running_14=0, computer_4_running_14=0, computer_5_running_14=0, computer_6_running_14=0, A_15=(reboot_computer_0), A_16=(reboot_computer_0), V_17=computer_4_running, computer_0_running_17=0, computer_1_running_17=0, computer_2_running_17=0, computer_3_running_17=0, computer_4_running_17=0, computer_5_running_17=0, computer_6_running_17=0, V_18=computer_1_running, computer_0_running_18=0, computer_1_running_18=0, computer_2_running_18=0, computer_3_running_18=0, computer_4_running_18=0, computer_5_running_18=0, computer_6_running_18=0, V_19=computer_1_running, computer_0_running_19=0, computer_1_running_19=0, computer_2_running_19=0, computer_3_running_19=0, computer_4_running_19=0, computer_5_running_19=0, computer_6_running_19=0, A_20=(reboot_computer_1), A_21=(reboot_computer_0), V_22=computer_1_running, computer_0_running_22=0, computer_1_running_22=0, computer_2_running_22=0, computer_3_running_22=0, computer_4_running_22=0, computer_5_running_22=0, computer_6_running_22=0, A_23=(reboot_computer_0), A_24=(reboot_computer_4), V_25=computer_3_running, computer_0_running_25=0, computer_1_running_25=0, computer_2_running_25=0, computer_3_running_25=0, computer_4_running_25=0, computer_5_running_25=0, computer_6_running_25=0, V_26=computer_1_running, computer_0_running_26=0, computer_1_running_26=0, computer_2_running_26=0, computer_3_running_26=0, computer_4_running_26=0, computer_5_running_26=0, computer_6_running_26=0, A_27=(reboot_computer_1), A_28=(reboot_computer_3), V_29=computer_1_running, computer_0_running_29=0, computer_1_running_29=0, computer_2_running_29=0, computer_3_running_29=0, computer_4_running_29=0, computer_5_running_29=0, computer_6_running_29=0, A_30=(reboot_computer_1), A_31=(reboot_computer_2), V_32=computer_1_running, computer_0_running_32=0, computer_1_running_32=0, computer_2_running_32=0, computer_3_running_32=0, computer_4_running_32=0, computer_5_running_32=0, computer_6_running_32=0, V_33=computer_6_running, computer_0_running_33=0, computer_1_running_33=0, computer_2_running_33=0, computer_3_running_33=0, computer_4_running_33=0, computer_5_running_33=0, computer_6_running_33=0, V_34=computer_0_running, computer_0_running_34=0, computer_1_running_34=0, computer_2_running_34=0, computer_3_running_34=0, computer_4_running_34=0, computer_5_running_34=0, computer_6_running_34=0, V_35=computer_0_running, computer_0_running_35=0, computer_1_running_35=0, computer_2_running_35=0, computer_3_running_35=0, computer_4_running_35=0, computer_5_running_35=0, computer_6_running_35=0, A_36=(reboot_computer_0), A_37=(reboot_computer_0), V_38=computer_0_running, computer_0_running_38=0, computer_1_running_38=0, computer_2_running_38=0, computer_3_running_38=0, computer_4_running_38=0, computer_5_running_38=0, computer_6_running_38=0, A_39=(reboot_computer_0), A_40=(reboot_computer_1), V_41=computer_0_running, computer_0_running_41=0, computer_1_running_41=0, computer_2_running_41=0, computer_3_running_41=0, computer_4_running_41=0, computer_5_running_41=0, computer_6_running_41=0, V_42=computer_0_running, computer_0_running_42=0, computer_1_running_42=0, computer_2_running_42=0, computer_3_running_42=0, computer_4_running_42=0, computer_5_running_42=0, computer_6_running_42=0, A_43=(reboot_computer_0), A_44=(reboot_computer_0), V_45=computer_0_running, computer_0_running_45=0, computer_1_running_45=0, computer_2_running_45=0, computer_3_running_45=0, computer_4_running_45=0, computer_5_running_45=0, computer_6_running_45=0, A_46=(reboot_computer_0), A_47=(reboot_computer_1), V_48=computer_5_running, computer_0_running_48=0, computer_1_running_48=0, computer_2_running_48=0, computer_3_running_48=0, computer_4_running_48=0, computer_5_running_48=0, computer_6_running_48=0, V_49=computer_3_running, computer_0_running_49=0, computer_1_running_49=0, computer_2_running_49=0, computer_3_running_49=0, computer_4_running_49=0, computer_5_running_49=0, computer_6_running_49=0, V_50=computer_4_running, computer_0_running_50=0, computer_1_running_50=0, computer_2_running_50=0, computer_3_running_50=0, computer_4_running_50=0, computer_5_running_50=0, computer_6_running_50=0, A_51=(reboot_computer_4), A_52=(reboot_computer_3), V_53=computer_6_running, computer_0_running_53=0, computer_1_running_53=0, computer_2_running_53=0, computer_3_running_53=0, computer_4_running_53=0, computer_5_running_53=0, computer_6_running_53=0, A_54=(reboot_computer_6), A_55=(reboot_computer_5), V_56=computer_3_running, computer_0_running_56=0, computer_1_running_56=0, computer_2_running_56=0, computer_3_running_56=0, computer_4_running_56=0, computer_5_running_56=0, computer_6_running_56=0, V_57=computer_5_running, computer_0_running_57=0, computer_1_running_57=0, computer_2_running_57=0, computer_3_running_57=0, computer_4_running_57=0, computer_5_running_57=0, computer_6_running_57=0, A_58=(reboot_computer_0), A_59=(reboot_computer_6), V_60=computer_3_running, computer_0_running_60=0, computer_1_running_60=0, computer_2_running_60=0, computer_3_running_60=0, computer_4_running_60=0, computer_5_running_60=0, computer_6_running_60=0, A_61=(reboot_computer_0), A_62=(reboot_computer_0)
+2025-01-21 19:25:27,382 - decision_tree.py - double-checking specification satisfiability:  : 490.03793212287724
+
+2025-01-21 19:25:27,382 - mdp.py - building tree of depth 6
+2025-01-21 19:25:27,741 - statistic.py - synthesis initiated, design space: 1e114
+2025-01-21 19:25:30,594 - synthesizer_ar.py - value 496.0771 achieved after 407.19 seconds
+> progress 0.0%, elapsed 3 s, estimated 271103273818206974110446125056 s (8596628418892914491392 years), iters = {MDP: 22}, opt = 496.0771
+2025-01-21 19:25:33,229 - synthesizer_ar.py - value 497.0922 achieved after 409.83 seconds
+> progress 0.0%, elapsed 6 s, estimated 547916225344702349639373815808 s (17374309530209993359360 years), iters = {MDP: 61}, opt = 497.0922
+2025-01-21 19:25:35,877 - synthesizer_ar.py - value 500.3378 achieved after 412.48 seconds
+2025-01-21 19:25:35,935 - synthesizer_ar.py - value 500.3589 achieved after 412.54 seconds
+> progress 0.0%, elapsed 9 s, estimated 819383127257551697677792575488 s (25982468520343469293568 years), iters = {MDP: 96}, opt = 500.3589
+> progress 0.0%, elapsed 12 s, estimated 1088561483083024013153053704192 s (34518058190100959854592 years), iters = {MDP: 133}, opt = 500.3589
+> progress 0.0%, elapsed 15 s, estimated 1374980372986598424546186887168 s (43600341609164084084736 years), iters = {MDP: 171}, opt = 500.3589
+> progress 0.0%, elapsed 18 s, estimated 1644670451550972348031058313216 s (52152157900525505871872 years), iters = {MDP: 207}, opt = 500.3589
+> progress 0.0%, elapsed 21 s, estimated 1919952038704971205590762127360 s (60881279766139370471424 years), iters = {MDP: 237}, opt = 500.3589
+> progress 0.0%, elapsed 24 s, estimated 2213476377997336069677613318144 s (70188875507272192622592 years), iters = {MDP: 274}, opt = 500.3589
+> progress 0.0%, elapsed 27 s, estimated 2489146431176534279816780709888 s (78930315549737891135488 years), iters = {MDP: 310}, opt = 500.3589
+2025-01-21 19:25:56,212 - synthesizer_ar.py - value 501.1854 achieved after 432.81 seconds
+> progress 0.0%, elapsed 30 s, estimated 2760063814835093038179725344768 s (87521049430336548634624 years), iters = {MDP: 343}, opt = 501.1854
+> progress 0.0%, elapsed 33 s, estimated 3034582065826664187515719647232 s (96225966065026141782016 years), iters = {MDP: 378}, opt = 501.1854
+> progress 0.0%, elapsed 36 s, estimated 3304935778483645604345602375680 s (104798826055417473269760 years), iters = {MDP: 415}, opt = 501.1854
+> progress 0.0%, elapsed 39 s, estimated 3574261262650291892587648253952 s (113339081134268515090432 years), iters = {MDP: 451}, opt = 501.1854
+> progress 0.0%, elapsed 43 s, estimated 3852849144663451451668010369024 s (122173044922103340466176 years), iters = {MDP: 488}, opt = 501.1854
+> progress 0.0%, elapsed 46 s, estimated 4119962458755528292493017743360 s (130643152548057099272192 years), iters = {MDP: 523}, opt = 501.1854
+> progress 0.0%, elapsed 49 s, estimated 4389237740539852508073430089728 s (139181815719807602917376 years), iters = {MDP: 557}, opt = 501.1854
+> progress 0.0%, elapsed 52 s, estimated 4674733760564131022600891531264 s (148234835126970182795264 years), iters = {MDP: 592}, opt = 501.1854
+> progress 0.0%, elapsed 55 s, estimated 4943462633833280602293915353088 s (156756171798366314823680 years), iters = {MDP: 628}, opt = 501.1854
+> progress 0.0%, elapsed 58 s, estimated 5212639766055970081717383856128 s (165291722667934126964736 years), iters = {MDP: 668}, opt = 501.1854
+> progress 0.0%, elapsed 61 s, estimated 5486884990158280767063516512256 s (173987981676759283138560 years), iters = {MDP: 698}, opt = 501.1854
+> progress 0.0%, elapsed 64 s, estimated 5782103107698908993998867660800 s (183349286773811146915840 years), iters = {MDP: 733}, opt = 501.1854
+> progress 0.0%, elapsed 67 s, estimated 6065009016383450489205121089536 s (192320174289175888003072 years), iters = {MDP: 774}, opt = 501.1854
+> progress 0.0%, elapsed 71 s, estimated 6346464109242521846262125297664 s (201245056736508143206400 years), iters = {MDP: 808}, opt = 501.1854
+> progress 0.0%, elapsed 74 s, estimated 6614217929593498865798492454912 s (209735474682695918813184 years), iters = {MDP: 843}, opt = 501.1854
+> progress 0.0%, elapsed 77 s, estimated 6903630176670186937492912996352 s (218912676835051622629376 years), iters = {MDP: 875}, opt = 501.1854
+> progress 0.0%, elapsed 80 s, estimated 7190324085186719313055748980736 s (228003681037123269427200 years), iters = {MDP: 912}, opt = 501.1854
+> progress 0.0%, elapsed 83 s, estimated 7450797670006631347993192693760 s (236263244229028150771712 years), iters = {MDP: 954}, opt = 501.1854
+> progress 0.0%, elapsed 86 s, estimated 7728159155689871333803023138816 s (245058319244351575687168 years), iters = {MDP: 990}, opt = 501.1854
+> progress 0.0%, elapsed 89 s, estimated 8008047969165340139847529005056 s (253933535298241381269504 years), iters = {MDP: 1028}, opt = 501.1854
+> progress 0.0%, elapsed 93 s, estimated 8285612304300552657744189980672 s (262735042627490889596928 years), iters = {MDP: 1061}, opt = 501.1854
+> progress 0.0%, elapsed 96 s, estimated 8565565581019586119300351524864 s (271612302797424757309440 years), iters = {MDP: 1096}, opt = 501.1854
+> progress 0.0%, elapsed 99 s, estimated 8846900075853456453904245981184 s (280533361106464217759744 years), iters = {MDP: 1135}, opt = 501.1854
+> progress 0.0%, elapsed 102 s, estimated 9126009529593422217306026541056 s (289383863825260745850880 years), iters = {MDP: 1173}, opt = 501.1854
+> progress 0.0%, elapsed 105 s, estimated 9406911678170809930171361001472 s (298291212524442227834880 years), iters = {MDP: 1208}, opt = 501.1854
+> progress 0.0%, elapsed 108 s, estimated 9686595577135221995283798818816 s (307159930781811989282816 years), iters = {MDP: 1242}, opt = 501.1854
+> progress 0.0%, elapsed 111 s, estimated 9954454459488739569052053143552 s (315653680222245629198336 years), iters = {MDP: 1277}, opt = 501.1854
+> progress 0.0%, elapsed 114 s, estimated 10233822518536938952008249901056 s (324512383261572174184448 years), iters = {MDP: 1311}, opt = 501.1854
+> progress 0.0%, elapsed 118 s, estimated 10513598407140726161330715754496 s (333384018491271075069952 years), iters = {MDP: 1347}, opt = 501.1854
+> progress 0.0%, elapsed 121 s, estimated 10759011583018240973160123990016 s (341166019248422171705344 years), iters = {MDP: 1384}, opt = 501.1854
+> progress 0.0%, elapsed 124 s, estimated 11035453144107997971425924218880 s (349931923646245467324416 years), iters = {MDP: 1419}, opt = 501.1854
+> progress 0.0%, elapsed 127 s, estimated 11316103590058875709790139449344 s (358831290907498567958528 years), iters = {MDP: 1458}, opt = 501.1854
+> progress 0.0%, elapsed 130 s, estimated 11605215728692581126096904257536 s (367998976683554715467776 years), iters = {MDP: 1496}, opt = 501.1854
+> progress 0.0%, elapsed 133 s, estimated 11878625014407951857610829856768 s (376668728260018722308096 years), iters = {MDP: 1535}, opt = 501.1854
+> progress 0.0%, elapsed 136 s, estimated 12146851475796791216925071900672 s (385174133555200092274688 years), iters = {MDP: 1570}, opt = 501.1854
+> progress 0.0%, elapsed 139 s, estimated 12419078499932556658753509785600 s (393806395862904517689344 years), iters = {MDP: 1603}, opt = 501.1854
+> progress 0.0%, elapsed 142 s, estimated 12686080986164083550077455433728 s (402272989160454133645312 years), iters = {MDP: 1636}, opt = 501.1854
+> progress 0.0%, elapsed 145 s, estimated 12953784859651777201612129304576 s (410761823301996956876800 years), iters = {MDP: 1671}, opt = 501.1854
+> progress 0.0%, elapsed 148 s, estimated 13221128906501230866490135150592 s (419239247415690997530624 years), iters = {MDP: 1710}, opt = 501.1854
+> progress 0.0%, elapsed 151 s, estimated 13500391139807340349908104249344 s (428094594742749249929216 years), iters = {MDP: 1744}, opt = 501.1854
+> progress 0.0%, elapsed 155 s, estimated 13775997276194298869025255456768 s (436834007997028713365504 years), iters = {MDP: 1780}, opt = 501.1854
+> progress 0.0%, elapsed 158 s, estimated 14016017942638421820789600813056 s (444445013401776466952192 years), iters = {MDP: 1812}, opt = 501.1854
+> progress 0.0%, elapsed 161 s, estimated 14297624535246502426407310721024 s (453374699874635407687680 years), iters = {MDP: 1848}, opt = 501.1854
+> progress 0.0%, elapsed 164 s, estimated 14574251614125362690775775707136 s (462146487002960551215104 years), iters = {MDP: 1890}, opt = 501.1854
+> progress 0.0%, elapsed 167 s, estimated 14842037471054701529732944494592 s (470637920822384048209920 years), iters = {MDP: 1919}, opt = 501.1854
+> progress 0.0%, elapsed 170 s, estimated 15119989835717340935871703023616 s (479451732487231724584960 years), iters = {MDP: 1959}, opt = 501.1854
+> progress 0.0%, elapsed 173 s, estimated 15403504101515348924609803059200 s (488441910880116345405440 years), iters = {MDP: 1994}, opt = 501.1854
+> progress 0.0%, elapsed 176 s, estimated 15676816989379746304076778831872 s (497108605700778273800192 years), iters = {MDP: 2030}, opt = 501.1854
+> progress 0.0%, elapsed 179 s, estimated 15954034162520494798492177268736 s (505899104595398793101312 years), iters = {MDP: 2066}, opt = 501.1854
+> progress 0.0%, elapsed 182 s, estimated 16221361202008313736781556088832 s (514375989409193016688640 years), iters = {MDP: 2100}, opt = 501.1854
+> progress 0.0%, elapsed 186 s, estimated 16503597283069359420861291954176 s (523325636829951830261760 years), iters = {MDP: 2137}, opt = 501.1854
+> progress 0.0%, elapsed 189 s, estimated 16770715375250621802614420930560 s (531795895968119729946624 years), iters = {MDP: 2171}, opt = 501.1854
+> progress 0.0%, elapsed 192 s, estimated 17038346781986139994909191438336 s (540282432204025297371136 years), iters = {MDP: 2202}, opt = 501.1854
+> progress 0.0%, elapsed 195 s, estimated 17312066940504845919941635866624 s (548962041492416455770112 years), iters = {MDP: 2247}, opt = 501.1854
+> progress 0.0%, elapsed 198 s, estimated 17595455133414201867259732819968 s (557948222140227115810816 years), iters = {MDP: 2278}, opt = 501.1854
+> progress 0.0%, elapsed 201 s, estimated 17862732439815730650359688855552 s (566423529928200579710976 years), iters = {MDP: 2318}, opt = 501.1854
+> progress 0.0%, elapsed 204 s, estimated 18131838488794948265119838109696 s (574956826762904225185792 years), iters = {MDP: 2353}, opt = 501.1854
+> progress 0.0%, elapsed 207 s, estimated 18401455633811182028961106362368 s (583506330346625437794304 years), iters = {MDP: 2392}, opt = 501.1854
+> progress 0.0%, elapsed 210 s, estimated 18667800129802967096035070967808 s (591952058910545612374016 years), iters = {MDP: 2428}, opt = 501.1854
+> progress 0.0%, elapsed 213 s, estimated 18939465493715012592349529243648 s (600566511089390377238528 years), iters = {MDP: 2462}, opt = 501.1854
+> progress 0.0%, elapsed 216 s, estimated 19213405977824261541479850180608 s (609253106856426366566400 years), iters = {MDP: 2497}, opt = 501.1854
+> progress 0.0%, elapsed 219 s, estimated 19480474442868527190159711535104 s (617721792328403427262464 years), iters = {MDP: 2536}, opt = 501.1854
+2025-01-21 19:29:09,645 - synthesizer_ar.py - value 501.2791 achieved after 626.25 seconds
+> progress 0.0%, elapsed 222 s, estimated 19755604835310125425016543641600 s (626446119841137875222528 years), iters = {MDP: 2570}, opt = 501.2791
+> progress 0.0%, elapsed 225 s, estimated 20022279991814062044640339558400 s (634902333581115504197632 years), iters = {MDP: 2608}, opt = 501.2791
+> progress 0.0%, elapsed 229 s, estimated 20309662539721628606304419315712 s (644015174395028941307904 years), iters = {MDP: 2647}, opt = 501.2791
+> progress 0.0%, elapsed 232 s, estimated 20582553985421637011007598493696 s (652668505372324742037504 years), iters = {MDP: 2681}, opt = 501.2791
+> progress 0.0%, elapsed 235 s, estimated 20848556737564837600700099723264 s (661103397309894570803200 years), iters = {MDP: 2715}, opt = 501.2791
+> progress 0.0%, elapsed 238 s, estimated 21125205659695559974305667219456 s (669875877083192594792448 years), iters = {MDP: 2752}, opt = 501.2791
+> progress 0.0%, elapsed 241 s, estimated 21396198702021969994046301536256 s (678469010084410507132928 years), iters = {MDP: 2795}, opt = 501.2791
+> progress 0.0%, elapsed 244 s, estimated 21679777568106734974691480436736 s (687461236938950358073344 years), iters = {MDP: 2829}, opt = 501.2791
+> progress 0.0%, elapsed 247 s, estimated 21959095903853947253318649643008 s (696318363262745720127488 years), iters = {MDP: 2868}, opt = 501.2791
+> progress 0.0%, elapsed 250 s, estimated 22231366029915441677821496262656 s (704951992323548918054912 years), iters = {MDP: 2903}, opt = 501.2791
+> progress 0.0%, elapsed 253 s, estimated 22503313433177919237644863143936 s (713575387911527128367104 years), iters = {MDP: 2942}, opt = 501.2791
+> progress 0.0%, elapsed 256 s, estimated 22775133320049978035719943225344 s (722194739981290605379584 years), iters = {MDP: 2975}, opt = 501.2791
+> progress 0.0%, elapsed 260 s, estimated 23041420764422950850700532252672 s (730638659450245809700864 years), iters = {MDP: 3014}, opt = 501.2791
+> progress 0.0%, elapsed 263 s, estimated 23323343217283998105203915096064 s (739578361786022307561472 years), iters = {MDP: 3051}, opt = 501.2791
+> progress 0.0%, elapsed 266 s, estimated 23596455641606628601888474398720 s (748238699949474520760320 years), iters = {MDP: 3085}, opt = 501.2791
+> progress 0.0%, elapsed 269 s, estimated 23872974207335416451352210964480 s (757007046148383360155648 years), iters = {MDP: 3121}, opt = 501.2791
+> progress 0.0%, elapsed 272 s, estimated 24146276085537645612951559733248 s (765673391854948183965696 years), iters = {MDP: 3159}, opt = 501.2791
+> progress 0.0%, elapsed 275 s, estimated 24420877305397468346547043303424 s (774380939415191061266432 years), iters = {MDP: 3193}, opt = 501.2791
+> progress 0.0%, elapsed 278 s, estimated 24705151295410865200646875774976 s (783395208504910786068480 years), iters = {MDP: 3226}, opt = 501.2791
+2025-01-21 19:30:06,593 - synthesizer_ar.py - value 501.4757 achieved after 683.19 seconds
+> progress 0.0%, elapsed 281 s, estimated 24982931981135802560183831363584 s (792203576266355988496384 years), iters = {MDP: 3266}, opt = 501.4757
+2025-01-21 19:30:10,640 - synthesizer_ar.py - value 502.2704 achieved after 687.24 seconds
+> progress 0.0%, elapsed 285 s, estimated 25253890554290058705216508788736 s (800795616257295163326464 years), iters = {MDP: 3297}, opt = 502.2704
+> progress 0.0%, elapsed 288 s, estimated 25519572972736387826231665491968 s (809220350479971706208256 years), iters = {MDP: 3336}, opt = 502.2704
+> progress 0.0%, elapsed 291 s, estimated 25793502556151018154878878875648 s (817906600588248824676352 years), iters = {MDP: 3375}, opt = 502.2704
+> progress 0.0%, elapsed 294 s, estimated 26068354135430133102839007805440 s (826622086993598809636864 years), iters = {MDP: 3408}, opt = 502.2704
+> progress 0.0%, elapsed 297 s, estimated 26336213769652207926023892762624 s (835115860275628039208960 years), iters = {MDP: 3443}, opt = 502.2704
+> progress 0.0%, elapsed 300 s, estimated 26606910655461920760229850513408 s (843699602215307084562432 years), iters = {MDP: 3482}, opt = 502.2704
+> progress 0.0%, elapsed 303 s, estimated 26882970144012020046575494496256 s (852453391172375096066048 years), iters = {MDP: 3518}, opt = 502.2704
+> progress 0.0%, elapsed 306 s, estimated 27149871277712905185686435397632 s (860916770602261111898112 years), iters = {MDP: 3553}, opt = 502.2704
+> progress 0.0%, elapsed 309 s, estimated 27418781341741827823744229310464 s (869443852794959056863232 years), iters = {MDP: 3586}, opt = 502.2704
+> progress 0.0%, elapsed 312 s, estimated 27692728124750811230373635162112 s (878130648298795372118016 years), iters = {MDP: 3623}, opt = 502.2704
+> progress 0.0%, elapsed 315 s, estimated 21961286350083002063673096142848 s (696387821857020596715520 years), iters = {MDP: 3664}, opt = 502.2704
+> progress 0.0%, elapsed 318 s, estimated 21900618568771426471884542181376 s (694464059131514100645888 years), iters = {MDP: 3695}, opt = 502.2704
+2025-01-21 19:30:46,660 - synthesizer_ar.py - value 502.6815 achieved after 723.26 seconds
+> progress 0.0%, elapsed 321 s, estimated 22117288566446625409066533388288 s (701334619686917397020672 years), iters = {MDP: 3742}, opt = 502.6815
+> progress 0.0%, elapsed 324 s, estimated 22327002843862624798260584251392 s (707984615799804160638976 years), iters = {MDP: 3781}, opt = 502.6815
+> progress 0.0%, elapsed 327 s, estimated 22536716893394600537863296647168 s (714634604686536089796608 years), iters = {MDP: 3826}, opt = 502.6815
+2025-01-21 19:30:57,784 - synthesizer_ar.py - value 502.7958 achieved after 734.38 seconds
+2025-01-21 19:30:58,315 - synthesizer_ar.py - value 503.8127 achieved after 734.91 seconds
+> progress 0.0%, elapsed 331 s, estimated 22754748246456178076914712313856 s (721548333538057381740544 years), iters = {MDP: 3875}, opt = 503.8127
+> progress 0.0%, elapsed 334 s, estimated 22968706124971713918360969281536 s (728332893359072601964544 years), iters = {MDP: 3914}, opt = 503.8127
+> progress 0.0%, elapsed 337 s, estimated 23176397939661867654223321104384 s (734918757599627928666112 years), iters = {MDP: 3957}, opt = 503.8127
+> progress 0.0%, elapsed 340 s, estimated 23381740356574164408249998114816 s (741430122925360272113664 years), iters = {MDP: 4000}, opt = 503.8127
+> progress 0.0%, elapsed 343 s, estimated 23589181596081395842110506139648 s (748008041478988939395072 years), iters = {MDP: 4037}, opt = 503.8127
+2025-01-21 19:31:11,047 - synthesizer_ar.py - value 504.5695 achieved after 747.65 seconds
+> progress 0.0%, elapsed 346 s, estimated 23796040593149835980168021147648 s (754567497245999501410304 years), iters = {MDP: 4079}, opt = 504.5695
+> progress 0.0%, elapsed 349 s, estimated 23968718521048428420084304707584 s (760043078419851218255872 years), iters = {MDP: 4122}, opt = 504.5695
+> progress 0.0%, elapsed 352 s, estimated 24186020618297464729618624806912 s (766933682721253941575680 years), iters = {MDP: 4163}, opt = 504.5695
+> progress 0.0%, elapsed 355 s, estimated 24365085248273978867747005661184 s (772611784889459036651520 years), iters = {MDP: 4212}, opt = 504.5695
+> progress 0.0%, elapsed 358 s, estimated 24571764350978547897811861504000 s (779165536243612089581568 years), iters = {MDP: 4248}, opt = 504.5695
+> progress 0.0%, elapsed 361 s, estimated 24787803232815812767967919210496 s (786016084247076740792320 years), iters = {MDP: 4291}, opt = 504.5695
+> progress 0.0%, elapsed 365 s, estimated 24962900712985667960108230901760 s (791568388920144212000768 years), iters = {MDP: 4331}, opt = 504.5695
+> progress 0.0%, elapsed 368 s, estimated 25173179562535835280265478930432 s (798236287497965328662528 years), iters = {MDP: 4369}, opt = 504.5695
+> progress 0.0%, elapsed 371 s, estimated 25385922907727307463535521431552 s (804982334719917132087296 years), iters = {MDP: 4408}, opt = 504.5695
+> progress 0.0%, elapsed 374 s, estimated 25605263001651848615643658059776 s (811937563471963714748416 years), iters = {MDP: 4447}, opt = 504.5695
+> progress 0.0%, elapsed 377 s, estimated 25827428933734731193747238813696 s (818982398964191142608896 years), iters = {MDP: 4483}, opt = 504.5695
+> progress 0.0%, elapsed 380 s, estimated 26043119332645288048145966563328 s (825821896646540149129216 years), iters = {MDP: 4524}, opt = 504.5695
+> progress 0.0%, elapsed 384 s, estimated 26260556290665411817047286874112 s (832716777354940892839936 years), iters = {MDP: 4563}, opt = 504.5695
+> progress 0.0%, elapsed 387 s, estimated 26466913389269921130614311878656 s (839260318026062960263168 years), iters = {MDP: 4601}, opt = 504.5695
+> progress 0.0%, elapsed 390 s, estimated 26673655046728782387901271900160 s (845816052978462182342656 years), iters = {MDP: 4636}, opt = 504.5695
+> progress 0.0%, elapsed 393 s, estimated 26879202687691131541888677445632 s (852333925916131643621376 years), iters = {MDP: 4671}, opt = 504.5695
+> progress 0.0%, elapsed 396 s, estimated 27087930005490417923930682556416 s (858952625744876299878400 years), iters = {MDP: 4705}, opt = 504.5695
+> progress 0.0%, elapsed 399 s, estimated 27306154486685675984351009964032 s (865872478649342786273280 years), iters = {MDP: 4747}, opt = 504.5695
+> progress 0.0%, elapsed 402 s, estimated 27511805281902913399818826022912 s (872393622586977278754816 years), iters = {MDP: 4793}, opt = 504.5695
+> progress 0.0%, elapsed 405 s, estimated 27716995985647302409643637080064 s (878900177119713999978496 years), iters = {MDP: 4837}, opt = 504.5695
+> progress 0.0%, elapsed 408 s, estimated 27926647232234375667807416221696 s (885548174538127053946880 years), iters = {MDP: 4879}, opt = 504.5695
+> progress 0.0%, elapsed 411 s, estimated 28136386500217116696637786292224 s (892198963096686767898624 years), iters = {MDP: 4917}, opt = 504.5695
+> progress 0.0%, elapsed 414 s, estimated 28342691104073636364328978350080 s (898740839170269937401856 years), iters = {MDP: 4967}, opt = 504.5695
+> progress 0.0%, elapsed 417 s, estimated 28547881527579196689218443149312 s (905247384816691942785024 years), iters = {MDP: 5002}, opt = 504.5695
+> progress 0.0%, elapsed 420 s, estimated 28771355307494991252016529932288 s (912333691891647510478848 years), iters = {MDP: 5039}, opt = 504.5695
+> progress 0.0%, elapsed 423 s, estimated 28977578489826380398904333041664 s (918872986105605546573824 years), iters = {MDP: 5079}, opt = 504.5695
+> progress 0.0%, elapsed 426 s, estimated 29185959991840446845712777347072 s (925480720187736075534336 years), iters = {MDP: 5121}, opt = 504.5695
+> progress 0.0%, elapsed 429 s, estimated 29392198933946482088999500382208 s (932020514140870080987136 years), iters = {MDP: 5164}, opt = 504.5695
+> progress 0.0%, elapsed 432 s, estimated 29602989296185356020322421178368 s (938704632679647246548992 years), iters = {MDP: 5202}, opt = 504.5695
+> progress 0.0%, elapsed 436 s, estimated 29824764247952273203622320275456 s (945737070267385709068288 years), iters = {MDP: 5240}, opt = 504.5695
+> progress 0.0%, elapsed 439 s, estimated 30041618254268563847973345165312 s (952613465698521233489920 years), iters = {MDP: 5283}, opt = 504.5695
+> progress 0.0%, elapsed 442 s, estimated 30254392356415492372138127523840 s (959360488217132467748864 years), iters = {MDP: 5328}, opt = 504.5695
+> progress 0.0%, elapsed 445 s, estimated 30459958279349895612175182987264 s (965878940872333175291904 years), iters = {MDP: 5374}, opt = 504.5695
+> progress 0.0%, elapsed 448 s, estimated 30674910547169326263699656146944 s (972695032571325663150080 years), iters = {MDP: 5409}, opt = 504.5695
+> progress 0.0%, elapsed 451 s, estimated 30880498260960623476152916246528 s (979214176210065442209792 years), iters = {MDP: 5449}, opt = 504.5695
+> progress 0.0%, elapsed 454 s, estimated 31091535637908269630829791019008 s (985906127533874568232960 years), iters = {MDP: 5492}, opt = 504.5695
+> progress 0.0%, elapsed 457 s, estimated 31302337119742248489928370421760 s (992590598672699451506688 years), iters = {MDP: 5541}, opt = 504.5695
+> progress 0.0%, elapsed 461 s, estimated 31519622817351603261334192390144 s (999480682944939132190720 years), iters = {MDP: 5578}, opt = 504.5695
+> progress 0.0%, elapsed 464 s, estimated 31727682179787749540333241761792 s (1006078202048064209813504 years), iters = {MDP: 5621}, opt = 504.5695
+> progress 0.0%, elapsed 467 s, estimated 31941475526593499707288280104960 s (1012857544602787317284864 years), iters = {MDP: 5663}, opt = 504.5695
+> progress 0.0%, elapsed 470 s, estimated 32146731748174504976204404097024 s (1019366176692494483324928 years), iters = {MDP: 5699}, opt = 504.5695
+> progress 0.0%, elapsed 473 s, estimated 32363233646553665614305290092544 s (1026231406854187872419840 years), iters = {MDP: 5743}, opt = 504.5695
+2025-01-21 19:33:22,727 - synthesizer_ar.py - value 505.358 achieved after 879.33 seconds
+> progress 0.0%, elapsed 476 s, estimated 32555523645768948191018012901376 s (1032328882729862565986304 years), iters = {MDP: 5782}, opt = 505.358
+> progress 0.0%, elapsed 479 s, estimated 32768145778774454013524522827776 s (1039071086338611550879744 years), iters = {MDP: 5828}, opt = 505.358
+> progress 0.0%, elapsed 482 s, estimated 32941466233948470098295219290112 s (1044567041918710973464576 years), iters = {MDP: 5874}, opt = 505.358
+> progress 0.0%, elapsed 485 s, estimated 33138561827391855038103665246208 s (1050816902187717478055936 years), iters = {MDP: 5916}, opt = 505.358
+2025-01-21 19:33:35,028 - synthesizer_ar.py - value 505.7844 achieved after 891.63 seconds
+> progress 0.0%, elapsed 488 s, estimated 33347186306648873258885943656448 s (1057432341027678651940864 years), iters = {MDP: 5958}, opt = 505.7844
+> progress 0.0%, elapsed 491 s, estimated 4829864399407587458167406067712 s (153153995415004639133696 years), iters = {MDP: 6003}, opt = 505.7844
+> progress 0.0%, elapsed 494 s, estimated 4859896174102630455788454281216 s (154106296743487776751616 years), iters = {MDP: 6032}, opt = 505.7844
+2025-01-21 19:33:43,199 - synthesizer_ar.py - value 507.3008 achieved after 899.8 seconds
+2025-01-21 19:33:44,450 - synthesizer_ar.py - value 510.5739 achieved after 901.05 seconds
+2025-01-21 19:33:44,507 - synthesizer_ar.py - value 511.9276 achieved after 901.11 seconds
+> progress 0.0%, elapsed 498 s, estimated 4891827256425375727952014082048 s (155118824721758518509568 years), iters = {MDP: 6069}, opt = 511.9276
+2025-01-21 19:33:47,579 - synthesizer_ar.py - value 511.9601 achieved after 904.18 seconds
+> progress 0.0%, elapsed 501 s, estimated 4921571651532210899168943669248 s (156062013303279153315840 years), iters = {MDP: 6106}, opt = 511.9601
+> progress 0.0%, elapsed 504 s, estimated 4952899451235720827565338787840 s (157055411315186488836096 years), iters = {MDP: 6140}, opt = 511.9601
+> progress 0.0%, elapsed 507 s, estimated 4982357151982917681512089387008 s (157989508878200060510208 years), iters = {MDP: 6176}, opt = 511.9601
+> progress 0.0%, elapsed 510 s, estimated 5012862269880396225453722959872 s (158956819821169339269120 years), iters = {MDP: 6206}, opt = 511.9601
+> progress 0.0%, elapsed 513 s, estimated 5042548741607519728197517180928 s (159898171664368312254464 years), iters = {MDP: 6245}, opt = 511.9601
+> progress 0.0%, elapsed 516 s, estimated 5072893392156210829061064228864 s (160860394221087343247360 years), iters = {MDP: 6278}, opt = 511.9601
+> progress 0.0%, elapsed 519 s, estimated 5104063278382872429767646248960 s (161848784829492406255616 years), iters = {MDP: 6315}, opt = 511.9601
+> progress 0.0%, elapsed 522 s, estimated 5133603324299506290795195924480 s (162785493540699721695232 years), iters = {MDP: 6344}, opt = 511.9601
+2025-01-21 19:34:10,701 - synthesizer_ar.py - value 512.3438 achieved after 927.3 seconds
+2025-01-21 19:34:12,778 - synthesizer_ar.py - value 512.384 achieved after 929.38 seconds
+> progress 0.0%, elapsed 525 s, estimated 5163716187793783812133708890112 s (163740366178138755956736 years), iters = {MDP: 6383}, opt = 512.384
+> progress 0.0%, elapsed 528 s, estimated 5193175720510582054685981540352 s (164674521832527304327168 years), iters = {MDP: 6417}, opt = 512.384
+> progress 0.0%, elapsed 532 s, estimated 5224457133573041404322303180800 s (165666448933696149913600 years), iters = {MDP: 6452}, opt = 512.384
+> progress 0.0%, elapsed 535 s, estimated 5254107117723892853863704690688 s (166606643763441559404544 years), iters = {MDP: 6495}, opt = 512.384
+> progress 0.0%, elapsed 538 s, estimated 5284915201616399009326645116928 s (167583561695091297878016 years), iters = {MDP: 6531}, opt = 512.384
+> progress 0.0%, elapsed 541 s, estimated 5315207261710854833284629659648 s (168544116619446197420032 years), iters = {MDP: 6571}, opt = 512.384
+> progress 0.0%, elapsed 544 s, estimated 5343725289948847642310569099264 s (169448417362660059774976 years), iters = {MDP: 6617}, opt = 512.384
+> progress 0.0%, elapsed 547 s, estimated 5369265335055993811311792226304 s (170258286880263600340992 years), iters = {MDP: 6657}, opt = 512.384
+> progress 0.0%, elapsed 551 s, estimated 5401201953873726385976068014080 s (171270990419638706241536 years), iters = {MDP: 6699}, opt = 512.384
+> progress 0.0%, elapsed 554 s, estimated 5430647101702016175840310591488 s (172204689932204977946624 years), iters = {MDP: 6734}, opt = 512.384
+> progress 0.0%, elapsed 557 s, estimated 5460869061444854560898288713728 s (173163021988992101908480 years), iters = {MDP: 6765}, opt = 512.384
+> progress 0.0%, elapsed 560 s, estimated 5491542087303599323581054451712 s (174135657258485528133632 years), iters = {MDP: 6809}, opt = 512.384
+> progress 0.0%, elapsed 563 s, estimated 5523032368966010284767319162880 s (175134207539510736060416 years), iters = {MDP: 6845}, opt = 512.384
+> progress 0.0%, elapsed 566 s, estimated 5552689196109967840220377251840 s (176074619359144076902400 years), iters = {MDP: 6882}, opt = 512.384
+> progress 0.0%, elapsed 569 s, estimated 5582464240134920376681555296256 s (177018779811482771128320 years), iters = {MDP: 6912}, opt = 512.384
+> progress 0.0%, elapsed 572 s, estimated 5614184513253418470264549670912 s (178024623073738520264704 years), iters = {MDP: 6952}, opt = 512.384
+> progress 0.0%, elapsed 575 s, estimated 5644571039022193793982659559424 s (178988173484975705817088 years), iters = {MDP: 6987}, opt = 512.384
+> progress 0.0%, elapsed 579 s, estimated 5675951071051275383033110200320 s (179983227773061752160256 years), iters = {MDP: 7025}, opt = 512.384
+> progress 0.0%, elapsed 582 s, estimated 5705396154432224716994212003840 s (180916925242016280870912 years), iters = {MDP: 7058}, opt = 512.384
+> progress 0.0%, elapsed 585 s, estimated 5735044113637580860277148090368 s (181857055861161251045376 years), iters = {MDP: 7102}, opt = 512.384
+> progress 0.0%, elapsed 588 s, estimated 5757648017060420541843784073216 s (182573820936720616521728 years), iters = {MDP: 7145}, opt = 512.384
+> progress 0.0%, elapsed 591 s, estimated 5788083043246440346745474908160 s (183538909286099727679488 years), iters = {MDP: 7177}, opt = 512.384
+> progress 0.0%, elapsed 594 s, estimated 5818726428452256513748207927296 s (184510604656654520680448 years), iters = {MDP: 7212}, opt = 512.384
+> progress 0.0%, elapsed 597 s, estimated 5848040205194225162333215260672 s (185440138419400830091264 years), iters = {MDP: 7249}, opt = 512.384
+> progress 0.0%, elapsed 600 s, estimated 5877464441840376265765642305536 s (186373174842731373002752 years), iters = {MDP: 7291}, opt = 512.384
+> progress 0.0%, elapsed 603 s, estimated 5907439738652578520316176760832 s (187323685269297919164416 years), iters = {MDP: 7324}, opt = 512.384
+> progress 0.0%, elapsed 606 s, estimated 5937438033137809012168239087616 s (188274924947292265906176 years), iters = {MDP: 7369}, opt = 512.384
+> progress 0.0%, elapsed 610 s, estimated 5968061041185874475663172304896 s (189245974162413549780992 years), iters = {MDP: 7400}, opt = 512.384
+> progress 0.0%, elapsed 613 s, estimated 5997386987499164896902116278272 s (190175893819735033249792 years), iters = {MDP: 7443}, opt = 512.384
+> progress 0.0%, elapsed 616 s, estimated 6027787493884317043234411905024 s (191139887553409347223552 years), iters = {MDP: 7475}, opt = 512.384
+> progress 0.0%, elapsed 619 s, estimated 6057849955792614673095843643392 s (192093161967041311145984 years), iters = {MDP: 7512}, opt = 512.384
+> progress 0.0%, elapsed 622 s, estimated 6088284728674624821965268975616 s (193058242284202970054656 years), iters = {MDP: 7546}, opt = 512.384
+> progress 0.0%, elapsed 625 s, estimated 6118313929851031472023061659648 s (194010462006945442168832 years), iters = {MDP: 7585}, opt = 512.384
+> progress 0.0%, elapsed 628 s, estimated 6148348716182646773566803017728 s (194962858833797766447104 years), iters = {MDP: 7617}, opt = 512.384
+> progress 0.0%, elapsed 631 s, estimated 6173776875634747921675927420928 s (195769180480553911058432 years), iters = {MDP: 7664}, opt = 512.384
+> progress 0.0%, elapsed 634 s, estimated 6198147355726307781974318645248 s (196541963334801734762496 years), iters = {MDP: 7699}, opt = 512.384
+> progress 0.0%, elapsed 637 s, estimated 6228963015246501752391818280960 s (197519121488029606215680 years), iters = {MDP: 7739}, opt = 512.384
+> progress 0.0%, elapsed 640 s, estimated 6258310652941847487132022603776 s (198449728974563905110016 years), iters = {MDP: 7774}, opt = 512.384
+> progress 0.0%, elapsed 643 s, estimated 6288675030229716641377375223808 s (199412577062078774247424 years), iters = {MDP: 7805}, opt = 512.384
+> progress 0.0%, elapsed 647 s, estimated 6320259177028697963939927949312 s (200414103787059156090880 years), iters = {MDP: 7844}, opt = 512.384
+> progress 0.0%, elapsed 650 s, estimated 6350250492793918468674715385856 s (201365122171293700980736 years), iters = {MDP: 7883}, opt = 512.384
+> progress 0.0%, elapsed 653 s, estimated 6379892976324290702737290559488 s (202305079157923973693440 years), iters = {MDP: 7915}, opt = 512.384
+> progress 0.0%, elapsed 656 s, estimated 6409892116533136336703673335808 s (203256345653638282084352 years), iters = {MDP: 7949}, opt = 512.384
+> progress 0.0%, elapsed 659 s, estimated 6439879647488516342308824678400 s (204207244022340061757440 years), iters = {MDP: 7995}, opt = 512.384
+> progress 0.0%, elapsed 662 s, estimated 6469196524297156200527334211584 s (205136876087555685089280 years), iters = {MDP: 8032}, opt = 512.384
+> progress 0.0%, elapsed 665 s, estimated 6498715564292637080664259166208 s (206072918705372802318336 years), iters = {MDP: 8067}, opt = 512.384
+> progress 0.0%, elapsed 668 s, estimated 6529426459011793196187276804096 s (207046754788552573190144 years), iters = {MDP: 8104}, opt = 512.384
+> progress 0.0%, elapsed 671 s, estimated 6560009908420295155495913652224 s (208016549607442124636160 years), iters = {MDP: 8143}, opt = 512.384
+> progress 0.0%, elapsed 674 s, estimated 6590330455725117498599443267584 s (208978007855311909552128 years), iters = {MDP: 8180}, opt = 512.384
+> progress 0.0%, elapsed 677 s, estimated 6619649131326794390314718068736 s (209907696959880603631616 years), iters = {MDP: 8218}, opt = 512.384
+> progress 0.0%, elapsed 680 s, estimated 6649896232827890693166866628608 s (210866826256592184279040 years), iters = {MDP: 8250}, opt = 512.384
+> progress 0.0%, elapsed 684 s, estimated 6679995250312795286857752510464 s (211821259839954197938176 years), iters = {MDP: 8284}, opt = 512.384
+> progress 0.0%, elapsed 687 s, estimated 6710791734245130738628791631872 s (212797809939279884845056 years), iters = {MDP: 8321}, opt = 512.384
+> progress 0.0%, elapsed 690 s, estimated 6741499560271524739729428840448 s (213771548714850494447616 years), iters = {MDP: 8364}, opt = 512.384
+> progress 0.0%, elapsed 693 s, estimated 6761895122366214131579843772416 s (214418287746265036881920 years), iters = {MDP: 8410}, opt = 512.384
+> progress 0.0%, elapsed 696 s, estimated 6789988525287528638043352203264 s (215309123709016029003776 years), iters = {MDP: 8437}, opt = 512.384
+> progress 0.0%, elapsed 699 s, estimated 6821560539609218249078159179776 s (216310265715665240326144 years), iters = {MDP: 8478}, opt = 512.384
+> progress 0.0%, elapsed 702 s, estimated 6851938001867880685885563338752 s (217273528724882053922816 years), iters = {MDP: 8516}, opt = 512.384
+> progress 0.0%, elapsed 705 s, estimated 6881814086757394308626888261632 s (218220893162017833091072 years), iters = {MDP: 8552}, opt = 512.384
+> progress 0.0%, elapsed 708 s, estimated 6912009957458497336677060575232 s (219178397940718495596544 years), iters = {MDP: 8591}, opt = 512.384
+2025-01-21 19:37:17,795 - synthesizer_ar.py - value 512.6239 achieved after 1114.39 seconds
+> progress 0.0%, elapsed 711 s, estimated 6941950949288630462371111895040 s (220127820563439614427136 years), iters = {MDP: 8625}, opt = 512.6239
+> progress 0.0%, elapsed 714 s, estimated 6971207633293370570015762284544 s (221055543927364646862848 years), iters = {MDP: 8663}, opt = 512.6239
+> progress 0.0%, elapsed 718 s, estimated 7001945972716153046978774695936 s (222030250276387381313536 years), iters = {MDP: 8700}, opt = 512.6239
+> progress 0.0%, elapsed 721 s, estimated 7032555373556284905806396129280 s (223000868009775674163200 years), iters = {MDP: 8738}, opt = 512.6239
+> progress 0.0%, elapsed 724 s, estimated 7063371114654877307096944082944 s (223978028749837584826368 years), iters = {MDP: 8772}, opt = 512.6239
+> progress 0.0%, elapsed 727 s, estimated 7093920543236511842642287394816 s (224946744775384061968384 years), iters = {MDP: 8808}, opt = 512.6239
+> progress 0.0%, elapsed 730 s, estimated 7124905841309572105759881166848 s (225929282131835746254848 years), iters = {MDP: 8840}, opt = 512.6239
+> progress 0.0%, elapsed 733 s, estimated 7154296136179357849761146208256 s (226861242268498165497856 years), iters = {MDP: 8882}, opt = 512.6239
+> progress 0.0%, elapsed 736 s, estimated 7182562642260592532251744403456 s (227757567296441927335936 years), iters = {MDP: 8930}, opt = 512.6239
+> progress 0.0%, elapsed 739 s, estimated 7211610894541491045755028242432 s (228678681333761113587712 years), iters = {MDP: 8966}, opt = 512.6239
+> progress 0.0%, elapsed 743 s, estimated 7243494290935280962521790414848 s (229689697201144094261248 years), iters = {MDP: 8998}, opt = 512.6239
+> progress 0.0%, elapsed 746 s, estimated 7272755400165734533249154154496 s (230617560888055993204736 years), iters = {MDP: 9040}, opt = 512.6239
+> progress 0.0%, elapsed 749 s, estimated 7302431305065272685827643670528 s (231558577659350330900480 years), iters = {MDP: 9072}, opt = 512.6239
+> progress 0.0%, elapsed 752 s, estimated 7332136029471545354926908506112 s (232500508291208308588544 years), iters = {MDP: 9106}, opt = 512.6239
+> progress 0.0%, elapsed 755 s, estimated 7363174216901785519109533859840 s (233484722758174361255936 years), iters = {MDP: 9151}, opt = 512.6239
+> progress 0.0%, elapsed 758 s, estimated 7394827753564689462387552550912 s (234488449821305439518720 years), iters = {MDP: 9191}, opt = 512.6239
+> progress 0.0%, elapsed 761 s, estimated 7424102848020764923158455123968 s (235416756976812673728512 years), iters = {MDP: 9228}, opt = 512.6239
+> progress 0.0%, elapsed 764 s, estimated 7454645719492328076523786469376 s (236385265077762792620032 years), iters = {MDP: 9266}, opt = 512.6239
+> progress 0.0%, elapsed 767 s, estimated 7484290330402355220404458487808 s (237325289523159427448832 years), iters = {MDP: 9303}, opt = 512.6239
+> progress 0.0%, elapsed 770 s, estimated 7514172128419317619961106530304 s (238272835122378173317120 years), iters = {MDP: 9344}, opt = 512.6239
+> progress 0.0%, elapsed 773 s, estimated 7543524504436992128353914847232 s (239203592860127855640576 years), iters = {MDP: 9377}, opt = 512.6239
+> progress 0.0%, elapsed 776 s, estimated 7572655674364919112679691386880 s (240127336198786133262336 years), iters = {MDP: 9421}, opt = 512.6239
+> progress 0.0%, elapsed 779 s, estimated 7601806560476605563246523449344 s (241051704733530092208128 years), iters = {MDP: 9471}, opt = 512.6239
+> progress 0.0%, elapsed 783 s, estimated 7632479839016593218289507762176 s (242024348015493214371840 years), iters = {MDP: 9506}, opt = 512.6239
+> progress 0.0%, elapsed 786 s, estimated 7661571378747186783845418532864 s (242946834688837735677952 years), iters = {MDP: 9546}, opt = 512.6239
+> progress 0.0%, elapsed 789 s, estimated 7690978149175356327133590847488 s (243879317262029310394368 years), iters = {MDP: 9578}, opt = 512.6239
+> progress 0.0%, elapsed 792 s, estimated 7721063778604345292137892413440 s (244833326312923202584576 years), iters = {MDP: 9625}, opt = 512.6239
+> progress 0.0%, elapsed 795 s, estimated 7751375247531739007357936467968 s (245794496687333147934720 years), iters = {MDP: 9663}, opt = 512.6239
+2025-01-21 19:38:43,511 - synthesizer.py - time limit reached, aborting...
+2025-01-21 19:38:43,512 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 795.77 s
+number of holes: 568, family size: 1e114, quotient: 128 states / 1152 actions
+explored: 0 %
+MDP stats: avg MDP size: 128, iterations: 9664
+
+optimum: 512.623852
+--------------------
+2025-01-21 19:38:43,512 - decision_tree.py - families considered: 9664
+2025-01-21 19:38:43,512 - decision_tree.py - families skipped by construction: 0
+2025-01-21 19:38:43,512 - decision_tree.py - families with schedulers preserved: 2275
+2025-01-21 19:38:43,512 - decision_tree.py - families model checked: 7389
+2025-01-21 19:38:43,512 - decision_tree.py - harmonizations attempted: 952
+2025-01-21 19:38:43,512 - decision_tree.py - harmonizations succeeded: 2
+
+2025-01-21 19:38:43,512 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 19:38:43,512 - decision_tree.py - V_0=computer_2_running, computer_0_running_0=0, computer_1_running_0=0, computer_2_running_0=0, computer_3_running_0=0, computer_4_running_0=0, computer_5_running_0=0, computer_6_running_0=0, V_1=computer_0_running, computer_0_running_1=0, computer_1_running_1=0, computer_2_running_1=0, computer_3_running_1=0, computer_4_running_1=0, computer_5_running_1=0, computer_6_running_1=0, V_2=computer_2_running, computer_0_running_2=0, computer_1_running_2=0, computer_2_running_2=0, computer_3_running_2=0, computer_4_running_2=0, computer_5_running_2=0, computer_6_running_2=0, V_3=computer_1_running, computer_0_running_3=0, computer_1_running_3=0, computer_2_running_3=0, computer_3_running_3=0, computer_4_running_3=0, computer_5_running_3=0, computer_6_running_3=0, V_4=computer_1_running, computer_0_running_4=0, computer_1_running_4=0, computer_2_running_4=0, computer_3_running_4=0, computer_4_running_4=0, computer_5_running_4=0, computer_6_running_4=0, V_5=computer_3_running, computer_0_running_5=0, computer_1_running_5=0, computer_2_running_5=0, computer_3_running_5=0, computer_4_running_5=0, computer_5_running_5=0, computer_6_running_5=0, A_6=(reboot_computer_0), A_7=(reboot_computer_0), V_8=computer_1_running, computer_0_running_8=0, computer_1_running_8=0, computer_2_running_8=0, computer_3_running_8=0, computer_4_running_8=0, computer_5_running_8=0, computer_6_running_8=0, A_9=(reboot_computer_1), A_10=(reboot_computer_0), V_11=computer_1_running, computer_0_running_11=0, computer_1_running_11=0, computer_2_running_11=0, computer_3_running_11=0, computer_4_running_11=0, computer_5_running_11=0, computer_6_running_11=0, V_12=computer_0_running, computer_0_running_12=0, computer_1_running_12=0, computer_2_running_12=0, computer_3_running_12=0, computer_4_running_12=0, computer_5_running_12=0, computer_6_running_12=0, A_13=(reboot_computer_0), A_14=(reboot_computer_0), V_15=computer_3_running, computer_0_running_15=0, computer_1_running_15=0, computer_2_running_15=0, computer_3_running_15=0, computer_4_running_15=0, computer_5_running_15=0, computer_6_running_15=0, A_16=(reboot_computer_0), A_17=(reboot_computer_0), V_18=computer_3_running, computer_0_running_18=0, computer_1_running_18=0, computer_2_running_18=0, computer_3_running_18=0, computer_4_running_18=0, computer_5_running_18=0, computer_6_running_18=0, V_19=computer_0_running, computer_0_running_19=0, computer_1_running_19=0, computer_2_running_19=0, computer_3_running_19=0, computer_4_running_19=0, computer_5_running_19=0, computer_6_running_19=0, V_20=computer_0_running, computer_0_running_20=0, computer_1_running_20=0, computer_2_running_20=0, computer_3_running_20=0, computer_4_running_20=0, computer_5_running_20=0, computer_6_running_20=0, A_21=(reboot_computer_0), A_22=(reboot_computer_0), V_23=computer_0_running, computer_0_running_23=0, computer_1_running_23=0, computer_2_running_23=0, computer_3_running_23=0, computer_4_running_23=0, computer_5_running_23=0, computer_6_running_23=0, A_24=(reboot_computer_0), A_25=(reboot_computer_0), V_26=computer_0_running, computer_0_running_26=0, computer_1_running_26=0, computer_2_running_26=0, computer_3_running_26=0, computer_4_running_26=0, computer_5_running_26=0, computer_6_running_26=0, V_27=computer_0_running, computer_0_running_27=0, computer_1_running_27=0, computer_2_running_27=0, computer_3_running_27=0, computer_4_running_27=0, computer_5_running_27=0, computer_6_running_27=0, A_28=(reboot_computer_0), A_29=(reboot_computer_0), V_30=computer_0_running, computer_0_running_30=0, computer_1_running_30=0, computer_2_running_30=0, computer_3_running_30=0, computer_4_running_30=0, computer_5_running_30=0, computer_6_running_30=0, A_31=(reboot_computer_0), A_32=(reboot_computer_0), V_33=computer_4_running, computer_0_running_33=0, computer_1_running_33=0, computer_2_running_33=0, computer_3_running_33=0, computer_4_running_33=0, computer_5_running_33=0, computer_6_running_33=0, V_34=computer_1_running, computer_0_running_34=0, computer_1_running_34=0, computer_2_running_34=0, computer_3_running_34=0, computer_4_running_34=0, computer_5_running_34=0, computer_6_running_34=0, V_35=computer_1_running, computer_0_running_35=0, computer_1_running_35=0, computer_2_running_35=0, computer_3_running_35=0, computer_4_running_35=0, computer_5_running_35=0, computer_6_running_35=0, V_36=computer_3_running, computer_0_running_36=0, computer_1_running_36=0, computer_2_running_36=0, computer_3_running_36=0, computer_4_running_36=0, computer_5_running_36=0, computer_6_running_36=0, A_37=(reboot_computer_1), A_38=(reboot_computer_1), V_39=computer_3_running, computer_0_running_39=0, computer_1_running_39=0, computer_2_running_39=0, computer_3_running_39=0, computer_4_running_39=0, computer_5_running_39=0, computer_6_running_39=0, A_40=(reboot_computer_0), A_41=(reboot_computer_0), V_42=computer_1_running, computer_0_running_42=0, computer_1_running_42=0, computer_2_running_42=0, computer_3_running_42=0, computer_4_running_42=0, computer_5_running_42=0, computer_6_running_42=0, V_43=computer_0_running, computer_0_running_43=0, computer_1_running_43=0, computer_2_running_43=0, computer_3_running_43=0, computer_4_running_43=0, computer_5_running_43=0, computer_6_running_43=0, A_44=(reboot_computer_0), A_45=(reboot_computer_0), V_46=computer_3_running, computer_0_running_46=0, computer_1_running_46=0, computer_2_running_46=0, computer_3_running_46=0, computer_4_running_46=0, computer_5_running_46=0, computer_6_running_46=0, A_47=(reboot_computer_2), A_48=(reboot_computer_2), V_49=computer_3_running, computer_0_running_49=0, computer_1_running_49=0, computer_2_running_49=0, computer_3_running_49=0, computer_4_running_49=0, computer_5_running_49=0, computer_6_running_49=0, V_50=computer_1_running, computer_0_running_50=0, computer_1_running_50=0, computer_2_running_50=0, computer_3_running_50=0, computer_4_running_50=0, computer_5_running_50=0, computer_6_running_50=0, V_51=computer_5_running, computer_0_running_51=0, computer_1_running_51=0, computer_2_running_51=0, computer_3_running_51=0, computer_4_running_51=0, computer_5_running_51=0, computer_6_running_51=0, A_52=(reboot_computer_1), A_53=(reboot_computer_1), V_54=computer_5_running, computer_0_running_54=0, computer_1_running_54=0, computer_2_running_54=0, computer_3_running_54=0, computer_4_running_54=0, computer_5_running_54=0, computer_6_running_54=0, A_55=(reboot_computer_2), A_56=(reboot_computer_2), V_57=computer_1_running, computer_0_running_57=0, computer_1_running_57=0, computer_2_running_57=0, computer_3_running_57=0, computer_4_running_57=0, computer_5_running_57=0, computer_6_running_57=0, V_58=computer_5_running, computer_0_running_58=0, computer_1_running_58=0, computer_2_running_58=0, computer_3_running_58=0, computer_4_running_58=0, computer_5_running_58=0, computer_6_running_58=0, A_59=(reboot_computer_1), A_60=(reboot_computer_1), V_61=computer_5_running, computer_0_running_61=0, computer_1_running_61=0, computer_2_running_61=0, computer_3_running_61=0, computer_4_running_61=0, computer_5_running_61=0, computer_6_running_61=0, A_62=(reboot_computer_2), A_63=(reboot_computer_2), V_64=computer_1_running, computer_0_running_64=0, computer_1_running_64=0, computer_2_running_64=0, computer_3_running_64=0, computer_4_running_64=0, computer_5_running_64=0, computer_6_running_64=0, V_65=computer_6_running, computer_0_running_65=0, computer_1_running_65=0, computer_2_running_65=0, computer_3_running_65=0, computer_4_running_65=0, computer_5_running_65=0, computer_6_running_65=0, V_66=computer_0_running, computer_0_running_66=0, computer_1_running_66=0, computer_2_running_66=0, computer_3_running_66=0, computer_4_running_66=0, computer_5_running_66=0, computer_6_running_66=0, V_67=computer_0_running, computer_0_running_67=0, computer_1_running_67=0, computer_2_running_67=0, computer_3_running_67=0, computer_4_running_67=0, computer_5_running_67=0, computer_6_running_67=0, V_68=computer_3_running, computer_0_running_68=0, computer_1_running_68=0, computer_2_running_68=0, computer_3_running_68=0, computer_4_running_68=0, computer_5_running_68=0, computer_6_running_68=0, A_69=(reboot_computer_0), A_70=(reboot_computer_0), V_71=computer_2_running, computer_0_running_71=0, computer_1_running_71=0, computer_2_running_71=0, computer_3_running_71=0, computer_4_running_71=0, computer_5_running_71=0, computer_6_running_71=0, A_72=(reboot_computer_0), A_73=(reboot_computer_3), V_74=computer_0_running, computer_0_running_74=0, computer_1_running_74=0, computer_2_running_74=0, computer_3_running_74=0, computer_4_running_74=0, computer_5_running_74=0, computer_6_running_74=0, V_75=computer_0_running, computer_0_running_75=0, computer_1_running_75=0, computer_2_running_75=0, computer_3_running_75=0, computer_4_running_75=0, computer_5_running_75=0, computer_6_running_75=0, A_76=(reboot_computer_0), A_77=(reboot_computer_1), V_78=computer_5_running, computer_0_running_78=0, computer_1_running_78=0, computer_2_running_78=0, computer_3_running_78=0, computer_4_running_78=0, computer_5_running_78=0, computer_6_running_78=0, A_79=(reboot_computer_1), A_80=(reboot_computer_6), V_81=computer_0_running, computer_0_running_81=0, computer_1_running_81=0, computer_2_running_81=0, computer_3_running_81=0, computer_4_running_81=0, computer_5_running_81=0, computer_6_running_81=0, V_82=computer_0_running, computer_0_running_82=0, computer_1_running_82=0, computer_2_running_82=0, computer_3_running_82=0, computer_4_running_82=0, computer_5_running_82=0, computer_6_running_82=0, V_83=computer_3_running, computer_0_running_83=0, computer_1_running_83=0, computer_2_running_83=0, computer_3_running_83=0, computer_4_running_83=0, computer_5_running_83=0, computer_6_running_83=0, A_84=(reboot_computer_0), A_85=(reboot_computer_0), V_86=computer_0_running, computer_0_running_86=0, computer_1_running_86=0, computer_2_running_86=0, computer_3_running_86=0, computer_4_running_86=0, computer_5_running_86=0, computer_6_running_86=0, A_87=(reboot_computer_0), A_88=(reboot_computer_0), V_89=computer_0_running, computer_0_running_89=0, computer_1_running_89=0, computer_2_running_89=0, computer_3_running_89=0, computer_4_running_89=0, computer_5_running_89=0, computer_6_running_89=0, V_90=computer_0_running, computer_0_running_90=0, computer_1_running_90=0, computer_2_running_90=0, computer_3_running_90=0, computer_4_running_90=0, computer_5_running_90=0, computer_6_running_90=0, A_91=(reboot_computer_0), A_92=(reboot_computer_0), V_93=computer_3_running, computer_0_running_93=0, computer_1_running_93=0, computer_2_running_93=0, computer_3_running_93=0, computer_4_running_93=0, computer_5_running_93=0, computer_6_running_93=0, A_94=(reboot_computer_1), A_95=(reboot_computer_1), V_96=computer_5_running, computer_0_running_96=0, computer_1_running_96=0, computer_2_running_96=0, computer_3_running_96=0, computer_4_running_96=0, computer_5_running_96=0, computer_6_running_96=0, V_97=computer_3_running, computer_0_running_97=0, computer_1_running_97=0, computer_2_running_97=0, computer_3_running_97=0, computer_4_running_97=0, computer_5_running_97=0, computer_6_running_97=0, V_98=computer_4_running, computer_0_running_98=0, computer_1_running_98=0, computer_2_running_98=0, computer_3_running_98=0, computer_4_running_98=0, computer_5_running_98=0, computer_6_running_98=0, V_99=computer_0_running, computer_0_running_99=0, computer_1_running_99=0, computer_2_running_99=0, computer_3_running_99=0, computer_4_running_99=0, computer_5_running_99=0, computer_6_running_99=0, A_100=(reboot_computer_0), A_101=(reboot_computer_3), V_102=computer_0_running, computer_0_running_102=0, computer_1_running_102=0, computer_2_running_102=0, computer_3_running_102=0, computer_4_running_102=0, computer_5_running_102=0, computer_6_running_102=0, A_103=(reboot_computer_0), A_104=(reboot_computer_3), V_105=computer_6_running, computer_0_running_105=0, computer_1_running_105=0, computer_2_running_105=0, computer_3_running_105=0, computer_4_running_105=0, computer_5_running_105=0, computer_6_running_105=0, V_106=computer_4_running, computer_0_running_106=0, computer_1_running_106=0, computer_2_running_106=0, computer_3_running_106=0, computer_4_running_106=0, computer_5_running_106=0, computer_6_running_106=0, A_107=(reboot_computer_4), A_108=(reboot_computer_6), V_109=computer_4_running, computer_0_running_109=0, computer_1_running_109=0, computer_2_running_109=0, computer_3_running_109=0, computer_4_running_109=0, computer_5_running_109=0, computer_6_running_109=0, A_110=(reboot_computer_4), A_111=(reboot_computer_5), V_112=computer_3_running, computer_0_running_112=0, computer_1_running_112=0, computer_2_running_112=0, computer_3_running_112=0, computer_4_running_112=0, computer_5_running_112=0, computer_6_running_112=0, V_113=computer_5_running, computer_0_running_113=0, computer_1_running_113=0, computer_2_running_113=0, computer_3_running_113=0, computer_4_running_113=0, computer_5_running_113=0, computer_6_running_113=0, V_114=computer_0_running, computer_0_running_114=0, computer_1_running_114=0, computer_2_running_114=0, computer_3_running_114=0, computer_4_running_114=0, computer_5_running_114=0, computer_6_running_114=0, A_115=(reboot_computer_0), A_116=(reboot_computer_0), V_117=computer_3_running, computer_0_running_117=0, computer_1_running_117=0, computer_2_running_117=0, computer_3_running_117=0, computer_4_running_117=0, computer_5_running_117=0, computer_6_running_117=0, A_118=(reboot_computer_4), A_119=(reboot_computer_0), V_120=computer_3_running, computer_0_running_120=0, computer_1_running_120=0, computer_2_running_120=0, computer_3_running_120=0, computer_4_running_120=0, computer_5_running_120=0, computer_6_running_120=0, V_121=computer_0_running, computer_0_running_121=0, computer_1_running_121=0, computer_2_running_121=0, computer_3_running_121=0, computer_4_running_121=0, computer_5_running_121=0, computer_6_running_121=0, A_122=(reboot_computer_0), A_123=(reboot_computer_0), V_124=computer_6_running, computer_0_running_124=0, computer_1_running_124=0, computer_2_running_124=0, computer_3_running_124=0, computer_4_running_124=0, computer_5_running_124=0, computer_6_running_124=0, A_125=(reboot_computer_6), A_126=(reboot_computer_0)
+2025-01-21 19:38:43,521 - decision_tree.py - double-checking specification satisfiability:  : 512.6238516879979
+2025-01-21 19:38:43,521 - synthesizer.py - time limit reached, aborting...
+2025-01-21 19:38:43,522 - decision_tree.py - the optimal scheduler has value: 557.6929679094094
+2025-01-21 19:38:43,522 - decision_tree.py - the random scheduler has value: 332.2622643222469
+2025-01-21 19:38:43,522 - decision_tree.py - synthesized tree of depth 6 with 22 decision nodes
+2025-01-21 19:38:43,522 - decision_tree.py - the synthesized tree has value 512.6238516879979
+2025-01-21 19:38:43,522 - decision_tree.py - the synthesized tree has relative value: 0.8000755198637546
+2025-01-21 19:38:43,522 - decision_tree.py - printing the synthesized tree below:
+if computer_2_running<=0:
+  if computer_0_running<=0:
+    (reboot_computer_0)
+  else:
+    if computer_4_running<=0:
+      if computer_1_running<=0:
+        (reboot_computer_1)
+      else:
+        (reboot_computer_2)
+    else:
+      if computer_3_running<=0:
+        if computer_1_running<=0:
+          (reboot_computer_1)
+        else:
+          (reboot_computer_2)
+      else:
+        if computer_1_running<=0:
+          (reboot_computer_1)
+        else:
+          (reboot_computer_2)
+else:
+  if computer_1_running<=0:
+    if computer_6_running<=0:
+      if computer_0_running<=0:
+        (reboot_computer_0)
+      else:
+        if computer_5_running<=0:
+          (reboot_computer_1)
+        else:
+          (reboot_computer_6)
+    else:
+      if computer_0_running<=0:
+        (reboot_computer_0)
+      else:
+        (reboot_computer_1)
+  else:
+    if computer_5_running<=0:
+      if computer_3_running<=0:
+        if computer_4_running<=0:
+          if computer_0_running<=0:
+            (reboot_computer_0)
+          else:
+            (reboot_computer_3)
+        else:
+          if computer_0_running<=0:
+            (reboot_computer_0)
+          else:
+            (reboot_computer_3)
+      else:
+        if computer_6_running<=0:
+          if computer_4_running<=0:
+            (reboot_computer_4)
+          else:
+            (reboot_computer_6)
+        else:
+          if computer_4_running<=0:
+            (reboot_computer_4)
+          else:
+            (reboot_computer_5)
+    else:
+      if computer_3_running<=0:
+        (reboot_computer_4)
+      else:
+        if computer_6_running<=0:
+          (reboot_computer_6)
+        else:
+          (reboot_computer_0)
+
+2025-01-21 19:38:43,523 - decision_tree.py - exported decision tree to logs/01-21-all/6/omdt-system_administrator_tree/tree.dot
+2025-01-21 19:38:43,662 - decision_tree.py - exported decision tree visualization to logs/01-21-all/6/omdt-system_administrator_tree/tree.png
+2025-01-21 19:38:43,662 - decision_tree.py - synthesis finished after 1200.26 seconds
+
+ColoringSmt = 0.334 s (0.0 %)
+ColoringSmt:: create choice colors = 0.059 s (0.0 %)
+ColoringSmt:: create harmonizing variants = 0.269 s (0.0 %)
+areChoicesConsistent = 597.836 s (49.8 %)
+areChoicesConsistent::1 is scheduler consistent? = 74.26 s (6.2 %)
+areChoicesConsistent::2 better unsat core = 478.993 s (39.9 %)
+areChoicesConsistent::3 unsat core analysis = 42.908 s (3.6 %)
+check = 558.382 s (46.5 %)
+loadUnsatCore = 0.047 s (0.0 %)
+selectCompatibleChoices = 137.781 s (11.5 %)
+selectCompatibleChoices::1 is family sat = 131.047 s (10.9 %)
+selectCompatibleChoices::2 state exploration = 6.722 s (0.6 %)

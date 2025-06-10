@@ -1,0 +1,100 @@
+2025-01-21 15:51:52,437 - cli.py - This is Paynt version 0.1.0.
+2025-01-21 15:51:52,437 - sketch.py - loading sketch from /home/imacak/disk2/synthesis/models/dts/omdt/inventory_management/model-random.drn ...
+2025-01-21 15:51:52,437 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:26): Parsing error at 3:1:  expecting <model type>, here:
+	@type: MDP
+	^
+
+2025-01-21 15:51:52,763 - sketch.py - assuming sketch in DRN format...
+2025-01-21 15:51:53,033 - prism_parser.py - loading properties from /home/imacak/disk2/synthesis/models/dts/omdt/inventory_management/discounted.props ...
+2025-01-21 15:51:53,033 - prism_parser.py - found the following specification: optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 15:51:53,033 - sketch.py - found state valuations in /home/imacak/disk2/synthesis/models/dts/omdt/inventory_management/state-valuations.json, adding to the model...
+2025-01-21 15:51:53,034 - sketch.py - sketch parsing OK
+2025-01-21 15:51:53,075 - sketch.py - constructed explicit quotient having 101 states and 10201 choices
+2025-01-21 15:51:53,075 - sketch.py - found the following specification optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-21 15:51:53,075 - mdp.py - MDP has 101/101 relevant states
+2025-01-21 15:51:53,202 - mdp.py - MDP has 101 actions
+2025-01-21 15:51:53,203 - mdp.py - found the following 1 variables: ['inventory:[0..100]']
+2025-01-21 15:51:53,545 - decision_tree.py - the optimal scheduler has value: 967.8226692269506
+2025-01-21 15:51:53,549 - decision_tree.py - the random scheduler has value: -960.240971558256
+
+2025-01-21 15:51:53,549 - mdp.py - building tree of depth 0
+2025-01-21 15:51:53,562 - statistic.py - synthesis initiated, design space: 101
+2025-01-21 15:51:54,959 - synthesizer_ar.py - value 927.6808 achieved after 2.52 seconds
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 2.06 s
+number of holes: 1, family size: 101, quotient: 101 states / 10201 actions
+explored: 100 %
+MDP stats: avg MDP size: 101, iterations: 7
+
+optimum: 927.680823
+--------------------
+2025-01-21 15:51:55,625 - decision_tree.py - families considered: 7
+2025-01-21 15:51:55,626 - decision_tree.py - families skipped by construction: 0
+2025-01-21 15:51:55,626 - decision_tree.py - families with schedulers preserved: 0
+2025-01-21 15:51:55,626 - decision_tree.py - families model checked: 7
+2025-01-21 15:51:55,626 - decision_tree.py - harmonizations attempted: 2
+2025-01-21 15:51:55,626 - decision_tree.py - harmonizations succeeded: 1
+
+2025-01-21 15:51:55,626 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 15:51:55,626 - decision_tree.py - A_0=(Buy_11)
+2025-01-21 15:51:55,630 - decision_tree.py - double-checking specification satisfiability:  : 927.6808229068353
+
+2025-01-21 15:51:55,630 - mdp.py - building tree of depth 1
+2025-01-21 15:51:55,653 - statistic.py - synthesis initiated, design space: 1e6
+2025-01-21 15:51:56,015 - synthesizer_ar.py - value 948.9069 achieved after 3.58 seconds
+2025-01-21 15:51:56,019 - synthesizer_ar.py - value 951.3556 achieved after 3.58 seconds
+2025-01-21 15:51:56,051 - synthesizer_ar.py - value 952.0958 achieved after 3.61 seconds
+2025-01-21 15:51:56,427 - synthesizer_ar.py - value 955.2716 achieved after 3.99 seconds
+> progress 100.99%, elapsed 3 s, estimated 3 s, iters = {MDP: 21}, opt = 955.2716
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 4.0 s
+number of holes: 4, family size: 1e6, quotient: 101 states / 10201 actions
+explored: 200 %
+MDP stats: avg MDP size: 101, iterations: 22
+
+optimum: 955.271598
+--------------------
+2025-01-21 15:51:59,651 - decision_tree.py - families considered: 22
+2025-01-21 15:51:59,651 - decision_tree.py - families skipped by construction: 0
+2025-01-21 15:51:59,651 - decision_tree.py - families with schedulers preserved: 3
+2025-01-21 15:51:59,651 - decision_tree.py - families model checked: 19
+2025-01-21 15:51:59,651 - decision_tree.py - harmonizations attempted: 4
+2025-01-21 15:51:59,651 - decision_tree.py - harmonizations succeeded: 2
+
+2025-01-21 15:51:59,651 - decision_tree.py - printing synthesized assignment below:
+2025-01-21 15:51:59,651 - decision_tree.py - V_0=inventory, inventory_0=1, A_1=(Buy_12), A_2=(Buy_8)
+2025-01-21 15:51:59,655 - decision_tree.py - double-checking specification satisfiability:  : 955.2715976427129
+2025-01-21 15:51:59,655 - decision_tree.py - the optimal scheduler has value: 967.8226692269506
+2025-01-21 15:51:59,655 - decision_tree.py - the random scheduler has value: -960.240971558256
+2025-01-21 15:51:59,655 - decision_tree.py - synthesized tree of depth 1 with 1 decision nodes
+2025-01-21 15:51:59,655 - decision_tree.py - the synthesized tree has value 955.2715976427129
+2025-01-21 15:51:59,655 - decision_tree.py - the synthesized tree has relative value: 0.9934903229754769
+2025-01-21 15:51:59,655 - decision_tree.py - printing the synthesized tree below:
+if inventory<=1:
+  (Buy_12)
+else:
+  (Buy_8)
+
+2025-01-21 15:51:59,656 - decision_tree.py - exported decision tree to logs/01-21-all/1/omdt-inventory_management/tree.dot
+2025-01-21 15:51:59,692 - decision_tree.py - exported decision tree visualization to logs/01-21-all/1/omdt-inventory_management/tree.png
+2025-01-21 15:51:59,692 - decision_tree.py - synthesis finished after 7.26 seconds
+
+ColoringSmt = 0.013 s (0.2 %)
+ColoringSmt:: create choice colors = 0.006 s (0.1 %)
+ColoringSmt:: create harmonizing variants = 0.006 s (0.1 %)
+areChoicesConsistent = 0.029 s (0.4 %)
+areChoicesConsistent::1 is scheduler consistent? = 0.02 s (0.3 %)
+areChoicesConsistent::2 better unsat core = 0.003 s (0.0 %)
+areChoicesConsistent::3 unsat core analysis = 0.004 s (0.1 %)
+check = 0.027 s (0.4 %)
+loadUnsatCore = 0.0 s (0.0 %)
+selectCompatibleChoices = 0.049 s (0.7 %)
+selectCompatibleChoices::1 is family sat = 0.025 s (0.3 %)
+selectCompatibleChoices::2 state exploration = 0.024 s (0.3 %)

@@ -1,0 +1,257 @@
+2025-01-14 12:24:48,027 - cli.py - This is Paynt version 0.1.0.
+2025-01-14 12:24:48,027 - sketch.py - loading sketch from models/dts-helpers/omdt/system_administrator_tree/model.drn ...
+2025-01-14 12:24:48,028 - sketch.py - assuming sketch in PRISM format...
+ERROR (SpiritErrorHandler.h:26): Parsing error at 3:1:  expecting <model type>, here:
+	@type: MDP
+	^
+
+2025-01-14 12:24:48,043 - sketch.py - assuming sketch in DRN format...
+2025-01-14 12:24:48,063 - prism_parser.py - loading properties from models/dts-helpers/omdt/system_administrator_tree/discounted.props ...
+2025-01-14 12:24:48,064 - prism_parser.py - found the following specification: optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-14 12:24:48,065 - sketch.py - found state valuations in models/dts-helpers/omdt/system_administrator_tree/state-valuations.json, adding to the model...
+2025-01-14 12:24:48,065 - sketch.py - sketch parsing OK
+2025-01-14 12:24:48,065 - sketch.py - tree helper loaded
+2025-01-14 12:24:48,066 - sketch.py - constructed explicit quotient having 128 states and 1024 choices
+2025-01-14 12:24:48,066 - sketch.py - found the following specification optimality: R{"reward"}max=? [Cdiscount=99/100] 
+2025-01-14 12:24:48,068 - mdp.py - MDP has 128/128 relevant states
+2025-01-14 12:24:48,069 - mdp.py - MDP has 8 actions
+2025-01-14 12:24:48,070 - mdp.py - found the following 7 variables: ['computer_0_running:[0..1]', 'computer_1_running:[0..1]', 'computer_2_running:[0..1]', 'computer_3_running:[0..1]', 'computer_4_running:[0..1]', 'computer_5_running:[0..1]', 'computer_6_running:[0..1]']
+2025-01-14 12:24:48,084 - decision_tree.py - the optimal scheduler has value: 557.692970328795
+2025-01-14 12:24:48,084 - decision_tree.py - initial external tree has depth 7 and 12 nodes
+2025-01-14 12:24:48,084 - decision_tree.py - starting iteration 0 with 1 nodes in node queue
+// decision tree
+digraph {
+	1 [label="(reboot_computer_0)" margin="0.05,0.05" shape=box style=rounded]
+	3 [label="(reboot_computer_2)" margin="0.05,0.05" shape=box style=rounded]
+	5 [label="(reboot_computer_1)" margin="0.05,0.05" shape=box style=rounded]
+	10 [label="(reboot_computer_6)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="(reboot_computer_4)" margin="0.05,0.05" shape=box style=rounded]
+	9 [label="computer_5_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	9 -> 10 [label=T]
+	9 -> 11 [label=F]
+	12 [label="(reboot_computer_6)" margin="0.05,0.05" shape=box style=rounded]
+	8 [label="computer_4_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	8 -> 9 [label=T]
+	8 -> 12 [label=F]
+	13 [label="(reboot_computer_6)" margin="0.05,0.05" shape=box style=rounded]
+	7 [label="computer_3_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	7 -> 8 [label=T]
+	7 -> 13 [label=F]
+	16 [label="(reboot_computer_4)" margin="0.05,0.05" shape=box style=rounded]
+	18 [label="(reboot_computer_5)" margin="0.05,0.05" shape=box style=rounded]
+	19 [label="(reboot_computer_4)" margin="0.05,0.05" shape=box style=rounded]
+	17 [label="computer_5_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	17 -> 18 [label=T]
+	17 -> 19 [label=F]
+	15 [label="computer_3_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	15 -> 16 [label=T]
+	15 -> 17 [label=F]
+	21 [label="(reboot_computer_5)" margin="0.05,0.05" shape=box style=rounded]
+	23 [label="(reboot_computer_3)" margin="0.05,0.05" shape=box style=rounded]
+	24 [label="(reboot_computer_0)" margin="0.05,0.05" shape=box style=rounded]
+	22 [label="computer_3_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	22 -> 23 [label=T]
+	22 -> 24 [label=F]
+	20 [label="computer_5_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	20 -> 21 [label=T]
+	20 -> 22 [label=F]
+	14 [label="computer_4_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	14 -> 15 [label=T]
+	14 -> 20 [label=F]
+	6 [label="computer_6_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	6 -> 7 [label=T]
+	6 -> 14 [label=F]
+	4 [label="computer_1_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	4 -> 5 [label=T]
+	4 -> 6 [label=F]
+	2 [label="computer_2_running<=0" fillcolor=lightgreen margin="0.05,0.05" shape=box style=filled]
+	2 -> 3 [label=T]
+	2 -> 4 [label=F]
+	0 [label="computer_0_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 2 [label=F]
+}
+
+2025-01-14 12:24:48,087 - decision_tree.py - subtree quotient has 128 states and 576 choices
+2025-01-14 12:24:48,088 - mdp.py - MDP has 64/128 relevant states
+2025-01-14 12:24:48,089 - mdp.py - MDP has 8 actions
+2025-01-14 12:24:48,090 - mdp.py - found the following 6 variables: ['computer_1_running:[0..1]', 'computer_2_running:[0..1]', 'computer_3_running:[0..1]', 'computer_4_running:[0..1]', 'computer_5_running:[0..1]', 'computer_6_running:[0..1]']
+
+2025-01-14 12:24:48,090 - mdp.py - building tree of depth 0
+2025-01-14 12:24:48,095 - statistic.py - synthesis initiated, design space: 8
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.03 s
+number of holes: 1, family size: 8, quotient: 128 states / 576 actions
+explored: 100 %
+
+optimum: 529.808322
+--------------------
+2025-01-14 12:24:48,124 - decision_tree.py - families considered: 4
+2025-01-14 12:24:48,124 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:24:48,124 - decision_tree.py - families with schedulers preserved: 0
+2025-01-14 12:24:48,124 - decision_tree.py - families model checked: 4
+2025-01-14 12:24:48,124 - decision_tree.py - harmonizations attempted: 1
+2025-01-14 12:24:48,124 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:24:48,124 - mdp.py - building tree of depth 1
+2025-01-14 12:24:48,135 - statistic.py - synthesis initiated, design space: 384
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 0.68 s
+number of holes: 9, family size: 384, quotient: 128 states / 576 actions
+explored: 100 %
+
+optimum: 529.808322
+--------------------
+2025-01-14 12:24:48,814 - decision_tree.py - families considered: 42
+2025-01-14 12:24:48,815 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:24:48,815 - decision_tree.py - families with schedulers preserved: 2
+2025-01-14 12:24:48,815 - decision_tree.py - families model checked: 40
+2025-01-14 12:24:48,815 - decision_tree.py - harmonizations attempted: 12
+2025-01-14 12:24:48,815 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:24:48,815 - mdp.py - building tree of depth 2
+2025-01-14 12:24:48,837 - statistic.py - synthesis initiated, design space: 884736
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 2.23 s
+number of holes: 25, family size: 884736, quotient: 128 states / 576 actions
+explored: 100 %
+
+optimum: 529.808322
+--------------------
+2025-01-14 12:24:51,071 - decision_tree.py - families considered: 167
+2025-01-14 12:24:51,071 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:24:51,071 - decision_tree.py - families with schedulers preserved: 31
+2025-01-14 12:24:51,071 - decision_tree.py - families model checked: 136
+2025-01-14 12:24:51,071 - decision_tree.py - harmonizations attempted: 26
+2025-01-14 12:24:51,071 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:24:51,072 - mdp.py - building tree of depth 3
+2025-01-14 12:24:51,103 - statistic.py - synthesis initiated, design space: 1e12
+2025-01-14 12:24:57,108 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.0 s
+number of holes: 57, family size: 1e12, quotient: 128 states / 576 actions
+explored: 0 %
+
+optimum: 529.808322
+--------------------
+2025-01-14 12:24:57,108 - decision_tree.py - families considered: 403
+2025-01-14 12:24:57,108 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:24:57,108 - decision_tree.py - families with schedulers preserved: 94
+2025-01-14 12:24:57,108 - decision_tree.py - families model checked: 309
+2025-01-14 12:24:57,108 - decision_tree.py - harmonizations attempted: 46
+2025-01-14 12:24:57,108 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:24:57,109 - mdp.py - building tree of depth 4
+2025-01-14 12:24:57,160 - statistic.py - synthesis initiated, design space: 1e26
+2025-01-14 12:25:01,875 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 6.02 s
+number of holes: 121, family size: 1e26, quotient: 128 states / 576 actions
+explored: 2 %
+
+optimum: 529.808322
+--------------------
+2025-01-14 12:25:01,876 - decision_tree.py - families considered: 222
+2025-01-14 12:25:01,876 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:25:01,876 - decision_tree.py - families with schedulers preserved: 41
+2025-01-14 12:25:01,876 - decision_tree.py - families model checked: 181
+2025-01-14 12:25:01,876 - decision_tree.py - harmonizations attempted: 45
+2025-01-14 12:25:01,876 - decision_tree.py - harmonizations succeeded: 0
+
+
+2025-01-14 12:25:01,876 - mdp.py - building tree of depth 5
+2025-01-14 12:25:01,963 - statistic.py - synthesis initiated, design space: 1e53
+2025-01-14 12:25:30,666 - synthesizer.py - time limit reached, aborting...
+--------------------
+Synthesis summary:
+optimality objective: R{"reward"}max=? [Cdiscount=99/100] 
+
+method: AR (decision tree), synthesis time: 30.01 s
+number of holes: 249, family size: 1e53, quotient: 128 states / 576 actions
+explored: 12 %
+
+optimum: 529.808322
+--------------------
+2025-01-14 12:25:30,668 - decision_tree.py - families considered: 447
+2025-01-14 12:25:30,668 - decision_tree.py - families skipped by construction: 0
+2025-01-14 12:25:30,668 - decision_tree.py - families with schedulers preserved: 74
+2025-01-14 12:25:30,668 - decision_tree.py - families model checked: 373
+2025-01-14 12:25:30,668 - decision_tree.py - harmonizations attempted: 90
+2025-01-14 12:25:30,668 - decision_tree.py - harmonizations succeeded: 0
+
+2025-01-14 12:25:30,668 - decision_tree.py - no admissible subtree found from node 2
+// decision tree
+digraph {
+	1 [label="(reboot_computer_0)" margin="0.05,0.05" shape=box style=rounded]
+	3 [label="(reboot_computer_2)" margin="0.05,0.05" shape=box style=rounded]
+	5 [label="(reboot_computer_1)" margin="0.05,0.05" shape=box style=rounded]
+	10 [label="(reboot_computer_6)" margin="0.05,0.05" shape=box style=rounded]
+	11 [label="(reboot_computer_4)" margin="0.05,0.05" shape=box style=rounded]
+	9 [label="computer_5_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	9 -> 10 [label=T]
+	9 -> 11 [label=F]
+	12 [label="(reboot_computer_6)" margin="0.05,0.05" shape=box style=rounded]
+	8 [label="computer_4_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	8 -> 9 [label=T]
+	8 -> 12 [label=F]
+	13 [label="(reboot_computer_6)" margin="0.05,0.05" shape=box style=rounded]
+	7 [label="computer_3_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	7 -> 8 [label=T]
+	7 -> 13 [label=F]
+	16 [label="(reboot_computer_4)" margin="0.05,0.05" shape=box style=rounded]
+	18 [label="(reboot_computer_5)" margin="0.05,0.05" shape=box style=rounded]
+	19 [label="(reboot_computer_4)" margin="0.05,0.05" shape=box style=rounded]
+	17 [label="computer_5_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	17 -> 18 [label=T]
+	17 -> 19 [label=F]
+	15 [label="computer_3_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	15 -> 16 [label=T]
+	15 -> 17 [label=F]
+	21 [label="(reboot_computer_5)" margin="0.05,0.05" shape=box style=rounded]
+	23 [label="(reboot_computer_3)" margin="0.05,0.05" shape=box style=rounded]
+	24 [label="(reboot_computer_0)" margin="0.05,0.05" shape=box style=rounded]
+	22 [label="computer_3_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	22 -> 23 [label=T]
+	22 -> 24 [label=F]
+	20 [label="computer_5_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	20 -> 21 [label=T]
+	20 -> 22 [label=F]
+	14 [label="computer_4_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	14 -> 15 [label=T]
+	14 -> 20 [label=F]
+	6 [label="computer_6_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	6 -> 7 [label=T]
+	6 -> 14 [label=F]
+	4 [label="computer_1_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	4 -> 5 [label=T]
+	4 -> 6 [label=F]
+	2 [label="computer_2_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	2 -> 3 [label=T]
+	2 -> 4 [label=F]
+	0 [label="computer_0_running<=0" margin="0.05,0.05" shape=box style=rounded]
+	0 -> 1 [label=T]
+	0 -> 2 [label=F]
+}
+
+2025-01-14 12:25:30,671 - decision_tree.py - final tree has value 557.6930493915883 with depth 7 and 12 nodes
+557.6930493915883 45.19 7 12

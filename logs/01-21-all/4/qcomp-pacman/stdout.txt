@@ -1,0 +1,51 @@
+2025-04-10 12:11:45,490 - cli.py:170 - This is Paynt version 0.1.0.
+2025-04-10 12:11:45,490 - sketch.py:84 - loading sketch from /home/fpmk/synthesis-playground/models/dts/qcomp/pacman/model.prism ...
+2025-04-10 12:11:45,490 - sketch.py:88 - assuming sketch in PRISM format...
+2025-04-10 12:11:45,549 - prism_parser.py:31 - PRISM model type: MDP
+2025-04-10 12:11:45,554 - prism_parser.py:202 - loading properties from /home/fpmk/synthesis-playground/models/dts/qcomp/pacman/model.props ...
+2025-04-10 12:11:45,554 - prism_parser.py:218 - found the following specification: optimality: Pmin=? [F "Crash"] 
+2025-04-10 12:11:45,612 - sketch.py:149 - sketch parsing OK
+2025-04-10 12:11:45,615 - sketch.py:170 - constructed explicit quotient having 2270 states and 2951 choices
+2025-04-10 12:11:45,615 - sketch.py:176 - found the following specification optimality: Pmin=? [F "Crash"] 
+2025-04-10 12:11:45,629 - mdp.py:497 - MDP has 306/2270 relevant states
+2025-04-10 12:11:45,629 - mdp.py:501 - adding explicit don't-care action to relevant states...
+2025-04-10 12:11:45,632 - mdp.py:507 - MDP has 12 actions
+2025-04-10 12:11:45,658 - mdp.py:532 - found the following 10 variables: ['dG0:[0..3]', 'dG1:[0..3]', 'dP:[0..3]', 'steps:[2..9]', 'xG0:[0..9]', 'xG1:[0..9]', 'xP:[1..10]', 'yG0:[0..6]', 'yG1:[0..6]', 'yP:[1..6]']
+2025-04-10 12:11:45,668 - decision_tree.py:609 - the optimal scheduler has value: 0.5510999999999999
+2025-04-10 12:11:45,671 - decision_tree.py:616 - the random scheduler has value: 0.6561094093286132
+
+2025-04-10 12:11:45,671 - mdp.py:825 - building tree of depth 0
+2025-04-10 12:11:45,678 - statistic.py:67 - synthesis initiated, design space: 12
+2025-04-10 12:11:45,688 - synthesizer_ar.py:114 - value 0.6852 achieved after 0.2 seconds
+2025-04-10 12:11:45,688 - synthesizer_ar.py:114 - value 0.5511 achieved after 0.2 seconds
+--------------------
+Synthesis summary:
+optimality objective: Pmin=? [F "Crash"] 
+
+method: AR (decision tree), synthesis time: 0.01 s
+number of holes: 1, family size: 12, quotient: 2270 states / 3257 actions
+explored: 100 %
+MDP stats: avg MDP size: 1196, iterations: 4
+
+optimum: 0.5511
+--------------------
+2025-04-10 12:11:45,692 - decision_tree.py:120 - families considered: 4
+2025-04-10 12:11:45,692 - decision_tree.py:121 - families skipped by construction: 0
+2025-04-10 12:11:45,692 - decision_tree.py:122 - families with schedulers preserved: 0
+2025-04-10 12:11:45,692 - decision_tree.py:123 - families model checked: 4
+2025-04-10 12:11:45,692 - decision_tree.py:124 - harmonizations attempted: 1
+2025-04-10 12:11:45,692 - decision_tree.py:125 - harmonizations succeeded: 2
+
+2025-04-10 12:11:45,692 - decision_tree.py:547 - printing synthesized assignment below:
+2025-04-10 12:11:45,692 - decision_tree.py:548 - A_0=right
+2025-04-10 12:11:45,692 - decision_tree.py:553 - double-checking specification satisfiability:  : 0.5510999999999999
+2025-04-10 12:11:45,693 - decision_tree.py:639 - the optimal scheduler has value: 0.5510999999999999
+2025-04-10 12:11:45,693 - decision_tree.py:641 - the random scheduler has value: 0.6561094093286132
+2025-04-10 12:11:45,693 - decision_tree.py:649 - synthesized tree of depth 0 with 0 decision nodes
+2025-04-10 12:11:45,693 - decision_tree.py:651 - the synthesized tree has value 0.5510999999999999
+2025-04-10 12:11:45,693 - decision_tree.py:653 - the synthesized tree has relative value: 1.0
+2025-04-10 12:11:45,693 - decision_tree.py:654 - printing the synthesized tree below:
+2025-04-10 12:11:45,694 - decision_tree.py:136 - exported decision tree to logs/01-21-all/4/qcomp-pacman/tree.dot
+2025-04-10 12:11:45,710 - decision_tree.py:140 - exported decision tree visualization to logs/01-21-all/4/qcomp-pacman/tree.png
+2025-04-10 12:11:45,710 - decision_tree.py:676 - synthesis finished after 0.22 seconds
+

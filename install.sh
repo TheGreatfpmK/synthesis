@@ -41,21 +41,14 @@ make storm storm-cli storm-pomdp --jobs ${COMPILE_JOBS}
 # setup and activate python environment
 python3 -m venv ${PREREQUISITES}/venv
 source ${PREREQUISITES}/venv/bin/activate
-pip3 install wheel
-
-# build pycarl
-cd ${PREREQUISITES}
-git clone https://github.com/moves-rwth/pycarl.git pycarl
-cd ${PREREQUISITES}/pycarl
-python3 setup.py develop
-#[TEST] python3 setup.py test
+pip3 install wheel setuptools
 
 # build stormpy
 cd ${PREREQUISITES}
 git clone https://github.com/moves-rwth/stormpy.git stormpy
 # git clone --branch stable https://github.com/moves-rwth/stormpy.git stormpy
 cd ${PREREQUISITES}/stormpy
-python3 setup.py develop
+pip install .
 # python3 setup.py test
 
 # paynt dependencies

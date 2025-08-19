@@ -36,7 +36,6 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             model = mdp
 
         # check constraints
-        admissible_assignment = None
         spec = self.quotient.specification
         if family.constraint_indices is None:
             family.constraint_indices = spec.all_constraint_indices()
@@ -53,7 +52,7 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
                 result.sat = False
                 break
 
-            result.primary_selection,_ = self.quotient.scheduler_is_consistent(mdp, constraint, result.primary.result)
+            result.primary_selection, consistent = self.quotient.scheduler_is_consistent(mdp, constraint, result.primary.result)
 
             # primary direction is SAT: check secondary direction to see whether all SAT
             result.secondary = model.model_check_property(constraint, alt=True)
@@ -64,17 +63,18 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
                 result.sat = True
                 continue
 
-            primary_selection,_ = self.quotient.scheduler_is_consistent(mdp, constraint, result.primary.result)
-            secondary_selection,_ = self.quotient.scheduler_is_consistent(mdp, constraint, result.secondary.result)
+            if consistent:
+                primary_selection,_ = self.quotient.scheduler_is_consistent(mdp, constraint, result.primary.result)
+                secondary_selection,_ = self.quotient.scheduler_is_consistent(mdp, constraint, result.secondary.result)
 
-            assert len(primary_selection) == len(secondary_selection)
-            selection = [[] for _ in range(len(primary_selection))]
-            for i in range(len(primary_selection)):
-                selection[i] = primary_selection[i]
-                for x in secondary_selection[i]:
-                    if x not in selection[i]:
-                        selection[i].append(x)
-            result.primary_selection = selection
+                assert len(primary_selection) == len(secondary_selection)
+                selection = [[] for _ in range(len(primary_selection))]
+                for i in range(len(primary_selection)):
+                    selection[i] = primary_selection[i]
+                    for x in secondary_selection[i]:
+                        if x not in selection[i]:
+                            selection[i].append(x)
+                result.primary_selection = selection
 
         spec_result = paynt.verification.property_result.MdpSpecificationResult()
         spec_result.constraints_result = paynt.verification.property_result.ConstraintsResult(results)
@@ -99,7 +99,7 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         elif result.constraints_result.sat is False:
             return
         elif result.constraints_result.sat is True:
-            print(f"permissive scheduler found: {family.size}")
+            # print(f"permissive scheduler found: {family.size}")
             self.permissive_policies.append(family)
 
     def synthesize_one(self, family):
@@ -116,6 +116,11 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             # undecided
             subfamilies = self.quotient.split(family)
             families = families + subfamilies
+
+
+    def print_schedulers(self):
+        for i, family in enumerate(self.permissive_policies):
+            print(f"Permissive scheduler {i}: {family}")
 
 
 def print_profiler_stats(profiler):
@@ -147,9 +152,10 @@ def print_profiler_stats(profiler):
     help="name of the sketch file in the project")
 @click.option("--props", default="sketch.props", show_default=True,
     help="name of the properties file in the project")
+@click.option("--pomdp-as-mdp", is_flag=True, default=False, help="treat POMDP as MDP by considering its underlying MDP")
 @click.option("--timeout", default=300, show_default=True, help="timeout for the synthesis process")
 @click.option("--profiling", is_flag=True, default=False, help="run profiling")
-def main(project, sketch, props, timeout, profiling):
+def main(project, sketch, props, pomdp_as_mdp, timeout, profiling):
 
     if profiling:
         profiler = cProfile.Profile()
@@ -164,10 +170,36 @@ def main(project, sketch, props, timeout, profiling):
 
     family = paynt.family.family.Family()
     choice_to_hole_options = []
-    for state in range(explicit_quotient.nr_states):
-        family.add_hole(f"state_{state}", [x for x in range(explicit_quotient.get_nr_available_actions(state))])
-        for action in range(explicit_quotient.get_nr_available_actions(state)):
-            choice_to_hole_options.append([(state, action)])
+
+    if isinstance(placeholder_quotient, paynt.quotient.mdp.MdpQuotient):
+
+        vars, state_valuations = placeholder_quotient.get_state_valuations(explicit_quotient)
+        for state in range(explicit_quotient.nr_states):
+            nci = explicit_quotient.nondeterministic_choice_indices.copy()
+            if explicit_quotient.get_nr_available_actions(state) > 1:
+                state_val = f"{[var+"="+str(state_valuations[state][i]) for i, var in enumerate(vars)]}"
+                family.add_hole(f"{state_val}", [explicit_quotient.choice_labeling.get_labels_of_choice(x) for x in range(nci[state], nci[state + 1])])
+                for action in range(explicit_quotient.get_nr_available_actions(state)):
+                    choice_to_hole_options.append([(family.num_holes-1, action)])
+            else:
+                choice_to_hole_options.append([])
+
+    elif isinstance(placeholder_quotient, paynt.quotient.pomdp.PomdpQuotient) and not pomdp_as_mdp:
+
+        family, choice_to_hole_options = placeholder_quotient.create_coloring()
+
+    else:
+
+        for state in range(explicit_quotient.nr_states):
+            if explicit_quotient.get_nr_available_actions(state) > 1:
+                state_val = f"state_{state}"
+                family.add_hole(f"{state_val}", [str(x) for x in range(explicit_quotient.get_nr_available_actions(state))])
+                for action in range(explicit_quotient.get_nr_available_actions(state)):
+                    choice_to_hole_options.append([(family.num_holes-1, action)])
+            else:
+                choice_to_hole_options.append([])
+
+    print(family.size)
 
     coloring = payntbind.synthesis.Coloring(family.family, explicit_quotient.nondeterministic_choice_indices, choice_to_hole_options)
 
@@ -176,6 +208,10 @@ def main(project, sketch, props, timeout, profiling):
     permissive_synthesizer = PermissiveSynthesizer(quotient)
 
     permissive_synthesizer.run()
+
+    print(len(permissive_synthesizer.permissive_policies), "permissive policies found")
+
+    permissive_synthesizer.print_schedulers()
 
     if profiling:
         profiler.disable()

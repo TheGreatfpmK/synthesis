@@ -21,11 +21,15 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
     def method_name(self):
         return "Permissive"
 
-    def __init__(self, quotient, eps_threshold=None, mc_reuse=True):
+    def __init__(self, quotient, eps_threshold=None, mc_reuse=True, cache_sat=False, cache_unsat=False):
         super().__init__(quotient)
         
         self.permissive_policies = []
+        self.discarded_families = []
         self.mc_reuse = mc_reuse
+        self.cache_sat = cache_sat
+        self.cache_unsat = cache_unsat
+        # self.safe_scheduler_count = 0
 
         if eps_threshold is not None:
             threshold_diff = self.quotient.specification.constraints[0].threshold * eps_threshold
@@ -34,6 +38,24 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             self.overapp_threshold = overapp_threshold
         else:
             self.overapp_threshold = None
+
+    def state_to_choice_to_choices_unreachable(self, state_to_choice):
+        num_choices = self.quotient.quotient_mdp.nr_choices
+        choices = stormpy.BitVector(num_choices,False)
+        nci = self.quotient.quotient_mdp.nondeterministic_choice_indices
+        for state, choice in enumerate(state_to_choice):
+            if choice is not None and choice < num_choices:
+                choices.set(choice,True)
+            else:
+                for state_choice in range(nci[state], nci[state+1]):
+                    choices.set(state_choice,True)
+        return choices
+
+    def scheduler_selection_unreachable(self, mdp, scheduler):
+        state_to_choice = self.quotient.scheduler_to_state_to_choice(mdp, scheduler)
+        choices = self.state_to_choice_to_choices_unreachable(state_to_choice)
+        hole_selection = self.quotient.coloring.collectHoleOptions(choices)
+        return hole_selection
 
     def check_specification(self, family):
         ''' Check specification for mdp or smg based on self.quotient '''
@@ -89,9 +111,8 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
                 result.secondary_selection, _ = self.quotient.scheduler_is_consistent(mdp, constraint, result.secondary.result)
 
             # print(f"secondary: {result.secondary.value}, {result.secondary.sat}")
-            # if mdp.is_deterministic and result.primary.value != result.secondary.value:
-            #     print(f"WARNING: model is deterministic but min < max: {result.primary.value} < {result.secondary.value}")
-                # logger.warning("WARNING: model is deterministic but min<max")
+            if mdp.is_deterministic and abs(result.primary.value - result.secondary.value) > 1e-4:
+                logger.warning(f"WARNING: model is deterministic but min < max: {result.primary.value} {result.secondary.value}")
             if result.secondary.sat:
                 # only count permissive schedulers that are not overly conservative as SAT
                 if self.overapp_threshold is None or result.primary.value >= self.overapp_threshold:
@@ -138,17 +159,34 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         if result is None:
             return
         elif result.constraints_result.sat is False:
+            if self.cache_unsat:
+                unreachable_selection = self.scheduler_selection_unreachable(family.mdp, result.constraints_result.results[0].primary.result.scheduler)
+                unreachable_family = self.full_family.assume_options_copy(unreachable_selection)
+                self.discarded_families.append(unreachable_family)
             return
         elif result.constraints_result.sat is True:
-            # print(f"permissive scheduler found: {family.size}")
-            self.permissive_policies.append(family)
+            if self.cache_sat:
+                unreachable_selection = self.scheduler_selection_unreachable(family.mdp, result.constraints_result.results[0].secondary.result.scheduler)
+                unreachable_family = self.full_family.assume_options_copy(unreachable_selection)
+                self.permissive_policies.append(unreachable_family)
+            else:
+                self.permissive_policies.append(family)
 
     def synthesize_one(self, family):
+        self.full_family = family
         families = [family]
         while families:
             if self.resource_limit_reached():
                 break
+            family_explored = False
             family = families.pop(-1)
+            for explored_family in self.permissive_policies if self.cache_sat else [] + self.discarded_families if self.cache_unsat else []:
+                if family.family.isSubsetOf(explored_family.family):
+                    family_explored = True
+                    break
+            if family_explored:
+                self.explore(family)
+                continue
             self.verify_family(family)
             self.check_result(family)
             if family.analysis_result.constraints_result.sat is False or family.analysis_result.constraints_result.sat is True:
@@ -196,9 +234,11 @@ def print_profiler_stats(profiler):
 @click.option("--pomdp-as-mdp", is_flag=True, default=False, help="treat POMDP as MDP by considering its underlying MDP")
 @click.option("--eps-threshold", type=float, default=None, show_default=True, help="epsilon upperbound on the threshold")
 @click.option("--mc-dont-reuse", is_flag=True, default=False, help="don't reuse model checking in subfamilies")
+@click.option("--cache-sat", is_flag=True, default=False, help="cache SAT results")
+@click.option("--cache-unsat", is_flag=True, default=False, help="cache UNSAT results")
 @click.option("--timeout", default=300, show_default=True, help="timeout for the synthesis process")
 @click.option("--profiling", is_flag=True, default=False, help="run profiling")
-def main(project, sketch, props, pomdp_as_mdp, eps_threshold, mc_dont_reuse, timeout, profiling):
+def main(project, sketch, props, pomdp_as_mdp, eps_threshold, mc_dont_reuse, cache_sat, cache_unsat, timeout, profiling):
 
     if profiling:
         profiler = cProfile.Profile()
@@ -256,7 +296,7 @@ def main(project, sketch, props, pomdp_as_mdp, eps_threshold, mc_dont_reuse, tim
     
     print(f"number of schedulers: {family.size}")
 
-    permissive_synthesizer = PermissiveSynthesizer(quotient, eps_threshold=eps_threshold, mc_reuse=not mc_dont_reuse)
+    permissive_synthesizer = PermissiveSynthesizer(quotient, eps_threshold=eps_threshold, mc_reuse=not mc_dont_reuse, cache_sat=cache_sat, cache_unsat=cache_unsat)
 
     permissive_synthesizer.run()
 
@@ -265,7 +305,7 @@ def main(project, sketch, props, pomdp_as_mdp, eps_threshold, mc_dont_reuse, tim
     # print the safe subfamilies
     # permissive_synthesizer.print_schedulers()
 
-    print(f"Safe schedulers: {sum(f.size for f in permissive_synthesizer.permissive_policies)}/{family.size} ({round(sum(f.size for f in permissive_synthesizer.permissive_policies) / family.size * 100, 1)}%)")
+    # print(f"Safe schedulers: {sum(f.size for f in permissive_synthesizer.permissive_policies)}/{family.size} ({round(sum(f.size for f in permissive_synthesizer.permissive_policies) / family.size * 100, 1)}%)")
 
     if profiling:
         profiler.disable()

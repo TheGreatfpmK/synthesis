@@ -21,10 +21,11 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
     def method_name(self):
         return "Permissive"
 
-    def __init__(self, quotient, eps_threshold=None):
+    def __init__(self, quotient, eps_threshold=None, mc_reuse=True):
         super().__init__(quotient)
         
         self.permissive_policies = []
+        self.mc_reuse = mc_reuse
 
         if eps_threshold is not None:
             threshold_diff = self.quotient.specification.constraints[0].threshold * eps_threshold
@@ -53,20 +54,44 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             result = paynt.verification.property_result.MdpPropertyResult(constraint)
             results[index] = result
 
-            # check primary direction
-            result.primary = model.model_check_property(constraint)
+            # if family.parent_info is not None and family.parent_info.consistent_primary:
+            #     print(family.parent_info.result.primary_selection_original[family.parent_info.splitter], family.parent_info.result.secondary_selection[family.parent_info.splitter], family.hole_options(family.parent_info.splitter), family.parent_info.splitter)
+
+            if self.mc_reuse and family.parent_info is not None and family.parent_info.consistent_primary and set(family.parent_info.result.primary_selection_original[family.parent_info.splitter]).issubset(set(family.hole_options(family.parent_info.splitter))):
+
+                result.primary = family.parent_info.result.primary
+                result.primary_selection_original = family.parent_info.result.primary_selection_original
+                consistent = True
+                result.primary_reused = True
+
+            else:
+                # check primary direction
+                result.primary = model.model_check_property(constraint)
+                self.stat.iteration(family.mdp)
+                result.primary_selection_original, consistent = self.quotient.scheduler_is_consistent(mdp, constraint, result.primary.result)
+
             # print(f"primary: {result.primary.value}")
             if result.primary.sat is False:
                 result.sat = False
                 break
 
-            result.primary_selection, consistent = self.quotient.scheduler_is_consistent(mdp, constraint, result.primary.result)
+            if self.mc_reuse and family.parent_info is not None and family.parent_info.consistent_primary and set(family.parent_info.result.secondary_selection[family.parent_info.splitter]).issubset(set(family.hole_options(family.parent_info.splitter))):
 
-            # primary direction is SAT: check secondary direction to see whether all SAT
-            result.secondary = model.model_check_property(constraint, alt=True)
+                result.secondary = family.parent_info.result.secondary
+                result.secondary_selection = family.parent_info.result.secondary_selection
+                result.secondary_reused = True
+
+            else:
+
+                # primary direction is SAT: check secondary direction to see whether all SAT
+                result.secondary = model.model_check_property(constraint, alt=True)
+                self.stat.iteration(family.mdp)
+                result.secondary_selection, _ = self.quotient.scheduler_is_consistent(mdp, constraint, result.secondary.result)
+
             # print(f"secondary: {result.secondary.value}, {result.secondary.sat}")
-            if mdp.is_deterministic and result.primary.value != result.secondary.value:
-                logger.warning("WARNING: model is deterministic but min<max")
+            # if mdp.is_deterministic and result.primary.value != result.secondary.value:
+            #     print(f"WARNING: model is deterministic but min < max: {result.primary.value} < {result.secondary.value}")
+                # logger.warning("WARNING: model is deterministic but min<max")
             if result.secondary.sat:
                 # only count permissive schedulers that are not overly conservative as SAT
                 if self.overapp_threshold is None or result.primary.value >= self.overapp_threshold:
@@ -77,20 +102,20 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             if self.overapp_threshold is not None and result.secondary.value < self.overapp_threshold:
                 result.sat = False
                 break
-            
 
             if consistent:
-                primary_selection,_ = self.quotient.scheduler_is_consistent(mdp, constraint, result.primary.result)
-                secondary_selection,_ = self.quotient.scheduler_is_consistent(mdp, constraint, result.secondary.result)
+                family.consistent_primary = True
 
-                assert len(primary_selection) == len(secondary_selection)
-                selection = [[] for _ in range(len(primary_selection))]
-                for i in range(len(primary_selection)):
-                    selection[i] = primary_selection[i]
-                    for x in secondary_selection[i]:
+                assert len(result.primary_selection_original) == len(result.secondary_selection)
+                selection = [[] for _ in range(len(result.primary_selection_original))]
+                for i in range(len(result.primary_selection_original)):
+                    selection[i] = result.primary_selection_original[i].copy()
+                    for x in result.secondary_selection[i]:
                         if x not in selection[i]:
                             selection[i].append(x)
                 result.primary_selection = selection
+            else:
+                result.primary_selection = result.primary_selection_original.copy()
 
         spec_result = paynt.verification.property_result.MdpSpecificationResult()
         spec_result.constraints_result = paynt.verification.property_result.ConstraintsResult(results)
@@ -100,12 +125,12 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
     def verify_family(self, family):
         self.quotient.build(family)
 
-        # TODO include iteration_game in iteration? is it necessary?
-        if isinstance(self.quotient, paynt.quotient.posmg.PosmgQuotient):
-            self.stat.iteration_game(family.mdp.states)
-        else:
-            self.stat.iteration(family.mdp)
+        # if isinstance(self.quotient, paynt.quotient.posmg.PosmgQuotient):
+        #     self.stat.iteration_game(family.mdp.states)
+        # else:
+        #     self.stat.iteration(family.mdp)
 
+        # TODO probably only save the hole assignment
         self.check_specification(family)
 
     def check_result(self, family):
@@ -170,9 +195,10 @@ def print_profiler_stats(profiler):
     help="name of the properties file in the project")
 @click.option("--pomdp-as-mdp", is_flag=True, default=False, help="treat POMDP as MDP by considering its underlying MDP")
 @click.option("--eps-threshold", type=float, default=None, show_default=True, help="epsilon upperbound on the threshold")
+@click.option("--mc-dont-reuse", is_flag=True, default=False, help="don't reuse model checking in subfamilies")
 @click.option("--timeout", default=300, show_default=True, help="timeout for the synthesis process")
 @click.option("--profiling", is_flag=True, default=False, help="run profiling")
-def main(project, sketch, props, pomdp_as_mdp, eps_threshold, timeout, profiling):
+def main(project, sketch, props, pomdp_as_mdp, eps_threshold, mc_dont_reuse, timeout, profiling):
 
     if profiling:
         profiler = cProfile.Profile()
@@ -230,7 +256,7 @@ def main(project, sketch, props, pomdp_as_mdp, eps_threshold, timeout, profiling
     
     print(f"number of schedulers: {family.size}")
 
-    permissive_synthesizer = PermissiveSynthesizer(quotient, eps_threshold=eps_threshold)
+    permissive_synthesizer = PermissiveSynthesizer(quotient, eps_threshold=eps_threshold, mc_reuse=not mc_dont_reuse)
 
     permissive_synthesizer.run()
 

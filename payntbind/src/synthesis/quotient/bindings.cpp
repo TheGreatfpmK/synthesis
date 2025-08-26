@@ -311,6 +311,7 @@ void bindings_coloring(py::module& m) {
         .def("holeNumOptions", &synthesis::Family::holeNumOptions)
         .def("holeNumOptionsTotal", &synthesis::Family::holeNumOptionsTotal)
         .def("holeContains", &synthesis::Family::holeContains)
+        .def("isSubsetOf", &synthesis::Family::isSubsetOf)
         ;
 
     py::class_<synthesis::Coloring>(m, "Coloring")

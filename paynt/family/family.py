@@ -22,6 +22,10 @@ class ParentInfo():
         self.selected_choices = None
         self.constraint_indices = None
         self.refinement_depth = None
+        
+        # permissive synthesis
+        self.splitter = None
+        self.consistent_primary = None
 
 
 class Family:
@@ -44,6 +48,7 @@ class Family:
         self.mdp = None
         self.analysis_result = None
         self.encoding = None
+        self.consistent_primary = None
 
     def add_parent_info(self, parent_info):
         self.parent_info = parent_info
@@ -153,12 +158,19 @@ class Family:
         assignment = self.assume_options_copy(suboptions)
         return assignment
 
-    def collect_parent_info(self, specification):
+    def collect_parent_info(self, specification, splitter=None):
         pi = ParentInfo()
         pi.selected_choices = self.selected_choices
         pi.refinement_depth = self.refinement_depth
         cr = self.analysis_result.constraints_result
         pi.constraint_indices = cr.undecided_constraints if cr is not None else []
+        pi.consistent_primary = self.consistent_primary
+
+        # for permissive synthesis
+        if pi.consistent_primary:
+            pi.splitter = splitter
+            pi.result = self.analysis_result.constraints_result.results[0]
+
         return pi
 
     def encode(self, smt_solver):

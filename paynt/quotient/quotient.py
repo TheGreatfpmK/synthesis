@@ -290,7 +290,10 @@ class Quotient:
         # split family wrt last undecided result
         result = family.analysis_result.undecided_result()
         hole_assignments = result.primary_selection
-        scores = self.scheduler_scores(mdp, result.prop, result.primary.result, result.primary_selection)
+        if not result.primary_reused:
+            scores = self.scheduler_scores(mdp, result.prop, result.primary.result, result.primary_selection)
+        elif not result.secondary_reused:
+            scores = self.scheduler_scores(mdp, result.prop, result.secondary.result, result.primary_selection)
         if scores is None:
             scores = {hole:0 for hole in range(mdp.family.num_holes) if mdp.family.hole_num_options(hole) > 1}
 
@@ -310,7 +313,7 @@ class Quotient:
             suboptions = [other_suboptions] + core_suboptions  # DFS solves core first
 
         # construct corresponding subfamilies
-        parent_info = family.collect_parent_info(self.specification)
+        parent_info = family.collect_parent_info(self.specification,splitter)
         subfamilies = family.split(splitter,suboptions)
         for subfamily in subfamilies:
             subfamily.add_parent_info(parent_info)

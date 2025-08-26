@@ -81,6 +81,8 @@ class MdpPropertyResult:
         self.secondary = None
         self.sat = None
         self.primary_selection = None
+        self.primary_reused = False
+        self.secondary_reused = False
 
     @property
     def minimizing(self):

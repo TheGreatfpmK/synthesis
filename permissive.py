@@ -31,6 +31,8 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         self.cache_unsat = cache_unsat
         # self.safe_scheduler_count = 0
 
+        assert len(self.quotient.specification.constraints) == 1, "only single-constraint specifications supported"
+
         if eps_threshold is not None:
             threshold_diff = self.quotient.specification.constraints[0].threshold * eps_threshold
             overapp_threshold = self.quotient.specification.constraints[0].threshold - threshold_diff if self.quotient.specification.constraints[0].minimizing else self.quotient.specification.constraints[0].threshold + threshold_diff
@@ -110,7 +112,7 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
                 self.stat.iteration(family.mdp)
                 result.secondary_selection, _ = self.quotient.scheduler_is_consistent(mdp, constraint, result.secondary.result)
 
-            # print(f"secondary: {result.secondary.value}, {result.secondary.sat}")
+            # print(f"secondary: {result.secondary.value}")
             if mdp.is_deterministic and abs(result.primary.value - result.secondary.value) > 1e-4:
                 logger.warning(f"WARNING: model is deterministic but min < max: {result.primary.value} {result.secondary.value}")
             if result.secondary.sat:
@@ -233,16 +235,19 @@ def print_profiler_stats(profiler):
     help="name of the properties file in the project")
 @click.option("--pomdp-as-mdp", is_flag=True, default=False, help="treat POMDP as MDP by considering its underlying MDP")
 @click.option("--eps-threshold", type=float, default=None, show_default=True, help="epsilon upperbound on the threshold")
+@click.option("--relative-eps", type=float, default=None, show_default=True, help="relative epsilon threhshold computed from random policy")
 @click.option("--mc-dont-reuse", is_flag=True, default=False, help="don't reuse model checking in subfamilies")
 @click.option("--cache-sat", is_flag=True, default=False, help="cache SAT results")
 @click.option("--cache-unsat", is_flag=True, default=False, help="cache UNSAT results")
 @click.option("--timeout", default=300, show_default=True, help="timeout for the synthesis process")
 @click.option("--profiling", is_flag=True, default=False, help="run profiling")
-def main(project, sketch, props, pomdp_as_mdp, eps_threshold, mc_dont_reuse, cache_sat, cache_unsat, timeout, profiling):
+def main(project, sketch, props, pomdp_as_mdp, eps_threshold, relative_eps, mc_dont_reuse, cache_sat, cache_unsat, timeout, profiling):
 
     if profiling:
         profiler = cProfile.Profile()
         profiler.enable()
+
+    assert eps_threshold is None or relative_eps is None, "only one of --eps-threshold and --relative-eps can be set"
 
     model_file = os.path.join(project, sketch)
     props_file = os.path.join(project, props)
@@ -291,10 +296,27 @@ def main(project, sketch, props, pomdp_as_mdp, eps_threshold, mc_dont_reuse, cac
 
         coloring = payntbind.synthesis.Coloring(family.family, explicit_quotient.nondeterministic_choice_indices, choice_to_hole_options)
 
+        if placeholder_quotient.DONT_CARE_ACTION_LABEL in placeholder_quotient.action_labels and relative_eps is not None:
+            random_choices = placeholder_quotient.get_random_choices()
+            submdp_random = placeholder_quotient.build_from_choice_mask(random_choices)
+            mc_result_random = submdp_random.model_check_property(placeholder_quotient.get_property())
+            random_result_value = mc_result_random.value
+
+            all_choices = stormpy.storage.BitVector(explicit_quotient.nr_choices, True)
+            full_mdp = placeholder_quotient.build_from_choice_mask(all_choices)
+            full_mc_result = full_mdp.model_check_property(placeholder_quotient.get_property())
+            opt_result_value = full_mc_result.value
+
+            opt_random_diff = opt_result_value - random_result_value
+            eps_optimum_threshold = opt_result_value - relative_eps * opt_random_diff
+
+            specification.constraints[0].threshold = eps_optimum_threshold
+            specification.constraints[0].property.raw_formula.set_bound(specification.constraints[0].formula.comparison_type, stormpy.ExpressionManager().create_rational(stormpy.Rational(eps_optimum_threshold)))
+
         quotient = paynt.quotient.quotient.Quotient(explicit_quotient, family, coloring, specification)
     
     
-    print(f"number of schedulers: {family.size}")
+    print(f"number of schedulers: {family.size_or_order}")
 
     permissive_synthesizer = PermissiveSynthesizer(quotient, eps_threshold=eps_threshold, mc_reuse=not mc_dont_reuse, cache_sat=cache_sat, cache_unsat=cache_unsat)
 

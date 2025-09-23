@@ -204,6 +204,65 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             print(f"Permissive scheduler {i}: {family}")
 
 
+class PermissiveTreeSynthesizer(PermissiveSynthesizer):
+
+    INITIAL_TREE_DEPTH = 1
+
+    @property
+    def method_name(self):
+        return "PermissiveTree"
+
+    def __init__(self, quotient, mdp_quotient, eps_threshold=None, mc_reuse=True, cache_sat=False, cache_unsat=False):
+        super().__init__(quotient, eps_threshold, mc_reuse, cache_sat, cache_unsat)
+        self.mdp_quotient = mdp_quotient
+
+        # initialize tree template
+        self.construct_tree_coloring(self.INITIAL_TREE_DEPTH)
+
+    def construct_tree_coloring(self, depth):
+        num_actions = len(self.mdp_quotient.action_labels)
+        dont_care_action = num_actions
+
+        decision_tree = paynt.quotient.mdp.DecisionTree(self.mdp_quotient,self.mdp_quotient.variables)
+        decision_tree.set_depth(self.INITIAL_TREE_DEPTH)
+
+        variables = decision_tree.variables
+        variable_name = [v.name for v in variables]
+        variable_domain = [v.domain for v in variables]
+        tree_list = decision_tree.to_list()
+
+        self.smt_coloring = payntbind.synthesis.ColoringSmt(
+            self.quotient.quotient_mdp.nondeterministic_choice_indices, self.mdp_quotient.choice_to_action,
+            num_actions, dont_care_action,
+            self.quotient.quotient_mdp.state_valuations, self.mdp_quotient.state_is_relevant_bv,
+            variable_name, variable_domain, tree_list, False
+        )
+
+    def synthesize_one(self, family):
+        self.full_family = family
+        families = [family]
+        while families:
+            if self.resource_limit_reached():
+                break
+            family_explored = False
+            family = families.pop(-1)
+            for explored_family in self.permissive_policies if self.cache_sat else [] + self.discarded_families if self.cache_unsat else []:
+                if family.family.isSubsetOf(explored_family.family):
+                    family_explored = True
+                    break
+            if family_explored:
+                self.explore(family)
+                continue
+            self.verify_family(family)
+            self.check_result(family)
+            if family.analysis_result.constraints_result.sat is False or family.analysis_result.constraints_result.sat is True:
+                self.explore(family)
+                continue
+            # undecided, check implementability
+            subfamilies = self.quotient.split(family)
+            families = families + subfamilies
+
+
 def print_profiler_stats(profiler):
     stats = pstats.Stats(profiler)
     NUM_LINES = 10
@@ -239,9 +298,10 @@ def print_profiler_stats(profiler):
 @click.option("--mc-dont-reuse", is_flag=True, default=False, help="don't reuse model checking in subfamilies")
 @click.option("--cache-sat", is_flag=True, default=False, help="cache SAT results")
 @click.option("--cache-unsat", is_flag=True, default=False, help="cache UNSAT results")
+@click.option("--dt", is_flag=True, default=False, help="synthesize DT")
 @click.option("--timeout", default=300, show_default=True, help="timeout for the synthesis process")
 @click.option("--profiling", is_flag=True, default=False, help="run profiling")
-def main(project, sketch, props, pomdp_as_mdp, eps_threshold, relative_eps, mc_dont_reuse, cache_sat, cache_unsat, timeout, profiling):
+def main(project, sketch, props, pomdp_as_mdp, eps_threshold, relative_eps, mc_dont_reuse, cache_sat, cache_unsat, dt, timeout, profiling):
 
     if profiling:
         profiler = cProfile.Profile()
@@ -318,7 +378,10 @@ def main(project, sketch, props, pomdp_as_mdp, eps_threshold, relative_eps, mc_d
     
     print(f"number of schedulers: {family.size_or_order}")
 
-    permissive_synthesizer = PermissiveSynthesizer(quotient, eps_threshold=eps_threshold, mc_reuse=not mc_dont_reuse, cache_sat=cache_sat, cache_unsat=cache_unsat)
+    if dt:
+        permissive_synthesizer = PermissiveTreeSynthesizer(quotient, placeholder_quotient, eps_threshold=eps_threshold, mc_reuse=not mc_dont_reuse, cache_sat=cache_sat, cache_unsat=cache_unsat)
+    else:
+        permissive_synthesizer = PermissiveSynthesizer(quotient, eps_threshold=eps_threshold, mc_reuse=not mc_dont_reuse, cache_sat=cache_sat, cache_unsat=cache_unsat)
 
     permissive_synthesizer.run()
 

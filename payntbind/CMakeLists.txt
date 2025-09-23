@@ -27,8 +27,6 @@ if (DEFINED DISABLE_SMG)
     add_definitions(-DDISABLE_SMG)
 endif()
 
-find_package(Python COMPONENTS Interpreter Development REQUIRED)
-set(PYBIND11_FINDPYTHON ON)
 find_package(pybind11 CONFIG REQUIRED)
 message(STATUS "PAYNT - Using pybind11 version ${pybind11_VERSION}")
 
@@ -151,9 +149,6 @@ if(COMPILE_WITH_CCACHE)
 else()
     message(STATUS "PAYNT - Disabled use of ccache.")
 endif()
-
-# Set configurations
-set(STORM_VERSION ${storm_VERSION})
 
 # Helper functions
 function(build_module MOD_NAME # Module name

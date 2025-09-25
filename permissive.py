@@ -4,6 +4,7 @@ import payntbind
 import stormpy
 
 import paynt.parser.sketch
+from paynt.quotient.mdp import MdpQuotient
 import paynt.synthesizer.synthesizer
 
 import os
@@ -206,7 +207,7 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
 
 class PermissiveTreeSynthesizer(PermissiveSynthesizer):
 
-    INITIAL_TREE_DEPTH = 1
+    INITIAL_TREE_DEPTH = 0
 
     @property
     def method_name(self):
@@ -216,51 +217,97 @@ class PermissiveTreeSynthesizer(PermissiveSynthesizer):
         super().__init__(quotient, eps_threshold, mc_reuse, cache_sat, cache_unsat)
         self.mdp_quotient = mdp_quotient
 
+        self.unimplementable_families = []
+
         # initialize tree template
         self.construct_tree_coloring(self.INITIAL_TREE_DEPTH)
 
     def construct_tree_coloring(self, depth):
-        num_actions = len(self.mdp_quotient.action_labels)
-        dont_care_action = num_actions
+        self.mdp_quotient.reset_tree(depth, False)
+        self.mdp_quotient.build(self.mdp_quotient.family)
 
-        decision_tree = paynt.quotient.mdp.DecisionTree(self.mdp_quotient,self.mdp_quotient.variables)
-        decision_tree.set_depth(self.INITIAL_TREE_DEPTH)
+    def tree_from_hole_selection(self, hole_selection):
+        assignment = self.mdp_quotient.family.assume_options_copy(hole_selection)
+        tree = None
+        dtmc = self.mdp_quotient.build_assignment(assignment)
+        res = dtmc.check_specification(self.quotient.specification)
+        sat = res.constraints_result.sat
+        if sat:
+            tree = self.mdp_quotient.decision_tree
+            tree.root.associate_assignment(assignment)
+        return tree
 
-        variables = decision_tree.variables
-        variable_name = [v.name for v in variables]
-        variable_domain = [v.domain for v in variables]
-        tree_list = decision_tree.to_list()
+    def check_implementability(self, family):
+        choices = self.quotient.coloring.selectCompatibleChoices(family.family)
+        self.mdp_quotient.coloring.selectCompatibleChoices(self.mdp_quotient.family.family)
+        consistent,hole_selection = self.mdp_quotient.coloring.areChoicesConsistentPermissive(choices, self.mdp_quotient.family.family)
+        tree = None
 
-        self.smt_coloring = payntbind.synthesis.ColoringSmt(
-            self.quotient.quotient_mdp.nondeterministic_choice_indices, self.mdp_quotient.choice_to_action,
-            num_actions, dont_care_action,
-            self.quotient.quotient_mdp.state_valuations, self.mdp_quotient.state_is_relevant_bv,
-            variable_name, variable_domain, tree_list, False
-        )
+        # if implementable, check the returned tree
+        if consistent:
+            tree = self.tree_from_hole_selection(hole_selection)
+
+        return consistent, tree
 
     def synthesize_one(self, family):
         self.full_family = family
         families = [family]
-        while families:
-            if self.resource_limit_reached():
-                break
-            family_explored = False
-            family = families.pop(-1)
-            for explored_family in self.permissive_policies if self.cache_sat else [] + self.discarded_families if self.cache_unsat else []:
-                if family.family.isSubsetOf(explored_family.family):
-                    family_explored = True
+        current_depth = self.INITIAL_TREE_DEPTH
+
+        while True:
+            while families:
+                if self.resource_limit_reached():
                     break
-            if family_explored:
-                self.explore(family)
-                continue
-            self.verify_family(family)
-            self.check_result(family)
-            if family.analysis_result.constraints_result.sat is False or family.analysis_result.constraints_result.sat is True:
-                self.explore(family)
-                continue
-            # undecided, check implementability
-            subfamilies = self.quotient.split(family)
-            families = families + subfamilies
+                family_explored = False
+                family = families.pop(-1)
+                for explored_family in self.permissive_policies if self.cache_sat else [] + self.discarded_families if self.cache_unsat else []:
+                    if family.family.isSubsetOf(explored_family.family):
+                        family_explored = True
+                        break
+                if family_explored:
+                    self.explore(family)
+                    continue
+                self.verify_family(family)
+                self.check_result(family)
+                if family.analysis_result.constraints_result.sat is False:
+                    self.explore(family)
+                    continue
+                if family.analysis_result.constraints_result.sat is True:
+                    self.explore(family)
+                    implementable, tree = self.check_implementability(family)
+                    if implementable:
+                        print("sat implementable", tree)
+                        return
+                    else:
+                        continue
+                        
+
+                # undecided, check implementability
+                implementable, tree = self.check_implementability(family)
+                
+                if not implementable:
+                    self.unimplementable_families.append(family)
+                    continue
+                elif tree is not None:
+                    print("undecided implementable", tree)
+                    return
+
+
+                subfamilies = self.quotient.split(family)
+                families = families + subfamilies
+
+            current_depth += 1
+            print(f"Increasing tree depth to {current_depth}")
+            self.construct_tree_coloring(current_depth)
+
+            for sat_family in self.permissive_policies:
+                implementable, tree = self.check_implementability(sat_family)
+                if implementable:
+                    print("sat check implementable", tree)
+                    return
+                
+            families = list(self.unimplementable_families)
+            self.unimplementable_families = []
 
 
 def print_profiler_stats(profiler):
@@ -299,9 +346,10 @@ def print_profiler_stats(profiler):
 @click.option("--cache-sat", is_flag=True, default=False, help="cache SAT results")
 @click.option("--cache-unsat", is_flag=True, default=False, help="cache UNSAT results")
 @click.option("--dt", is_flag=True, default=False, help="synthesize DT")
+@click.option("--dt-init-depth", type=int, default=0, show_default=True, help="initial depth for permissive DT synthesis")
 @click.option("--timeout", default=300, show_default=True, help="timeout for the synthesis process")
 @click.option("--profiling", is_flag=True, default=False, help="run profiling")
-def main(project, sketch, props, pomdp_as_mdp, eps_threshold, relative_eps, mc_dont_reuse, cache_sat, cache_unsat, dt, timeout, profiling):
+def main(project, sketch, props, pomdp_as_mdp, eps_threshold, relative_eps, mc_dont_reuse, cache_sat, cache_unsat, dt, dt_init_depth, timeout, profiling):
 
     if profiling:
         profiler = cProfile.Profile()
@@ -377,8 +425,10 @@ def main(project, sketch, props, pomdp_as_mdp, eps_threshold, relative_eps, mc_d
     
     
     print(f"number of schedulers: {family.size_or_order}")
+    # print(f"epsilon optimum threshold: {eps_optimum_threshold}")
 
     if dt:
+        PermissiveTreeSynthesizer.INITIAL_TREE_DEPTH = dt_init_depth
         permissive_synthesizer = PermissiveTreeSynthesizer(quotient, placeholder_quotient, eps_threshold=eps_threshold, mc_reuse=not mc_dont_reuse, cache_sat=cache_sat, cache_unsat=cache_unsat)
     else:
         permissive_synthesizer = PermissiveSynthesizer(quotient, eps_threshold=eps_threshold, mc_reuse=not mc_dont_reuse, cache_sat=cache_sat, cache_unsat=cache_unsat)

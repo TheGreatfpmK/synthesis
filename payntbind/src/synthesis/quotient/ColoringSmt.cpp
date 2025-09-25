@@ -632,6 +632,72 @@ std::pair<bool,std::vector<std::vector<uint64_t>>> ColoringSmt<ValueType>::areCh
     return std::make_pair(false,hole_options_vector);
 }
 
+
+template<typename ValueType>
+std::pair<bool,std::vector<std::vector<uint64_t>>> ColoringSmt<ValueType>::areChoicesConsistentPermissive(BitVector const& choices, Family const& subfamily) {
+    std::vector<std::vector<uint64_t>> hole_options_vector(family.numHoles());
+
+    solver.push();
+    getRoot()->addFamilyEncoding(subfamily,solver);
+    solver.push();
+    // Group choices by their state
+    uint64_t prev_state = std::numeric_limits<uint64_t>::max();
+    z3::expr_vector state_disjuncts(ctx); // will hold the disjunctions for each state
+
+    z3::expr_vector current_state_conjuncts(ctx); // will hold the conjunctions for the current state
+
+    for (uint64_t choice : choices) {
+        uint64_t state = choice_to_state[choice];
+
+        // If we moved to a new state, process the previous state's choices
+        if (state != prev_state && current_state_conjuncts.size() > 0) {
+            // For the previous state, add the disjunction of all conjunctions
+            state_disjuncts.push_back(z3::mk_or(current_state_conjuncts));
+            current_state_conjuncts.resize(0);
+        }
+
+        // Only consider relevant states
+        if (!state_is_relevant[state]) {
+            prev_state = state;
+            continue;
+        }
+
+        // Build conjunction for this choice (over all its paths)
+        z3::expr_vector path_conjuncts(ctx);
+        for (uint64_t path : state_path_enabled[state]) {
+            path_conjuncts.push_back(choice_path_expresssion[choice][path]);
+        }
+        if (path_conjuncts.size() > 0) {
+            current_state_conjuncts.push_back(z3::mk_and(path_conjuncts));
+        }
+
+        prev_state = state;
+    }
+
+    // Handle the last state's choices
+    if (current_state_conjuncts.size() > 0) {
+        state_disjuncts.push_back(z3::mk_or(current_state_conjuncts));
+    }
+
+    // Add the final conjunction over all states
+    if (state_disjuncts.size() > 0) {
+        solver.add(z3::mk_and(state_disjuncts));
+    }
+    bool consistent = check();
+
+    if(consistent) {
+        z3::model model = solver.get_model();
+        solver.pop();
+        solver.pop();
+        getRoot()->loadHoleAssignmentFromModel(model,hole_options_vector);
+        return std::make_pair(true,hole_options_vector);
+    }
+
+    solver.pop();
+    solver.pop();
+    return std::make_pair(false,hole_options_vector);
+}
+
 template<typename ValueType>
 std::map<std::string,storm::utility::Stopwatch> ColoringSmt<ValueType>::timers;
 

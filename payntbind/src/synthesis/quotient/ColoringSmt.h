@@ -78,6 +78,15 @@ public:
         BitVector const& choices, Family const& subfamily
     );
 
+    /**
+     * Verify whether the given choices have an associated non-conficting hole assignment (within the given family).
+     * @return a pair (A,B) where A is true iff the choice selection is consistent; B is either a satisfying hole
+     * assignment if A holds, or a list of inconsistent hole assignments to be used for splitting.
+     */
+    std::pair<bool,std::vector<std::vector<uint64_t>>> areChoicesConsistentPermissive(
+        BitVector const& choices, Family const& subfamily
+    );
+
     static std::map<std::string,storm::utility::Stopwatch> timers;
     std::vector<std::pair<std::string,double>> getProfilingInfo() {
         std::vector<std::pair<std::string,double>> profiling;

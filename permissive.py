@@ -173,7 +173,44 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
                 unreachable_family = self.full_family.assume_options_copy(unreachable_selection)
                 self.permissive_policies.append(unreachable_family)
             else:
-                self.permissive_policies.append(family)
+                self.permissive_policies.append(family)\
+
+    def split(self, family):
+
+        mdp = family.mdp
+        assert not mdp.is_deterministic
+
+        # split family wrt last undecided result
+        result = family.analysis_result.undecided_result()
+        hole_assignments = result.primary_selection
+        if not result.primary_reused:
+            scores = self.quotient.scheduler_scores(mdp, result.prop, result.primary.result, result.primary_selection)
+        elif not result.secondary_reused:
+            scores = self.quotient.scheduler_scores(mdp, result.prop, result.secondary.result, result.primary_selection)
+        if scores is None:
+            scores = {hole:0 for hole in range(mdp.family.num_holes) if mdp.family.hole_num_options(hole) > 1}
+
+        splitters = self.quotient.holes_with_max_score(scores)
+        splitter = splitters[0]
+        if len(hole_assignments[splitter]) > 1:
+            core_suboptions,other_suboptions = self.quotient.suboptions_enumerate(mdp, splitter, hole_assignments[splitter])
+        else:
+            assert mdp.family.hole_num_options(splitter) > 1
+            core_suboptions = self.quotient.suboptions_half(mdp, splitter)
+            other_suboptions = []
+        # print(mdp.family[splitter], core_suboptions, other_suboptions)
+
+        if len(other_suboptions) == 0:
+            suboptions = core_suboptions
+        else:
+            suboptions = [other_suboptions] + core_suboptions  # DFS solves core first
+
+        # construct corresponding subfamilies
+        parent_info = family.collect_parent_info(self.quotient.specification,splitter)
+        subfamilies = family.split(splitter,suboptions)
+        for subfamily in subfamilies:
+            subfamily.add_parent_info(parent_info)
+        return subfamilies
 
     def synthesize_one(self, family):
         self.full_family = family
@@ -196,7 +233,7 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
                 self.explore(family)
                 continue
             # undecided
-            subfamilies = self.quotient.split(family)
+            subfamilies = self.split(family)
             families = families + subfamilies
 
 
@@ -219,6 +256,8 @@ class PermissiveTreeSynthesizer(PermissiveSynthesizer):
 
         self.unimplementable_families = []
 
+        self.tree_scheduler_hole_selection = None
+
         # initialize tree template
         self.construct_tree_coloring(self.INITIAL_TREE_DEPTH)
 
@@ -227,14 +266,14 @@ class PermissiveTreeSynthesizer(PermissiveSynthesizer):
         self.mdp_quotient.build(self.mdp_quotient.family)
 
     def tree_from_hole_selection(self, hole_selection):
-        assignment = self.mdp_quotient.family.assume_options_copy(hole_selection)
+        self.last_tree_assignment = self.mdp_quotient.family.assume_options_copy(hole_selection)
         tree = None
-        dtmc = self.mdp_quotient.build_assignment(assignment)
+        dtmc = self.mdp_quotient.build_assignment(self.last_tree_assignment)
         res = dtmc.check_specification(self.quotient.specification)
         sat = res.constraints_result.sat
         if sat:
             tree = self.mdp_quotient.decision_tree
-            tree.root.associate_assignment(assignment)
+            tree.root.associate_assignment(self.last_tree_assignment)
         return tree
 
     def check_implementability(self, family):
@@ -247,7 +286,87 @@ class PermissiveTreeSynthesizer(PermissiveSynthesizer):
         if consistent:
             tree = self.tree_from_hole_selection(hole_selection)
 
+            # get policy family from tree
+            choices = self.mdp_quotient.coloring.selectCompatibleChoices(self.last_tree_assignment.family)
+            self.tree_scheduler_hole_selection = self.quotient.coloring.collectHoleOptions(choices)
+
+
         return consistent, tree
+    
+    def split_dt(self, family):
+
+        mdp = family.mdp
+        assert not mdp.is_deterministic
+
+        # split family wrt last undecided result
+        result = family.analysis_result.undecided_result()
+        hole_assignments = result.primary_selection
+
+        # use tree scheduler hole selection to guide splitting
+        if self.tree_scheduler_hole_selection is not None:
+            new_hole_assignments = [[] for _ in range(len(hole_assignments))]
+            for hole, options in enumerate(self.tree_scheduler_hole_selection):
+                if len(options) > 0 and options[0] not in hole_assignments[hole]:
+                    new_hole_assignments[hole] = hole_assignments[hole] + options
+            
+            max_options_count = max(len(options) for options in new_hole_assignments)
+            if max_options_count > 1:
+                hole_assignments = new_hole_assignments
+
+        scores = None
+        if not result.primary_reused:
+            scores = self.quotient.scheduler_scores(mdp, result.prop, result.primary.result, hole_assignments)
+        elif not result.secondary_reused:
+            scores = self.quotient.scheduler_scores(mdp, result.prop, result.secondary.result, hole_assignments)
+        if scores is None:
+            scores = {hole:len(options) for hole,options in enumerate(hole_assignments) if mdp.family.hole_num_options(hole) > 1}
+
+        # only consider scores for holes which include the decision from DT
+        if self.tree_scheduler_hole_selection is not None:
+            new_scores = scores.copy()
+            for hole, options in enumerate(self.tree_scheduler_hole_selection):
+                if len(options) == 0:
+                    new_scores.pop(hole, None)
+            if len(new_scores) > 0:
+                scores = new_scores
+
+        # splitting only to two subfamilies
+        splitters = self.quotient.holes_with_max_score(scores)
+        splitter = splitters[0]
+        if len(hole_assignments[splitter]) > 1:
+            if self.tree_scheduler_hole_selection is not None and len(self.tree_scheduler_hole_selection[splitter]) > 0:
+                core_suboptions = [[option] for option in hole_assignments[splitter] if option not in self.tree_scheduler_hole_selection[splitter]]
+                if len(core_suboptions) <= 1:
+                    core_suboptions = [[option] for option in hole_assignments[splitter]]
+                else:
+                    core_suboptions[0] = core_suboptions[0] + self.tree_scheduler_hole_selection[splitter]
+                other_suboptions = [option for option in family.hole_options(splitter) if option not in hole_assignments[splitter]]
+            else:
+                core_suboptions,other_suboptions = self.quotient.suboptions_enumerate(mdp, splitter, hole_assignments[splitter])
+        else:
+            assert mdp.family.hole_num_options(splitter) > 1
+            core_suboptions = self.quotient.suboptions_half(mdp, splitter)
+            other_suboptions = []
+        # print(mdp.family[splitter], core_suboptions, other_suboptions)
+
+        # split up the other_suboptions evenly to core_suboptions
+        if len(other_suboptions) > 0:
+            for i, option in enumerate(other_suboptions):
+                core_suboptions[(i+1) % len(core_suboptions)].append(option)
+            other_suboptions = []
+
+        if len(other_suboptions) == 0:
+            suboptions = core_suboptions
+        else:
+            suboptions = [other_suboptions] + core_suboptions  # DFS solves core first
+
+        # construct corresponding subfamilies
+        parent_info = family.collect_parent_info(self.quotient.specification,splitter)
+        subfamilies = family.split(splitter,suboptions)
+        for subfamily in subfamilies:
+            subfamily.add_parent_info(parent_info)
+
+        return subfamilies
 
     def synthesize_one(self, family):
         self.full_family = family
@@ -292,9 +411,9 @@ class PermissiveTreeSynthesizer(PermissiveSynthesizer):
                     print("undecided implementable", tree)
                     return
 
-
-                subfamilies = self.quotient.split(family)
+                subfamilies = self.split_dt(family)
                 families = families + subfamilies
+                self.tree_scheduler_hole_selection = None
 
             current_depth += 1
             print(f"Increasing tree depth to {current_depth}")

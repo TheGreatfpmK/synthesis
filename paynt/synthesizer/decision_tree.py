@@ -133,6 +133,33 @@ class SynthesizerDecisionTree(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
         self.best_assignment = self.best_assignment_value = None
         self.counters_print()
 
+    def synthesize_tree_onebyone(self, depth:int, family=None):
+        self.counters_reset()
+        self.quotient.reset_tree(depth)
+        self.best_assignment = self.best_assignment_value = None
+        for hole_combination in self.quotient.family.all_combinations():
+            
+            assignment = self.quotient.family.construct_assignment(hole_combination)
+            try:
+                dtmc = self.quotient.build_assignment(assignment)
+            except:
+                continue
+            result = dtmc.check_specification(self.quotient.specification, short_evaluation=True)
+
+            accepting,improving_value = result.accepting_dtmc(self.quotient.specification)
+            if accepting:
+                self.best_assignment = assignment
+                self.best_assignment_value = improving_value
+            if improving_value is not None:
+                self.quotient.specification.optimality.update_optimum(improving_value)
+            
+        if self.best_assignment is not None:
+            self.quotient.decision_tree.root.associate_assignment(self.best_assignment)
+            self.best_tree = self.quotient.decision_tree
+            self.best_tree_value = self.best_assignment_value
+        self.best_assignment = self.best_assignment_value = None
+        self.counters_print()
+
     def synthesize_tree_sequence(self, opt_result_value, overall_timeout=None, max_depth=None, break_if_found=False):
         self.best_tree = self.best_tree_value = None
 

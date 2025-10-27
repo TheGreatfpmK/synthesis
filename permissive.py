@@ -17,6 +17,7 @@ import cProfile
 import pstats
 
 import logging
+import time
 logger = logging.getLogger(__name__)
 
 class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
@@ -38,9 +39,10 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         assert len(self.quotient.specification.constraints) == 1, "only single-constraint specifications supported"
 
         if eps_threshold is not None:
+            self.eps_threshold = eps_threshold
             threshold_diff = self.quotient.specification.constraints[0].threshold * eps_threshold
             overapp_threshold = self.quotient.specification.constraints[0].threshold - threshold_diff if self.quotient.specification.constraints[0].minimizing else self.quotient.specification.constraints[0].threshold + threshold_diff
-            overapp_threshold = min(max(overapp_threshold, 0.0), 1.0)
+            # overapp_threshold = min(max(overapp_threshold, 0.0), 1.0)
             self.overapp_threshold = overapp_threshold
         else:
             self.overapp_threshold = None
@@ -178,7 +180,7 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
             else:
                 self.permissive_policies.append(family)
 
-    def split(self, family):
+    def split(self, family, number_of_splits=1):
 
         mdp = family.mdp
         assert not mdp.is_deterministic
@@ -193,27 +195,58 @@ class PermissiveSynthesizer(paynt.synthesizer.synthesizer.Synthesizer):
         if scores is None:
             scores = {hole:0 for hole in range(mdp.family.num_holes) if mdp.family.hole_num_options(hole) > 1}
 
-        splitters = self.quotient.holes_with_max_score(scores)
-        splitter = splitters[0]
-        if len(hole_assignments[splitter]) > 1:
-            core_suboptions,other_suboptions = self.quotient.suboptions_enumerate(mdp, splitter, hole_assignments[splitter])
-        else:
-            assert mdp.family.hole_num_options(splitter) > 1
-            core_suboptions = self.quotient.suboptions_half(mdp, splitter)
-            other_suboptions = []
-        # print(mdp.family[splitter], core_suboptions, other_suboptions)
+        # splitters = self.quotient.holes_with_max_score(scores)
+        splitters = sorted(scores, key=scores.get, reverse=True)
 
-        if len(other_suboptions) == 0:
-            suboptions = core_suboptions
-        else:
-            suboptions = [other_suboptions] + core_suboptions  # DFS solves core first
+        split_count = 0
+        while split_count < number_of_splits and len(splitters) > 0:
+            splitter = splitters.pop(0)
+            if len(hole_assignments[splitter]) > 1:
+                core_suboptions,other_suboptions = self.quotient.suboptions_enumerate(mdp, splitter, hole_assignments[splitter])
+            else:
+                assert mdp.family.hole_num_options(splitter) > 1
+                core_suboptions = self.quotient.suboptions_half(mdp, splitter)
+                other_suboptions = []
+            # print(mdp.family[splitter], core_suboptions, other_suboptions)
 
-        # construct corresponding subfamilies
-        parent_info = family.collect_parent_info(self.quotient.specification,splitter)
-        subfamilies = family.split(splitter,suboptions)
-        for subfamily in subfamilies:
-            subfamily.add_parent_info(parent_info)
+            # suboptions = core_suboptions
+
+            # other_family = family.split(splitter,[other_suboptions]) if len(other_suboptions) > 0 else None
+            # if other_family is not None:
+            #     self.explore(other_family[0])
+
+            if len(other_suboptions) == 0:
+                suboptions = core_suboptions
+            else:
+                suboptions = [other_suboptions] + core_suboptions  # DFS solves core first
+
+            # construct corresponding subfamilies
+            subfamilies = family.split(splitter,suboptions)
+            family = subfamilies[-1]
+            split_count += 1
         return subfamilies
+
+
+        # splitter = splitters[0]
+        # if len(hole_assignments[splitter]) > 1:
+        #     core_suboptions,other_suboptions = self.quotient.suboptions_enumerate(mdp, splitter, hole_assignments[splitter])
+        # else:
+        #     assert mdp.family.hole_num_options(splitter) > 1
+        #     core_suboptions = self.quotient.suboptions_half(mdp, splitter)
+        #     other_suboptions = []
+        # # print(mdp.family[splitter], core_suboptions, other_suboptions)
+
+        # if len(other_suboptions) == 0:
+        #     suboptions = core_suboptions
+        # else:
+        #     suboptions = [other_suboptions] + core_suboptions  # DFS solves core first
+
+        # # construct corresponding subfamilies
+        # parent_info = family.collect_parent_info(self.quotient.specification,splitter)
+        # subfamilies = family.split(splitter,suboptions)
+        # for subfamily in subfamilies:
+        #     subfamily.add_parent_info(parent_info)
+        # return subfamilies
 
     def synthesize_one(self, family):
         self.full_family = family
@@ -570,11 +603,18 @@ class DecisionTreeParetoFront(PermissiveTreeSynthesizer):
             quotient.specification.constraints[0].threshold = bound
             quotient.specification.constraints[0].property.raw_formula.set_bound(quotient.specification.constraints[0].formula.comparison_type, stormpy.ExpressionManager().create_rational(stormpy.Rational(bound)))
 
-    def compare_value(self, value, bound):
+    def compare_value_in_opt_dir(self, value, bound):
         if self.optimization_direction == "max":
             return value >= bound
         else:
             return value <= bound
+        
+    # def map_scheduler(self, scheduler_choices):
+    #     family = self.quotient.family.copy()
+    #     self.quotient.build(family)
+    #     consistent,hole_selection = self.quotient.are_choices_consistent(scheduler_choices, family)
+
+
 
     def initial_check(self):
 
@@ -583,17 +623,34 @@ class DecisionTreeParetoFront(PermissiveTreeSynthesizer):
         self.update_specification(self.mdp_quotient, "optimality")
 
         dtpaynt = paynt.synthesizer.decision_tree.SynthesizerDecisionTree(self.mdp_quotient)
-        dtpaynt.synthesize_tree(0)
+        # dtpaynt.synthesize_tree(0)
+        dtpaynt.synthesize_tree_onebyone(0)
         self.pareto_front[0] = {"lb": dtpaynt.best_tree_value, "ub": dtpaynt.best_tree_value, "tree": dtpaynt.best_tree}
+        print(f"Initial 0 depth decision tree value: {dtpaynt.best_tree_value}")
 
+        # SMT initial optimal DT
+        # state_to_choice = self.quotient.scheduler_to_state_to_choice(self.full_family.mdp, self.optimal_result.result.scheduler)
+        # choices = self.quotient.state_to_choice_to_choices(state_to_choice)
+        # depth = 1
+        # while True:
+        #     self.mdp_quotient.reset_tree(depth, False)
+        #     self.depth_colorings[depth] = {"coloring": self.mdp_quotient.coloring, "family": self.mdp_quotient.family.copy(), "dt": self.mdp_quotient.decision_tree.copy()}
+        #     self.mdp_quotient.coloring.selectCompatibleChoices(self.mdp_quotient.family.family)
+        #     consistent,hole_selection = self.mdp_quotient.coloring.areChoicesConsistentPermissive(choices, self.mdp_quotient.family.family)
+
+        #     if consistent:
+        #         tree, _ = self.tree_from_hole_selection(hole_selection)
+        #         assert tree is not None
+        #         break
+
+        #     depth += 1
+
+        # dtControl initial optimal DT
         scheduler = self.create_quotient_scheduler(self.full_family, self.optimal_result.result.scheduler)
-
         json_scheduler = json.loads(scheduler.to_json_str(self.quotient.quotient_mdp, skip_dont_care_states=True))
         json_str = json.dumps(json_scheduler, indent=4)
-
         dtcontrol_tree_helper = paynt.utils.dtnest_helper.run_dtcontrol(json_str, "storm.json")
         dtcontrol_tree = self.mdp_quotient.build_tree_helper_tree(dtcontrol_tree_helper)
-
         optimal_scheduler_depth = dtcontrol_tree.get_depth()
 
         for i in range(1, optimal_scheduler_depth):
@@ -620,129 +677,273 @@ class DecisionTreeParetoFront(PermissiveTreeSynthesizer):
             tree.root.associate_assignment(self.last_tree_assignment)
         return tree, res
 
-    def check_implementability_iterative(self, family):
-        for depth in range(1, len(self.pareto_front)-1):
-            if not self.compare_value(family.analysis_result.constraints_result.results[0].secondary.value, self.pareto_front[depth]["lb"]):
+    def check_implementability_iterative(self, family, current_depth, break_on_first=True):
+        min_consistent_depth = None
+        for depth in range(current_depth, len(self.pareto_front)-1):
+            if not self.compare_value_in_opt_dir(family.analysis_result.constraints_result.results[0].primary.value, self.pareto_front[depth]["lb"]):
                 break
             choices = self.quotient.coloring.selectCompatibleChoices(family.family)
             self.mdp_quotient.coloring = self.depth_colorings[depth]["coloring"]
-            self.mdp_quotient.family = self.depth_colorings[depth]["family"]
-            self.mdp_quotient.decision_tree = self.depth_colorings[depth]["dt"]
+            self.mdp_quotient.family = self.depth_colorings[depth]["family"].copy()
+            self.mdp_quotient.decision_tree = self.depth_colorings[depth]["dt"].copy()
             self.mdp_quotient.coloring.selectCompatibleChoices(self.mdp_quotient.family.family)
             consistent,hole_selection = self.mdp_quotient.coloring.areChoicesConsistentPermissive(choices, self.mdp_quotient.family.family)
 
             # if implementable, check the returned tree
             if consistent:
+                if min_consistent_depth is None:
+                    min_consistent_depth = depth
+
                 tree, res = self.tree_from_hole_selection(hole_selection)
 
                 # maybe get rid of this?
+                # breaking here means that we just want to prove quickly the upper bound on implementability
+                # continuing here means we want to find at least some tree that could improve the pareto front
+                # I'm in favour of breaking here for now and then trying other heuristics to improve the pareto front later
                 if tree is None:
-                    continue
+                    break
 
-                return res.constraints_result.results[0].value, tree
+                tree_depth = tree.get_depth()
+                # tree_value = res.constraints_result.results[0].value
 
-        return None, None
+                # if depth == current_depth:
+                #     family.analysis_result.constraints_result.sat = None
+                #     family.analysis_result.constraints_result.results[0].sat = None
+                #     family.analysis_result.constraints_result.undecided_constraints = [0]
+                #     self.update_specification(self.quotient, "bounded", tree_value)
+
+                for d in range(tree_depth, len(self.pareto_front)-1):
+                    if self.compare_value_in_opt_dir(res.constraints_result.results[0].value, self.pareto_front[d]["lb"]):
+                        self.pareto_front[d]["lb"] = res.constraints_result.results[0].value
+                        self.pareto_front[d]["tree"] = tree
+                    else:
+                        break
+
+                if break_on_first:
+                    break
+
+        return min_consistent_depth
+    
+    # def check_implementability_iterative(self, family, current_depth=1, break_on_first=False):
+    #     min_tree_depth = None
+    #     min_depth_value = None
+    #     inconsistent_at_current_depth = False
+    #     for depth in range(current_depth, len(self.pareto_front)-1):
+    #         if not self.compare_value_in_opt_dir(family.analysis_result.constraints_result.results[0].primary.value, self.pareto_front[depth]["lb"]):
+    #             break
+    #         choices = self.quotient.coloring.selectCompatibleChoices(family.family)
+    #         self.mdp_quotient.coloring = self.depth_colorings[depth]["coloring"]
+    #         self.mdp_quotient.family = self.depth_colorings[depth]["family"].copy()
+    #         self.mdp_quotient.decision_tree = self.depth_colorings[depth]["dt"].copy()
+    #         self.mdp_quotient.coloring.selectCompatibleChoices(self.mdp_quotient.family.family)
+    #         consistent,hole_selection = self.mdp_quotient.coloring.areChoicesConsistentPermissive(choices, self.mdp_quotient.family.family)
+
+    #         # if implementable, check the returned tree
+    #         if consistent:
+    #             tree, res = self.tree_from_hole_selection(hole_selection)
+
+    #             # maybe get rid of this?
+    #             if tree is None:
+    #                 continue
+
+    #             if min_tree_depth is None:
+    #                 min_tree_depth = tree.get_depth()
+    #                 min_depth_value = res.constraints_result.results[0].value
+
+    #             for d in range(tree.get_depth(), len(self.pareto_front)-1):
+    #                 if self.compare_value_in_opt_dir(res.constraints_result.results[0].value, self.pareto_front[d]["lb"]):
+    #                     self.pareto_front[d]["lb"] = res.constraints_result.results[0].value
+    #                     self.pareto_front[d]["tree"] = tree
+    #                 else:
+    #                     break
+
+    #             if break_on_first:
+    #                 break
+    #         elif depth == current_depth:
+    #             inconsistent_at_current_depth = True
+
+    #     return min_tree_depth, min_depth_value, inconsistent_at_current_depth
+
+
+    def draw_the_pareto_front(self, filename="pareto_front.png"):
+        import matplotlib.pyplot as plt
+
+
+        min_val = self.pareto_front[0]["lb"]
+        max_val = self.pareto_front[len(self.pareto_front)-1]["lb"]
+
+        depths = [0.0]
+        depths_step = [-0.5]
+        lbs = [0.0]
+        ubs = [0.0]
+
+        for depth, info in self.pareto_front.items():
+            if depth == 0:
+                continue
+            depths.append(depth)
+            depths_step.append(depth-0.5)
+            # Normalize lb to [0, 1]
+            if max_val != min_val:
+                norm_lb = (info["lb"] - min_val) / (max_val - min_val)
+                norm_ub = (info["ub"] - min_val) / (max_val - min_val)
+            else:
+                norm_lb = 0.0
+                norm_ub = 0.0
+            lbs.append(norm_lb)
+            ubs.append(norm_ub)
+
+        depths.append(len(self.pareto_front)-0.5)
+        depths_step.append(len(self.pareto_front)-0.5)
+        lbs.append(1.0)
+        ubs.append(1.0)
+
+        plt.step(lbs, depths_step, color="green")
+        plt.fill_betweenx(depths_step, ubs, 1.1, step="post", color="red", alpha=0.2)
+        plt.fill_betweenx(depths_step, -0.1, lbs, step="post", color="lightgreen", alpha=0.8)
+        plt.xlabel("Normalized Objective Value")
+        plt.ylabel("Decision Tree Depth")
+        plt.ylim(-0.5, len(self.pareto_front)-0.5)
+        plt.xlim(-0.05, 1.05)
+        plt.title("Pareto Front Visualization")
+        plt.gca().invert_yaxis()
+        plt.yticks([x for x in depths if x.is_integer()])  # Set y labels to just the integer depths
+        plt.savefig(filename)
+        plt.close()
 
 
     def synthesize_one(self, family):
 
         self.full_family = family
-        families = [family]
-        sat_not_implementable = []
+        families = [(family, 1)] # family with current depth to explore
 
         self.initial_check()
 
-        current_depth = 1
+        sat_not_implementable = {depth:[] for depth in range(1,len(self.pareto_front)-1)}
+        # current_depth = 1
 
         iter = 0
 
-        while current_depth < len(self.pareto_front)-1 and self.resource_limit_reached() is False:
+        try:
+            while self.resource_limit_reached() is False:
 
-            self.update_specification(self.quotient, "bounded", self.pareto_front[current_depth]["lb"])
+                while families:
+                    if self.resource_limit_reached():
+                        break
+                    iter += 1
+                    if iter % 10 == 0:
+                        for key, value in self.pareto_front.items():
+                            print(f"{key}: {round(value['lb'], 3)}")
+                        print(sum(len(v) for v in sat_not_implementable.values()))
+                    family, current_depth = families.pop(-1)
+                    self.update_specification(self.quotient, "bounded", self.pareto_front[current_depth]["lb"])
+                    self.verify_family(family)
+                    self.check_result(family)
 
-            while families:
-                if self.resource_limit_reached():
-                    break
-                iter += 1
-                if iter % 1000 == 0:
-                    for key, value in self.pareto_front.items():
-                        print(f"{key}: {round(value['lb'], 3)}\t{round(value['ub'], 3)}")
-                family = families.pop(0)
-                # family_explored = False
-                # for explored_family in self.permissive_policies if self.cache_sat else [] + self.discarded_families if self.cache_unsat else []:
-                #     if family.family.isSubsetOf(explored_family.family):
-                #         family_explored = True
-                #         break
-                # if family_explored:
-                #     self.explore(family)
-                #     continue
-                self.verify_family(family)
-                self.check_result(family)
+                    family_result = family.analysis_result.constraints_result
+                    if family_result.sat is False:
+                        self.explore(family)
+                        continue
 
-                family_result = family.analysis_result.constraints_result
-                if family_result.sat is False:
-                    self.explore(family)
-                    continue
+                    if family_result.sat is True:
+                        # This makes the method incomplete in theory
+                        split_family = abs(family_result.results[0].primary.value - family_result.results[0].secondary.value) > 1e-4
 
-                if family_result.sat is True:
-                    # This makes the method incomplete in theory
-                    split_family = abs(family_result.results[0].primary.value - family_result.results[0].secondary.value) > 1e-4
+                        # SMT lower bound update
+                        # min_consistent_depth = self.check_implementability_iterative(family, current_depth=current_depth)
+                        # if min_consistent_depth is None:
+                        #     self.explore(family)
+                        #     continue
+                        # elif min_consistent_depth > current_depth:
+                        #     sat_not_implementable[min_consistent_depth].append(family)
+                        #     split_family = False
+
+                        # dtControl lower bound update
+
+                        if not family_result.results[0].primary_reused:
+                            pass
+                            # SMT scheduler map
+                            # state_to_choice = self.quotient.scheduler_to_state_to_choice(family.mdp, family_result.results[0].primary.result.scheduler)
+                            # choices = self.quotient.state_to_choice_to_choices(state_to_choice)
+                            # depth = current_depth
+                            # while self.compare_value_in_opt_dir(family_result.results[0].primary.value, self.pareto_front[depth]["lb"]) and depth < len(self.pareto_front)-1:
+                            #     self.mdp_quotient.coloring = self.depth_colorings[depth]["coloring"]
+                            #     self.mdp_quotient.family = self.depth_colorings[depth]["family"]
+                            #     self.mdp_quotient.decision_tree = self.depth_colorings[depth]["dt"]
+                            #     self.mdp_quotient.coloring.selectCompatibleChoices(self.mdp_quotient.family.family)
+                            #     consistent,hole_selection = self.mdp_quotient.coloring.areChoicesConsistentPermissive(choices, self.mdp_quotient.family.family)
+
+                            #     if consistent:
+                            #         tree, _ = self.tree_from_hole_selection(hole_selection)
+                            #         assert tree is not None
+
+                            #         tree_depth = tree.get_depth()
+                            #         for d in range(tree_depth, len(self.pareto_front)-1):
+                            #             if self.compare_value_in_opt_dir(family_result.results[0].primary.value, self.pareto_front[d]["lb"]):
+                            #                 self.pareto_front[d]["lb"] = family_result.results[0].primary.value
+                            #                 self.pareto_front[d]["tree"] = tree
+                            #             else:
+                            #                 break
+                            #         break
+
+                            #     depth += 1
+
+
+                            # dtControl scheduler map
+                            # scheduler = self.create_quotient_scheduler(family, family_result.results[0].primary.result.scheduler)
+                            # json_scheduler = json.loads(scheduler.to_json_str(self.quotient.quotient_mdp, skip_dont_care_states=True))
+                            # json_str = json.dumps(json_scheduler, indent=4)
+                            # dtcontrol_tree_helper = paynt.utils.dtnest_helper.run_dtcontrol(json_str, "storm.json")
+                            # dtcontrol_tree = self.mdp_quotient.build_tree_helper_tree(dtcontrol_tree_helper)
+                            # tree_depth = dtcontrol_tree.get_depth()
+                            # print(tree_depth, family_result.results[0].primary.value)
+                            # for d in range(tree_depth, len(self.pareto_front)-1):
+                            #     if self.compare_value_in_opt_dir(family_result.results[0].primary.value, self.pareto_front[d]["lb"]):
+                            #         self.pareto_front[d]["lb"] = family_result.results[0].primary.value
+                            #         self.pareto_front[d]["tree"] = dtcontrol_tree
+                            #     else:
+                            #         break
+
+                        if not split_family:
+                            continue
+                        else:
+                            family.analysis_result.constraints_result.sat = None
+                            family.analysis_result.constraints_result.results[0].sat = None
+                            family.analysis_result.constraints_result.undecided_constraints = [0]
+
+                    
+                    # undecided
 
                     # SMT lower bound update
-                    value, tree = self.check_implementability_iterative(family)
-                    if tree is not None:
-                        tree_depth = tree.get_depth() if tree is not None else None
-                        for d in range(tree_depth, len(self.pareto_front)-1):
-                            if self.compare_value(value, self.pareto_front[d]["lb"]):
-                                self.pareto_front[d]["lb"] = value
-                                self.pareto_front[d]["tree"] = tree
-                            else:
-                                break
-                        if tree_depth > current_depth:
-                            sat_not_implementable.append(family)
-                            split_family = False
-                        elif split_family:
-                            family_result.sat = None
-                            family_result.results[0].sat = None
-                            family_result.undecided_constraints = [0]
-                            self.update_specification(self.quotient, "bounded", value)
-                    else:
-                        sat_not_implementable.append(family)
-                        split_family = False
-
-                    # dtControl lower bound update
-
-                    if not family_result.results[0].primary_reused:
-                        pass
-                        # SMT scheduler map
-
-
-                        # dtControl scheduler map
-                        # scheduler = self.create_quotient_scheduler(family, family_result.results[0].primary.result.scheduler)
-                        # json_scheduler = json.loads(scheduler.to_json_str(self.quotient.quotient_mdp, skip_dont_care_states=True))
-                        # json_str = json.dumps(json_scheduler, indent=4)
-                        # dtcontrol_tree_helper = paynt.utils.dtnest_helper.run_dtcontrol(json_str, "storm.json")
-                        # dtcontrol_tree = self.mdp_quotient.build_tree_helper_tree(dtcontrol_tree_helper)
-                        # tree_depth = dtcontrol_tree.get_depth()
-                        # print(tree_depth, family_result.results[0].primary.value)
-                        # for d in range(tree_depth, len(self.pareto_front)-1):
-                        #     if self.compare_value(family_result.results[0].primary.value, self.pareto_front[d]["lb"]):
-                        #         self.pareto_front[d]["lb"] = family_result.results[0].primary.value
-                        #         self.pareto_front[d]["tree"] = dtcontrol_tree
-                        #     else:
-                        #         break
-
-                    if not split_family:
+                    min_consistent_depth = self.check_implementability_iterative(family, current_depth=current_depth)
+                    if min_consistent_depth is None:
+                        self.explore(family)
                         continue
-                
-                # undecided
-                subfamilies = self.split(family)
-                families = families + subfamilies
+                    # elif min_consistent_depth > current_depth:
+                    #     sat_not_implementable[min_consistent_depth].append(family)
+                    #     split_family = False
+                    #     continue
 
-            current_depth += 1
-            families = sat_not_implementable
-            sat_not_implementable = []
-            print(f"Increasing tree depth to {current_depth}")
+                    subfamilies = self.split(family, number_of_splits=1)
+                    subfamilies_with_depth = [(subfamily, min_consistent_depth) for subfamily in subfamilies]
+                    families = families + subfamilies_with_depth
+
+                break
+                current_depth += 1
+                if current_depth >= len(self.pareto_front)-1:
+                    break
+                families = sat_not_implementable[current_depth]
+                sat_not_implementable[current_depth] = []
+                print(f"Increasing tree depth to {current_depth}")
+        except Exception as e:
+            import traceback
+            print("Exception occurred:", e)
+            traceback.print_exc()
+
+        print("--------------------")
+        print("Final Pareto front:")
+        for key, value in self.pareto_front.items():
+            print(f"{key}: {round(value['lb'], 3)}")
+        self.draw_the_pareto_front()
         
 def print_profiler_stats(profiler):
     stats = pstats.Stats(profiler)
@@ -776,7 +977,7 @@ def print_profiler_stats(profiler):
 @click.option("--pomdp-as-mdp", is_flag=True, default=False, help="treat POMDP as MDP by considering its underlying MDP")
 @click.option("--eps-threshold", type=float, default=None, show_default=True, help="epsilon upperbound on the threshold")
 @click.option("--relative-eps", type=float, default=None, show_default=True, help="relative epsilon threhshold computed from random policy")
-@click.option("--mc-dont-reuse", is_flag=True, default=False, help="don't reuse model checking in subfamilies")
+@click.option("--mc-dont-reuse", is_flag=False, default=False, help="don't reuse model checking in subfamilies")
 @click.option("--cache-sat", is_flag=True, default=False, help="cache SAT results")
 @click.option("--cache-unsat", is_flag=True, default=False, help="cache UNSAT results")
 @click.option("--dt", is_flag=True, default=False, help="synthesize DT")
@@ -839,17 +1040,17 @@ def main(project, sketch, props, pomdp_as_mdp, eps_threshold, relative_eps, mc_d
 
         coloring = payntbind.synthesis.Coloring(family.family, explicit_quotient.nondeterministic_choice_indices, choice_to_hole_options)
 
+        all_choices = stormpy.storage.BitVector(explicit_quotient.nr_choices, True)
+        full_mdp = placeholder_quotient.build_from_choice_mask(all_choices)
+        full_mc_result = full_mdp.model_check_property(placeholder_quotient.get_property())
+        opt_result_value = full_mc_result.value
+
         if placeholder_quotient.DONT_CARE_ACTION_LABEL in placeholder_quotient.action_labels:
 
             random_choices = placeholder_quotient.get_random_choices()
             submdp_random = placeholder_quotient.build_from_choice_mask(random_choices)
             mc_result_random = submdp_random.model_check_property(placeholder_quotient.get_property())
             random_result_value = mc_result_random.value
-
-            all_choices = stormpy.storage.BitVector(explicit_quotient.nr_choices, True)
-            full_mdp = placeholder_quotient.build_from_choice_mask(all_choices)
-            full_mc_result = full_mdp.model_check_property(placeholder_quotient.get_property())
-            opt_result_value = full_mc_result.value
 
             if relative_eps is not None:
 
@@ -859,19 +1060,19 @@ def main(project, sketch, props, pomdp_as_mdp, eps_threshold, relative_eps, mc_d
                 specification.constraints[0].threshold = eps_optimum_threshold
                 specification.constraints[0].property.raw_formula.set_bound(specification.constraints[0].formula.comparison_type, stormpy.ExpressionManager().create_rational(stormpy.Rational(eps_optimum_threshold)))
 
-            elif pareto:
+        if pareto:
 
-                DecisionTreeParetoFront.optimal_result = full_mc_result
+            DecisionTreeParetoFront.optimal_result = full_mc_result
 
-                specification.constraints[0].threshold = random_result_value
-                specification.constraints[0].property.raw_formula.set_bound(specification.constraints[0].formula.comparison_type, stormpy.ExpressionManager().create_rational(stormpy.Rational(random_result_value)))
-                opt_property = stormpy.Property("", specification.constraints[0].formula.clone())
+            specification.constraints[0].threshold = 0
+            specification.constraints[0].property.raw_formula.set_bound(specification.constraints[0].formula.comparison_type, stormpy.ExpressionManager().create_rational(stormpy.Rational(0)))
+            opt_property = stormpy.Property("", specification.constraints[0].formula.clone())
 
-                paynt_opt_property = paynt.verification.property.construct_property(opt_property, 0, False)
-                properties = [paynt_opt_property]
+            paynt_opt_property = paynt.verification.property.construct_property(opt_property, 0, False)
+            properties = [paynt_opt_property]
 
-                DecisionTreeParetoFront.optimality_specification = paynt.verification.property.Specification(properties)
-                DecisionTreeParetoFront.bounded_specification = specification.copy()
+            DecisionTreeParetoFront.optimality_specification = paynt.verification.property.Specification(properties)
+            DecisionTreeParetoFront.bounded_specification = specification.copy()
 
 
         quotient = paynt.quotient.quotient.Quotient(explicit_quotient, family, coloring, specification)

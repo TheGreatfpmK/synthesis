@@ -56,9 +56,11 @@ def main(project, sketch, props):
 
     assert quotient.pomdp is not None, "POMDP on the input expected"
 
-    print(f"Input POMDP has {quotient.quotient_mdp.nr_states} states and {quotient.pomdp.nr_observations} observations.")
+    pomdp = quotient.pomdp
 
-    belief_support_unfolder = payntbind.synthesis.BeliefSupportUnfolder(quotient.pomdp)
+    print(f"Input POMDP has {pomdp.nr_states} states, {pomdp.nr_observations} observations, {pomdp.nr_choices} choices and {pomdp.nr_transitions} transitions.")
+
+    belief_support_unfolder = payntbind.synthesis.BeliefSupportUnfolder(pomdp)
     belief_support_unfolder.unfold_belief_support_mdp()
     unfolded_mdp = belief_support_unfolder.belief_support_mdp()
 

@@ -2,6 +2,7 @@
 
 #include "PomdpManager.h"
 #include "PomdpManagerAposteriori.h"
+#include "BeliefSupportUnfolder.h"
 #include <storm/adapters/RationalNumberAdapter.h>
 #include <string>
 
@@ -41,6 +42,13 @@ void bindings_pomdp_vt(py::module& m, std::string const& vtSuffix) {
         .def_readonly("hole_num_options", &synthesis::PomdpManagerAposteriori<ValueType>::hole_num_options)
         .def_readonly("action_holes", &synthesis::PomdpManagerAposteriori<ValueType>::action_holes)
         .def_readonly("update_holes", &synthesis::PomdpManagerAposteriori<ValueType>::update_holes)
+        ;
+
+    py::class_<synthesis::BeliefSupportUnfolder<ValueType>>(m, (vtSuffix + "BeliefSupportUnfolder").c_str(), "Unfolder of belief-support MDP from POMDP")
+        .def(py::init<storm::models::sparse::Pomdp<ValueType> const&>(), "Constructor.", py::arg("pomdp"))
+        .def("unfold_belief_support_mdp", &synthesis::BeliefSupportUnfolder<ValueType>::unfoldBeliefSupportMdp, "Unfold the belief-support MDP.")
+        .def("belief_support_mdp", [](synthesis::BeliefSupportUnfolder<ValueType>& m) {return m.getUnfoldedMdp();}, "The unfolded belief-support MDP.")
+        .def("get_belief_support_of_state", &synthesis::BeliefSupportUnfolder<ValueType>::getBeliefSupportOfState, "Get the belief support of a specific state.")
         ;
 
 }

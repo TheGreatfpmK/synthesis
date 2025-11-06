@@ -91,7 +91,7 @@ class DtNest(paynt.synthesizer.decision_tree.SynthesizerDecisionTree):
         subtree_depth = 7
         max_iter = 100000 # max number of subtrees to be investigated
         epsilon = 0.05
-        timeout = 180
+        timeout = 900
         depth_fine_tuning = True # decreases sub-tree depth once all subtrees of the current depth have been explored
         break_on_small_tree = True # dtPAYNT synthesis ends when an implementable tree with good enough value is found
         use_dtcontrol = True
@@ -390,9 +390,6 @@ class DtNest(paynt.synthesizer.decision_tree.SynthesizerDecisionTree):
         logger.info(f"synthesis finished after {time_total} seconds")
 
         print()
-        if False: # TODO remove this
-            for name,time in self.quotient.coloring.getProfilingInfo():
-                time_percent = round(time/time_total*100,1)
-                print(f"{name} = {time} s ({time_percent} %)")
+        print(self.best_tree.to_string())
 
         return self.best_tree

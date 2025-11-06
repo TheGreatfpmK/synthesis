@@ -17,6 +17,9 @@ from paynt.parser.drn_parser import DrnParser
 import uuid
 import os
 import json
+import operator
+import itertools
+import functools
 
 import logging
 logger = logging.getLogger(__name__)
@@ -56,6 +59,128 @@ def make_rewards_action_based(model):
             payntbind.synthesis.remove_reward_model(model,name)
             new_reward_model = stormpy.storage.SparseRewardModel(optional_state_action_reward_vector=action_reward)
             model.add_reward_model(name, new_reward_model)
+
+def state_valuations_from_labels(model):
+    '''
+    Add state valuations to the model from labels starting with "SV_".
+    '''
+    original_valuations = None
+    if model.has_state_valuations:
+        original_valuations = model.state_valuations
+
+    new_valuation_variables = []
+    for label in model.labeling.get_labels():
+        if label.startswith("SV_"):
+            new_valuation_variables.append(label)
+
+    new_valuations = []
+
+    for state in range(model.nr_states):
+        one_valuation = json.loads(str(original_valuations.get_json(state))) if original_valuations is not None else dict()
+        new_valuation = [[key, value]  for key,value in one_valuation.items()]
+        for label in new_valuation_variables:
+            if label in model.labeling.get_labels_of_state(state):
+                key = label[3:]
+                new_valuation.append([key, 1])
+            else:
+                key = label[3:]
+                new_valuation.append([key, 0])
+        new_valuations.append(new_valuation)
+
+    logger.info(f"adding state valuations from labels: {new_valuation_variables}")
+    model = payntbind.synthesis.addStateValuations(model,new_valuations)
+
+    return model
+
+def generate_additional_state_predicates(model, project_path, level=1):
+
+    valuations_path = project_path + f"/state-valuations-level{level}.json"
+    if os.path.exists(valuations_path):
+        with open(valuations_path) as file:
+            state_valuations = json.load(file)
+        if state_valuations is not None:
+            logger.info(f"found precomputed state valuations in {valuations_path}, adding to the model...")
+            model = payntbind.synthesis.addStateValuations(model,state_valuations)
+            return model
+
+    original_valuations = None
+    if model.has_state_valuations:
+        original_valuations = model.state_valuations
+    else:
+        assert False, "model must have state valuations to generate additional state predicates"
+
+    comparison_operators = {
+        '==': operator.eq,
+        # '!=': operator.ne,
+        # '<': operator.lt,
+        '<=': operator.le,
+        # '>': operator.gt,
+        '>=': operator.ge
+    }
+    logical_operators = {
+        'and': operator.and_,
+        'or': operator.or_,
+        # 'xor': operator.xor
+    }
+
+    new_valuations = []
+    
+    for state in range(model.nr_states):
+        one_valuation = json.loads(str(original_valuations.get_json(state))) if original_valuations is not None else dict()
+        new_valuation = [[key, value]  for key,value in one_valuation.items()]
+
+        # prepare variable names and integer values
+        vars = list(one_valuation.keys())
+        if len(vars) > 0:
+
+            # level 1: all comparisons of ordered pairs of original variables
+            level1 = []
+            level1_vals = {}
+            for a, b in itertools.permutations(vars, 2):
+                for op_sym, op_func in comparison_operators.items():
+                    key = f"({a}{op_sym}{b})"
+                    # avoid shadowing existing original valuation keys
+                    if key in one_valuation:
+                        continue
+                    try:
+                        truth = bool(op_func(one_valuation[a], one_valuation[b]))
+                    except Exception:
+                        truth = False
+                    val = 1 if truth else 0
+                    new_valuation.append([key, val])
+                    level1.append(key)
+                    level1_vals[key] = val
+
+            # levels 2..level: combinations of level-1 predicates combined with logical operators
+            # for each combination size k (2..level), create combinations of level1 predicates of size k
+            for k in range(2, level + 1):
+                # if not enough level1 predicates, break early
+                if len(level1) < k:
+                    break
+                for combo in itertools.combinations(level1, k):
+                    vals = [level1_vals[c] for c in combo]
+                    for lop_sym, lop_func in logical_operators.items():
+                        key = "(" + f" {lop_sym} ".join(combo) + ")"
+                        # fold the logical operator across the values
+                        try:
+                            combined = functools.reduce(lop_func, vals)
+                        except Exception:
+                            combined = 0
+                        new_valuation.append([key, 1 if combined else 0])
+
+        # print(len(new_valuation))
+        # exit()
+        new_valuations.append(new_valuation)
+
+    logger.info(f"adding additional state predicates of level up to {level}")
+    model = payntbind.synthesis.addStateValuations(model,new_valuations)
+
+    # save generated valuations for future use
+    with open(valuations_path, 'w') as file:
+        json.dump(new_valuations, file, indent=None)
+    logger.info(f"saved generated state valuations to {valuations_path}")
+
+    return model
 
 class Sketch:
 
@@ -162,6 +287,11 @@ class Sketch:
             logger.info("WARNING: using until formulae with non-PRISM inputs might lead to unexpected behaviour")
         specification.transform_until_to_eventually()
         logger.info(f"found the following specification {specification}")
+
+        # add state more state valuations
+        project_path = os.path.dirname(sketch_path)
+        # explicit_quotient = generate_additional_state_predicates(explicit_quotient, project_path, level=1)
+        explicit_quotient = state_valuations_from_labels(explicit_quotient)
 
         if export is not None:
             Sketch.export(export, sketch_path, jani_unfolder, explicit_quotient)

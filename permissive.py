@@ -652,6 +652,7 @@ class DecisionTreeParetoFront(PermissiveTreeSynthesizer):
         dtcontrol_tree_helper = paynt.utils.dtnest_helper.run_dtcontrol(json_str, "storm.json")
         dtcontrol_tree = self.mdp_quotient.build_tree_helper_tree(dtcontrol_tree_helper)
         optimal_scheduler_depth = dtcontrol_tree.get_depth()
+        print(f"Optimal decision tree depth from dtControl: {optimal_scheduler_depth}, value: {self.optimal_result.value}")
 
         for i in range(1, optimal_scheduler_depth):
             self.pareto_front[i] = {"lb": self.pareto_front[0]["lb"], "ub": self.optimal_result.value, "tree": dtpaynt.best_tree}

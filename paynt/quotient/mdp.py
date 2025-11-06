@@ -522,7 +522,6 @@ class MdpQuotient(paynt.quotient.quotient.Quotient):
         self.relevant_state_valuations = state_valuations
         logger.debug(f"found the following {len(self.variables)} variables: {[str(v) for v in self.variables]}")
 
-
     def get_variable_id(self, var):
         for id, variable in enumerate(self.variables):
             if variable.name == var:

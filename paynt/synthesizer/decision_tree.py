@@ -321,5 +321,6 @@ class SynthesizerDecisionTree(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
         logger.info(f"synthesis finished after {time_total} seconds")
 
         print()
+        print(self.best_tree.to_string())
 
         return self.best_tree

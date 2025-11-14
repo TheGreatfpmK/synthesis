@@ -90,11 +90,7 @@ class Property:
     def model_check(cls, model, formula, cond_reach_result=None, target_reach_result=None):
         if type(formula.subformula) == stormpy.logic.ConditionalFormula:
             res = stormpy.model_checking(model, formula, only_initial_states=True, extract_scheduler=True, environment=cls.environment)
-
-            # print(res.at(3))
-            print(res2.at(3))
-            
-            return res2
+            return res
             
         return stormpy.model_checking(model, formula, extract_scheduler=True, environment=cls.environment)
 

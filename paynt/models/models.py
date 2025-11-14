@@ -66,9 +66,6 @@ class SubMdp(Mdp):
         self.quotient_choice_map = quotient_choice_map
         self.quotient_state_map = quotient_state_map
 
-    def model_check_property(self, prop, alt=False):
-        return super().model_check_property(prop, alt=alt, quotient_state_map=self.quotient_state_map)
-
 
 class Smg(Mdp):
 

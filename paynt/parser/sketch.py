@@ -59,7 +59,7 @@ def make_rewards_action_based(model):
 
 def initilize_conditional_properties(quotient):
     # support for conditional properties
-    if quotient.specification.contains_conditional_properties() and not quotient.conditional_inconsistency_check:
+    if quotient.specification.contains_conditional_properties():
         props = quotient.specification.all_properties()
         cond_or_target_states = stormpy.BitVector(quotient.quotient_mdp.nr_states, False)
         
@@ -74,11 +74,20 @@ def initilize_conditional_properties(quotient):
             else:
                 conditional_unfolder = payntbind.synthesis.ConditionalUnfolder(quotient.quotient_mdp, prop.formula.subformula)
 
+            # check that all conditional and target states are sinks
             conditional_label = conditional_unfolder.conditional_label
             target_label = conditional_unfolder.target_label
-
             cond_or_target_states |= quotient.quotient_mdp.labeling.get_states(conditional_label)
             cond_or_target_states |= quotient.quotient_mdp.labeling.get_states(target_label)
+
+            nci = quotient.quotient_mdp.nondeterministic_choice_indices.copy()
+
+            for state in cond_or_target_states:
+                for choice in range(nci[state], nci[state+1]):
+                    for entry in quotient.quotient_mdp.transition_matrix.get_row(choice):
+                        successor = entry.column
+                        assert successor == state, "conditional and target states must all be sinks"
+
             cond_reach_formula_str = f'Pmax=? [F "{conditional_label}"]'
             cond_reach_formula = stormpy.parse_properties_without_context(cond_reach_formula_str)[0]
             target_reach_formula_str = f'Pmax=? [F "{target_label}"]'
@@ -99,8 +108,6 @@ def initilize_conditional_properties(quotient):
             prop.conditional_property_values_defined = True
 
         logger.info("Updating coloring for conditional properties")
-
-        # print(quotient.coloring.getChoiceToAssignment())
 
         new_family = paynt.family.family.Family(quotient.family)
 

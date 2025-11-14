@@ -48,7 +48,6 @@ class SynthesizerAR(paynt.synthesizer.synthesizer.Synthesizer):
                     dtmc = paynt.models.models.Mdp(chain)
                 else:
                     dtmc = self.quotient.build_assignment(assignment)
-                print("Double-checking optimality on DTMC...")
                 res = dtmc.check_specification(self.quotient.specification)
                 if res.accepting_dtmc(self.quotient.specification):
                     result.sat = True
@@ -88,7 +87,6 @@ class SynthesizerAR(paynt.synthesizer.synthesizer.Synthesizer):
                         dtmc = paynt.models.models.Mdp(chain)
                     else:
                         dtmc = self.quotient.build_assignment(assignment)
-                    print("Double-checking optimality on DTMC...")
                     res = dtmc.check_specification(self.quotient.specification)
                     if res.constraints_result.sat and spec.optimality.improves_optimum(res.optimality_result.value):
                         result.improving_assignment = assignment

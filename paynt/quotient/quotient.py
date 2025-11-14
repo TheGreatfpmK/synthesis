@@ -16,9 +16,6 @@ class Quotient:
     # if True, expected visits will not be computed for hole scoring
     disable_expected_visits = False
 
-    # if True, perform inconsistency check for states after condition is reached in conditional properties
-    conditional_inconsistency_check = False
-
     # label associated with un-labelled choices
     EMPTY_LABEL = "__no_label__"
 
@@ -46,76 +43,6 @@ class Quotient:
         self.choice_destinations = None
         if self.quotient_mdp is not None:
             self.choice_destinations = payntbind.synthesis.computeChoiceDestinations(self.quotient_mdp)
-
-        # support for conditional properties
-        # if self.specification.contains_conditional_properties() and not self.conditional_inconsistency_check:
-        #     props = self.specification.all_properties()
-        #     cond_or_target_states = stormpy.BitVector(self.quotient_mdp.nr_states, False)
-            
-        #     logger.info("Precomputing reachability vectors for conditional properties")
-
-        #     for prop in props:
-        #         if not prop.is_conditional:
-        #             continue
-
-        #         conditional_unfolder = payntbind.synthesis.ConditionalUnfolder(self.quotient_mdp, prop.formula.subformula)
-
-        #         self.conditional_label = conditional_unfolder.conditional_label
-        #         self.target_label = conditional_unfolder.target_label
-
-        #         cond_or_target_states |= self.quotient_mdp.labeling.get_states(self.conditional_label)
-        #         cond_or_target_states |= self.quotient_mdp.labeling.get_states(self.target_label)
-
-        #         cond_reach_formula_str = f'Pmax=? [F "{self.conditional_label}"]'
-        #         cond_reach_formula = stormpy.parse_properties_without_context(cond_reach_formula_str)[0]
-
-        #         target_reach_formula_str = f'Pmax=? [F "{self.target_label}"]'
-        #         target_reach_formula = stormpy.parse_properties_without_context(target_reach_formula_str)[0]
-
-        #         cond_reach_result = paynt.verification.property.Property.model_check(self.quotient_mdp, cond_reach_formula.raw_formula)
-        #         prop.cond_reach_state_values = cond_reach_result.get_values()
-        #         prop.cond_reach_scheduler_choices = []
-        #         for state in range(self.quotient_mdp.nr_states):
-        #             prop.cond_reach_scheduler_choices.append(cond_reach_result.scheduler.get_choice(state).get_deterministic_choice())
-
-        #         target_reach_result = paynt.verification.property.Property.model_check(self.quotient_mdp, target_reach_formula.raw_formula)
-        #         prop.target_reach_state_values = target_reach_result.get_values()
-        #         prop.target_reach_scheduler_choices = []
-        #         for state in range(self.quotient_mdp.nr_states):
-        #             prop.target_reach_scheduler_choices.append(target_reach_result.scheduler.get_choice(state).get_deterministic_choice())
-
-        #         prop.conditional_property_values_defined = True
-
-        #     logger.info("Updating coloring for conditional properties")
-
-        #     print(self.coloring.getChoiceToAssignment())
-
-        #     new_family = paynt.family.family.Family(self.family)
-
-        #     states_to_holes = self.coloring.getStateToHoles()
-        #     nci = self.quotient_mdp.nondeterministic_choice_indices
-        #     choice_to_hole_options = self.coloring.getChoiceToAssignment()
-
-        #     for state in cond_or_target_states:
-        #         state_holes = states_to_holes[state]
-        #         for hole in state_holes:
-        #             hole_name = self.family.hole_name(hole) + f"_s{state}"
-        #             hole_option_labels = self.family.hole_to_option_labels[hole]
-        #             new_family.add_hole(hole_name, hole_option_labels)
-                
-        #         for choice in range(nci[state], nci[state+1]):
-        #             choice_hole_assignments = choice_to_hole_options[choice]
-        #             new_choice_hole_assignments = []
-        #             for assignment in choice_hole_assignments:
-        #                 hole, option = assignment
-        #                 new_hole = new_family.hole_to_name.index(self.family.hole_name(hole) + f"_s{state}")
-        #                 new_choice_hole_assignments.append( (new_hole, option) )
-        #             choice_to_hole_options[choice] = new_choice_hole_assignments
-
-        #     self.family = new_family
-
-        #     self.coloring = payntbind.synthesis.Coloring(self.family.family, nci, choice_to_hole_options)
-
 
     def export_result(self, dtmc):
         ''' to be overridden '''
@@ -442,25 +369,3 @@ class Quotient:
             return stormpy.BitVector(model.nr_states,False)
         target_label = prop.get_target_label()
         return model.labeling.get_states(target_label)
-    
-    def map_scheduler_to_quotient(self, model, prop, scheduler):
-        if self.quotient_mdp.is_exact:
-            conditional_unfolder = payntbind.synthesis.ExactConditionalUnfolder(self.quotient_mdp, prop.formula.subformula)
-            return conditional_unfolder.map_scheduler_to_quotient(model.model.transition_matrix, model.quotient_state_map, model.quotient_choice_map, scheduler, prop.target_reach_scheduler_choices, prop.cond_reach_scheduler_choices)
-        conditional_unfolder = payntbind.synthesis.ConditionalUnfolder(self.quotient_mdp, prop.formula.subformula)
-        return conditional_unfolder.map_scheduler_to_quotient(model.model.transition_matrix, model.quotient_state_map, model.quotient_choice_map, scheduler, prop.target_reach_scheduler_choices, prop.cond_reach_scheduler_choices)
-
-    # This will not be needed unless we care about the coloring in the unfolded part of the model
-    def unfold_conditional(self):
-        if not self.specification.contains_conditional_properties():
-            return
-        props = self.specification.all_properties()
-        for prop in props:
-            if not prop.is_conditional:
-                continue
-
-            self.conditional_unfolder = payntbind.synthesis.ConditionalUnfolder(self.quotient_mdp, prop.formula.subformula)
-            unfolded_mdp = self.conditional_unfolder.construct_unfolded_model()
-            # TODO update coloring accordingly
-            # We will most likely need to keep track of the original quotient_mdp as well for general use case as Storm will not provide us with the scheduler for states after evidence or target is reached
-            break

@@ -1,0 +1,42 @@
+dtmc
+
+// 0=A, 1=B, 2=C, 3=D 
+hole int first_letter in {0,1,2,3};
+hole int second_letter in {0,1,2,3};
+hole int third_letter in {0,1,2,3};
+hole int fourth_letter in {0,1,2,3};
+
+const double A_likelyhood = 0.5;
+const double B_likelyhood = 0.25;
+const double C_likelyhood = 0.125;
+const double D_likelyhood = 0.125;
+
+module decipher
+
+    processed_letters : [0..4] init 0;
+    matching_observations : [0..4] init 0;
+    generated_letter : [0..3] init 0;
+    key : [0..3] init 0;
+    clk : [0..2] init 0;
+
+    [] clk=0 -> 1/4 : (key'=0)&(clk'=1) + 1/4 : (key'=1)&(clk'=1) + 1/4 : (key'=2)&(clk'=1) + 1/4 : (key'=3)&(clk'=1);
+
+    [] clk=1 & processed_letters<4 -> A_likelyhood : (generated_letter'=0)&(clk'=2) + B_likelyhood : (generated_letter'=1)&(clk'=2) + C_likelyhood : (generated_letter'=2)&(clk'=2) + D_likelyhood : (generated_letter'=3)&(clk'=2);
+    [] clk=1 & processed_letters=4 -> true;
+
+    [] clk=2 & processed_letters=0 & mod(key+generated_letter,4)=first_letter -> (matching_observations'=matching_observations+1)&(processed_letters'=processed_letters+1)&(clk'=1);
+    [] clk=2 & processed_letters=0 & mod(key+generated_letter,4)!=first_letter -> (processed_letters'=processed_letters+1)&(clk'=1);
+
+    [] clk=2 & processed_letters=1 & mod(key+generated_letter,4)=second_letter -> (matching_observations'=matching_observations+1)&(processed_letters'=processed_letters+1)&(clk'=1);
+    [] clk=2 & processed_letters=1 & mod(key+generated_letter,4)!=second_letter -> (processed_letters'=processed_letters+1)&(clk'=1);
+
+    [] clk=2 & processed_letters=2 & mod(key+generated_letter,4)=third_letter -> (matching_observations'=matching_observations+1)&(processed_letters'=processed_letters+1)&(clk'=1);
+    [] clk=2 & processed_letters=2 & mod(key+generated_letter,4)!=third_letter -> (processed_letters'=processed_letters+1)&(clk'=1);
+
+    [] clk=2 & processed_letters=3 & mod(key+generated_letter,4)=fourth_letter -> (matching_observations'=matching_observations+1)&(processed_letters'=processed_letters+1)&(clk'=1);
+    [] clk=2 & processed_letters=3 & mod(key+generated_letter,4)!=fourth_letter -> (processed_letters'=processed_letters+1)&(clk'=1);
+
+endmodule
+
+label "target" = processed_letters=4 & key=2;
+label "condition" = matching_observations=4;

@@ -418,21 +418,11 @@ namespace synthesis {
         this->timer_model_check.stop();
         storm::modelchecker::ExplicitQuantitativeCheckResult<ValueType>& result = this->hint_result->template asExplicitQuantitativeCheckResult<ValueType>();
 
-        auto comparisonType = this->formula_modified[index]->asOperatorFormula().getComparisonType();
-
         bool satisfied;
         if(this->formula_safety[index]) {
-            if (comparisonType == storm::logic::ComparisonType::Less) {
-                satisfied = result[initial_state] < formula_bound;
-            } else {
-                satisfied = result[initial_state] <= formula_bound;
-            }
+            satisfied = result[initial_state] < formula_bound;
         } else {
-            if (comparisonType == storm::logic::ComparisonType::Greater) {
-                satisfied = result[initial_state] > formula_bound;
-            } else {
-                satisfied = result[initial_state] >= formula_bound;
-            }
+            satisfied = result[initial_state] > formula_bound;
         }
 
         return satisfied;

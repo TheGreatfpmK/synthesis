@@ -57,6 +57,77 @@ def make_rewards_action_based(model):
             new_reward_model = stormpy.storage.SparseRewardModel(optional_state_action_reward_vector=action_reward)
             model.add_reward_model(name, new_reward_model)
 
+def initilize_conditional_properties(quotient):
+    # support for conditional properties
+    if quotient.specification.contains_conditional_properties() and not quotient.conditional_inconsistency_check:
+        props = quotient.specification.all_properties()
+        cond_or_target_states = stormpy.BitVector(quotient.quotient_mdp.nr_states, False)
+        
+        logger.info("Precomputing reachability vectors for conditional properties")
+
+        for prop in props:
+            if not prop.is_conditional:
+                continue
+
+            if quotient.quotient_mdp.is_exact:
+                conditional_unfolder = payntbind.synthesis.ExactConditionalUnfolder(quotient.quotient_mdp, prop.formula.subformula)
+            else:
+                conditional_unfolder = payntbind.synthesis.ConditionalUnfolder(quotient.quotient_mdp, prop.formula.subformula)
+
+            conditional_label = conditional_unfolder.conditional_label
+            target_label = conditional_unfolder.target_label
+
+            cond_or_target_states |= quotient.quotient_mdp.labeling.get_states(conditional_label)
+            cond_or_target_states |= quotient.quotient_mdp.labeling.get_states(target_label)
+            cond_reach_formula_str = f'Pmax=? [F "{conditional_label}"]'
+            cond_reach_formula = stormpy.parse_properties_without_context(cond_reach_formula_str)[0]
+            target_reach_formula_str = f'Pmax=? [F "{target_label}"]'
+            target_reach_formula = stormpy.parse_properties_without_context(target_reach_formula_str)[0]
+
+            cond_reach_result = paynt.verification.property.Property.model_check(quotient.quotient_mdp, cond_reach_formula.raw_formula)
+            prop.cond_reach_state_values = cond_reach_result.get_values()
+            prop.cond_reach_scheduler_choices = []
+            for state in range(quotient.quotient_mdp.nr_states):
+                prop.cond_reach_scheduler_choices.append(cond_reach_result.scheduler.get_choice(state).get_deterministic_choice())
+
+            target_reach_result = paynt.verification.property.Property.model_check(quotient.quotient_mdp, target_reach_formula.raw_formula)
+            prop.target_reach_state_values = target_reach_result.get_values()
+            prop.target_reach_scheduler_choices = []
+            for state in range(quotient.quotient_mdp.nr_states):
+                prop.target_reach_scheduler_choices.append(target_reach_result.scheduler.get_choice(state).get_deterministic_choice())
+
+            prop.conditional_property_values_defined = True
+
+        logger.info("Updating coloring for conditional properties")
+
+        # print(quotient.coloring.getChoiceToAssignment())
+
+        new_family = paynt.family.family.Family(quotient.family)
+
+        states_to_holes = quotient.coloring.getStateToHoles()
+        nci = quotient.quotient_mdp.nondeterministic_choice_indices
+        choice_to_hole_options = quotient.coloring.getChoiceToAssignment()
+
+        for state in cond_or_target_states:
+            state_holes = states_to_holes[state]
+            for hole in state_holes:
+                hole_name = quotient.family.hole_name(hole) + f"_s{state}"
+                hole_option_labels = quotient.family.hole_to_option_labels[hole]
+                new_family.add_hole(hole_name, hole_option_labels)
+            
+            for choice in range(nci[state], nci[state+1]):
+                choice_hole_assignments = choice_to_hole_options[choice]
+                new_choice_hole_assignments = []
+                for assignment in choice_hole_assignments:
+                    hole, option = assignment
+                    new_hole = new_family.hole_to_name.index(quotient.family.hole_name(hole) + f"_s{state}")
+                    new_choice_hole_assignments.append( (new_hole, option) )
+                choice_to_hole_options[choice] = new_choice_hole_assignments
+
+        quotient.family = new_family
+
+        quotient.coloring = payntbind.synthesis.Coloring(quotient.family.family, nci, choice_to_hole_options)
+
 class Sketch:
 
     @classmethod
@@ -175,6 +246,9 @@ class Sketch:
                 quotient_container = paynt.quotient.mdp.MdpQuotient(explicit_quotient, specification)
             else:
                 quotient_container = paynt.quotient.pomdp.PomdpQuotient(explicit_quotient, specification, decpomdp_manager)
+
+        initilize_conditional_properties(quotient_container)
+
         return quotient_container
 
 

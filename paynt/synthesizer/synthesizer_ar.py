@@ -2,6 +2,7 @@ import paynt.quotient.posmg
 import paynt.synthesizer.synthesizer
 import paynt.quotient.pomdp
 import paynt.verification.property_result
+import paynt.models.models
 
 import logging
 logger = logging.getLogger(__name__)
@@ -42,7 +43,12 @@ class SynthesizerAR(paynt.synthesizer.synthesizer.Synthesizer):
             result.primary_selection,consistent = self.quotient.scheduler_is_consistent(mdp, constraint, result.primary.result)
             if consistent:
                 assignment = family.assume_options_copy(result.primary_selection)
-                dtmc = self.quotient.build_assignment(assignment)
+                if constraint.is_conditional and result.primary.result.has_scheduler: # support for conditional properties
+                    chain = model.model.apply_scheduler(result.primary.result.scheduler.get_memoryless_scheduler_for_memory_state(0))
+                    dtmc = paynt.models.models.Mdp(chain)
+                else:
+                    dtmc = self.quotient.build_assignment(assignment)
+                print("Double-checking optimality on DTMC...")
                 res = dtmc.check_specification(self.quotient.specification)
                 if res.accepting_dtmc(self.quotient.specification):
                     result.sat = True
@@ -77,7 +83,12 @@ class SynthesizerAR(paynt.synthesizer.synthesizer.Synthesizer):
                     # LB < OPT and it's tight, double-check the constraints and the value on the DTMC
                     result.can_improve = False
                     assignment = family.assume_options_copy(result.primary_selection)
-                    dtmc = self.quotient.build_assignment(assignment)
+                    if opt.is_conditional and result.primary.result.has_scheduler: # support for conditional properties
+                        chain = model.model.apply_scheduler(result.primary.result.scheduler.get_memoryless_scheduler_for_memory_state(0))
+                        dtmc = paynt.models.models.Mdp(chain)
+                    else:
+                        dtmc = self.quotient.build_assignment(assignment)
+                    print("Double-checking optimality on DTMC...")
                     res = dtmc.check_specification(self.quotient.specification)
                     if res.constraints_result.sat and spec.optimality.improves_optimum(res.optimality_result.value):
                         result.improving_assignment = assignment

@@ -77,13 +77,25 @@ class Property:
         # se.set_linear_equation_solver_type(stormpy.EquationSolverType.eigen)
         se.set_linear_equation_solver_type(stormpy.EquationSolverType.topological)
 
+        mce = cls.environment.model_checker_environment
+        # conditional properties testing: [restart, bisection, bisection_advanced, policy_iteration]
+        mce.conditional_algorithm = stormpy.ConditionalAlgorithmSetting.restart
+
         if use_exact:
             se.minmax_solver_environment.method = stormpy.MinMaxMethod.policy_iteration
         else:
             se.minmax_solver_environment.method = stormpy.MinMaxMethod.optimistic_value_iteration
 
     @classmethod
-    def model_check(cls, model, formula):
+    def model_check(cls, model, formula, cond_reach_result=None, target_reach_result=None):
+        if type(formula.subformula) == stormpy.logic.ConditionalFormula:
+            res = stormpy.model_checking(model, formula, only_initial_states=True, extract_scheduler=True, environment=cls.environment)
+
+            # print(res.at(3))
+            print(res2.at(3))
+            
+            return res2
+            
         return stormpy.model_checking(model, formula, extract_scheduler=True, environment=cls.environment)
 
     @classmethod
@@ -139,6 +151,9 @@ class Property:
             self.formula.set_optimality_type(stormpy.OptimizationDirection.Maximize)
         self.formula_alt = Property.alt_formula(self.formula)
 
+        if self.is_conditional:
+            self.conditional_property_values_defined = False
+
     @staticmethod
     def alt_formula(formula):
         '''
@@ -173,6 +188,10 @@ class Property:
     @property
     def is_until(self):
         return self.formula.subformula.is_until_formula
+    
+    @property
+    def is_conditional(self):
+        return type(self.formula.subformula) == stormpy.logic.ConditionalFormula
 
     @property
     def has_game_formula(self):
@@ -280,6 +299,9 @@ class OptimalityProperty(Property):
             self.epsilon = stormpy.Rational(epsilon)
         else:
             self.epsilon = epsilon
+
+        if self.is_conditional:
+            self.conditional_property_values_defined = False
 
         self.reset()
 
@@ -411,6 +433,9 @@ class Specification:
 
     def stormpy_formulae(self):
         return [p.formula for p in self.all_properties()]
+
+    def contains_conditional_properties(self):
+        return any([p.is_conditional for p in self.all_properties()])
 
     def contains_until_properties(self):
         return any([p.is_until for p in self.all_properties()])

@@ -189,9 +189,12 @@ class Synthesizer:
             logger.info(self.best_assignment)
 
         if self.best_assignment is not None and self.best_assignment.size == 1:
-            dtmc = self.quotient.build_assignment(self.best_assignment)
-            result = dtmc.check_specification(self.quotient.specification)
-            logger.info(f"double-checking specification satisfiability: {result}")
+            if not self.quotient.specification.contains_conditional_properties:
+                dtmc = self.quotient.build_assignment(self.best_assignment)
+                result = dtmc.check_specification(self.quotient.specification)
+                logger.info(f"double-checking specification satisfiability: {result}")
+            else:
+                logger.info("skipping double-checking of conditional properties as this is currently not supported")
 
         if print_stats:
             self.stat.print()

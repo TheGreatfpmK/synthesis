@@ -87,7 +87,7 @@ class Property:
             se.minmax_solver_environment.method = stormpy.MinMaxMethod.optimistic_value_iteration
 
     @classmethod
-    def model_check(cls, model, formula, cond_reach_result=None, target_reach_result=None):
+    def model_check(cls, model, formula):
         if type(formula.subformula) == stormpy.logic.ConditionalFormula:
             res = stormpy.model_checking(model, formula, only_initial_states=True, extract_scheduler=True, environment=cls.environment)
             return res
@@ -307,7 +307,7 @@ class OptimalityProperty(Property):
         return f"{str(self.formula)} {eps}"
 
     def copy(self):
-        return OptimalityProperty(self.property_copy(), self.epsilon)
+        return OptimalityProperty(self.property_copy(), self.epsilon, self.use_exact)
 
     def reset(self):
         self.optimum = None

@@ -10,6 +10,7 @@
 #include <storm/logic/AtomicLabelFormula.h>
 #include <storm/storage/BitVector.h>
 #include <storm/storage/Scheduler.h>
+#include <storm/utility/graph.h>
 
 
 namespace synthesis {
@@ -27,6 +28,8 @@ namespace synthesis {
 
         std::string getConditionalLabel() const;
         std::string getTargetLabel() const;
+
+        bool isConditionReachable() const;
 
         // unfolded MDP
         std::shared_ptr<storm::models::sparse::Mdp<ValueType>> unfoldedMdp;

@@ -26,13 +26,14 @@ class Quotient:
         vector_valid = [ value if value != math.inf else default_value for value in vector]
         return vector_valid
 
-    def __init__(self, quotient_mdp = None, family = None, coloring = None, specification = None):
+    def __init__(self, quotient_mdp = None, family = None, coloring = None, specification = None, use_exact=False):
 
         # colored qoutient MDP for the super-family
         self.quotient_mdp = quotient_mdp
         self.family = family
         self.coloring = coloring
         self.specification = specification
+        self.use_exact = use_exact
 
         # builder options
         self.subsystem_builder_options = stormpy.SubsystemBuilderOptions()
@@ -42,7 +43,10 @@ class Quotient:
         # for each choice of the quotient, a list of its state-destinations
         self.choice_destinations = None
         if self.quotient_mdp is not None:
-            self.choice_destinations = payntbind.synthesis.computeChoiceDestinations(self.quotient_mdp)
+            if self.use_exact:
+                self.choice_destinations = payntbind.synthesis.computeChoiceDestinationsExact(self.quotient_mdp)
+            else:
+                self.choice_destinations = payntbind.synthesis.computeChoiceDestinations(self.quotient_mdp)
 
     def export_result(self, dtmc):
         ''' to be overridden '''
@@ -369,3 +373,25 @@ class Quotient:
             return stormpy.BitVector(model.nr_states,False)
         target_label = prop.get_target_label()
         return model.labeling.get_states(target_label)
+    
+    def is_condition_reachable(self, model=None):
+        if model is None:
+            model = self.quotient_mdp
+
+        props = self.specification.all_properties()
+
+        for prop in props:
+            if not prop.is_conditional:
+                continue
+
+            if self.quotient_mdp.is_exact:
+                conditional_unfolder = payntbind.synthesis.ExactConditionalUnfolder(model, prop.formula.subformula)
+            else:
+                conditional_unfolder = payntbind.synthesis.ConditionalUnfolder(model, prop.formula.subformula)
+        
+            condition_reachable = conditional_unfolder.is_condition_reachable()
+
+            if not condition_reachable:
+                return False
+            
+        return True

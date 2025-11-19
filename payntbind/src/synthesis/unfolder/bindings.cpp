@@ -20,6 +20,9 @@ void bindings_unfolder_vt(py::module &m, std::string const& vtSuffix) {
             py::arg("reach_target_choices"),
             py::arg("reach_condition_choices")
         )
+        .def("is_condition_reachable", &synthesis::ConditionalUnfolder<ValueType>::isConditionReachable,
+            "Check if the condition of the conditional formula is reachable from the initial states."
+        )
         .def_property_readonly("conditional_states", [](synthesis::ConditionalUnfolder<ValueType>& unfolder) {return unfolder.getConditionalStatesForOriginalModel();})
         .def_property_readonly("target_states", [](synthesis::ConditionalUnfolder<ValueType>& unfolder) {return unfolder.getTargetStatesForOriginalModel();})
         .def_property_readonly("conditional_label", [](synthesis::ConditionalUnfolder<ValueType>& unfolder) {return unfolder.getConditionalLabel();})

@@ -127,6 +127,17 @@ namespace synthesis {
     }
 
     template<typename ValueType>
+    bool ConditionalUnfolder<ValueType>::isConditionReachable() const {
+        storm::storage::BitVector cond_states = this->getConditionalStatesForOriginalModel();
+        storm::storage::BitVector all_states(this->mdp.getNumberOfStates(), true);
+        uint64_t initial_state = *(this->mdp.getInitialStates().begin());
+        
+        auto reachable_states = storm::utility::graph::performProbGreater0E(this->mdp.getBackwardTransitions(), all_states, cond_states);
+
+        return reachable_states.get(initial_state);
+    }
+
+    template<typename ValueType>
     std::shared_ptr<storm::models::sparse::Mdp<ValueType>> ConditionalUnfolder<ValueType>::constructUnfoldedModel() {
         
         // TODO make this more robust, only supports conditional formulas that use labels currently

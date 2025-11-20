@@ -295,6 +295,16 @@ void bindings_coloring_vt(py::module& m, std::string const& vtSuffix) {
 }
 
 
+template <typename ValueType>
+void bindings_coloring_vt(py::module& m, std::string const& vtSuffix) {
+
+    m.def(("addStateValuations" + vtSuffix).c_str(), &synthesis::addStateValuations<ValueType>);
+    m.def(("janiMapChoicesToHoleAssignments" + vtSuffix).c_str(), &synthesis::janiMapChoicesToHoleAssignments<ValueType>);
+    m.def(("addChoiceLabelsFromJani" + vtSuffix).c_str(), &synthesis::addChoiceLabelsFromJani<ValueType>);
+
+    m.def(("schedulerToStateToGlobalChoice" + vtSuffix).c_str(), &synthesis::schedulerToStateToGlobalChoice<ValueType>);
+}
+
 void bindings_coloring(py::module& m) {
     bindings_coloring_vt<double>(m, "");
     bindings_coloring_vt<storm::RationalNumber>(m, "Exact");

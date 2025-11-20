@@ -50,13 +50,7 @@ class SynthesizerAR(paynt.synthesizer.synthesizer.Synthesizer):
                     dtmc = paynt.models.models.Mdp(chain)
                 else:
                     dtmc = self.quotient.build_assignment(assignment)
-                # print(result.primary.result.scheduler.get_memoryless_scheduler_for_memory_state(0))
-                # stormpy._core._export_exact_to_drn(model.model, "debug.drn")
                 res = dtmc.check_specification(self.quotient.specification)
-                # print("double check")
-                # print(result.primary.result.at(model.model.initial_states[0]))
-                # print(res.constraints_result.results[0].result.at(model.model.initial_states[0]))
-
                 if res.accepting_dtmc(self.quotient.specification):
                     result.sat = True
                     admissible_assignment = assignment
@@ -95,10 +89,7 @@ class SynthesizerAR(paynt.synthesizer.synthesizer.Synthesizer):
                         dtmc = paynt.models.models.Mdp(chain)
                     else:
                         dtmc = self.quotient.build_assignment(assignment)
-                    res = dtmc.check_specification(self.quotient.specification)
-                    # print("double check")
-                    # print(result.primary.result.at(model.model.initial_states[0]))
-                    # print(res.optimality_result.result.at(model.model.initial_states[0]))
+                    res = dtmc.check_specification(self.quotient.specification)        
                     if res.constraints_result.sat and spec.optimality.improves_optimum(res.optimality_result.value):
                         result.improving_assignment = assignment
                         result.improving_value = res.optimality_result.value

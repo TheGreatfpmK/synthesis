@@ -79,7 +79,7 @@ class Property:
 
         mce = cls.environment.model_checker_environment
         # conditional properties testing: [restart, bisection, bisection_advanced, policy_iteration]
-        mce.conditional_algorithm = stormpy.ConditionalAlgorithmSetting.restart
+        mce.conditional_algorithm = stormpy.ConditionalAlgorithmSetting.bisection
 
         if use_exact:
             se.minmax_solver_environment.method = stormpy.MinMaxMethod.policy_iteration

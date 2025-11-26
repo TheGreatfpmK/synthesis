@@ -142,11 +142,11 @@ class Property:
         # construct quantitative formula (without bound) for explicit model checking
         # set optimality type
         self.formula = rf.clone()
-        self.formula.remove_bound()
-        if self.minimizing:
-            self.formula.set_optimality_type(stormpy.OptimizationDirection.Minimize)
-        else:
-            self.formula.set_optimality_type(stormpy.OptimizationDirection.Maximize)
+        # self.formula.remove_bound()
+        # if self.minimizing:
+        #     self.formula.set_optimality_type(stormpy.OptimizationDirection.Minimize)
+        # else:
+        #     self.formula.set_optimality_type(stormpy.OptimizationDirection.Maximize)
         self.formula_alt = Property.alt_formula(self.formula)
 
         if self.is_conditional:

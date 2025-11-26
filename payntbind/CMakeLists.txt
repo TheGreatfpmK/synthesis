@@ -116,7 +116,7 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION OFF)
 # which is recommended *not* to do, but leads to errors otherwise.
 set(CMAKE_CXX_VISIBILITY_PRESET "default")
 
-find_package(Boost 1.83 REQUIRED) #+
+find_package(Boost 1.81 REQUIRED) #+
 
 # RPATH settings (https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/RPATH-handling#always-full-rpath)
 # don't skip the full RPATH for the build tree

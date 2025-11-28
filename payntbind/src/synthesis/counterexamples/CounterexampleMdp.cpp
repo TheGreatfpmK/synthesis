@@ -24,7 +24,7 @@ namespace synthesis {
 
 // labelStates
 template <typename ValueType, typename StateType>
-std::shared_ptr<storm::modelchecker::ExplicitQualitativeCheckResult> CounterexampleGeneratorMdp<ValueType,StateType>::labelStates(
+std::shared_ptr<storm::modelchecker::ExplicitQualitativeCheckResult<ValueType>> CounterexampleGeneratorMdp<ValueType,StateType>::labelStates(
     storm::models::sparse::Mdp<ValueType> const& mdp,
     storm::logic::Formula const& label
 ) {
@@ -32,7 +32,7 @@ std::shared_ptr<storm::modelchecker::ExplicitQualitativeCheckResult> Counterexam
     bool onlyInitialStatesRelevant = false;
     storm::modelchecker::CheckTask<storm::logic::Formula, ValueType> task(label, onlyInitialStatesRelevant);
     std::unique_ptr<storm::modelchecker::CheckResult> result_ptr = storm::api::verifyWithSparseEngine<ValueType>(mdp_shared, task);
-    std::shared_ptr<storm::modelchecker::ExplicitQualitativeCheckResult> mdp_target = std::make_shared<storm::modelchecker::ExplicitQualitativeCheckResult>(result_ptr->asExplicitQualitativeCheckResult());
+    std::shared_ptr<storm::modelchecker::ExplicitQualitativeCheckResult<ValueType>> mdp_target = std::make_shared<storm::modelchecker::ExplicitQualitativeCheckResult<ValueType>>(result_ptr->asExplicitQualitativeCheckResult<ValueType>());
     return mdp_target;
 }
 
@@ -279,8 +279,8 @@ void CounterexampleGeneratorMdp<ValueType,StateType>::prepareSubmdp (
     uint64_t sink_state_true = mdp_states+1;
 
     // Label target states of a MDP
-    std::shared_ptr<storm::modelchecker::ExplicitQualitativeCheckResult const> mdp_target = this->mdp_targets[formula_index];
-    std::shared_ptr<storm::modelchecker::ExplicitQualitativeCheckResult const> mdp_until = this->mdp_untils[formula_index];
+    std::shared_ptr<storm::modelchecker::ExplicitQualitativeCheckResult<ValueType> const> mdp_target = this->mdp_targets[formula_index];
+    std::shared_ptr<storm::modelchecker::ExplicitQualitativeCheckResult<ValueType> const> mdp_until = this->mdp_untils[formula_index];
     labeling_submdp.addLabel(this->target_label);
     labeling_submdp.addLabel(this->until_label);
     for(StateType state = 0; state < mdp_states; state++) {

@@ -13,6 +13,9 @@ import paynt.family.smt
 import paynt.synthesizer.conflict_generator.dtmc
 import paynt.synthesizer.conflict_generator.mdp
 
+import paynt.utils.game_abstraction_helper
+import paynt.quotient.mdp_family
+
 
 import logging
 logger = logging.getLogger(__name__)
@@ -522,7 +525,24 @@ class SynthesizerPolicyTree(paynt.synthesizer.synthesizer.Synthesizer):
         # uncomment below to preemptively double-check the policy
         # SynthesizerPolicyTree.double_check_policy(self.quotient, family, prop, policy)
         return policy
+    
 
+    def create_subfamily_quotient(self, family):
+
+        new_quotient_mdp = family.mdp.model
+
+        original_choice_to_hole_options = self.quotient.coloring.getChoiceToAssignment()
+        choice_to_hole_options = []
+
+        for choice in range(new_quotient_mdp.nr_choices):
+            original_choice = family.mdp.quotient_choice_map[choice]
+            choice_to_hole_options.append(original_choice_to_hole_options[original_choice])
+
+        new_coloring = payntbind.synthesis.Coloring(family.family, new_quotient_mdp.nondeterministic_choice_indices, choice_to_hole_options)
+
+        new_quotient = paynt.quotient.mdp_family.MdpFamilyQuotient(new_quotient_mdp, family, new_coloring, self.quotient.specification)
+
+        return new_quotient
 
     def solve_game_abstraction(self, family, prop, game_solver):
         # construct and solve the game abstraction
@@ -567,7 +587,10 @@ class SynthesizerPolicyTree(paynt.synthesizer.synthesizer.Synthesizer):
             return mdp_family_result
         
         if family.candidate_policy is None:
-            game_policy,game_sat = self.solve_game_abstraction(family,prop,game_solver)
+            # game_policy,game_sat = self.solve_game_abstraction(family,prop,game_solver)
+
+            new_quotient = self.create_subfamily_quotient(family)
+            result = paynt.utils.game_abstraction_helper.run_molehill_for_game_abstraction(new_quotient)
         else:
             game_policy = family.candidate_policy
             game_sat = False

@@ -51,6 +51,7 @@ class SynthesizerAR(paynt.synthesizer.synthesizer.Synthesizer):
                 else:
                     dtmc = self.quotient.build_assignment(assignment)
                 res = dtmc.check_specification(self.quotient.specification)
+                assert result.primary.value == res.constraints_result.results[index].value, f"Inconsistent results for constraint {index}: {result.primary.value} vs {res.constraints_result.results[index].value}"
                 if res.accepting_dtmc(self.quotient.specification):
                     result.sat = True
                     admissible_assignment = assignment
@@ -89,7 +90,7 @@ class SynthesizerAR(paynt.synthesizer.synthesizer.Synthesizer):
                         dtmc = paynt.models.models.Mdp(chain)
                     else:
                         dtmc = self.quotient.build_assignment(assignment)
-                    res = dtmc.check_specification(self.quotient.specification)        
+                    res = dtmc.check_specification(self.quotient.specification)
                     if res.constraints_result.sat and spec.optimality.improves_optimum(res.optimality_result.value):
                         result.improving_assignment = assignment
                         result.improving_value = res.optimality_result.value

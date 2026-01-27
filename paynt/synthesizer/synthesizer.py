@@ -205,6 +205,8 @@ class Synthesizer:
             self.best_assignment_value = None
             self.quotient.specification.reset()
 
+        self.stat.print_result_string()
+
         return assignment
 
 

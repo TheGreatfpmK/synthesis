@@ -1,0 +1,61 @@
+paynt ../Software/dtcontrol-epsilon/models/mdp/firewire_dl/ --sketch firewire_dl.prism --props firewire_dl.props --tree-enumeration --tree-depth=20 --timeout 10
+2025-10-07 18:18:58,964 - cli.py:162 - This is Paynt version 0.2.0.
+2025-10-07 18:18:58,964 - version_check.py:14 - Storm used by payntbind (1.11.1) and stormpy (1.11.0) are not the same!
+2025-10-07 18:18:58,964 - sketch.py:80 - loading sketch from ../Software/dtcontrol-epsilon/models/mdp/firewire_dl/firewire_dl.prism ...
+2025-10-07 18:18:58,964 - sketch.py:84 - assuming sketch in PRISM format...
+2025-10-07 18:18:58,967 - prism_parser.py:31 - PRISM model type: MDP
+2025-10-07 18:18:58,967 - prism_parser.py:224 - loading properties from ../Software/dtcontrol-epsilon/models/mdp/firewire_dl/firewire_dl.props ...
+2025-10-07 18:18:58,968 - prism_parser.py:240 - found the following specification: optimality: Pmin=? [F (s = 9)] 
+2025-10-07 18:18:59,378 - sketch.py:135 - sketch parsing OK
+2025-10-07 18:18:59,500 - sketch.py:148 - constructed explicit quotient having 168411 states and 189524 choices
+2025-10-07 18:18:59,500 - sketch.py:154 - found the following specification optimality: Pmin=? [F (s = 9)] 
+2025-10-07 18:18:59,819 - mdp.py:328 - MDP has 16123/168411 relevant states
+2025-10-07 18:18:59,849 - mdp.py:338 - MDP has 24 actions
+2025-10-07 18:19:00,302 - mdp.py:363 - found the following 3 variables: ['s:[0..8]', 'x:[0..167]', 'y:[0..601]']
+WARN  (IterativeMinMaxLinearEquationSolver.cpp:191): Expected VI operator to be initialized for scheduler extraction. Initializing now, but this is inefficient.
+2025-10-07 18:19:00,336 - decision_tree.py:232 - the optimal scheduler has value: 0.931640625
+
+2025-10-07 18:19:00,336 - mdp.py:442 - building tree of depth 0
+2025-10-07 18:19:00,433 - statistic.py:67 - synthesis initiated, design space: 24
+WARN  (IterativeMinMaxLinearEquationSolver.cpp:191): Expected VI operator to be initialized for scheduler extraction. Initializing now, but this is inefficient.
+ERROR (ColoringSmt.cpp:398): no choice is available in the sub-MDP
+Traceback (most recent call last):
+  File "/home/sabine/anaconda3/envs/paynt/bin/paynt", line 7, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/sabine/anaconda3/envs/paynt/lib/python3.13/site-packages/paynt/cli.py", line 224, in main
+    paynt_run()
+    ~~~~~~~~~^^
+  File "/home/sabine/anaconda3/envs/paynt/lib/python3.13/site-packages/click/core.py", line 1462, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/sabine/anaconda3/envs/paynt/lib/python3.13/site-packages/click/core.py", line 1383, in main
+    rv = self.invoke(ctx)
+  File "/home/sabine/anaconda3/envs/paynt/lib/python3.13/site-packages/click/core.py", line 1246, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sabine/anaconda3/envs/paynt/lib/python3.13/site-packages/click/core.py", line 814, in invoke
+    return callback(*args, **kwargs)
+  File "/home/sabine/anaconda3/envs/paynt/lib/python3.13/site-packages/paynt/cli.py", line 195, in paynt_run
+    synthesizer.run(optimum_threshold)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/home/sabine/anaconda3/envs/paynt/lib/python3.13/site-packages/paynt/synthesizer/decision_tree.py", line 258, in run
+    self.synthesize_tree_sequence(opt_result_value)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/sabine/anaconda3/envs/paynt/lib/python3.13/site-packages/paynt/synthesizer/decision_tree.py", line 162, in synthesize_tree_sequence
+    self.synthesize_one(family)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/sabine/anaconda3/envs/paynt/lib/python3.13/site-packages/paynt/synthesizer/synthesizer_ar.py", line 124, in synthesize_one
+    self.verify_family(family)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/sabine/anaconda3/envs/paynt/lib/python3.13/site-packages/paynt/synthesizer/decision_tree.py", line 88, in verify_family
+    self.harmonize_inconsistent_scheduler(family)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/sabine/anaconda3/envs/paynt/lib/python3.13/site-packages/paynt/synthesizer/decision_tree.py", line 62, in harmonize_inconsistent_scheduler
+    self.verify_hole_selection(family,selection)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/sabine/anaconda3/envs/paynt/lib/python3.13/site-packages/paynt/synthesizer/decision_tree.py", line 35, in verify_hole_selection
+    dtmc = self.quotient.build_assignment(assignment)
+  File "/home/sabine/anaconda3/envs/paynt/lib/python3.13/site-packages/paynt/quotient/quotient.py", line 103, in build_assignment
+    choices = self.coloring.selectCompatibleChoices(family.family)
+RuntimeError: UnexpectedException: no choice is available in the sub-MDP

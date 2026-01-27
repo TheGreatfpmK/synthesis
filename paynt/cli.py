@@ -17,6 +17,10 @@ import paynt.synthesizer.synthesizer_cegis
 import paynt.synthesizer.policy_tree
 import paynt.synthesizer.decision_tree
 
+import paynt.verification.property
+
+import stormpy
+
 import click
 import sys
 import os
@@ -49,6 +53,22 @@ def setup_logger(log_path = None):
     for h in handlers:
         root.addHandler(h)
     return handlers
+
+def conditional_setting_from_string(name: str):
+    if name == 'restart':
+        return stormpy.ConditionalAlgorithmSetting.restart
+    elif name == 'bisection':
+        return stormpy.ConditionalAlgorithmSetting.bisection
+    elif name == 'bisection_advanced':
+        return stormpy.ConditionalAlgorithmSetting.bisection_advanced
+    elif name == 'bisection_policy_tracking':
+        return stormpy.ConditionalAlgorithmSetting.bisection_policy_tracking
+    elif name == 'bisection_advanced_policy_tracking':
+        return stormpy.ConditionalAlgorithmSetting.bisection_advanced_policy_tracking
+    elif name == 'policy_iteration':
+        return stormpy.ConditionalAlgorithmSetting.policy_iteration
+    else:
+        raise ValueError(f"Unknown conditional algorithm setting: {name}")
 
 
 @click.command()
@@ -130,6 +150,13 @@ def setup_logger(log_path = None):
     "--constraint-bound", type=click.FLOAT, help="bound for creating constrained POMDP for Cassandra models",
 )
 
+@click.option("--conditional-algorithm", type=click.Choice(['bisection', 'bisection_advanced', 'bisection_policy_tracking', 'bisection_advanced_policy_tracking', 'policy_iteration', 'restart']), default='bisection', show_default=True,
+    help="conditional model checking algorithm to use")
+@click.option("--conditional-splitting", type=click.Choice([None, 'evs', 'backward', 'forward', 'alternating_bf']), default=None, show_default=True,
+    help="what splitting to use for conditional properties")
+@click.option("--conditional-bisection-optimization", is_flag=True, default=False,
+    help="enable optimization for bounded properties in conditional bisection")
+
 @click.option(
     "--ce-generator", type=click.Choice(["dtmc", "mdp"]), default="dtmc", show_default=True,
     help="counterexample generator",
@@ -149,6 +176,7 @@ def paynt_run(
     mdp_discard_unreachable_choices,
     tree_depth, tree_enumeration, tree_map_scheduler, add_dont_care_action,
     constraint_bound,
+    conditional_algorithm, conditional_splitting, conditional_bisection_optimization,
     ce_generator,
     profiling
 ):
@@ -179,6 +207,10 @@ def paynt_run(
     paynt.synthesizer.decision_tree.SynthesizerDecisionTree.tree_enumeration = tree_enumeration
     paynt.synthesizer.decision_tree.SynthesizerDecisionTree.scheduler_path = tree_map_scheduler
     paynt.quotient.mdp.MdpQuotient.add_dont_care_action = add_dont_care_action
+
+    paynt.quotient.quotient.Quotient.conditional_splitting = conditional_splitting
+    paynt.verification.property.Property.conditional_algorithm = conditional_setting_from_string(conditional_algorithm)
+    paynt.verification.property.Property.conditional_bisection_optimization = conditional_bisection_optimization
 
     storm_control = None
     if storm_pomdp:

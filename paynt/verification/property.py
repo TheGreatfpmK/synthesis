@@ -59,6 +59,9 @@ class Property:
     environment = None
     # model checking precision
     model_checking_precision = 1e-6
+    # conditional model checking algorithm
+    conditional_algorithm = stormpy.ConditionalAlgorithmSetting.bisection
+    conditional_bisection_optimization = False
 
     @classmethod
     def set_model_checking_precision(cls, precision):
@@ -67,7 +70,7 @@ class Property:
         payntbind.synthesis.set_precision_minmax(cls.environment.solver_environment.minmax_solver_environment, precision)
 
     @classmethod
-    def initialize(cls, use_exact=False, conditional_method=stormpy.ConditionalAlgorithmSetting.bisection, min_max_method=None):
+    def initialize(cls, use_exact=False, min_max_method=None):
         cls.environment = stormpy.Environment()
         cls.set_model_checking_precision(cls.model_checking_precision)
 
@@ -79,7 +82,8 @@ class Property:
 
         mce = cls.environment.model_checker_environment
         # conditional properties testing: [restart, bisection, bisection_advanced, policy_iteration]
-        mce.conditional_algorithm = conditional_method
+        mce.conditional_algorithm = cls.conditional_algorithm
+        mce.optimization_for_bounded_properties = cls.conditional_bisection_optimization
 
         if min_max_method is not None:
             se.minmax_solver_environment.method = min_max_method
@@ -87,6 +91,7 @@ class Property:
             se.minmax_solver_environment.method = stormpy.MinMaxMethod.policy_iteration
         else:
             se.minmax_solver_environment.method = stormpy.MinMaxMethod.optimistic_value_iteration
+            # se.minmax_solver_environment.method = stormpy.MinMaxMethod.value_iteration
 
     @classmethod
     def model_check(cls, model, formula):

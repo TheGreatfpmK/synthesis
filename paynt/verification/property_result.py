@@ -7,7 +7,10 @@ class PropertyResult:
     def __init__(self, prop, result, value):
         self.result = result
         self.value = value
-        self.sat = prop.satisfies_threshold(value)
+        if type(self.value) == bool:
+            self.sat = self.value
+        else:
+            self.sat = prop.satisfies_threshold(value)
         self.improves_optimum = None if not isinstance(prop,OptimalityProperty) else prop.improves_optimum(value)
 
     def __str__(self):

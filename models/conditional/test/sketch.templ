@@ -1,0 +1,18 @@
+dtmc
+
+label "goal" = s=2;
+label "conditional" = s=1;
+
+hole int h in {1,2};
+
+module test
+
+    s : [0..2] init 0;
+
+    [a] s=0 -> 1/2: (s'=0) + 1/2: (s'=h);
+
+    [a] s=1 -> (s'=0);
+
+    [a] s=2 -> true; 
+
+endmodule

@@ -298,3 +298,6 @@ class Statistic:
         iters_by_mdp = round((self.iterations_game+self.iterations_mdp)/self.num_mdps_total*100,2)
         print(iters_by_mdp)
         print()
+
+    def print_result_string(self):
+        print(f"{self.quotient.family.size};{round(safe_division(self.acc_size_mdp, self.iterations_mdp))};{round(self.synthesis_timer.time, 2)};{self.iterations_mdp}")

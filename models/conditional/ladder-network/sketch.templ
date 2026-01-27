@@ -1,0 +1,142 @@
+dtmc
+
+
+const int NETWORK_LEN = 10;
+
+hole int OBSERVED_ROUTER in {6};
+
+hole int FAULTY_LEVEL_0 in {0,1};
+hole double SWITCH_LEVEL_0 in {0.4..0.6:0.05};
+hole double FAIL_LEVEL_0 in {0.02};
+
+hole int FAULTY_LEVEL_1 in {0,1};
+hole double SWITCH_LEVEL_1 in {0.5..0.7:0.05};
+hole double FAIL_LEVEL_1 in {0.00,0.01};
+
+hole int FAULTY_LEVEL_2 in {0,1};
+hole double SWITCH_LEVEL_2 in {0.3..0.5:0.05};
+hole double FAIL_LEVEL_2 in {0.00};
+
+hole int FAULTY_LEVEL_3 in {0,1};
+hole double SWITCH_LEVEL_3 in {0.4..0.6:0.05};
+hole double FAIL_LEVEL_3 in {0.01,0.02,0.03};
+
+hole int FAULTY_LEVEL_4 in {0,1};
+hole double SWITCH_LEVEL_4 in {0.4..0.6:0.05};
+hole double FAIL_LEVEL_4 in {0.00,0.01};
+
+hole int FAULTY_LEVEL_5 in {0,1};
+hole double SWITCH_LEVEL_5 in {0.6};
+hole double FAIL_LEVEL_5 in {0.01,0.02,0.03};
+
+hole int FAULTY_LEVEL_6 in {0,1};
+hole double SWITCH_LEVEL_6 in {0.4..0.6:0.05};
+hole double FAIL_LEVEL_6 in {0.04};
+
+hole int FAULTY_LEVEL_7 in {0,1};
+hole double SWITCH_LEVEL_7 in {0.4..0.6:0.05};
+hole double FAIL_LEVEL_7 in {0.01,0.02};
+
+hole int FAULTY_LEVEL_8 in {0,1};
+hole double SWITCH_LEVEL_8 in {0.4..0.6:0.05};
+hole double FAIL_LEVEL_8 in {0.00,0.01};
+
+hole int FAULTY_LEVEL_9 in {0,1};
+hole double SWITCH_LEVEL_9 in {0.4..0.6:0.05};
+hole double FAIL_LEVEL_9 in {0.01,0.02,0.03};
+
+
+label "target" = current_level=NETWORK_LEN & observed_fail=1;
+label "condition" = current_level=NETWORK_LEN & failed=1;
+
+module network
+
+    current_level : [0..NETWORK_LEN] init 0;
+    current_router : [0..1] init 0;
+    initialized : [0..1] init 0;
+    observed_fail : [0..1] init 0;
+    failed : [0..1] init 0;
+    skip_level : [0..NETWORK_LEN-1] init 0;
+
+    [start] initialized=0 -> 1/10 : (current_router'=0)&(initialized'=1)&(skip_level'=1) + 1/10 : (current_router'=1)&(initialized'=1)&(skip_level'=1)
+                           + 1/10 : (current_router'=0)&(initialized'=1)&(skip_level'=3) + 1/10 : (current_router'=1)&(initialized'=1)&(skip_level'=3)
+                           + 1/10 : (current_router'=0)&(initialized'=1)&(skip_level'=5) + 1/10 : (current_router'=1)&(initialized'=1)&(skip_level'=5)
+                           + 1/10 : (current_router'=0)&(initialized'=1)&(skip_level'=7) + 1/10 : (current_router'=1)&(initialized'=1)&(skip_level'=7)
+                           + 1/10 : (current_router'=0)&(initialized'=1)&(skip_level'=9) + 1/10 : (current_router'=1)&(initialized'=1)&(skip_level'=9);
+
+    [end] initialized=1 & current_level=NETWORK_LEN -> true;
+
+    [failed] initialized=1 & failed=1 & current_level<NETWORK_LEN -> 1 : (current_level'=current_level+1); 
+
+    [step] initialized=1 & failed=0 & current_level=skip_level -> 1 : (current_level'=current_level+1);
+
+    [step] initialized=1 & failed=0 & current_level=0 & current_level!=skip_level & current_router=FAULTY_LEVEL_0 & OBSERVED_ROUTER=0 -> (1-FAIL_LEVEL_0)*(1-SWITCH_LEVEL_0) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_0)*(SWITCH_LEVEL_0) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_0)*(1-SWITCH_LEVEL_0) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1)&(observed_fail'=1) + (FAIL_LEVEL_0)*(SWITCH_LEVEL_0) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1)&(observed_fail'=1);
+
+    [step] initialized=1 & failed=0 & current_level=0 & current_level!=skip_level & current_router=FAULTY_LEVEL_0 & OBSERVED_ROUTER!=0 -> (1-FAIL_LEVEL_0)*(1-SWITCH_LEVEL_0) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_0)*(SWITCH_LEVEL_0) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_0)*(1-SWITCH_LEVEL_0) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1) + (FAIL_LEVEL_0)*(SWITCH_LEVEL_0) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1);
+    
+    [step] initialized=1 & failed=0 & current_level=0 & current_level!=skip_level & current_router!=FAULTY_LEVEL_0 -> (1-SWITCH_LEVEL_0) : (current_level'=current_level+1)&(current_router'=0) + (SWITCH_LEVEL_0) : (current_level'=current_level+1)&(current_router'=1);
+
+
+    [step] initialized=1 & failed=0 & current_level=1 & current_level!=skip_level & current_router=FAULTY_LEVEL_1 & OBSERVED_ROUTER=1 -> (1-FAIL_LEVEL_1)*(1-SWITCH_LEVEL_1) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_1)*(SWITCH_LEVEL_1) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_1)*(1-SWITCH_LEVEL_1) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1)&(observed_fail'=1) + (FAIL_LEVEL_1)*(SWITCH_LEVEL_1) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1)&(observed_fail'=1);
+
+    [step] initialized=1 & failed=0 & current_level=1 & current_level!=skip_level & current_router=FAULTY_LEVEL_1 & OBSERVED_ROUTER!=1 -> (1-FAIL_LEVEL_1)*(1-SWITCH_LEVEL_1) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_1)*(SWITCH_LEVEL_1) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_1)*(1-SWITCH_LEVEL_1) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1) + (FAIL_LEVEL_1)*(SWITCH_LEVEL_1) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1);
+    
+    [step] initialized=1 & failed=0 & current_level=1 & current_level!=skip_level & current_router!=FAULTY_LEVEL_1 -> (1-SWITCH_LEVEL_1) : (current_level'=current_level+1)&(current_router'=0) + (SWITCH_LEVEL_1) : (current_level'=current_level+1)&(current_router'=1);
+
+
+    [step] initialized=1 & failed=0 & current_level=2 & current_level!=skip_level & current_router=FAULTY_LEVEL_2 & OBSERVED_ROUTER=2 -> (1-FAIL_LEVEL_2)*(1-SWITCH_LEVEL_2) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_2)*(SWITCH_LEVEL_2) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_2)*(1-SWITCH_LEVEL_2) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1)&(observed_fail'=1) + (FAIL_LEVEL_2)*(SWITCH_LEVEL_2) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1)&(observed_fail'=1);
+
+    [step] initialized=1 & failed=0 & current_level=2 & current_level!=skip_level & current_router=FAULTY_LEVEL_2 & OBSERVED_ROUTER!=2 -> (1-FAIL_LEVEL_2)*(1-SWITCH_LEVEL_2) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_2)*(SWITCH_LEVEL_2) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_2)*(1-SWITCH_LEVEL_2) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1) + (FAIL_LEVEL_2)*(SWITCH_LEVEL_2) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1);
+    
+    [step] initialized=1 & failed=0 & current_level=2 & current_level!=skip_level & current_router!=FAULTY_LEVEL_2 -> (1-SWITCH_LEVEL_2) : (current_level'=current_level+1)&(current_router'=0) + (SWITCH_LEVEL_2) : (current_level'=current_level+1)&(current_router'=1);
+
+
+    [step] initialized=1 & failed=0 & current_level=3 & current_level!=skip_level & current_router=FAULTY_LEVEL_3 & OBSERVED_ROUTER=3 -> (1-FAIL_LEVEL_3)*(1-SWITCH_LEVEL_3) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_3)*(SWITCH_LEVEL_3) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_3)*(1-SWITCH_LEVEL_3) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1)&(observed_fail'=1) + (FAIL_LEVEL_3)*(SWITCH_LEVEL_3) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1)&(observed_fail'=1);
+
+    [step] initialized=1 & failed=0 & current_level=3 & current_level!=skip_level & current_router=FAULTY_LEVEL_3 & OBSERVED_ROUTER!=3 -> (1-FAIL_LEVEL_3)*(1-SWITCH_LEVEL_3) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_3)*(SWITCH_LEVEL_3) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_3)*(1-SWITCH_LEVEL_3) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1) + (FAIL_LEVEL_3)*(SWITCH_LEVEL_3) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1);
+    
+    [step] initialized=1 & failed=0 & current_level=3 & current_level!=skip_level & current_router!=FAULTY_LEVEL_3 -> (1-SWITCH_LEVEL_3) : (current_level'=current_level+1)&(current_router'=0) + (SWITCH_LEVEL_3) : (current_level'=current_level+1)&(current_router'=1);
+
+
+    [step] initialized=1 & failed=0 & current_level=4 & current_level!=skip_level & current_router=FAULTY_LEVEL_4 & OBSERVED_ROUTER=4 -> (1-FAIL_LEVEL_4)*(1-SWITCH_LEVEL_4) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_4)*(SWITCH_LEVEL_4) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_4)*(1-SWITCH_LEVEL_4) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1)&(observed_fail'=1) + (FAIL_LEVEL_4)*(SWITCH_LEVEL_4) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1)&(observed_fail'=1);
+
+    [step] initialized=1 & failed=0 & current_level=4 & current_level!=skip_level & current_router=FAULTY_LEVEL_4 & OBSERVED_ROUTER!=4 -> (1-FAIL_LEVEL_4)*(1-SWITCH_LEVEL_4) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_4)*(SWITCH_LEVEL_4) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_4)*(1-SWITCH_LEVEL_4) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1) + (FAIL_LEVEL_4)*(SWITCH_LEVEL_4) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1);
+    
+    [step] initialized=1 & failed=0 & current_level=4 & current_level!=skip_level & current_router!=FAULTY_LEVEL_4 -> (1-SWITCH_LEVEL_4) : (current_level'=current_level+1)&(current_router'=0) + (SWITCH_LEVEL_4) : (current_level'=current_level+1)&(current_router'=1);
+
+
+    [step] initialized=1 & failed=0 & current_level=5 & current_level!=skip_level & current_router=FAULTY_LEVEL_5 & OBSERVED_ROUTER=5 -> (1-FAIL_LEVEL_5)*(1-SWITCH_LEVEL_5) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_5)*(SWITCH_LEVEL_5) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_5)*(1-SWITCH_LEVEL_5) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1)&(observed_fail'=1) + (FAIL_LEVEL_5)*(SWITCH_LEVEL_5) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1)&(observed_fail'=1);
+
+    [step] initialized=1 & failed=0 & current_level=5 & current_level!=skip_level & current_router=FAULTY_LEVEL_5 & OBSERVED_ROUTER!=5 -> (1-FAIL_LEVEL_5)*(1-SWITCH_LEVEL_5) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_5)*(SWITCH_LEVEL_5) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_5)*(1-SWITCH_LEVEL_5) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1) + (FAIL_LEVEL_5)*(SWITCH_LEVEL_5) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1);
+    
+    [step] initialized=1 & failed=0 & current_level=5 & current_level!=skip_level & current_router!=FAULTY_LEVEL_5 -> (1-SWITCH_LEVEL_5) : (current_level'=current_level+1)&(current_router'=0) + (SWITCH_LEVEL_5) : (current_level'=current_level+1)&(current_router'=1);
+
+
+    [step] initialized=1 & failed=0 & current_level=6 & current_level!=skip_level & current_router=FAULTY_LEVEL_6 & OBSERVED_ROUTER=6 -> (1-FAIL_LEVEL_6)*(1-SWITCH_LEVEL_6) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_6)*(SWITCH_LEVEL_6) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_6)*(1-SWITCH_LEVEL_6) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1)&(observed_fail'=1) + (FAIL_LEVEL_6)*(SWITCH_LEVEL_6) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1)&(observed_fail'=1);
+
+    [step] initialized=1 & failed=0 & current_level=6 & current_level!=skip_level & current_router=FAULTY_LEVEL_6 & OBSERVED_ROUTER!=6 -> (1-FAIL_LEVEL_6)*(1-SWITCH_LEVEL_6) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_6)*(SWITCH_LEVEL_6) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_6)*(1-SWITCH_LEVEL_6) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1) + (FAIL_LEVEL_6)*(SWITCH_LEVEL_6) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1);
+    
+    [step] initialized=1 & failed=0 & current_level=6 & current_level!=skip_level & current_router!=FAULTY_LEVEL_6 -> (1-SWITCH_LEVEL_6) : (current_level'=current_level+1)&(current_router'=0) + (SWITCH_LEVEL_6) : (current_level'=current_level+1)&(current_router'=1);
+
+
+    [step] initialized=1 & failed=0 & current_level=7 & current_level!=skip_level & current_router=FAULTY_LEVEL_7 & OBSERVED_ROUTER=7 -> (1-FAIL_LEVEL_7)*(1-SWITCH_LEVEL_7) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_7)*(SWITCH_LEVEL_7) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_7)*(1-SWITCH_LEVEL_7) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1)&(observed_fail'=1) + (FAIL_LEVEL_7)*(SWITCH_LEVEL_7) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1)&(observed_fail'=1);
+
+    [step] initialized=1 & failed=0 & current_level=7 & current_level!=skip_level & current_router=FAULTY_LEVEL_7 & OBSERVED_ROUTER!=7 -> (1-FAIL_LEVEL_7)*(1-SWITCH_LEVEL_7) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_7)*(SWITCH_LEVEL_7) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_7)*(1-SWITCH_LEVEL_7) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1) + (FAIL_LEVEL_7)*(SWITCH_LEVEL_7) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1);
+    
+    [step] initialized=1 & failed=0 & current_level=7 & current_level!=skip_level & current_router!=FAULTY_LEVEL_7 -> (1-SWITCH_LEVEL_7) : (current_level'=current_level+1)&(current_router'=0) + (SWITCH_LEVEL_7) : (current_level'=current_level+1)&(current_router'=1);
+
+
+    [step] initialized=1 & failed=0 & current_level=8 & current_level!=skip_level & current_router=FAULTY_LEVEL_8 & OBSERVED_ROUTER=8 -> (1-FAIL_LEVEL_8)*(1-SWITCH_LEVEL_8) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_8)*(SWITCH_LEVEL_8) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_8)*(1-SWITCH_LEVEL_8) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1)&(observed_fail'=1) + (FAIL_LEVEL_8)*(SWITCH_LEVEL_8) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1)&(observed_fail'=1);
+
+    [step] initialized=1 & failed=0 & current_level=8 & current_level!=skip_level & current_router=FAULTY_LEVEL_8 & OBSERVED_ROUTER!=8 -> (1-FAIL_LEVEL_8)*(1-SWITCH_LEVEL_8) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_8)*(SWITCH_LEVEL_8) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_8)*(1-SWITCH_LEVEL_8) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1) + (FAIL_LEVEL_8)*(SWITCH_LEVEL_8) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1);
+    
+    [step] initialized=1 & failed=0 & current_level=8 & current_level!=skip_level & current_router!=FAULTY_LEVEL_8 -> (1-SWITCH_LEVEL_8) : (current_level'=current_level+1)&(current_router'=0) + (SWITCH_LEVEL_8) : (current_level'=current_level+1)&(current_router'=1);
+
+
+    [step] initialized=1 & failed=0 & current_level=9 & current_level!=skip_level & current_router=FAULTY_LEVEL_9 & OBSERVED_ROUTER=9 -> (1-FAIL_LEVEL_9)*(1-SWITCH_LEVEL_9) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_9)*(SWITCH_LEVEL_9) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_9)*(1-SWITCH_LEVEL_9) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1)&(observed_fail'=1) + (FAIL_LEVEL_9)*(SWITCH_LEVEL_9) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1)&(observed_fail'=1);
+
+    [step] initialized=1 & failed=0 & current_level=9 & current_level!=skip_level & current_router=FAULTY_LEVEL_9 & OBSERVED_ROUTER!=9 -> (1-FAIL_LEVEL_9)*(1-SWITCH_LEVEL_9) : (current_level'=current_level+1)&(current_router'=0) + (1-FAIL_LEVEL_9)*(SWITCH_LEVEL_9) : (current_level'=current_level+1)&(current_router'=1) + (FAIL_LEVEL_9)*(1-SWITCH_LEVEL_9) : (current_level'=current_level+1)&(current_router'=0)&(failed'=1) + (FAIL_LEVEL_9)*(SWITCH_LEVEL_9) : (current_level'=current_level+1)&(current_router'=1)&(failed'=1);
+    
+    [step] initialized=1 & failed=0 & current_level=9 & current_level!=skip_level & current_router!=FAULTY_LEVEL_9 -> (1-SWITCH_LEVEL_9) : (current_level'=current_level+1)&(current_router'=0) + (SWITCH_LEVEL_9) : (current_level'=current_level+1)&(current_router'=1);
+
+endmodule

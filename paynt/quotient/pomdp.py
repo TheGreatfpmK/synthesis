@@ -368,7 +368,7 @@ class PomdpQuotient(paynt.quotient.quotient.Quotient):
 
     def estimate_scheduler_difference(self, mdp, quotient_choice_map, inconsistent_assignments, choice_values, expected_visits):
 
-        if PomdpQuotient.posterior_aware:
+        if True: # TODO testing
             return super().estimate_scheduler_difference(mdp,quotient_choice_map,inconsistent_assignments,choice_values,expected_visits)
 
         # note: the code below is optimized for posterior-unaware unfolding

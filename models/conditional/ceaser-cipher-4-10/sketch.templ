@@ -1,0 +1,56 @@
+dtmc
+
+// 0=A, 1=B, 2=C, 3=D 
+hole int letter_1 in {0,1,2,3};
+hole int letter_2 in {0,1,2,3};
+hole int letter_3 in {0,1,2,3};
+hole int letter_4 in {0,1,2,3};
+hole int letter_5 in {0,1,2,3};
+hole int letter_6 in {0,1,2,3};
+hole int letter_7 in {0,1,2,3};
+hole int letter_8 in {0,1,2,3};
+hole int letter_9 in {0,1,2,3};
+hole int letter_10 in {0,1,2,3};
+
+const double A_likelyhood = 0.5;
+const double B_likelyhood = 0.25;
+const double C_likelyhood = 0.125;
+const double D_likelyhood = 0.125;
+
+const int WORD_LEN = 10;
+
+module decipher
+
+    processed_letters : [0..WORD_LEN] init 0;
+    matching_observations : [0..WORD_LEN] init 0;
+    key : [0..3] init 0;
+    clk : [0..1] init 0;
+
+    [] clk=0 -> 1/4 : (key'=0)&(clk'=1) + 1/4 : (key'=1)&(clk'=1) + 1/4 : (key'=2)&(clk'=1) + 1/4 : (key'=3)&(clk'=1);
+
+    [] clk=1 & processed_letters=0 -> A_likelyhood : (matching_observations'=mod(key+0,4)=letter_1 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + B_likelyhood : (matching_observations'=mod(key+1,4)=letter_1 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + C_likelyhood : (matching_observations'=mod(key+2,4)=letter_1 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + D_likelyhood : (matching_observations'=mod(key+3,4)=letter_1 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1);
+
+    [] clk=1 & processed_letters=1 -> A_likelyhood : (matching_observations'=mod(key+0,4)=letter_2 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + B_likelyhood : (matching_observations'=mod(key+1,4)=letter_2 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + C_likelyhood : (matching_observations'=mod(key+2,4)=letter_2 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + D_likelyhood : (matching_observations'=mod(key+3,4)=letter_2 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1);
+
+    [] clk=1 & processed_letters=2 -> A_likelyhood : (matching_observations'=mod(key+0,4)=letter_3 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + B_likelyhood : (matching_observations'=mod(key+1,4)=letter_3 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + C_likelyhood : (matching_observations'=mod(key+2,4)=letter_3 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + D_likelyhood : (matching_observations'=mod(key+3,4)=letter_3 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1);
+
+    [] clk=1 & processed_letters=3 -> A_likelyhood : (matching_observations'=mod(key+0,4)=letter_4 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + B_likelyhood : (matching_observations'=mod(key+1,4)=letter_4 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + C_likelyhood : (matching_observations'=mod(key+2,4)=letter_4 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + D_likelyhood : (matching_observations'=mod(key+3,4)=letter_4 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1);
+
+    [] clk=1 & processed_letters=4 -> A_likelyhood : (matching_observations'=mod(key+0,4)=letter_5 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + B_likelyhood : (matching_observations'=mod(key+1,4)=letter_5 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + C_likelyhood : (matching_observations'=mod(key+2,4)=letter_5 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + D_likelyhood : (matching_observations'=mod(key+3,4)=letter_5 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1);
+
+    [] clk=1 & processed_letters=5 -> A_likelyhood : (matching_observations'=mod(key+0,4)=letter_6 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + B_likelyhood : (matching_observations'=mod(key+1,4)=letter_6 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + C_likelyhood : (matching_observations'=mod(key+2,4)=letter_6 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + D_likelyhood : (matching_observations'=mod(key+3,4)=letter_6 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1);
+
+    [] clk=1 & processed_letters=6 -> A_likelyhood : (matching_observations'=mod(key+0,4)=letter_7 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + B_likelyhood : (matching_observations'=mod(key+1,4)=letter_7 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + C_likelyhood : (matching_observations'=mod(key+2,4)=letter_7 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + D_likelyhood : (matching_observations'=mod(key+3,4)=letter_7 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1);
+
+    [] clk=1 & processed_letters=7 -> A_likelyhood : (matching_observations'=mod(key+0,4)=letter_8 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + B_likelyhood : (matching_observations'=mod(key+1,4)=letter_8 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + C_likelyhood : (matching_observations'=mod(key+2,4)=letter_8 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + D_likelyhood : (matching_observations'=mod(key+3,4)=letter_8 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1);
+
+    [] clk=1 & processed_letters=8 -> A_likelyhood : (matching_observations'=mod(key+0,4)=letter_9 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + B_likelyhood : (matching_observations'=mod(key+1,4)=letter_9 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + C_likelyhood : (matching_observations'=mod(key+2,4)=letter_9 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + D_likelyhood : (matching_observations'=mod(key+3,4)=letter_9 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1);
+
+    [] clk=1 & processed_letters=9 -> A_likelyhood : (matching_observations'=mod(key+0,4)=letter_10 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + B_likelyhood : (matching_observations'=mod(key+1,4)=letter_10 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + C_likelyhood : (matching_observations'=mod(key+2,4)=letter_10 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1) + D_likelyhood : (matching_observations'=mod(key+3,4)=letter_10 ? matching_observations+1 : matching_observations)&(processed_letters'=processed_letters+1);
+
+    [] clk=1 & processed_letters=WORD_LEN -> true;
+
+endmodule
+
+label "target" = processed_letters=WORD_LEN & key=2;
+label "condition" = matching_observations=WORD_LEN;

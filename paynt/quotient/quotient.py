@@ -19,6 +19,9 @@ class Quotient:
     # label associated with un-labelled choices
     EMPTY_LABEL = "__no_label__"
 
+    # whether to use standard splitting for conditional properties
+    conditional_splitting = None
+
     @staticmethod
     def make_vector_defined(vector):
         vector_noinf = [ value if value != math.inf else 0 for value in vector]
@@ -47,6 +50,8 @@ class Quotient:
                 self.choice_destinations = payntbind.synthesis.computeChoiceDestinationsExact(self.quotient_mdp)
             else:
                 self.choice_destinations = payntbind.synthesis.computeChoiceDestinations(self.quotient_mdp)
+
+        self.conditional_splitting_switch = False
 
     def export_result(self, dtmc):
         ''' to be overridden '''
@@ -224,6 +229,71 @@ class Quotient:
             self.family.family, mdp.nondeterministic_choice_indices, quotient_choice_map, choice_values,
             self.coloring, inconsistent_assignments, expected_visits)
         return hole_variance
+    
+    def get_conditional_scores(self, mdp, quotient_choice_map, inconsistent_assignments, choice_values, expected_visits, conditional_splitting):
+        scores = {}
+
+        if conditional_splitting == 'evs':
+            quotient_to_restricted_action_map = [None] * self.quotient_mdp.nr_choices
+            for choice in range(mdp.nr_choices):
+                quotient_to_restricted_action_map[quotient_choice_map[choice]] = choice
+
+            # map choices to their origin states
+            choice_to_state = []
+            tm = mdp.transition_matrix
+            for state in range(mdp.nr_states):
+                for choice in tm.get_rows_for_group(state):
+                    choice_to_state.append(state)
+
+            # for each hole, compute its difference sum and a number of affected states
+            scores = {}
+            for hole_index,options in inconsistent_assignments.items():
+                difference_sum = 0
+                states_affected = 0
+                edges_0 = self.hole_option_to_actions[hole_index][options[0]]
+                for choice_index,_ in enumerate(edges_0):
+
+                    choice_0_global = edges_0[choice_index]
+                    choice_0 = quotient_to_restricted_action_map[choice_0_global]
+                    if choice_0 is None:
+                        continue
+
+                    source_state = choice_to_state[choice_0]
+                    source_state_visits = expected_visits[source_state]
+
+                    # assert source_state_visits != 0
+                    if source_state_visits == 0:
+                        continue
+
+                    difference = source_state_visits
+                    assert not math.isnan(difference)
+                    difference_sum += difference
+                    states_affected += 1
+
+                if states_affected == 0:
+                    hole_score = 0
+                else:
+                    hole_score = difference_sum
+                scores[hole_index] = hole_score*hole_index
+        elif conditional_splitting == 'backward':
+            for key,hole_options in inconsistent_assignments.items():
+                scores[key] = key
+        elif conditional_splitting == 'forward':
+            for key,hole_options in inconsistent_assignments.items():
+                scores[key] = key * -1
+        elif conditional_splitting == 'alternating_bf':
+            for key,hole_options in inconsistent_assignments.items():
+                if self.conditional_splitting_switch:
+                    scores[key] = key * -1
+                else:
+                    scores[key] = key
+            
+            self.conditional_splitting_switch = not self.conditional_splitting_switch
+
+        else:
+            raise ValueError(f"unknown conditional splitting method: {conditional_splitting}")
+
+        return scores
 
 
     def scheduler_is_consistent(self, mdp, prop, result):
@@ -264,7 +334,10 @@ class Quotient:
             scheduler = scheduler.get_memoryless_scheduler_for_memory_state(0)
         choices = scheduler.compute_action_support(mdp.model.nondeterministic_choice_indices)
         expected_visits = self.compute_expected_visits(mdp.model, prop, choices)
-        scores = self.estimate_scheduler_difference(mdp.model, mdp.quotient_choice_map, inconsistent_assignments, choice_values, expected_visits)
+        if self.conditional_splitting is None:
+            scores = self.estimate_scheduler_difference(mdp.model, mdp.quotient_choice_map, inconsistent_assignments, choice_values, expected_visits)
+        else:
+            scores = self.get_conditional_scores(mdp.model, mdp.quotient_choice_map, inconsistent_assignments, choice_values, expected_visits, self.conditional_splitting)
         return scores
 
 

@@ -5,7 +5,7 @@
 
 #include <storm/models/sparse/NondeterministicModel.h>
 #include <storm/storage/BitVector.h>
-#include <storm/utility/Stopwatch.h>
+// #include <storm/utility/Stopwatch.h>
 
 #include <cstdint>
 #include <queue>

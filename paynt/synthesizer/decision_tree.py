@@ -121,7 +121,13 @@ class SynthesizerDecisionTree(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
         tree.render(export_filename_base, format="png", cleanup=True) # using export_filename_base since graphviz appends .png by default
         logger.info(f"exported decision tree visualization to {tree_visualization_filename}")
 
-    def synthesize_tree(self, depth:int, family=None):
+        tree_string_filename = export_filename_base + ".txt"
+        with open(tree_string_filename, 'w') as file:
+            file.write(decision_tree.to_string())
+        logger.info(f"exported decision tree string to {tree_string_filename}")
+
+
+    def synthesize_tree(self, depth:int):
         self.counters_reset()
         self.quotient.reset_tree(depth)
         self.best_assignment = self.best_assignment_value = None
@@ -319,8 +325,5 @@ class SynthesizerDecisionTree(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
 
         time_total = round(paynt.utils.timer.GlobalTimer.read(),2)
         logger.info(f"synthesis finished after {time_total} seconds")
-
-        print()
-        print(self.best_tree.to_string())
 
         return self.best_tree

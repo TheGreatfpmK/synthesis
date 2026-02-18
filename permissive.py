@@ -924,6 +924,10 @@ class DecisionTreeParetoFront(PermissiveTreeSynthesizer):
                     #     split_family = False
                     #     continue
 
+                    # if min_consistent_depth > 1:
+                    #     self.explore(family)
+                    #     continue
+
                     subfamilies = self.split(family, number_of_splits=1)
                     subfamilies_with_depth = [(subfamily, min_consistent_depth) for subfamily in subfamilies]
                     families = families + subfamilies_with_depth

@@ -9,6 +9,9 @@ import numpy as np
 import time
 import json
 
+from sklearn import tree, svm
+import matplotlib.pyplot as plt
+
 
 def get_mdp_features_list(dt_colored_mdp_factory, model_info):
     return dt_colored_mdp_factory.relevant_state_valuations
@@ -84,13 +87,14 @@ def complete_bitvector_for_eval(bitvector, unreachable_states, model_info):
     completed_bitvector = stormpy.storage.BitVector(bitvector)
     for state, unreachable in enumerate(unreachable_states):
         if unreachable:
-            completed_bitvector.set(model_info["nondeterministic_choice_indices"][state])
+            selected_state_choice = random.randint(0, model_info["nr_choices_per_state"][state]-1)
+            completed_bitvector.set(model_info["nondeterministic_choice_indices"][state] + selected_state_choice)
 
     return completed_bitvector
 
 
 
-def mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification, step_count=10000, seed=None):
+def mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification, step_count=10000, seed=None, solution_cache=None):
 
     shed_bitvector, unreachable_states = remove_unreachable_choices_from_bitvector(shed_bitvector, dt_colored_mdp_factory, model_info)
 
@@ -98,6 +102,15 @@ def mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification,
     unreachable_states_list = [unreachable_states]
     current_policy = shed_bitvector
     current_unreachable_states = unreachable_states
+
+    if solution_cache is None:
+        solution_cache_sat = set()
+        solution_cache_unsat = set()
+    else:
+        solution_cache_sat = solution_cache["sat"]
+        solution_cache_unsat = solution_cache["unsat"]
+
+    cache_hits = 0
 
     if seed is not None:
         random.seed(seed)
@@ -118,24 +131,66 @@ def mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification,
             new_bitvector.set(model_info["nondeterministic_choice_indices"][selected_state] + choice, False)
         new_bitvector.set(model_info["nondeterministic_choice_indices"][selected_state] + selected_state_choice)
 
+        new_bitvector_reachable, new_unreachable_states = remove_unreachable_choices_from_bitvector(new_bitvector, dt_colored_mdp_factory, model_info)
+        cached_sat = False
+
+        if new_bitvector_reachable in solution_cache_sat:
+            cached_sat = True
+            cache_hits += 1
+        elif new_bitvector_reachable in solution_cache_unsat:
+            cache_hits += 1
+            continue
 
         # check if new policy satisfies specification
-        submdp_new = dt_colored_mdp_factory.build_from_choice_mask(new_bitvector)
-        mc_result_new = submdp_new.model_check_property(specification.all_properties()[0])
+        if not cached_sat:
+            submdp_new = dt_colored_mdp_factory.build_from_choice_mask(new_bitvector)
+            mc_result_new = submdp_new.model_check_property(specification.all_properties()[0])
 
         # new_value = mc_result_new.value
         # print(new_value)
         # print(mc_result_new.sat)
 
-        if mc_result_new.sat:
-            new_bitvector, new_unreachable_states = remove_unreachable_choices_from_bitvector(new_bitvector, dt_colored_mdp_factory, model_info)
-            if new_bitvector not in all_sat_policies:
-                all_sat_policies.append(new_bitvector)
+        if cached_sat or mc_result_new.sat:
+            if new_bitvector_reachable not in all_sat_policies:
+                all_sat_policies.append(new_bitvector_reachable)
                 unreachable_states_list.append(new_unreachable_states)
-            current_policy = new_bitvector
+            current_policy = new_bitvector_reachable
             current_unreachable_states = new_unreachable_states
+            if not cached_sat:
+                solution_cache_sat.add(new_bitvector_reachable)
+        else:
+            solution_cache_unsat.add(new_bitvector_reachable)
         
+    print(f"cache hit percentage: {cache_hits/step_count*100:.2f}%")
     return list(zip(all_sat_policies, unreachable_states_list)), (current_policy, current_unreachable_states)
+
+
+# I had to test this, obviously this does not work at all
+def rejection_sampling(model_info, dt_colored_mdp_factory, specification, step_count=10000, seed=None):
+
+    all_sat_policies = []
+    unreachable_states_list = []
+
+    if seed is not None:
+        random.seed(seed)
+        np.random.seed(seed)
+
+    for _ in range(step_count):
+        bitvector = stormpy.storage.BitVector(model_info["nr_choices"])
+        for state in range(model_info["nr_states"]):
+            selected_state_choice = random.randint(0, model_info["nr_choices_per_state"][state]-1)
+            bitvector.set(model_info["nondeterministic_choice_indices"][state] + selected_state_choice)
+
+        submdp = dt_colored_mdp_factory.build_from_choice_mask(bitvector)
+        mc_result = submdp.model_check_property(specification.all_properties()[0])
+
+        if mc_result.sat:
+            bitvector_reachable, unreachable_states = remove_unreachable_choices_from_bitvector(bitvector, dt_colored_mdp_factory, model_info)
+            if bitvector_reachable not in all_sat_policies:
+                all_sat_policies.append(bitvector_reachable)
+                unreachable_states_list.append(unreachable_states)
+
+    return list(zip(all_sat_policies, unreachable_states_list)), None
 
 
 
@@ -205,16 +260,29 @@ def main(project, sketch, props, relative_eps, seed, steps, output):
 
     start_time = time.time()
     all_samples, last_sample = mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification, step_count=steps, seed=seed)
+    # all_samples, last_sample = rejection_sampling(model_info, dt_colored_mdp_factory, specification, step_count=steps, seed=seed)
     end_time = time.time()
     print(f"sampling took {end_time - start_time:.2f} seconds")
 
     print(f"number of policies satisfying specification found: {len(all_samples)}")
 
+    output_dict = {"X" : get_mdp_features_list(dt_colored_mdp_factory, model_info), "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
     if output is not None:
-        output_dict = {"X" : get_mdp_features_list(dt_colored_mdp_factory, model_info), "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
         with open(output, "w") as f:
             json.dump(output_dict, f, indent=4)
 
+
+    # print(output_dict)
+
+
+    # clf = svm.SVC(kernel="linear")
+    # clf = clf.fit(output_dict["X"], output_dict["Y"][0])
+
+
+    # clf = tree.DecisionTreeClassifier()
+    # clf = clf.fit(output_dict["X"], output_dict["Y"][0])
+    # tree.plot_tree(clf)
+    # plt.savefig("tree_output.png", dpi=300, bbox_inches='tight')
 
 if __name__ == "__main__":
     main()

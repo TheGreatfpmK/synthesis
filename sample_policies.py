@@ -22,7 +22,7 @@ def sample_to_list(sample, dt_colored_mdp_factory, model_info):
     state_to_choice = bitvector_to_state_to_choice(bitvector, model_info)
     result_list = []
     for state, choice in enumerate(state_to_choice):
-        if unreachable_states[state]:
+        if unreachable_states[state] or not dt_colored_mdp_factory.state_is_relevant_bv.get(state):
             result_list.append(-1)
         else:
             result_list.append(dt_colored_mdp_factory.choice_to_action[choice])
@@ -64,13 +64,14 @@ def bitvector_to_state_to_choice(bitvector, model_info):
                 break
     return state_to_choice
 
-def state_to_choice_to_bitvector(state_to_choice, model_info):
+def state_to_choice_to_bitvector(state_to_choice, dt_colored_mdp_factory, model_info):
     bitvector = stormpy.storage.BitVector(model_info["nr_choices"])
     unreachable_states = []
     for state, choice in enumerate(state_to_choice):
         if choice is not None:
             unreachable_states.append(False)
-            bitvector.set(choice)
+            if dt_colored_mdp_factory.state_is_relevant_bv.get(state):
+                bitvector.set(choice)
         else:
             unreachable_states.append(True)
     return bitvector, unreachable_states
@@ -79,16 +80,18 @@ def state_to_choice_to_bitvector(state_to_choice, model_info):
 def remove_unreachable_choices_from_bitvector(bitvector, dt_colored_mdp_factory, model_info):
     state_to_choice = bitvector_to_state_to_choice(bitvector, model_info)
     state_to_choice = dt_colored_mdp_factory.discard_unreachable_choices(state_to_choice)
-    new_bitvector, unreachable_states = state_to_choice_to_bitvector(state_to_choice, model_info)
+    new_bitvector, unreachable_states = state_to_choice_to_bitvector(state_to_choice, dt_colored_mdp_factory, model_info)
     return new_bitvector, unreachable_states
 
 # maybe completing the bitvector should also be randomized so that we are closer to the uniform sampling?
-def complete_bitvector_for_eval(bitvector, unreachable_states, model_info):
+def complete_bitvector_for_eval(bitvector, unreachable_states, dt_colored_mdp_factory, model_info):
     completed_bitvector = stormpy.storage.BitVector(bitvector)
     for state, unreachable in enumerate(unreachable_states):
         if unreachable:
             selected_state_choice = random.randint(0, model_info["nr_choices_per_state"][state]-1)
             completed_bitvector.set(model_info["nondeterministic_choice_indices"][state] + selected_state_choice)
+        elif not dt_colored_mdp_factory.state_is_relevant_bv.get(state):
+            completed_bitvector.set(model_info["nondeterministic_choice_indices"][state] + 0) # take the first choice for irrelevant states, should not matter which one we take as they do not influence the behavior of the system
 
     return completed_bitvector
 
@@ -120,11 +123,11 @@ def mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification,
 
         # sample new policy, to keep the transformation of the policy uniform we remove all unreachable states from the sampling
         selected_state = random.randint(0, model_info["nr_states"]-1)
-        while current_unreachable_states[selected_state]:
+        while current_unreachable_states[selected_state] or not dt_colored_mdp_factory.state_is_relevant_bv.get(selected_state):
             selected_state = random.randint(0, model_info["nr_states"]-1)
         selected_state_choice = random.randint(0, model_info["nr_choices_per_state"][selected_state]-1)
 
-        completed_bitvector = complete_bitvector_for_eval(current_policy, current_unreachable_states, model_info)
+        completed_bitvector = complete_bitvector_for_eval(current_policy, current_unreachable_states, dt_colored_mdp_factory, model_info)
 
         new_bitvector = stormpy.storage.BitVector(completed_bitvector)
         for choice in range(model_info["nr_choices_per_state"][selected_state]):
@@ -273,15 +276,46 @@ def main(project, sketch, props, relative_eps, seed, steps, output):
 
 
     # print(output_dict)
+    # for x in output_dict["Y"]:
+    #     print(x)
+    # state_feature_to_considered_actions = {tuple(x): set() for x in output_dict["X"]}
+    # for i in range(len(output_dict["Y"])):
+    #     for j in range(len(output_dict["Y"][i])):
+    #         if output_dict["Y"][i][j] != -1:
+    #             state_feature_to_considered_actions[tuple(output_dict["X"][j])].add(output_dict["Y"][i][j])
+    # print(state_feature_to_considered_actions)
+    # exit()
 
 
     # clf = svm.SVC(kernel="linear")
     # clf = clf.fit(output_dict["X"], output_dict["Y"][0])
 
+    filter_unreachable_class = True
+    smallest_tree = None
+    smallest_tree_nodes = None
+    
+    for i in range(len(output_dict["Y"])):
+        clf = tree.DecisionTreeClassifier(criterion="gini", max_depth=None)
+        # Filter out points with class -1
+        if filter_unreachable_class:
+            X = [x for j, x in enumerate(output_dict["X"]) if output_dict["Y"][i][j] != -1]
+            Y = [y for y in output_dict["Y"][i] if y != -1]
+        else:
+            X = output_dict["X"]
+            Y = output_dict["Y"][i]
+        
+        clf = clf.fit(X, Y)
+        num_nodes = clf.tree_.node_count - clf.tree_.n_leaves
+        # print(f"Tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
+        
+        if smallest_tree_nodes is None or num_nodes < smallest_tree_nodes:
+            smallest_tree_nodes = num_nodes
+            smallest_tree = clf
+            smallest_tree_policy = output_dict["Y"][i]
 
-    # clf = tree.DecisionTreeClassifier()
-    # clf = clf.fit(output_dict["X"], output_dict["Y"][0])
-    # tree.plot_tree(clf)
+    # print("Smallest tree policy:", smallest_tree_policy)
+    print(f"Smallest tree has depth {smallest_tree.get_depth()} and {smallest_tree_nodes} nodes")
+    # tree.plot_tree(smallest_tree)
     # plt.savefig("tree_output.png", dpi=300, bbox_inches='tight')
 
 if __name__ == "__main__":

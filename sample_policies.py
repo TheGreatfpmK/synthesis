@@ -107,8 +107,9 @@ def mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification,
 
     shed_bitvector, unreachable_states = remove_unreachable_choices_from_bitvector(shed_bitvector, dt_colored_mdp_factory, model_info)
 
-    all_sat_policies = [shed_bitvector]
-    unreachable_states_list = [unreachable_states]
+    if burn_in is None:
+        all_sat_policies = [shed_bitvector]
+        unreachable_states_list = [unreachable_states]
     current_policy = shed_bitvector
     current_unreachable_states = unreachable_states
 

@@ -110,6 +110,9 @@ def mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification,
     if burn_in is None:
         all_sat_policies = [shed_bitvector]
         unreachable_states_list = [unreachable_states]
+    else:
+        all_sat_policies = []
+        unreachable_states_list = []
     current_policy = shed_bitvector
     current_unreachable_states = unreachable_states
 
@@ -172,7 +175,7 @@ def mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification,
         else:
             solution_cache_unsat.add(new_bitvector_reachable)
         
-    print(f"cache hit percentage: {cache_hits/step_count*100:.2f}%")
+    print(f"cache hit percentage: {(cache_hits/step_count*100 if step_count!=0 else 0.0):.2f}%")
     return list(zip(all_sat_policies, unreachable_states_list)), (current_policy, current_unreachable_states)
 
 
@@ -329,6 +332,8 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     initial_tree_nodes = None
 
     learning_start_time = time.time()
+
+    used_predicate_indices = set()
     
     for i in range(len(output_dict["Y"])):
         clf = tree.DecisionTreeClassifier(criterion="gini", max_depth=None, random_state=0) # if random_state is None (default) then scikit does not have to be deterministic
@@ -343,6 +348,10 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         clf = clf.fit(X, Y)
         num_nodes = clf.tree_.node_count - clf.tree_.n_leaves
         # print(f"Tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
+
+        for j in range(clf.tree_.node_count):
+            if clf.tree_.children_left[j] != -1: # -2 means it's a leaf node
+                used_predicate_indices.add(clf.tree_.feature[j])
         
         if smallest_tree_nodes is None or num_nodes < smallest_tree_nodes:
             smallest_tree_nodes = num_nodes
@@ -355,6 +364,8 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
 
     learning_end_time = time.time()
     print(f"learning took {learning_end_time - learning_start_time:.2f} seconds")
+
+    print(f"Number of used predicates: {len(used_predicate_indices)} out of {len(output_dict['X'][0])}")
 
     # print("Smallest tree policy:", smallest_tree_policy)
     print(f"Initial tree has depth {initial_tree.get_depth()} and {initial_tree_nodes} nodes")

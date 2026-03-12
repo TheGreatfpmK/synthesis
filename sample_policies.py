@@ -160,7 +160,7 @@ def mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification,
         # print(mc_result_new.sat)
 
         if cached_sat or mc_result_new.sat:
-            if (burn_in is not None and current_step >= burn_in) and (sample_steps is not None and current_step % sample_steps == 0):
+            if (burn_in is None or current_step >= burn_in) and (sample_steps is None or current_step % sample_steps == 0):
                 if new_bitvector_reachable not in all_sat_policies:
                     all_sat_policies.append(new_bitvector_reachable)
                     unreachable_states_list.append(new_unreachable_states)

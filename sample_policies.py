@@ -12,9 +12,15 @@ import json
 from sklearn import tree, svm
 import matplotlib.pyplot as plt
 
+from get_predicates import get_atomic_predicate_evals
 
-def get_mdp_features_list(dt_colored_mdp_factory, model_info):
-    return dt_colored_mdp_factory.relevant_state_valuations
+
+def get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates={}):
+    features = dt_colored_mdp_factory.relevant_state_valuations
+    for predicate_name, predicate_eval in additional_atomic_predicates.items():
+        for state in range(len(features)):
+            features[state].append(1 if predicate_eval.get(state) else 0)
+    return features
 
 
 def sample_to_list(sample, dt_colored_mdp_factory, model_info):
@@ -97,7 +103,7 @@ def complete_bitvector_for_eval(bitvector, unreachable_states, dt_colored_mdp_fa
 
 
 
-def mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification, step_count=10000, seed=None, solution_cache=None):
+def mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification, step_count=10000, burn_in=None, sample_steps=None, seed=None, solution_cache=None):
 
     shed_bitvector, unreachable_states = remove_unreachable_choices_from_bitvector(shed_bitvector, dt_colored_mdp_factory, model_info)
 
@@ -119,7 +125,7 @@ def mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification,
         random.seed(seed)
         np.random.seed(seed)
 
-    for _ in range(step_count):
+    for current_step in range(step_count):
 
         # sample new policy, to keep the transformation of the policy uniform we remove all unreachable states from the sampling
         selected_state = random.randint(0, model_info["nr_states"]-1)
@@ -154,9 +160,10 @@ def mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification,
         # print(mc_result_new.sat)
 
         if cached_sat or mc_result_new.sat:
-            if new_bitvector_reachable not in all_sat_policies:
-                all_sat_policies.append(new_bitvector_reachable)
-                unreachable_states_list.append(new_unreachable_states)
+            if (burn_in is not None and current_step >= burn_in) and (sample_steps is not None and current_step % sample_steps == 0):
+                if new_bitvector_reachable not in all_sat_policies:
+                    all_sat_policies.append(new_bitvector_reachable)
+                    unreachable_states_list.append(new_unreachable_states)
             current_policy = new_bitvector_reachable
             current_unreachable_states = new_unreachable_states
             if not cached_sat:
@@ -206,10 +213,22 @@ def rejection_sampling(model_info, dt_colored_mdp_factory, specification, step_c
 @click.option("--relative-eps", type=float, default=None, show_default=True, help="relative epsilon threhshold computed from random policy")
 @click.option("--seed", type=int, default=None, show_default=True, help="random seed for policy sampling")
 @click.option("--steps", type=int, default=10000, show_default=True, help="number of MCMC steps")
+@click.option("--burn-in", type=int, default=None, show_default=True, help="number of burn in steps for MCMC sampling")
+@click.option("--sample-steps", type=int, default=None, show_default=True, help="interval for collecting samples during MCMC sampling, e.g. if set to 10 then every 10th step after burn in will be collected as a sample")
 @click.option("--output", type=click.Path(), default=None, show_default=True, help="file to write the sampled policies to json")
-def main(project, sketch, props, relative_eps, seed, steps, output):
+@click.option("--append-stats", is_flag=True, default=False, show_default=True, help="whether to append sampling and learning stats to results/sampling_stats.csv")
+def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, output, append_stats):
     sketch_path = os.path.join(project, sketch)
     props_path = os.path.join(project, props)
+
+    project_name = os.path.basename(project)
+
+    if append_stats:
+        stats_file = 'results/sampling_stats.csv'
+        if not os.path.exists(stats_file):
+            os.makedirs(os.path.dirname(stats_file), exist_ok=True)
+            with open(stats_file, 'w') as f:
+                f.write("model,sampling_steps,eps,sampling_time,dt_learning_time,sampled_policies,initial_tree_size,smallest_tree_size\n")
     
     sketch_path = os.path.join(project, sketch)
     properties_path = os.path.join(project, props)
@@ -261,29 +280,40 @@ def main(project, sketch, props, relative_eps, seed, steps, output):
 
     shed_bitvector = get_bitvector_from_scheduler(scheduler, model_info)
 
-    start_time = time.time()
-    all_samples, last_sample = mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification, step_count=steps, seed=seed)
+    sampling_start_time = time.time()
+    all_samples, last_sample = mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification, step_count=steps, burn_in=burn_in, sample_steps=sample_steps, seed=seed)
     # all_samples, last_sample = rejection_sampling(model_info, dt_colored_mdp_factory, specification, step_count=steps, seed=seed)
-    end_time = time.time()
-    print(f"sampling took {end_time - start_time:.2f} seconds")
+    sampling_end_time = time.time()
+    print(f"sampling took {sampling_end_time - sampling_start_time:.2f} seconds")
 
     print(f"number of policies satisfying specification found: {len(all_samples)}")
 
-    output_dict = {"X" : get_mdp_features_list(dt_colored_mdp_factory, model_info), "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
+    # additional_atomic_predicates = get_atomic_predicate_evals(dt_colored_mdp_factory)
+    additional_atomic_predicates = {}
+
+    output_dict = {"X" : get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates), "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
     if output is not None:
         with open(output, "w") as f:
             json.dump(output_dict, f, indent=4)
 
+    exit()
 
-    # print(output_dict)
+
+    # print(output_dict['X'])
+    # exit()
     # for x in output_dict["Y"]:
     #     print(x)
+
     # state_feature_to_considered_actions = {tuple(x): set() for x in output_dict["X"]}
     # for i in range(len(output_dict["Y"])):
     #     for j in range(len(output_dict["Y"][i])):
     #         if output_dict["Y"][i][j] != -1:
     #             state_feature_to_considered_actions[tuple(output_dict["X"][j])].add(output_dict["Y"][i][j])
     # print(state_feature_to_considered_actions)
+    # product = 1
+    # for action_set in state_feature_to_considered_actions.values():
+    #     product *= len(action_set)
+    # print(product)
     # exit()
 
 
@@ -293,9 +323,14 @@ def main(project, sketch, props, relative_eps, seed, steps, output):
     filter_unreachable_class = True
     smallest_tree = None
     smallest_tree_nodes = None
+
+    initial_tree = None
+    initial_tree_nodes = None
+
+    learning_start_time = time.time()
     
     for i in range(len(output_dict["Y"])):
-        clf = tree.DecisionTreeClassifier(criterion="gini", max_depth=None)
+        clf = tree.DecisionTreeClassifier(criterion="gini", max_depth=None, random_state=0) # if random_state is None (default) then scikit does not have to be deterministic
         # Filter out points with class -1
         if filter_unreachable_class:
             X = [x for j, x in enumerate(output_dict["X"]) if output_dict["Y"][i][j] != -1]
@@ -313,10 +348,22 @@ def main(project, sketch, props, relative_eps, seed, steps, output):
             smallest_tree = clf
             smallest_tree_policy = output_dict["Y"][i]
 
+        if i == 0:
+            initial_tree = clf
+            initial_tree_nodes = num_nodes
+
+    learning_end_time = time.time()
+    print(f"learning took {learning_end_time - learning_start_time:.2f} seconds")
+
     # print("Smallest tree policy:", smallest_tree_policy)
+    print(f"Initial tree has depth {initial_tree.get_depth()} and {initial_tree_nodes} nodes")
     print(f"Smallest tree has depth {smallest_tree.get_depth()} and {smallest_tree_nodes} nodes")
     # tree.plot_tree(smallest_tree)
     # plt.savefig("tree_output.png", dpi=300, bbox_inches='tight')
+
+    if append_stats:
+        with open(stats_file, 'a') as f:
+            f.write(f"{project_name},{steps},{relative_eps},{sampling_end_time - sampling_start_time:.2f},{learning_end_time - learning_start_time:.2f},{len(all_samples)},{initial_tree_nodes},{smallest_tree_nodes}\n")
 
 if __name__ == "__main__":
     main()

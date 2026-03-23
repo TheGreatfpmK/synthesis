@@ -318,21 +318,31 @@ def clean_useless_predicates(predicate_to_valuation):
     return cleaned_predicate_to_valuation
 
 
-def get_atomic_predicate_evals(dt_colored_mdp_factory):
+def get_atomic_predicate_evals(dt_colored_mdp_factory, default_predicates=False):
 
     predicate_to_valuation = {}
 
     state_varriables = dt_colored_mdp_factory.variables
     state_valuations = dt_colored_mdp_factory.relevant_state_valuations
 
-    constant_comparison_operators = {
-        '==': operator.eq,
-        '!=': operator.ne,
-        '<': operator.lt,
-        # '<=': operator.le,
-        '>': operator.gt,
-        '>=': operator.ge
-    }
+    if default_predicates:
+        constant_comparison_operators = {
+            # '==': operator.eq,
+            # '!=': operator.ne,
+            # '<': operator.lt,
+            '<=': operator.le,
+            # '>': operator.gt,
+            # '>=': operator.ge
+        }
+    else:
+        constant_comparison_operators = {
+            '==': operator.eq,
+            '!=': operator.ne,
+            '<': operator.lt,
+            '<=': operator.le,
+            '>': operator.gt,
+            '>=': operator.ge
+        }
 
     for var_id, variable in enumerate(state_varriables):
         domain_list = list(variable.domain)[:-1]
@@ -345,21 +355,31 @@ def get_atomic_predicate_evals(dt_colored_mdp_factory):
                     if op_func(state_valuation[var_id], constant):
                         valuation.set(state)
 
-    comparison_opertators = {
-        '==': operator.eq,
-        '!=': operator.ne,
-        '<': operator.lt,
-        '<=': operator.le,
-        '>': operator.gt,
-        '>=': operator.ge
-    }
+    if default_predicates:
+        comparison_operators = {
+            # '==': operator.eq,
+            # '!=': operator.ne,
+            # '<': operator.lt,
+            # '<=': operator.le,
+            # '>': operator.gt,
+            # '>=': operator.ge
+        }
+    else:
+        comparison_operators = {
+            '==': operator.eq,
+            '!=': operator.ne,
+            '<': operator.lt,
+            '<=': operator.le,
+            '>': operator.gt,
+            '>=': operator.ge
+        }
 
     vars_indices = list(range(len(state_varriables)))
 
     for var1_id, var2_id in itertools.combinations(vars_indices, 2):
         var1 = state_varriables[var1_id]
         var2 = state_varriables[var2_id]
-        for op_str, op_func in comparison_opertators.items():
+        for op_str, op_func in comparison_operators.items():
             if f"{var1.name}{op_str}{var2.name}" not in predicate_to_valuation:
                 predicate_to_valuation[f"{var1.name}{op_str}{var2.name}"] = stormpy.BitVector(dt_colored_mdp_factory.quotient_mdp.nr_states)
             valuation = predicate_to_valuation[f"{var1.name}{op_str}{var2.name}"]

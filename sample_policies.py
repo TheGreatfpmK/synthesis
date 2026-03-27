@@ -27,39 +27,6 @@ def get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates={
             features[state].append(1 if predicate_eval.get(state) else 0)
     return features
 
-def get_predicate_types(additional_atomic_predicates):
-
-    import re
-    predicate_types = []
-    for predicate_name in additional_atomic_predicates.keys():
-        # base: {var} <= {constant}
-        # const_comp: {var} X {constant}, X != <=
-        # var_comp: {var} X {var}
-        # Examples: x<=3, x>2, x==y
-        # base: only <= and right side is a number
-        # const_comp: ==, !=, <, >, >= with right side a number
-        # var_comp: ==, !=, <, >, <=, >= with right side a variable
-
-        # Try to match base and const_comp
-        m = re.match(r"^([a-zA-Z_][a-zA-Z0-9_]*)\s*(==|!=|<|<=|>|>=)\s*([a-zA-Z0-9_]+)$", predicate_name)
-        if m:
-            left, op, right = m.groups()
-            # Check if right is a number (constant) or variable
-            is_right_number = right.replace('.', '', 1).isdigit()
-            is_left_var = left.isidentifier()
-            is_right_var = right.isidentifier() and not is_right_number
-            if op == '<=' and is_right_number:
-                predicate_types.append('base')
-            elif is_right_number:
-                predicate_types.append('const_comp')
-            elif is_right_var:
-                predicate_types.append('var_comp')
-            else:
-                predicate_types.append('unknown')
-        else:
-            predicate_types.append('unknown')
-    return predicate_types
-
 
 def sample_to_list(sample, dt_colored_mdp_factory, model_info):
     bitvector, unreachable_states = sample
@@ -259,19 +226,11 @@ def rejection_sampling(model_info, dt_colored_mdp_factory, specification, step_c
 @click.option("--sample-steps", type=int, default=None, show_default=True, help="interval for collecting samples during MCMC sampling, e.g. if set to 10 then every 10th step after burn in will be collected as a sample")
 @click.option("--ccp-alpha", type=float, default=0.0, show_default=True, help="ccp_alpha parameter for decision tree learning, higher values lead to more pruning and thus simpler trees")
 @click.option("--output", type=click.Path(), default=None, show_default=True, help="file to write the sampled policies to json")
-@click.option("--append-stats", is_flag=True, default=False, show_default=True, help="whether to append sampling and learning stats to results/sampling_stats.csv")
-def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, ccp_alpha, output, append_stats):
+def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, ccp_alpha, output):
     sketch_path = os.path.join(project, sketch)
     props_path = os.path.join(project, props)
 
     project_name = os.path.basename(project)
-
-    if append_stats:
-        stats_file = 'results/sampling_stats.csv'
-        if not os.path.exists(stats_file):
-            os.makedirs(os.path.dirname(stats_file), exist_ok=True)
-            with open(stats_file, 'w') as f:
-                f.write("model,sampling_steps,eps,sampling_time,dt_learning_time,sampled_policies,initial_tree_size,smallest_tree_size\n")
     
     sketch_path = os.path.join(project, sketch)
     properties_path = os.path.join(project, props)
@@ -339,180 +298,6 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     if output is not None:
         with open(output, "w") as f:
             json.dump(output_dict, f, indent=4)
-
-    # exit()
-
-
-    # print(output_dict['X'])
-    # exit()
-    # for x in output_dict["Y"]:
-    #     print(x)
-
-    # state_feature_to_considered_actions = {tuple(x): set() for x in output_dict["X"]}
-    # for i in range(len(output_dict["Y"])):
-    #     for j in range(len(output_dict["Y"][i])):
-    #         if output_dict["Y"][i][j] != -1:
-    #             state_feature_to_considered_actions[tuple(output_dict["X"][j])].add(output_dict["Y"][i][j])
-    # print(state_feature_to_considered_actions)
-    # product = 1
-    # for action_set in state_feature_to_considered_actions.values():
-    #     product *= len(action_set)
-    # print(product)
-    # exit()
-
-
-    # clf = svm.SVC(kernel="linear")
-    # clf = clf.fit(output_dict["X"], output_dict["Y"][0])
-
-    filter_unreachable_class = True
-    smallest_tree = None
-    smallest_tree_nodes = None
-
-    initial_tree = None
-    initial_tree_nodes = None
-
-    average_tree_depth = 0
-    average_tree_nodes = 0
-
-    learning_start_time = time.time()
-
-    used_predicate_indices = set()
-    predicate_indeces_to_lowest_depth = {}
-    used_predicate_frequencies_total = {i: 0 for i in range(len(output_dict["X"][0]))}
-    used_predicate_frequencies_per_tree = {i: set() for i in range(len(output_dict["X"][0]))}
-    
-    for i in range(len(output_dict["Y"])):
-        clf = tree.DecisionTreeClassifier(criterion="gini", max_depth=None, random_state=0, ccp_alpha=ccp_alpha) # if random_state is None (default) then scikit does not have to be deterministic
-        # Filter out points with class -1
-        if filter_unreachable_class:
-            X = [x for j, x in enumerate(output_dict["X"]) if output_dict["Y"][i][j] != -1]
-            Y = [y for y in output_dict["Y"][i] if y != -1]
-        else:
-            X = output_dict["X"]
-            Y = output_dict["Y"][i]
-        
-        clf = clf.fit(X, Y)
-        num_nodes = clf.tree_.node_count - clf.tree_.n_leaves
-        # print(f"Tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
-
-        init_node = (0,0)
-        nodes_to_process = [init_node]
-        while nodes_to_process:
-            node_id, depth = nodes_to_process.pop()
-            if clf.tree_.children_left[node_id] != -1: # -2 means it's a leaf node
-                used_predicate_indices.add(int(clf.tree_.feature[node_id]))
-                used_predicate_frequencies_total[int(clf.tree_.feature[node_id])] += 1
-                used_predicate_frequencies_per_tree[int(clf.tree_.feature[node_id])].add(i)
-                if int(clf.tree_.feature[node_id]) not in predicate_indeces_to_lowest_depth.keys():
-                    predicate_indeces_to_lowest_depth[int(clf.tree_.feature[node_id])] = depth
-                else:
-                    predicate_indeces_to_lowest_depth[int(clf.tree_.feature[node_id])] = min(predicate_indeces_to_lowest_depth[int(clf.tree_.feature[node_id])], depth)
-                nodes_to_process.append((clf.tree_.children_left[node_id], depth+1))
-                nodes_to_process.append((clf.tree_.children_right[node_id], depth+1))
-
-        # for j in range(clf.tree_.node_count):
-        #     if clf.tree_.children_left[j] != -1: # -2 means it's a leaf node
-        #         used_predicate_indices.add(clf.tree_.feature[j])
-
-        average_tree_depth += clf.get_depth()
-        average_tree_nodes += num_nodes
-        
-        if smallest_tree_nodes is None or num_nodes < smallest_tree_nodes:
-            smallest_tree_nodes = num_nodes
-            smallest_tree = clf
-            smallest_tree_policy = output_dict["Y"][i]
-
-        if i == 0:
-            initial_tree = clf
-            initial_tree_nodes = num_nodes
-
-    learning_end_time = time.time()
-    print(f"learning took {learning_end_time - learning_start_time:.2f} seconds")
-
-    predicate_indeces_to_lowest_depth = dict(sorted(predicate_indeces_to_lowest_depth.items()))
-
-    print(f"Number of used predicates: {len(used_predicate_indices)} out of {len(output_dict['X'][0])}")
-
-    # print("Smallest tree policy:", smallest_tree_policy)
-    print(f"Initial tree has depth {initial_tree.get_depth()} and {initial_tree_nodes} nodes")
-    print(f"Smallest tree has depth {smallest_tree.get_depth()} and {smallest_tree_nodes} nodes")
-    print(f"Average tree depth: {average_tree_depth/len(output_dict['Y'])}, Average number of nodes: {average_tree_nodes/len(output_dict['Y'])}")
-    # tree.plot_tree(smallest_tree)
-    # plt.savefig("tree_output.png", dpi=300, bbox_inches='tight')
-
-    used_predicate_frequencies = {i: len(v) / len(output_dict["Y"]) for i, v in used_predicate_frequencies_per_tree.items()}
-    flipped_used_predicate_frequencies = {i: 1 - freq for i, freq in used_predicate_frequencies.items()}
-
-    predicate_value = {i: flipped_used_predicate_frequencies[i] * predicate_indeces_to_lowest_depth[i] for i in used_predicate_indices}
-    predicate_value = dict(sorted(predicate_value.items(), key=lambda item: item[1]))
-    
-    considered_predicates_percentage = 0.2
-    top_predicates = [i for i in predicate_value.keys() if predicate_value[i] == 0.0]
-    for i, value in predicate_value.items():
-        if i in top_predicates:
-            continue
-        if len(top_predicates) < int(len(additional_atomic_predicates)*considered_predicates_percentage):
-            top_predicates.append(i)
-        else:
-            break
-
-    for top_predicate in top_predicates:
-        print(f"{list(additional_atomic_predicates.keys())[top_predicate]}")
-
-    # print(predicate_indeces_to_lowest_depth)
-    # print(used_predicate_frequencies)
-
-
-    predicate_types = get_predicate_types(additional_atomic_predicates)
-    # print(list(zip(additional_atomic_predicates.keys(), predicate_types)))
-    # print(predicate_types)
-    # exit()
-
-
-    # Assign a color to each predicate type
-    import matplotlib.colors as mcolors
-    type_to_color = {'base': 'tab:blue', 'const_comp': 'tab:orange', 'var_comp': 'tab:green', 'unknown': 'tab:red'}
-    # For each used predicate index, get its type and color
-    colors = [type_to_color.get(predicate_types[i], 'tab:red') for i in predicate_indeces_to_lowest_depth.keys()]
-
-    plt.figure(figsize=(10, 6))
-    x_vals = list(predicate_indeces_to_lowest_depth.values())
-    y_vals = [flipped_used_predicate_frequencies[i] for i in predicate_indeces_to_lowest_depth.keys()]
-    keys = list(predicate_indeces_to_lowest_depth.keys())
-    scatter = plt.scatter(
-        x_vals,
-        y_vals,
-        c=colors,
-        label=None,
-        zorder=2
-    )
-
-    # Highlight top_predicates with a black edge and larger marker
-    highlight_x = [x_vals[j] for j, i in enumerate(keys) if i in top_predicates]
-    highlight_y = [y_vals[j] for j, i in enumerate(keys) if i in top_predicates]
-    if highlight_x:
-        plt.scatter(
-            highlight_x,
-            highlight_y,
-            facecolors='none', edgecolors='black', s=120, linewidths=2, marker='o', zorder=3, label='Top Predicates'
-        )
-
-    # Create legend manually
-    import matplotlib.patches as mpatches
-    legend_handles = [mpatches.Patch(color=color, label=ptype) for ptype, color in type_to_color.items()]
-    legend_handles.append(mpatches.Patch(facecolor='none', edgecolor='black', label='Top Predicates', linewidth=2))
-    plt.legend(handles=legend_handles, title="Predicate Type")
-    plt.xlabel('Lowest Depth')
-    plt.ylabel('Frequency')
-    plt.title('Predicate Frequency vs Lowest Depth')
-    plt.grid(True)
-    # plt.savefig('predicate_analysis.png', dpi=300, bbox_inches='tight')
-    plt.show()
-    plt.close()
-
-    if append_stats:
-        with open(stats_file, 'a') as f:
-            f.write(f"{project_name},{steps},{relative_eps},{sampling_end_time - sampling_start_time:.2f},{learning_end_time - learning_start_time:.2f},{len(all_samples)},{initial_tree_nodes},{smallest_tree_nodes}\n")
 
 if __name__ == "__main__":
     main()

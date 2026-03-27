@@ -307,15 +307,32 @@ def create_sat_encoding(state_class, atomic_predicates_evals, predicate_tree_dep
 
 
 
-def clean_useless_predicates(predicate_to_valuation):
+def clean_useless_predicates(predicate_to_valuation, remove_negations=True):
 
-    # remove predicates that are true for all states or false for all states
-    cleaned_predicate_to_valuation = {}
+    # Remove predicates that are true for all states or false for all states
+    filtered_predicates = {}
     for predicate, valuation in predicate_to_valuation.items():
         if valuation.number_of_set_bits() > 0 and valuation.number_of_set_bits() < valuation.size():
-            cleaned_predicate_to_valuation[predicate] = valuation
+            filtered_predicates[predicate] = valuation
 
-    return cleaned_predicate_to_valuation
+    # Remove duplicates and negations
+    unique_valuations = {}
+    for pred1, val1 in filtered_predicates.items():
+        found_equiv = False
+        found_neg = False
+        for pred2, val2 in unique_valuations.items():
+            # Check for duplicate (same valuation)
+            if val1 == val2:
+                found_equiv = True
+                break
+            # Check for negation (all bits flipped)
+            if (val1 ^ val2).number_of_set_bits() == val1.size() and remove_negations:
+                found_neg = True
+                break
+        if not found_equiv and not found_neg:
+            unique_valuations[pred1] = val1
+
+    return unique_valuations
 
 
 def get_atomic_predicate_evals(dt_colored_mdp_factory, default_predicates=False):

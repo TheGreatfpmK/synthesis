@@ -89,7 +89,11 @@ jobs:
           CIBW_ENVIRONMENT: NR_JOBS=4
           CIBW_BEFORE_BUILD: |
             python -m pip install -U pip
-            python -m pip install /project/stormpy_wheels/*.whl
+            python -c "import sys; print(f'{sys.version_info.major}{sys.version_info.minor}')"
+            PYTAG=$(python -c "import sys; print(f'{sys.version_info.major}{sys.version_info.minor}')")
+            WHEEL=$(ls "$CIBW_PROJECT_DIR"/stormpy_wheels/*-cp${PYTAG}-cp${PYTAG}-*.whl | head -n 1)
+            echo "Installing stormpy wheel: $WHEEL"
+            python -m pip install "$WHEEL"
       - name: Build wheels (non-nightly)
         uses: pypa/cibuildwheel@v3.4.0
         if: env.NIGHTLY_BUILD != 'true'

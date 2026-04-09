@@ -11,7 +11,8 @@ on:
       nightly:
         description: 'Build nightly/dev wheels (use stormpy nightly)'
         required: false
-        default: 'false'
+        default: false
+        type: boolean
 
 jobs:
   build_wheels:
@@ -67,7 +68,7 @@ jobs:
               brew install gh
             fi
           fi
-      - name: Install stormpy nightly wheel if NIGHTLY_BUILD
+      - name: Download stormpy nightly wheel if NIGHTLY_BUILD
         if: env.NIGHTLY_BUILD == 'true'
         run: |
           set -euo pipefail
@@ -85,15 +86,13 @@ jobs:
               echo "Unknown matrix.os: ${{ matrix.os }}" >&2; exit 1 ;;
           esac
           # Download the latest successful run id
-          RUN_ID=$(gh run list --repo stormchecker/stormpy --workflow create_wheel_scheduled.yml --json databaseId,status,conclusion,createdAt -L 1 | grep -o '"databaseId":[0-9]*' | head -n1 | grep -o '[0-9]*')
+          RUN_ID=$(gh run list --repo stormchecker/stormpy --workflow create_wheel_scheduled.yml --json databaseId,status,conclusion,createdAt --limit 20 | grep -n '"conclusion":"success"' -m1 -B1 | grep -o '"databaseId":[0-9]*' | head -n1 | grep -o '[0-9]*')
           if [ -z "$RUN_ID" ]; then
             echo "Could not find a recent stormpy nightly run." >&2
             exit 1
           fi
           gh run download "$RUN_ID" --repo stormchecker/stormpy --name "$ARTIFACT_NAME" --dir ./stormpy_wheels || true
-          if compgen -G "./stormpy_wheels/*.whl" > /dev/null; then
-            pip install ./stormpy_wheels/*.whl
-          else
+          if ! compgen -G "./stormpy_wheels/*.whl" > /dev/null; then
             echo "No stormpy nightly wheel found in artifact $ARTIFACT_NAME." >&2
             exit 1
           fi
@@ -106,6 +105,12 @@ jobs:
           CIBW_ARCHS: ${{ matrix.archs }}
           MACOSX_DEPLOYMENT_TARGET: ${{ matrix.deploy_target }}
           CIBW_ENVIRONMENT: NR_JOBS=4
+          CIBW_BEFORE_ALL: |
+            if [ "$NIGHTLY_BUILD" = "true" ]; then
+              for whl in /project/stormpy_wheels/*.whl; do
+                python -m pip install "$whl"
+              done
+            fi
       - uses: actions/upload-artifact@v7
         with:
           name: paynt-wheels-${{ matrix.os }}

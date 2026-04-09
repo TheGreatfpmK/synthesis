@@ -55,49 +55,30 @@ jobs:
         if: ${{ matrix.xcode != '' }}
         with:
           xcode-version: ${{ matrix.xcode }}
-      - name: Install GitHub CLI
+      - name: Set STORMPY_ARTIFACT_NAME
         if: env.NIGHTLY_BUILD == 'true'
         run: |
-          if ! command -v gh &> /dev/null; then
-            echo "Installing GitHub CLI..."
-            if command -v apt; then
-              apt update && apt install -y gh
-            elif command -v dnf; then
-              dnf install -y gh
-            elif command -v brew; then
-              brew install gh
-            fi
-          fi
-      - name: Download stormpy nightly wheel if NIGHTLY_BUILD
-        if: env.NIGHTLY_BUILD == 'true'
-        run: |
-          set -euo pipefail
-          # Map matrix.os to stormpy artifact name
           case "${{ matrix.os }}" in
             linux-intel)
-              ARTIFACT_NAME="stormpy-wheels-linux-intel" ;;
+              echo "STORMPY_ARTIFACT_NAME=stormpy-wheels-linux-intel" >> $GITHUB_ENV ;;
             linux-arm)
-              ARTIFACT_NAME="stormpy-wheels-linux-arm" ;;
+              echo "STORMPY_ARTIFACT_NAME=stormpy-wheels-linux-arm" >> $GITHUB_ENV ;;
             macos-intel)
-              ARTIFACT_NAME="stormpy-wheels-macos-intel" ;;
+              echo "STORMPY_ARTIFACT_NAME=stormpy-wheels-macos-intel" >> $GITHUB_ENV ;;
             macos-arm)
-              ARTIFACT_NAME="stormpy-wheels-macos-arm" ;;
+              echo "STORMPY_ARTIFACT_NAME=stormpy-wheels-macos-arm" >> $GITHUB_ENV ;;
             *)
               echo "Unknown matrix.os: ${{ matrix.os }}" >&2; exit 1 ;;
           esac
-          # Download the latest successful run id
-          RUN_ID=$(gh run list --repo stormchecker/stormpy --workflow create_wheel_scheduled.yml --json databaseId,status,conclusion,createdAt --limit 20 | grep -n '"conclusion":"success"' -m1 -B1 | grep -o '"databaseId":[0-9]*' | head -n1 | grep -o '[0-9]*')
-          if [ -z "$RUN_ID" ]; then
-            echo "Could not find a recent stormpy nightly run." >&2
-            exit 1
-          fi
-          gh run download "$RUN_ID" --repo stormchecker/stormpy --name "$ARTIFACT_NAME" --dir ./stormpy_wheels || true
-          if ! compgen -G "./stormpy_wheels/*.whl" > /dev/null; then
-            echo "No stormpy nightly wheel found in artifact $ARTIFACT_NAME." >&2
-            exit 1
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download stormpy nightly wheel if NIGHTLY_BUILD
+        if: env.NIGHTLY_BUILD == 'true'
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: create_wheel_scheduled.yml
+          repo: stormchecker/stormpy
+          name: ${{ env.STORMPY_ARTIFACT_NAME }}
+          path: stormpy_wheels/
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.4.0
         if: env.NIGHTLY_BUILD == 'true'

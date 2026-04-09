@@ -91,7 +91,7 @@ jobs:
             python -m pip install -U pip
             python -c "import sys; print(f'{sys.version_info.major}{sys.version_info.minor}')"
             PYTAG=$(python -c "import sys; print(f'{sys.version_info.major}{sys.version_info.minor}')")
-            WHEEL=$(ls "$CIBW_PROJECT_DIR"/stormpy_wheels/*-cp${PYTAG}-cp${PYTAG}-*.whl | head -n 1)
+            WHEEL=$(ls /project/stormpy_wheels/*-cp${PYTAG}-cp${PYTAG}-*.whl | head -n 1)
             echo "Installing stormpy wheel: $WHEEL"
             python -m pip install "$WHEEL"
       - name: Build wheels (non-nightly)

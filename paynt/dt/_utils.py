@@ -28,7 +28,7 @@ def simplify_tree(tree, cmdp_factory):
     if tree is None:
         return
 
-    relevant_state_valuations = [cmdp_factory.quotient.relevant_state_valuations[state] for state in cmdp_factory.quotient.state_is_relevant_bv]
+    relevant_state_valuations = [cmdp_factory.relevant_state_valuations[state] for state in cmdp_factory.state_is_relevant_bv]
     tree.simplify(relevant_state_valuations)
 
     return

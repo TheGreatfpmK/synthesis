@@ -22,3 +22,13 @@ def get_state_valuations(model):
         state_valuations.append(valuation)
 
     return variable_names, state_valuations
+
+def simplify_tree(tree, cmdp_factory):
+    ''' Simplify the tree recursively by removing irrelavant leaf nodes.'''
+    if tree is None:
+        return
+
+    relevant_state_valuations = [cmdp_factory.quotient.relevant_state_valuations[state] for state in cmdp_factory.quotient.state_is_relevant_bv]
+    tree.simplify(relevant_state_valuations)
+
+    return

@@ -7,6 +7,11 @@ on:
   workflow_call:
   # needed to trigger the workflow manually
   workflow_dispatch:
+    inputs:
+      nightly:
+        description: 'Build nightly/dev wheels (use stormpy nightly)'
+        required: false
+        default: 'false'
 
 jobs:
   build_wheels:
@@ -37,11 +42,63 @@ jobs:
             deploy_target: 15.0
       fail-fast: false
     steps:
+      - name: Set NIGHTLY_BUILD flag
+        run: |
+          if [[ "${{ github.event_name }}" == "schedule" ]] || [[ "${{ github.event.inputs.nightly }}" == "true" ]]; then
+            echo "NIGHTLY_BUILD=true" >> $GITHUB_ENV
+          else
+            echo "NIGHTLY_BUILD=false" >> $GITHUB_ENV
+          fi
       - uses: actions/checkout@v6
       - uses: maxim-lobanov/setup-xcode@v1
         if: ${{ matrix.xcode != '' }}
         with:
           xcode-version: ${{ matrix.xcode }}
+      - name: Install GitHub CLI
+        if: env.NIGHTLY_BUILD == 'true'
+        run: |
+          if ! command -v gh &> /dev/null; then
+            echo "Installing GitHub CLI..."
+            if command -v apt; then
+              apt update && apt install -y gh
+            elif command -v dnf; then
+              dnf install -y gh
+            elif command -v brew; then
+              brew install gh
+            fi
+          fi
+      - name: Install stormpy nightly wheel if NIGHTLY_BUILD
+        if: env.NIGHTLY_BUILD == 'true'
+        run: |
+          set -euo pipefail
+          # Map matrix.os to stormpy artifact name
+          case "${{ matrix.os }}" in
+            linux-intel)
+              ARTIFACT_NAME="stormpy-wheels-linux-intel" ;;
+            linux-arm)
+              ARTIFACT_NAME="stormpy-wheels-linux-arm" ;;
+            macos-intel)
+              ARTIFACT_NAME="stormpy-wheels-macos-intel" ;;
+            macos-arm)
+              ARTIFACT_NAME="stormpy-wheels-macos-arm" ;;
+            *)
+              echo "Unknown matrix.os: ${{ matrix.os }}" >&2; exit 1 ;;
+          esac
+          # Download the latest successful run id
+          RUN_ID=$(gh run list --repo stormchecker/stormpy --workflow create_wheel_scheduled.yml --json databaseId,status,conclusion,createdAt -L 1 | grep -o '"databaseId":[0-9]*' | head -n1 | grep -o '[0-9]*')
+          if [ -z "$RUN_ID" ]; then
+            echo "Could not find a recent stormpy nightly run." >&2
+            exit 1
+          fi
+          gh run download "$RUN_ID" --repo stormchecker/stormpy --name "$ARTIFACT_NAME" --dir ./stormpy_wheels || true
+          if compgen -G "./stormpy_wheels/*.whl" > /dev/null; then
+            pip install ./stormpy_wheels/*.whl
+          else
+            echo "No stormpy nightly wheel found in artifact $ARTIFACT_NAME." >&2
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.4.0
         env:

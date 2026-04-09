@@ -87,10 +87,9 @@ jobs:
           CIBW_ARCHS: ${{ matrix.archs }}
           MACOSX_DEPLOYMENT_TARGET: ${{ matrix.deploy_target }}
           CIBW_ENVIRONMENT: NR_JOBS=4
-          CIBW_BEFORE_ALL: |
-            for whl in /project/stormpy_wheels/*.whl; do
-              python -m pip install "$whl"
-            done
+          CIBW_BEFORE_BUILD: |
+            python -m pip install -U pip
+            python -m pip install /project/stormpy_wheels/*.whl
       - name: Build wheels (non-nightly)
         uses: pypa/cibuildwheel@v3.4.0
         if: env.NIGHTLY_BUILD != 'true'

@@ -95,15 +95,17 @@ jobs:
           CIBW_BEFORE_BUILD: |
             python -m pip install -U pip
             PYTAG=$(python -c "import sys; print(f'{sys.version_info.major}{sys.version_info.minor}')")
-            WHEEL=$(ls /project/stormpy_wheels/*-cp${PYTAG}-cp${PYTAG}-*.whl | head -n 1)
+
+            # Use a portable path (works on macOS + Linux container)
+            WHEEL_DIR="$(pwd)/stormpy_wheels"
+            echo "Looking for stormpy wheels in: $WHEEL_DIR"
+            ls -la "$WHEEL_DIR" || true
+
+            WHEEL=$(ls "$WHEEL_DIR"/*-cp${PYTAG}-cp${PYTAG}*.whl | head -n 1)
             echo "Installing stormpy wheel: $WHEEL"
-
-            # Force install THIS wheel (and avoid pip deciding to swap it)
-            python -m pip install --no-deps --force-reinstall "$WHEEL"
+            python -m pip install --force-reinstall "$WHEEL"
             python -c "import stormpy; print('stormpy from:', stormpy.__file__)"
-
-            python -m pip install scikit-build-core
-            python -m pip install pybind11
+            python -m pip install scikit-build-core pybind11
       - name: Build wheels (non-nightly)
         uses: pypa/cibuildwheel@v3.4.0
         if: env.NIGHTLY_BUILD != 'true'

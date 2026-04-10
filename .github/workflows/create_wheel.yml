@@ -87,13 +87,23 @@ jobs:
           CIBW_ARCHS: ${{ matrix.archs }}
           MACOSX_DEPLOYMENT_TARGET: ${{ matrix.deploy_target }}
           CIBW_ENVIRONMENT: NR_JOBS=4
+
+          # Key: use pip as the build frontend, and pass --no-build-isolation
+          CIBW_BUILD_FRONTEND: pip
+          CIBW_BUILD_FRONTEND_ARGS: --no-build-isolation
+
           CIBW_BEFORE_BUILD: |
             python -m pip install -U pip
-            python -c "import sys; print(f'{sys.version_info.major}{sys.version_info.minor}')"
             PYTAG=$(python -c "import sys; print(f'{sys.version_info.major}{sys.version_info.minor}')")
             WHEEL=$(ls /project/stormpy_wheels/*-cp${PYTAG}-cp${PYTAG}-*.whl | head -n 1)
             echo "Installing stormpy wheel: $WHEEL"
-            python -m pip install "$WHEEL"
+
+            # Force install THIS wheel (and avoid pip deciding to swap it)
+            python -m pip install --no-deps --force-reinstall "$WHEEL"
+            python -c "import stormpy; print('stormpy from:', stormpy.__file__)"
+
+            python -m pip install scikit-build-core
+            python -m pip install pybind11
       - name: Build wheels (non-nightly)
         uses: pypa/cibuildwheel@v3.4.0
         if: env.NIGHTLY_BUILD != 'true'

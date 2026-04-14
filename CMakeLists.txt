@@ -48,7 +48,7 @@ else()
 
     # Get Storm origin information
     execute_process(
-        COMMAND "${Python_EXECUTABLE}" -c "import stormpy.info; repo, tag = stormpy.info.storm_origin_info(); print(f'{repo or \"\"};{tag or \"\"}')"
+        COMMAND "${Python_EXECUTABLE}" -c "import stormpy.info; repo, tag, hash = stormpy.info.storm_origin_info(); print(f'{repo or \"\"};{tag or \"\"};{hash or \"\"}')"
         RESULT_VARIABLE _origin_result
         OUTPUT_VARIABLE STORM_ORIGIN_INFO
         ERROR_VARIABLE _origin_error
@@ -61,7 +61,7 @@ else()
     
     # Parse repo and tag
     list(GET STORM_ORIGIN_INFO 0 STORM_ORIGIN_REPO)
-    list(GET STORM_ORIGIN_INFO 1 STORM_ORIGIN_TAG)
+    list(GET STORM_ORIGIN_INFO 2 STORM_ORIGIN_TAG)
     
     message(STATUS "PAYNT - Storm origin repo: ${STORM_ORIGIN_REPO}")
     message(STATUS "PAYNT - Storm origin tag: ${STORM_ORIGIN_TAG}")

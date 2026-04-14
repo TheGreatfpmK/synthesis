@@ -76,10 +76,9 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: create_wheel.yml
-          repo: thegreatfpmk/stormpy
+          repo: stormchecker/stormpy
           name: ${{ env.STORMPY_ARTIFACT_NAME }}
           path: stormpy_wheels/
-          allow_forks: true
       - name: Prepare nightly version
         if: env.NIGHTLY_BUILD == 'true'
         run: | 

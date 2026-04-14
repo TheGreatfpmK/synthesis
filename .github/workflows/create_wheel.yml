@@ -100,13 +100,19 @@ jobs:
           CIBW_BEFORE_BUILD: |
             python -m pip install -U pip
             PYTAG=$(python -c "import sys; print(f'{sys.version_info.major}{sys.version_info.minor}')")
+            ABI_TAG=$(python -c "import sysconfig; print(sysconfig.get_config_var('SOABI') or '')")
 
             # Use a portable path (works on macOS + Linux container)
             WHEEL_DIR="$(pwd)/stormpy_wheels"
             echo "Looking for stormpy wheels in: $WHEEL_DIR"
             ls -la "$WHEEL_DIR" || true
 
-            WHEEL=$(ls "$WHEEL_DIR"/*-cp${PYTAG}-cp${PYTAG}*.whl | head -n 1)
+            if [[ "$PYTAG" == "314" && "$ABI_TAG" == *t ]]; then
+              # Free-threaded 3.14 (3.14t)
+              WHEEL=$(ls "$WHEEL_DIR"/*-cp314-cp314t*.whl | head -n 1)
+            else
+              WHEEL=$(ls "$WHEEL_DIR"/*-cp${PYTAG}-cp${PYTAG}*.whl | head -n 1)
+            fi
             echo "Installing stormpy wheel: $WHEEL"
             python -m pip install --force-reinstall "$WHEEL"
             python -c "import stormpy; print('stormpy from:', stormpy.__file__)"

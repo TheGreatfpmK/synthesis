@@ -27,3 +27,14 @@ cd boost_${BOOST_VERSION_UNDERSCORE}
 ./bootstrap.sh --prefix=/usr/local
 ./b2 install -j ${NR_JOBS}
 cd ..
+
+# Install Storm
+git clone https://github.com/moves-rwth/storm.git -b master
+cd storm
+mkdir build
+cd build
+cmake .. -DSTORM_BUILD_TESTS=OFF -DSTORM_BUILD_EXECUTABLES=OFF -DSTORM_PORTABLE=ON
+make -j ${NR_JOBS}
+make install
+cd ..
+rm -rf build

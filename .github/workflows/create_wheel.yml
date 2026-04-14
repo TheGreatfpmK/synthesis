@@ -92,7 +92,10 @@ jobs:
           CIBW_PLATFORM: ${{ matrix.platform }}
           CIBW_ARCHS: ${{ matrix.archs }}
           MACOSX_DEPLOYMENT_TARGET: ${{ matrix.deploy_target }}
-          CIBW_ENVIRONMENT: NR_JOBS=4 CIBW_BUILD_FRONTEND=pip CIBW_BUILD_FRONTEND_ARGS="--no-build-isolation"
+          CIBW_ENVIRONMENT: NR_JOBS=4
+
+          # Key: use pip as the build frontend, and pass --no-build-isolation
+          CIBW_BUILD_FRONTEND: "pip; args: --no-build-isolation"
 
           CIBW_BEFORE_BUILD: |
             python -m pip install -U pip

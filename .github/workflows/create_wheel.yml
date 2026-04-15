@@ -92,44 +92,7 @@ jobs:
           CIBW_ARCHS: ${{ matrix.archs }}
           MACOSX_DEPLOYMENT_TARGET: ${{ matrix.deploy_target }}
           CIBW_ENVIRONMENT: NR_JOBS=4
-          CIBW_ENVIRONMENT_LINUX: NR_JOBS=4 CMAKE_BUILD_PARALLEL_LEVEL=4 CCACHE_DIR=/project/.ccache CCACHE_MAXSIZE=2G BOOST_ROOT=/opt/boost_1_83_0 BOOST_INCLUDEDIR=/opt/boost_1_83_0/include STORM_VERSION=master
-
-          # Key: use pip as the build frontend, and pass --no-build-isolation
-          CIBW_BUILD_FRONTEND: "pip; args: --no-build-isolation"
-
-          CIBW_BEFORE_BUILD: |
-            python -m pip install -U pip
-
-            PYTAG=$(python -c "import sys; print(f'{sys.version_info.major}{sys.version_info.minor}')")
-            SOABI=$(python -c "import sysconfig; print(sysconfig.get_config_var('SOABI') or '')")
-
-            WHEEL_DIR="$(pwd)/stormpy_wheels"
-            echo "Looking for stormpy wheels in: $WHEEL_DIR"
-            ls -la "$WHEEL_DIR" || true
-
-            echo "PYTAG=$PYTAG"
-            echo "SOABI=$SOABI"
-
-            # Free-threaded builds have "t" in SOABI (e.g. cpython-314t-darwin)
-            if [[ "$PYTAG" == "314" && "$SOABI" == *"314t"* ]]; then
-              echo "Detected Python 3.14 free-threaded ($SOABI) -> installing cp314t stormpy"
-              WHEEL=$(ls "$WHEEL_DIR"/*-cp314-cp314t-*.whl 2>/dev/null | head -n 1 || true)
-            else
-              echo "Detected non-free-threaded Python ($SOABI) -> installing cp${PYTAG} stormpy"
-              WHEEL=$(ls "$WHEEL_DIR"/*-cp${PYTAG}-cp${PYTAG}-*.whl 2>/dev/null | head -n 1 || true)
-            fi
-
-            if [[ -z "${WHEEL:-}" ]]; then
-              echo "No matching stormpy wheel found for PYTAG=$PYTAG SOABI=$SOABI" >&2
-              echo "Available wheels:" >&2
-              ls -la "$WHEEL_DIR" >&2 || true
-              exit 1
-            fi
-
-            echo "Installing stormpy wheel: $WHEEL"
-            python -m pip install --force-reinstall "$WHEEL"
-            python -c "import stormpy; print('stormpy from:', stormpy.__file__)"
-            python -m pip install scikit-build-core pybind11
+          CIBW_ENVIRONMENT_LINUX: NR_JOBS=4 BOOST_ROOT=/opt/boost_1_83_0 BOOST_INCLUDEDIR=/opt/boost_1_83_0/include
       - name: Build wheels (non-nightly)
         uses: pypa/cibuildwheel@v3.4.0
         if: env.NIGHTLY_BUILD != 'true'
@@ -138,7 +101,7 @@ jobs:
           CIBW_ARCHS: ${{ matrix.archs }}
           MACOSX_DEPLOYMENT_TARGET: ${{ matrix.deploy_target }}
           CIBW_ENVIRONMENT: NR_JOBS=4
-          CIBW_ENVIRONMENT_LINUX: NR_JOBS=4 CMAKE_BUILD_PARALLEL_LEVEL=4 CCACHE_DIR=/project/.ccache CCACHE_MAXSIZE=2G BOOST_ROOT=/opt/boost_1_83_0 BOOST_INCLUDEDIR=/opt/boost_1_83_0/include STORM_VERSION=master
+          CIBW_ENVIRONMENT_LINUX: NR_JOBS=4 BOOST_ROOT=/opt/boost_1_83_0 BOOST_INCLUDEDIR=/opt/boost_1_83_0/include
       - uses: actions/upload-artifact@v7
         with:
           name: paynt-wheels-${{ matrix.os }}

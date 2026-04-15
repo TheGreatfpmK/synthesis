@@ -8,35 +8,60 @@ brew install ccache automake boost cln ginac glpk hwloc z3 xerces-c
 
 PROJECT_DIR="${CIBW_PROJECT_DIR:-$PWD}"
 
-# Install stormpy for querying which Storm version to build.
-python3 -m pip install -U pip
-
+# Determine which Storm version stormpy was built against.
+#
+# IMPORTANT: do NOT `pip install stormpy` here (macOS runners may disallow
+# system-wide installs). Instead, extract the origin info directly from a
+# stormpy wheel.
 WHEEL_DIR="${PROJECT_DIR}/stormpy_wheels"
 if [[ -d "${WHEEL_DIR}" ]] && compgen -G "${WHEEL_DIR}/stormpy-*.whl" > /dev/null; then
-	echo "Installing stormpy from local wheels in: ${WHEEL_DIR}"
-	WHEEL=$(ls "${WHEEL_DIR}"/stormpy-*-cp310-*.whl 2>/dev/null | head -n 1 || true)
-	if [[ -z "${WHEEL:-}" ]]; then
-		WHEEL=$(ls "${WHEEL_DIR}"/stormpy-*.whl 2>/dev/null | head -n 1 || true)
-	fi
-	if [[ -z "${WHEEL:-}" ]]; then
-		echo "No stormpy wheel found in ${WHEEL_DIR}" >&2
-		exit 1
-	fi
-	python3 -m pip install --force-reinstall "${WHEEL}"
+	echo "Using local stormpy wheels in: ${WHEEL_DIR}"
 else
+	mkdir -p /tmp/stormpy_wheels
 	if [[ -n "${STORMPY_VERSION:-}" ]]; then
-		echo "Installing stormpy==${STORMPY_VERSION} from PyPI"
-		python3 -m pip install "stormpy==${STORMPY_VERSION}"
+		echo "Downloading stormpy==${STORMPY_VERSION} wheel from PyPI"
+		python3 -m pip download --only-binary=:all: --no-deps -d /tmp/stormpy_wheels "stormpy==${STORMPY_VERSION}"
 	else
-		echo "Installing stormpy from PyPI (latest)"
-		python3 -m pip install stormpy
+		echo "Downloading stormpy wheel from PyPI (latest)"
+		python3 -m pip download --only-binary=:all: --no-deps -d /tmp/stormpy_wheels stormpy
 	fi
+	WHEEL_DIR=/tmp/stormpy_wheels
 fi
 
-echo "stormpy for origin query:"
-python3 -c "import stormpy; print(stormpy.__version__, 'from', stormpy.__file__)"
+WHEEL=$(ls "${WHEEL_DIR}"/stormpy-*-cp310-*.whl 2>/dev/null | head -n 1 || true)
+if [[ -z "${WHEEL:-}" ]]; then
+	WHEEL=$(ls "${WHEEL_DIR}"/stormpy-*.whl 2>/dev/null | head -n 1 || true)
+fi
+if [[ -z "${WHEEL:-}" ]]; then
+	echo "No stormpy wheel found in ${WHEEL_DIR}" >&2
+	exit 1
+fi
 
-STORM_ORIGIN=$(python3 -c "import stormpy.info; repo, tag, commit = stormpy.info.storm_origin_info(); print('{};{};{}'.format(repo or '', tag or '', commit or ''))")
+echo "stormpy wheel used for origin query: ${WHEEL}"
+
+STORM_ORIGIN=$(python3 - "$WHEEL" <<'PY'
+import sys
+import zipfile
+
+wheel_path = sys.argv[1]
+with zipfile.ZipFile(wheel_path) as zf:
+		cfg_candidates = [n for n in zf.namelist() if n.endswith('stormpy/info/_config.py')]
+		if not cfg_candidates:
+				raise SystemExit('Could not find stormpy/info/_config.py in wheel: ' + wheel_path)
+		cfg_name = cfg_candidates[0]
+		cfg_src = zf.read(cfg_name).decode('utf-8', errors='replace')
+
+ns = {}
+exec(compile(cfg_src, cfg_name, 'exec'), ns, ns)
+repo = ns.get('STORM_ORIGIN_REPO')
+tag = ns.get('STORM_ORIGIN_TAG')
+if repo is None:
+		repo = ''
+if tag is None:
+		tag = ''
+print(f"{repo};{tag};")
+PY
+)
 STORM_REPO="${STORM_ORIGIN%%;*}"
 REST="${STORM_ORIGIN#*;}"
 STORM_TAG="${REST%%;*}"
@@ -65,7 +90,7 @@ set(STORM_GIT_REPO "${STORM_REPO}")
 set(STORM_GIT_TAG "${STORM_VERSION_RESOLVED}")
 set(ALLOW_STORM_SYSTEM ON)
 set(ALLOW_STORM_FETCH OFF)
-set(STORM_DIR_HINT "/usr/local")
+set(STORM_DIR_HINT "/usr/local/lib/cmake/storm")
 EOF
 echo "Wrote Storm origin file: ${ORIGIN_FILE}"
 

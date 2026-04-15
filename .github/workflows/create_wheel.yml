@@ -92,6 +92,7 @@ jobs:
           CIBW_ARCHS: ${{ matrix.archs }}
           MACOSX_DEPLOYMENT_TARGET: ${{ matrix.deploy_target }}
           CIBW_ENVIRONMENT: NR_JOBS=4
+          CIBW_ENVIRONMENT_LINUX: NR_JOBS=4 BOOST_ROOT=/opt/boost_1_83_0 BOOST_INCLUDEDIR=/opt/boost_1_83_0/include STORM_VERSION=master
 
           # Key: use pip as the build frontend, and pass --no-build-isolation
           CIBW_BUILD_FRONTEND: "pip; args: --no-build-isolation"
@@ -100,24 +101,26 @@ jobs:
             python -m pip install -U pip
 
             PYTAG=$(python -c "import sys; print(f'{sys.version_info.major}{sys.version_info.minor}')")
-            CACHE_TAG=$(python -c "import sys; print(sys.implementation.cache_tag or '')")
+            SOABI=$(python -c "import sysconfig; print(sysconfig.get_config_var('SOABI') or '')")
 
             WHEEL_DIR="$(pwd)/stormpy_wheels"
             echo "Looking for stormpy wheels in: $WHEEL_DIR"
             ls -la "$WHEEL_DIR" || true
 
-            python -c "import sys, sysconfig; print('version:', sys.version); print('cache_tag:', sys.implementation.cache_tag); print('SOABI:', sysconfig.get_config_var('SOABI'))"
+            echo "PYTAG=$PYTAG"
+            echo "SOABI=$SOABI"
 
-            if [[ "$PYTAG" == "314" && "$CACHE_TAG" == *"314t"* ]]; then
-              echo "Detected Python 3.14 free-threaded ($CACHE_TAG) -> installing cp314t stormpy"
-              WHEEL=$(ls "$WHEEL_DIR"/*-cp314-cp314t-*.whl | head -n 1)
+            # Free-threaded builds have "t" in SOABI (e.g. cpython-314t-darwin)
+            if [[ "$PYTAG" == "314" && "$SOABI" == *"314t"* ]]; then
+              echo "Detected Python 3.14 free-threaded ($SOABI) -> installing cp314t stormpy"
+              WHEEL=$(ls "$WHEEL_DIR"/*-cp314-cp314t-*.whl 2>/dev/null | head -n 1 || true)
             else
-              echo "Detected Python $PYTAG ($CACHE_TAG) -> installing non-free-threaded stormpy"
-              WHEEL=$(ls "$WHEEL_DIR"/*-cp${PYTAG}-cp${PYTAG}-*.whl | head -n 1)
+              echo "Detected non-free-threaded Python ($SOABI) -> installing cp${PYTAG} stormpy"
+              WHEEL=$(ls "$WHEEL_DIR"/*-cp${PYTAG}-cp${PYTAG}-*.whl 2>/dev/null | head -n 1 || true)
             fi
 
             if [[ -z "${WHEEL:-}" ]]; then
-              echo "No matching stormpy wheel found for PYTAG=$PYTAG CACHE_TAG=$CACHE_TAG" >&2
+              echo "No matching stormpy wheel found for PYTAG=$PYTAG SOABI=$SOABI" >&2
               echo "Available wheels:" >&2
               ls -la "$WHEEL_DIR" >&2 || true
               exit 1
@@ -135,6 +138,7 @@ jobs:
           CIBW_ARCHS: ${{ matrix.archs }}
           MACOSX_DEPLOYMENT_TARGET: ${{ matrix.deploy_target }}
           CIBW_ENVIRONMENT: NR_JOBS=4
+          CIBW_ENVIRONMENT_LINUX: NR_JOBS=4 BOOST_ROOT=/opt/boost_1_83_0 BOOST_INCLUDEDIR=/opt/boost_1_83_0/include STORM_VERSION=master
       - uses: actions/upload-artifact@v7
         with:
           name: paynt-wheels-${{ matrix.os }}

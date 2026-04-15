@@ -51,7 +51,7 @@ echo "stormpy for origin query:"
 
 # Determine which Storm version stormpy was built against.
 STORM_ORIGIN=$(
-	"${STORMPY_PYTHON}" -c "import stormpy.info; repo, tag, commit = stormpy.info.storm_origin_info(); print(f'{repo or ''};{tag or ''};{commit or ''}')"
+	"${STORMPY_PYTHON}" -c "import stormpy.info; repo, tag, commit = stormpy.info.storm_origin_info(); print('{};{};{}'.format(repo or '', tag or '', commit or ''))"
 )
 
 STORM_REPO="${STORM_ORIGIN%%;*}"

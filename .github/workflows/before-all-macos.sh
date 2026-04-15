@@ -36,7 +36,7 @@ fi
 echo "stormpy for origin query:"
 python3 -c "import stormpy; print(stormpy.__version__, 'from', stormpy.__file__)"
 
-STORM_ORIGIN=$(python3 -c "import stormpy.info; repo, tag, commit = stormpy.info.storm_origin_info(); print(f'{repo or ''};{tag or ''};{commit or ''}')")
+STORM_ORIGIN=$(python3 -c "import stormpy.info; repo, tag, commit = stormpy.info.storm_origin_info(); print('{};{};{}'.format(repo or '', tag or '', commit or ''))")
 STORM_REPO="${STORM_ORIGIN%%;*}"
 REST="${STORM_ORIGIN#*;}"
 STORM_TAG="${REST%%;*}"

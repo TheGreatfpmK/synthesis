@@ -76,10 +76,13 @@ if(NOT DEFINED PAYNT_INFO_PRETEND_FETCH)
                 if(NOT STORM_ORIGIN_REPO STREQUAL "")
                     set(STORM_GIT_REPO "${STORM_ORIGIN_REPO}")
                 endif()
-                if(NOT STORM_ORIGIN_TAG STREQUAL "")
-                    set(STORM_GIT_TAG "${STORM_ORIGIN_TAG}")
-                elseif(NOT STORM_ORIGIN_COMMIT STREQUAL "")
+                # Prefer commit hash over tag when selecting the Storm ref.
+                # For nightly stormpy wheels, the tag can point to a release,
+                # while the commit hash captures the exact Storm revision.
+                if(NOT STORM_ORIGIN_COMMIT STREQUAL "")
                     set(STORM_GIT_TAG "${STORM_ORIGIN_COMMIT}")
+                elseif(NOT STORM_ORIGIN_TAG STREQUAL "")
+                    set(STORM_GIT_TAG "${STORM_ORIGIN_TAG}")
                 endif()
             else()
                 message(WARNING "PAYNT - Failed to query stormpy.info.storm_origin_info(): ${_origin_error}. Falling back to existing Storm configuration.")

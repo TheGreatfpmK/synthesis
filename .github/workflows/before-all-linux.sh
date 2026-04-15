@@ -39,7 +39,14 @@ else
 fi
 
 # Prefer cp310 wheel; fall back to any wheel.
-WHEEL=$(ls "${WHEEL_DIR}"/stormpy-*-cp310-*.whl 2>/dev/null | head -n 1 || true)
+PYTAG=$("${STORMPY_PYTHON}" - <<'PY'
+import sys
+print(f"cp{sys.version_info.major}{sys.version_info.minor}")
+PY
+)
+
+# Prefer a wheel matching the interpreter used for querying.
+WHEEL=$(ls "${WHEEL_DIR}"/stormpy-*-${PYTAG}-*.whl 2>/dev/null | head -n 1 || true)
 if [[ -z "${WHEEL:-}" ]]; then
 	WHEEL=$(ls "${WHEEL_DIR}"/stormpy-*.whl 2>/dev/null | head -n 1 || true)
 fi
@@ -50,42 +57,39 @@ fi
 
 echo "stormpy wheel used for origin query: ${WHEEL}"
 
-STORM_ORIGIN=$("${STORMPY_PYTHON}" - "$WHEEL" <<'PY'
-import sys
-import zipfile
+# Install the wheel into a temporary venv and query stormpy.info.
+# This avoids system-wide installs and gives us access to Version.git_hash.
+STORMPY_QUERY_VENV="$(mktemp -d /tmp/paynt_stormpy_query_venv.XXXXXX)"
+"${STORMPY_PYTHON}" -m venv "${STORMPY_QUERY_VENV}"
 
-wheel_path = sys.argv[1]
-with zipfile.ZipFile(wheel_path) as zf:
-		cfg_candidates = [n for n in zf.namelist() if n.endswith('stormpy/info/_config.py')]
-		if not cfg_candidates:
-				raise SystemExit('Could not find stormpy/info/_config.py in wheel: ' + wheel_path)
-		cfg_name = cfg_candidates[0]
-		cfg_src = zf.read(cfg_name).decode('utf-8', errors='replace')
-
-ns = {}
-exec(compile(cfg_src, cfg_name, 'exec'), ns, ns)
-repo = ns.get('STORM_ORIGIN_REPO')
-tag = ns.get('STORM_ORIGIN_TAG')
-if repo is None:
-		repo = ''
-if tag is None:
-		tag = ''
-print(f"{repo};{tag};")
-PY
+STORM_ORIGIN=$(
+	"${STORMPY_QUERY_VENV}/bin/python" -m pip install --no-deps "$WHEEL" >/dev/null
+	"${STORMPY_QUERY_VENV}/bin/python" -c "import stormpy.info; repo, tag, commit = stormpy.info.storm_origin_info(); print(f'{repo or \"\"};{tag or \"\"};{commit or \"\"}')"
 )
+rm -rf "${STORMPY_QUERY_VENV}"
 
 STORM_REPO="${STORM_ORIGIN%%;*}"
 REST="${STORM_ORIGIN#*;}"
 STORM_TAG="${REST%%;*}"
 STORM_COMMIT="${REST#*;}"
 
+# Prefer commit hash for building Storm; use tag when commit isn't available.
+if [[ -n "${STORM_COMMIT}" ]]; then
+	STORM_VERSION_TO_BUILD="${STORM_COMMIT}"
+elif [[ -n "${STORM_TAG}" ]]; then
+	STORM_VERSION_TO_BUILD="${STORM_TAG}"
+else
+	echo "Failed to determine Storm origin from stormpy (got: '${STORM_ORIGIN}')" >&2
+	STORM_VERSION_TO_BUILD="${STORM_VERSION:-master}"
+fi
+
+# Prefer tag for metadata (human-readable), fall back to commit.
 if [[ -n "${STORM_TAG}" ]]; then
 	STORM_VERSION_RESOLVED="${STORM_TAG}"
 elif [[ -n "${STORM_COMMIT}" ]]; then
 	STORM_VERSION_RESOLVED="${STORM_COMMIT}"
 else
-	echo "Failed to determine Storm origin from stormpy (got: '${STORM_ORIGIN}')" >&2
-	STORM_VERSION_RESOLVED="${STORM_VERSION:-master}"
+	STORM_VERSION_RESOLVED="${STORM_VERSION_TO_BUILD}"
 fi
 
 if [[ -z "${STORM_REPO}" ]]; then
@@ -93,7 +97,7 @@ if [[ -z "${STORM_REPO}" ]]; then
 fi
 
 echo "Resolved Storm origin: repo='${STORM_REPO}', tag='${STORM_TAG}', commit='${STORM_COMMIT}'"
-echo "Storm version to build: ${STORM_VERSION_RESOLVED}"
+echo "Storm version to build: ${STORM_VERSION_TO_BUILD}"
 
 # Write origin information for CMake (used to avoid re-querying stormpy per wheel and to enable pretend-fetch metadata).
 ORIGIN_FILE="${PROJECT_DIR}/.paynt_storm_origin.cmake"
@@ -134,10 +138,27 @@ mkdir -p "${BOOST_PREFIX}/include"
 cp -a "boost_${BOOST_VERSION_UNDERSCORE}/boost" "${BOOST_PREFIX}/include/"
 
 # Install Storm (matching stormpy)
-STORM_VERSION="${STORM_VERSION_RESOLVED}"
+STORM_VERSION="${STORM_VERSION_TO_BUILD}"
 
 rm -rf storm
-if git clone --depth 1 --branch "${STORM_VERSION}" "${STORM_REPO}" storm 2>/dev/null; then
+if [[ "${STORM_VERSION}" =~ ^[0-9a-fA-F]{40}$ ]]; then
+	# Commit hash: fetch just that commit.
+	echo "Fetching Storm commit ${STORM_VERSION}"
+	git init storm
+	cd storm
+	git remote add origin "${STORM_REPO}"
+	if git fetch --depth 1 origin "${STORM_VERSION}" 2>/dev/null; then
+		git -c advice.detachedHead=false checkout FETCH_HEAD
+	else
+		echo "Shallow fetch by commit failed; falling back to full clone"
+		cd ..
+		rm -rf storm
+		git clone "${STORM_REPO}" storm
+		cd storm
+		git checkout "${STORM_VERSION}"
+	fi
+	cd ..
+elif git clone --depth 1 --branch "${STORM_VERSION}" "${STORM_REPO}" storm 2>/dev/null; then
 	echo "Cloned Storm via --branch ${STORM_VERSION}"
 else
 	echo "Falling back to clone+checkout for Storm version '${STORM_VERSION}'"

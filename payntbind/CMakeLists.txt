@@ -17,6 +17,8 @@ set(STORM_GIT_REPO "" CACHE STRING  "Git repo used for fetching storm")
 set(STORM_GIT_TAG "" CACHE STRING "Git repo tag used for fetching storm")
 option(COMPILE_WITH_CCACHE "Compile using CCache (if found)" ON)
 mark_as_advanced(COMPILE_WITH_CCACHE)
+option(PAYNT_INFO_PRETEND_FETCH "[INTERNAL] Pretend Storm was fetched for wheel metadata (use with cibuildwheel before-all)" OFF)
+mark_as_advanced(PAYNT_INFO_PRETEND_FETCH)
 
 # Check whether inputs are sane.
 if (NOT ALLOW_STORM_SYSTEM AND NOT ALLOW_STORM_FETCH)
@@ -68,6 +70,17 @@ if(ALLOW_STORM_SYSTEM)
     set(STORM_FROM_SYSTEM TRUE)
     get_filename_component(STORM_DIR_PATH ${storm_DIR} ABSOLUTE)
     set(STORM_DIR "\"${STORM_DIR_PATH}\"")
+
+    if (PAYNT_INFO_PRETEND_FETCH)
+        message(WARNING "PAYNT - PAYNT_INFO_PRETEND_FETCH is enabled: using system Storm for build/linking, but recording fetched origin info in payntbind.info. Ensure STORM_GIT_REPO and STORM_GIT_TAG are set accordingly.")
+        if (NOT STORM_GIT_REPO OR NOT STORM_GIT_TAG)
+            message(FATAL_ERROR "PAYNT - PAYNT_INFO_PRETEND_FETCH requires STORM_GIT_REPO and STORM_GIT_TAG to be set.")
+        endif()
+        set(STORM_FETCHED_FROM_REPO ${STORM_GIT_REPO})
+        set(STORM_FETCHED_FROM_TAG ${STORM_GIT_TAG})
+        set(STORM_FROM_SYSTEM FALSE)
+        set(STORM_DIR "None")
+    endif()
 
     # Set dependency variables
     set_dependency_var(SPOT)

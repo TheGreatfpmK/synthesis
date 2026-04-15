@@ -92,7 +92,7 @@ jobs:
           CIBW_ARCHS: ${{ matrix.archs }}
           MACOSX_DEPLOYMENT_TARGET: ${{ matrix.deploy_target }}
           CIBW_ENVIRONMENT: NR_JOBS=4
-          CIBW_ENVIRONMENT_LINUX: NR_JOBS=4 BOOST_ROOT=/opt/boost_1_83_0 BOOST_INCLUDEDIR=/opt/boost_1_83_0/include STORM_VERSION=master
+          CIBW_ENVIRONMENT_LINUX: NR_JOBS=4 CMAKE_BUILD_PARALLEL_LEVEL=4 CCACHE_DIR=/project/.ccache CCACHE_MAXSIZE=2G BOOST_ROOT=/opt/boost_1_83_0 BOOST_INCLUDEDIR=/opt/boost_1_83_0/include STORM_VERSION=master
 
           # Key: use pip as the build frontend, and pass --no-build-isolation
           CIBW_BUILD_FRONTEND: "pip; args: --no-build-isolation"
@@ -138,7 +138,7 @@ jobs:
           CIBW_ARCHS: ${{ matrix.archs }}
           MACOSX_DEPLOYMENT_TARGET: ${{ matrix.deploy_target }}
           CIBW_ENVIRONMENT: NR_JOBS=4
-          CIBW_ENVIRONMENT_LINUX: NR_JOBS=4 BOOST_ROOT=/opt/boost_1_83_0 BOOST_INCLUDEDIR=/opt/boost_1_83_0/include STORM_VERSION=master
+          CIBW_ENVIRONMENT_LINUX: NR_JOBS=4 CMAKE_BUILD_PARALLEL_LEVEL=4 CCACHE_DIR=/project/.ccache CCACHE_MAXSIZE=2G BOOST_ROOT=/opt/boost_1_83_0 BOOST_INCLUDEDIR=/opt/boost_1_83_0/include STORM_VERSION=master
       - uses: actions/upload-artifact@v7
         with:
           name: paynt-wheels-${{ matrix.os }}

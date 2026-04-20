@@ -61,10 +61,10 @@ def conditional_setting_from_string(name: str):
         return stormpy.ConditionalAlgorithmSetting.bisection
     elif name == 'bisection_advanced':
         return stormpy.ConditionalAlgorithmSetting.bisection_advanced
-    elif name == 'bisection_policy_tracking':
-        return stormpy.ConditionalAlgorithmSetting.bisection_policy_tracking
-    elif name == 'bisection_advanced_policy_tracking':
-        return stormpy.ConditionalAlgorithmSetting.bisection_advanced_policy_tracking
+    elif name == 'bisection_pt':
+        return stormpy.ConditionalAlgorithmSetting.bisection_pt
+    elif name == 'bisection_advanced_pt':
+        return stormpy.ConditionalAlgorithmSetting.bisection_advanced_pt
     elif name == 'policy_iteration':
         return stormpy.ConditionalAlgorithmSetting.policy_iteration
     else:
@@ -150,7 +150,7 @@ def conditional_setting_from_string(name: str):
     "--constraint-bound", type=click.FLOAT, help="bound for creating constrained POMDP for Cassandra models",
 )
 
-@click.option("--conditional-algorithm", type=click.Choice(['bisection', 'bisection_advanced', 'bisection_policy_tracking', 'bisection_advanced_policy_tracking', 'policy_iteration', 'restart']), default='bisection', show_default=True,
+@click.option("--conditional-algorithm", type=click.Choice(['bisection', 'bisection_advanced', 'bisection_pt', 'bisection_advanced_pt', 'policy_iteration', 'restart']), default='bisection', show_default=True,
     help="conditional model checking algorithm to use")
 @click.option("--conditional-splitting", type=click.Choice([None, 'evs', 'backward', 'forward', 'alternating_bf']), default=None, show_default=True,
     help="what splitting to use for conditional properties")

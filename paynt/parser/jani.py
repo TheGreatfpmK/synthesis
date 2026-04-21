@@ -50,7 +50,7 @@ class JaniUnfolder:
         for index,prop_old in enumerate(properties_old):
             prop_new = properties[index]
             if type(prop_old) == paynt.verification.property.Property:
-                p = paynt.verification.property.Property(prop_new)
+                p = paynt.verification.property.Property(prop_new,use_exact)
             else:
                 epsilon = prop_old.epsilon
                 p = paynt.verification.property.OptimalityProperty(prop_new,epsilon,use_exact)

@@ -82,8 +82,7 @@ class Property:
 
         mce = cls.environment.model_checker_environment
         # conditional properties testing: [restart, bisection, bisection_advanced, policy_iteration]
-        mce.conditional_algorithm = cls.conditional_algorithm
-        mce.optimization_for_bounded_properties = cls.conditional_bisection_optimization
+        mce.conditional.algorithm = cls.conditional_algorithm
 
         if min_max_method is not None:
             se.minmax_solver_environment.method = min_max_method
@@ -148,7 +147,7 @@ class Property:
         # set optimality type
         self.formula = rf.clone()
 
-        if self.is_conditional:
+        if self.is_conditional and self.conditional_bisection_optimization:
             self.conditional_property_values_defined = False
         else:
             self.formula.remove_bound()

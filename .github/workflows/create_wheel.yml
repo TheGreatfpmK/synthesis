@@ -71,13 +71,13 @@ jobs:
               ls -la stormpy_wheels/ >&2 || true
               exit 1
             fi
-            python -m venv venv
+            python3 -m venv venv
             source venv/bin/activate
-            python -m pip install --force-reinstall "$WHEEL"
+            python3 -m pip install --force-reinstall "$WHEEL"
           else
-            python -m venv venv
+            python3 -m venv venv
             source venv/bin/activate
-            python -m pip install stormpy
+            python3 -m pip install stormpy
           fi
 
           read -r storm_repository storm_tag storm_commit_hash < <( \

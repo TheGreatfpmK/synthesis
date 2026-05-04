@@ -50,7 +50,7 @@ jobs:
           repo: stormchecker/stormpy
           name: ${{ env.STORMPY_ARTIFACT_NAME }}
           path: stormpy_wheels/
-      - name: Install stormpy nightly
+      - name: Install stormpy
         id: get_versions
         run: |
           docker run -i --rm -v ./stormpy_wheels:/stormpy_wheels ubuntu:latest /bin/bash << 'EOF'
@@ -83,14 +83,22 @@ jobs:
           read -r storm_repository storm_tag storm_commit_hash < <( \
             python3 -c "import stormpy.info; print(*stormpy.info.storm_origin_info())" \
           )
-          echo "STORM_REPOSITORY=$storm_repository" >> $GITHUB_OUTPUT
-          echo "STORM_TAG=$storm_tag" >> $GITHUB_OUTPUT
-          echo "STORM_COMMIT_HASH=$storm_commit_hash" >> $GITHUB_OUTPUT
+          stormpy_version=$(python3 -c "import stormpy; print(stormpy.__version__)")
 
-          read -r stormpy_version < <( \
-            python3 -c "import stormpy; print(stormpy.__version__)" \
-          )
-          echo "STORMPY_VERSION=$stormpy_version" >> $GITHUB_OUTPUT
+          # Write results to a file in the mounted directory
+          {
+            echo "storm_repository=$storm_repository"
+            echo "storm_tag=$storm_tag"
+            echo "storm_commit_hash=$storm_commit_hash"
+            echo "stormpy_version=$stormpy_version"
+          } > /stormpy_wheels/versions.env
+          EOF
+
+          # Export container results as step outputs (host environment)
+          cat stormpy_wheels/versions.env
+          while IFS='=' read -r k v; do
+            echo "$k=$v" >> "$GITHUB_OUTPUT"
+          done < stormpy_wheels/versions.env
 
   build_wheels:
     name: Build wheels for ${{ matrix.os }}

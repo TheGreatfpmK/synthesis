@@ -53,7 +53,7 @@ jobs:
       - name: Install stormpy nightly
         id: get_versions
         run: |
-          docker run -i --rm -v ./dist:/wheel ubuntu:latest /bin/bash << 'EOF'
+          docker run -i --rm -v ./stormpy_wheels:/stormpy_wheels ubuntu:latest /bin/bash << 'EOF'
           set -euo pipefail
           set -x
 
@@ -64,7 +64,7 @@ jobs:
           echo "Python version: $PY_VER"
 
           if ${{ env.NIGHTLY_BUILD }}; then
-            WHEEL_DIR="$(pwd)/stormpy_wheels"
+            WHEEL_DIR="stormpy_wheels"
             WHEEL=$(ls "$WHEEL_DIR"/*-cp${PY_VER}-cp${PY_VER}-*.whl 2>/dev/null | head -n 1 || true)
             if [[ -z "${WHEEL:-}" ]]; then
               echo "No stormpy wheel found in stormpy_wheels/" >&2

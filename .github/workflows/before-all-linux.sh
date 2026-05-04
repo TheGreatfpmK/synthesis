@@ -29,6 +29,8 @@ curl -fsSLO https://archives.boost.io/release/${BOOST_VERSION}/source/boost_${BO
 tar -xzf boost_${BOOST_VERSION_UNDERSCORE}.tar.gz
 mkdir -p "${BOOST_PREFIX}/include"
 cp -a "boost_${BOOST_VERSION_UNDERSCORE}/boost" "${BOOST_PREFIX}/include/"
+# Set BOOST_ROOT environment variable for CMake
+export BOOST_ROOT="${BOOST_PREFIX}"
 
 
 # Install Storm

@@ -148,8 +148,18 @@ jobs:
           perl -i -pe 's/__version__ = "(\d+)\.(\d+)\.(\d+)"/"__version__ = \"$1.$2.".($3+1).".dev1\""/e' payntbind/lib/payntbind/_version.py
       - name: Prepare storm version
         run: |
-          sed -i -E 's/STORM_GIT_REPO="(.+)"/STORM_GIT_REPO="${{ needs.get_storm_version.outputs.storm_repository }}"/' pyproject.toml
-          sed -i -E 's/STORM_GIT_TAG="(.+)"/STORM_GIT_TAG="${{ needs.get_storm_version.outputs.storm_tag }}"/' pyproject.toml
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+
+          p = Path("pyproject.toml")
+          s = p.read_text()
+
+          s = re.sub(r'STORM_GIT_REPO="[^"]*"', 'STORM_GIT_REPO="${{ needs.get_storm_version.outputs.storm_repository }}"', s)
+          s = re.sub(r'STORM_GIT_TAG="[^"]*"',  'STORM_GIT_TAG="${{ needs.get_storm_version.outputs.storm_commit_hash }}"', s)
+
+          p.write_text(s)
+          PY
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.4.1
         env:

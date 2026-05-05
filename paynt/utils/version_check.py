@@ -20,10 +20,10 @@ def check_stormpy_compatibility():
         logger.warning(f"Storm used by payntbind ({'development' if payntbind.info.storm_development_version() else 'stable'}) and stormpy ({'development' if stormpy.info.storm_development_version() else 'stable'}) have different development versions!")
         incompatibility_found = True
     stormpy_storm_repo, _, stormpy_storm_hash = stormpy.info.storm_origin_info()
-    if payntbind.info.storm_origin_info() != (stormpy_storm_repo, stormpy_storm_hash):
+    if not payntbind.info.storm_from_system() and (payntbind.info.storm_origin_info() != (stormpy_storm_repo, stormpy_storm_hash)):
         logger.warning(f"Storm used by payntbind ({payntbind.info.storm_origin_info()}) and stormpy ({(stormpy_storm_repo, stormpy_storm_hash)}) have different origin information!")
         incompatibility_found = True
-    if payntbind.info.storm_directory() != stormpy.info.storm_directory():
+    if payntbind.info.storm_from_system() and (payntbind.info.storm_directory() != stormpy.info.storm_directory()):
         logger.warning(f"Storm used by payntbind is located at {payntbind.info.storm_directory()} while Storm used by stormpy is located at {stormpy.info.storm_directory()}.")
         incompatibility_found = True
 

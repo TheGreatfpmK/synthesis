@@ -72,8 +72,8 @@ if(ALLOW_STORM_SYSTEM)
         get_filename_component(STORM_DIR_PATH ${storm_DIR} ABSOLUTE)
         set(STORM_DIR "\"${STORM_DIR_PATH}\"")
         if (PAYNT_INFO_PRETEND_FETCH)
-            # This is a workaround for our wheel construction which uses a system version for efficiency,
-            # but should provide wheels as if it they were fetched.
+            # This is a workaround for our wheel construction which uses a system version of Storm for efficiency,
+            # but should provide wheels as if they were build against a fetched version of Storm.
             message(WARNING "PAYNT - The behavior of PAYNT_INFO_PRETEND_FETCH is something we only want when building wheels. Please ensure that STORM_GIT_REPO and STORM_GIT_TAG are set accordingly.")
             set(STORM_FETCHED_FROM_REPO ${STORM_GIT_REPO})
             set(STORM_FETCHED_FROM_TAG ${STORM_GIT_TAG})

@@ -63,6 +63,8 @@ if (NOT PAYNT_INFO_PRETEND_FETCH)
         endif()
         
         # Parse repo and tag
+        # We actually take the repo and commit hash information because we want to match the exact commit of Storm that was used
+        # TODO maybe rename it to be less confusing, however be careful how this influences what information is stored in payntbind info
         list(GET STORM_ORIGIN_INFO 0 STORM_ORIGIN_REPO)
         list(GET STORM_ORIGIN_INFO 2 STORM_ORIGIN_TAG)
         

@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Set NIGHTLY_BUILD flag
         run: |
-          if [[ "${{ github.event_name }}" == "schedule" ]] || [[ "${{ github.event.inputs.nightly }}" == true ]]; then
+          if [[ "${{ github.event_name }}" == "schedule" ]] || [[ "${{ inputs.nightly }}" == true ]]; then
             echo "NIGHTLY_BUILD=true" >> $GITHUB_ENV
           else
             echo "NIGHTLY_BUILD=false" >> $GITHUB_ENV
@@ -131,7 +131,7 @@ jobs:
     steps:
       - name: Set NIGHTLY_BUILD flag
         run: |
-          if [[ "${{ github.event_name }}" == "schedule" ]] || [[ "${{ github.event.inputs.nightly }}" == true ]]; then
+          if [[ "${{ github.event_name }}" == "schedule" ]] || [[ "${{ inputs.nightly }}" == true ]]; then
             echo "NIGHTLY_BUILD=true" >> $GITHUB_ENV
           else
             echo "NIGHTLY_BUILD=false" >> $GITHUB_ENV
@@ -179,7 +179,7 @@ jobs:
     steps:
       - name: Set NIGHTLY_BUILD flag
         run: |
-          if [[ "${{ github.event_name }}" == "schedule" ]] || [[ "${{ github.event.inputs.nightly }}" == true ]]; then
+          if [[ "${{ github.event_name }}" == "schedule" ]] || [[ "${{ inputs.nightly }}" == true ]]; then
             echo "NIGHTLY_BUILD=true" >> $GITHUB_ENV
           else
             echo "NIGHTLY_BUILD=false" >> $GITHUB_ENV

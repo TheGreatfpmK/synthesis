@@ -4,6 +4,8 @@ import paynt.utils.timer
 
 import paynt.dt.result
 
+from ._utils import simplify_tree
+
 import stormpy
 import payntbind
 
@@ -30,6 +32,8 @@ def _run_dt_map_scheduler(cmdp_factory_dt, scheduler, tree_depth):
     dt_synthesizer = DtSynthesizer(cmdp_factory_dt)
     dt_synthesizer.map_scheduler(choices, tree_depth=tree_depth)
 
+    simplify_tree(dt_synthesizer.best_tree, cmdp_factory_dt)
+
     return paynt.dt.result.DtResult(
         success = dt_synthesizer.best_tree is not None,
         value = dt_synthesizer.best_tree_value,
@@ -40,6 +44,8 @@ def _run_dt_map_scheduler(cmdp_factory_dt, scheduler, tree_depth):
 def _run_dtpaynt(cmdp_factory_dt, tree_depth, timeout=None):
     dt_synthesizer = DtSynthesizer(cmdp_factory_dt)
     dt_synthesizer.synthesize_tree(tree_depth, timeout=timeout)
+
+    simplify_tree(dt_synthesizer.best_tree, cmdp_factory_dt)
 
     return paynt.dt.result.DtResult(
         success = dt_synthesizer.best_tree is not None,

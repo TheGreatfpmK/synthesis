@@ -1,20 +1,37 @@
 from ..decision_tree import DecisionTree
 from ..factory import DtColoredMdpFactory
 from ..synthesizer import DtSynthesizer
+from ..result import DtResult
 import paynt.utils.timer
-from ._utils import create_uniform_random_tree, get_submdp_from_unfixed_states, build_tree_helper_tree, get_state_space_for_tree_helper_node, dt_to_scheduler_json, run_dtcontrol, parse_tree_helper_json, run_scikit_learn_tree, state_to_choice_to_state_to_action, dt_to_state_to_actions
+from ._utils import create_uniform_random_tree, get_submdp_from_unfixed_states, build_tree_helper_tree, get_state_space_for_tree_helper_node, run_scikit_learn_tree, state_to_choice_to_state_to_action, dt_to_state_to_actions
 
 import stormpy
 import payntbind
 
-import json
-
 import logging
 logger = logging.getLogger(__name__)
 
+
+
+def _run_dtnest(cmdp_factory_dt : DtColoredMdpFactory, epsilon_error_threshold: float, max_subtree_depth: int, depth_fine_tuning : bool = True, allow_perturbations: bool = True, recompute_scheduler_perturbation: bool = True, timeout : int = 600) -> DtResult:
+    synthesizer = DtNest(cmdp_factory_dt)
+    synthesizer.epsilon = epsilon_error_threshold
+    synthesizer.subtree_depth = max_subtree_depth
+    synthesizer.depth_fine_tuning = depth_fine_tuning
+    synthesizer.allow_perturbations = allow_perturbations
+    synthesizer.recompute_scheduler = recompute_scheduler_perturbation
+    synthesizer.timeout = timeout
+
+    best_tree = synthesizer.run()
+
+    return DtResult(success=best_tree is not None, value=synthesizer.best_tree_value, tree=best_tree)
+
+
 class DtNest(DtSynthesizer):
 
-    initial_tree_path = None
+    initial_tree = None
+    max_subtree_depth = 7
+    epsilon_threshold = 0.05
 
     def __init__(self, *args):
         super().__init__(*args)
@@ -25,17 +42,14 @@ class DtNest(DtSynthesizer):
         self.initialize_settings()
 
     def initialize_settings(self):
-        self.subtree_depth = 7
+        self.subtree_depth = self.max_subtree_depth
         self.max_iter = 100000 # max number of subtrees to be investigated
-        self.epsilon = 0.05
-        self.timeout = 600
+        self.epsilon = self.epsilon_threshold
+        self.timeout = paynt.utils.timer.GlobalTimer.global_timer.time_limit_seconds if paynt.utils.timer.GlobalTimer.global_timer is not None else 600
         self.depth_fine_tuning = True # decreases sub-tree depth once all subtrees of the current depth have been explored
         self.break_on_small_tree = True # dtPAYNT synthesis ends when an implementable tree with good enough value is found
-        self.use_dtcontrol = False # If set to False, scikit-learn is used instead of dtcontrol
         self.allow_perturbations = True # If False all perturbations are disabled, meaning we are only using dtPAYNT to make the initial tree smaller
         self.recompute_scheduler = True # recomputes scheduler for the subtree outside of the replaced subtree
-        # dtcontrol_settings = ["default"] # this defines the different settings we run dtcontrol with # TODO this is currently not nicely supported in dtcontrol
-        # dtcontrol_settings = ["default", "gini", "entropy", "maxminority"] # other possible settings: gini, entropy, maxminority
         self.use_states_for_node_priority = False # this is super slow for some models but should mean better prioritization
 
     @property
@@ -85,7 +99,6 @@ class DtNest(DtSynthesizer):
             else:
                 stats = {"id": helper_node["id"], "nodes": helper_tree_node.get_number_of_descendants()}
 
-            # this happens for nodes created outside of DtControl
             if "evaluations" not in helper_node.keys():
                 stats["predicates"] = {}
             else:
@@ -135,7 +148,7 @@ class DtNest(DtSynthesizer):
 
             logger.info(f"starting iteration with subtree depth {current_depth}")
             # TODO this is not guaranteed to work in subsequent iterations when the dtPAYNT tree is used
-            # I don't know what this means anymore...
+            # I don't know what this comment means anymore but I couldn't reproduce any issues...
             node_queue = self.create_tree_node_queue_heuristic(tree_helper_tree, desired_depth=current_depth, use_states_for_node_priority=self.use_states_for_node_priority)
 
             while len(node_queue) > 0 and current_iter < self.max_iter:
@@ -187,8 +200,6 @@ class DtNest(DtSynthesizer):
                     dtlearn_trees = {}
                     recomputed_dtlearn_trees = {}
 
-                    # exit()
-
                     if self.allow_perturbations:
 
                         submdp_for_tree = get_submdp_from_unfixed_states(self.quotient, node_states)
@@ -196,66 +207,32 @@ class DtNest(DtSynthesizer):
                         for state in range(submdp_for_tree.model.nr_states):
                             reachable_states.set(submdp_for_tree.quotient_state_map[state], True)
 
-                        if self.recompute_scheduler:
-                            submpd_dtlearn_of_subtree = get_submdp_from_unfixed_states(self.quotient, ~node_states)
-                            oos_result = submpd_dtlearn_of_subtree.check_specification(self.quotient.specification)
-                            new_scheduler = oos_result.optimality_result.result.scheduler
-                            state_to_choice = self.quotient.scheduler_to_state_to_choice(submpd_dtlearn_of_subtree, new_scheduler)
-
-                            if self.use_dtcontrol:
-                                recomputed_scheduler = payntbind.synthesis.create_scheduler(self.quotient.quotient_mdp.nr_states)
-                                quotient_mdp_nci = self.quotient.quotient_mdp.nondeterministic_choice_indices.copy()
-                                for state in range(self.quotient.quotient_mdp.nr_states):
-                                    quotient_choice = state_to_choice[state]
-                                    if quotient_choice is None or not self.quotient.state_is_relevant_bv.get(state):
-                                        payntbind.synthesis.set_dont_care_state_for_scheduler(recomputed_scheduler, state, 0, False)
-                                        index = 0
-                                    else:
-                                        index = quotient_choice - quotient_mdp_nci[state]
-                                    scheduler_choice = stormpy.storage.SchedulerChoice(index)
-                                    recomputed_scheduler.set_choice(scheduler_choice, state)
-
-                                recomputed_json_scheduler_full = json.loads(recomputed_scheduler.to_json_str(self.quotient.quotient_mdp, skip_dont_care_states=True))
-                                recomputed_json_str = json.dumps(recomputed_json_scheduler_full, indent=4)
-
-                        # calling dtcontrol
-                        # TODO I removed the option to call multiple dtcontrol settings, because they are not nicely implemented in dtcontrol, if they fix that I will reintroduce it
-                        if self.use_dtcontrol:
-                            scheduler_json = dt_to_scheduler_json(dtpaynt_subtree_helper_tree_copy, self.quotient, reachable_states)
-
-                            new_learned_tree_helper = run_dtcontrol(scheduler_json, "storm.json")
-                            self.dt_learning_calls += 1
-
-                            if self.recompute_scheduler:
-
-                                recomputed_scheduler_tree_helper = run_dtcontrol(recomputed_json_str, "storm.json")
-                                self.dt_learning_recomputed_calls += 1
-
-                        else:
-
-                            state_to_action = dt_to_state_to_actions(dtpaynt_subtree_helper_tree_copy, self.quotient, reachable_states)
-                            new_learned_tree_helper = run_scikit_learn_tree(self.quotient.relevant_state_valuations, state_to_action, self.quotient.variables, self.quotient.action_labels)
-                            self.dt_learning_calls += 1
-
-                            if self.recompute_scheduler:
-
-                                recomputed_state_to_action = state_to_choice_to_state_to_action(state_to_choice, self.quotient)
-                                recomputed_scheduler_tree_helper = run_scikit_learn_tree(self.quotient.relevant_state_valuations, 
-                                recomputed_state_to_action, self.quotient.variables, self.quotient.action_labels)
-                                self.dt_learning_recomputed_calls += 1
-
+                        # Perturbation #1 - learn new tree based on the scheduler of the new updated tree
+                        state_to_action = dt_to_state_to_actions(dtpaynt_subtree_helper_tree_copy, self.quotient, reachable_states)
+                        new_learned_tree_helper = run_scikit_learn_tree(self.quotient.relevant_state_valuations, state_to_action, self.quotient.variables, self.quotient.action_labels)
+                        self.dt_learning_calls += 1
 
                         new_tree_helper_tree = build_tree_helper_tree(self.quotient, new_learned_tree_helper)
                         logger.info(f'new learned tree (default) has depth {new_tree_helper_tree.get_depth()} and {len(new_tree_helper_tree.collect_nonterminals())} nodes')
                         dtlearn_trees["default"] = (new_learned_tree_helper, new_tree_helper_tree)
 
+                        #  Perturbations #2 - recompute scheduler for states outside of the new subtree and learn new tree based on that scheduler
                         if self.recompute_scheduler:
+
+                            submpd_dtlearn_of_subtree = get_submdp_from_unfixed_states(self.quotient, ~node_states)
+                            oos_result = submpd_dtlearn_of_subtree.check_specification(self.quotient.specification)
+                            new_scheduler = oos_result.optimality_result.result.scheduler
+                            state_to_choice = self.quotient.scheduler_to_state_to_choice(submpd_dtlearn_of_subtree, new_scheduler)
+
+                            recomputed_state_to_action = state_to_choice_to_state_to_action(state_to_choice, self.quotient)
+                            recomputed_scheduler_tree_helper = run_scikit_learn_tree(self.quotient.relevant_state_valuations, 
+                            recomputed_state_to_action, self.quotient.variables, self.quotient.action_labels)
+                            self.dt_learning_recomputed_calls += 1
+
                             recomputed_scheduler_tree_helper_tree = build_tree_helper_tree(self.quotient, recomputed_scheduler_tree_helper)
                             logger.info(f'new learned tree (default) based on recomputed scheduler has depth {recomputed_scheduler_tree_helper_tree.get_depth()} and {len(recomputed_scheduler_tree_helper_tree.collect_nonterminals())} nodes')
 
                             recomputed_dtlearn_trees["default"] = (recomputed_scheduler_tree_helper, recomputed_scheduler_tree_helper_tree)
-
-
 
                     chosen_tree = self.choose_tree_to_use(tree_helper_tree, dtpaynt_subtree_helper_tree_copy, dtlearn_trees, recomputed_dtlearn_trees)
 
@@ -339,38 +316,16 @@ class DtNest(DtSynthesizer):
 
         state_to_choice = self.quotient.scheduler_to_state_to_choice(paynt_mdp, opt_scheduler)
 
-        if self.initial_tree_path is None:
+        if self.initial_tree is None:
 
-            if self.use_dtcontrol:
-        
-                # creating the initial scheduler for dtcontrol
-                relevant_opt_scheduler = payntbind.synthesis.create_scheduler(self.quotient.quotient_mdp.nr_states)
-                nci = self.quotient.quotient_mdp.nondeterministic_choice_indices.copy()
-                for state in range(self.quotient.quotient_mdp.nr_states):
-                    quotient_choice = state_to_choice[state]
-                    if quotient_choice is None or not self.quotient.state_is_relevant_bv.get(state):
-                        payntbind.synthesis.set_dont_care_state_for_scheduler(relevant_opt_scheduler, state, 0, False)
-                        index = 0
-                    else:
-                        index = quotient_choice - nci[state]
-                    scheduler_choice = stormpy.storage.SchedulerChoice(index)
-                    relevant_opt_scheduler.set_choice(scheduler_choice, state)
-
-                relevant_opt_scheduler_full = json.loads(relevant_opt_scheduler.to_json_str(self.quotient.quotient_mdp, skip_dont_care_states=True))
-                relevant_opt_scheduler_str = json.dumps(relevant_opt_scheduler_full, indent=4)
-
-                initial_tree_helper = run_dtcontrol(relevant_opt_scheduler_str, "storm.json")
-
-            else: # using scikit-learn to obtain the initial tree helper
-
-                state_to_action = state_to_choice_to_state_to_action(state_to_choice, self.quotient)
-                initial_tree_helper = run_scikit_learn_tree(self.quotient.relevant_state_valuations, state_to_action, self.quotient.variables, self.quotient.action_labels)
-
-            
+            state_to_action = state_to_choice_to_state_to_action(state_to_choice, self.quotient)
+            initial_tree_helper = run_scikit_learn_tree(self.quotient.relevant_state_valuations, state_to_action, self.quotient.variables, self.quotient.action_labels)
+   
         else:
 
-            logger.info(f"parsing initial tree from {self.initial_tree_path}")
-            initial_tree_helper = parse_tree_helper_json(self.initial_tree_path)
+            # TODO add some nice export for trees, decide on the format we will support here
+            raise NotImplementedError("the support for user provided initial tree is not implemented.")
+            
 
         self.quotient.tree_helper = initial_tree_helper
 
@@ -422,11 +377,5 @@ class DtNest(DtSynthesizer):
 
             if self.export_synthesis_filename_base is not None:
                 self.export_decision_tree(self.best_tree, self.export_synthesis_filename_base)
-
-        time_total = round(paynt.utils.timer.GlobalTimer.read(),2)
-        logger.info(f"synthesis finished after {time_total} seconds")
-
-        print()
-        print(self.best_tree.to_string())
 
         return self.best_tree

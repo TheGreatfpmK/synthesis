@@ -37,9 +37,9 @@ def _run_dt_map_scheduler(cmdp_factory_dt, scheduler, tree_depth):
     )
 
 
-def _run_dtpaynt(cmdp_factory_dt, tree_depth):
+def _run_dtpaynt(cmdp_factory_dt, tree_depth, timeout=None):
     dt_synthesizer = DtSynthesizer(cmdp_factory_dt)
-    dt_synthesizer.synthesize_tree(tree_depth)
+    dt_synthesizer.synthesize_tree(tree_depth, timeout=timeout)
 
     return paynt.dt.result.DtResult(
         success = dt_synthesizer.best_tree is not None,
@@ -143,7 +143,6 @@ class DtSynthesizer(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
         logger.info(f"families model checked: {self.num_families_model_checked}")
         logger.info(f"harmonizations attempted: {self.num_harmonizations}")
         logger.info(f"harmonizations succeeded: {self.num_harmonization_succeeded}")
-        print()
 
     def export_decision_tree(self, decision_tree, export_filename_base):
         tree = decision_tree.to_graphviz()
@@ -165,11 +164,11 @@ class DtSynthesizer(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
         logger.info(f"exported decision tree string to {tree_string_filename}")
 
 
-    def synthesize_tree(self, depth : int, family=None):
+    def synthesize_tree(self, depth : int, family=None, timeout : int = None):
         self.counters_reset()
         self.quotient.reset_tree(depth)
         self.best_assignment = self.best_assignment_value = None
-        self.synthesize(keep_optimum=True)
+        self.synthesize(keep_optimum=True, timeout=timeout)
         if self.best_assignment is not None:
             self.quotient.decision_tree.root.associate_assignment(self.best_assignment)
             self.best_tree = self.quotient.decision_tree
@@ -192,7 +191,6 @@ class DtSynthesizer(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
             tree_sequence_timer.start()
         depth_timeout = overall_timeout / 2 / (max_depth-1) if max_depth > 1 else overall_timeout
         for depth in range(max_depth):
-            print()
             self.quotient.reset_tree(depth)
             best_assignment_old = self.best_assignment
 
@@ -328,7 +326,7 @@ class DtSynthesizer(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
                 if self.quotient.DONT_CARE_ACTION_LABEL in self.quotient.action_labels:
                     logger.info(f"the synthesized tree has relative value: {self.compute_normalized_value(self.best_tree_value, opt_result_value, random_result_value)}")
             logger.info(f"printing the synthesized tree below:")
-            print(self.best_tree.to_string())
+            logger.info(f"\n{self.best_tree.to_string()}")
 
             if self.export_synthesis_filename_base is not None:
                 self.export_decision_tree(self.best_tree, self.export_synthesis_filename_base)

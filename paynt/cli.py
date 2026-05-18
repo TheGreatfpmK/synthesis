@@ -123,12 +123,19 @@ def setup_logger(log_path = None):
     help="decision tree synthesis: if set, all trees of size at most tree_depth will be enumerated")
 @click.option("--tree-map-scheduler", type=click.Path(), default=None,
     help="decision tree synthesis: path to a scheduler to be mapped to a decision tree")
-@click.option("--add-dont-care-action", is_flag=True, default=False,
+@click.option("--add-dont-care-action", is_flag=True, default=True,
     help="decision tree synthesis: # if set, an explicit action executing a random choice of an available action will be added to each state")
 
 @click.option(
     "--constraint-bound", type=click.FLOAT, help="bound for creating constrained POMDP for Cassandra models",
 )
+
+@click.option("--dtnest", is_flag=True, default=False,
+    help="use dtnest synthesizer for decision tree synthesis")
+@click.option("--dtnest-subtree-depth", default=7, type=int,
+    help="dtnest max subtree depth")
+@click.option("--dtnest-error-threshold", default=0.05, type=float,
+    help="dtnest error epsilon threshold")
 
 @click.option(
     "--ce-generator", type=click.Choice(["dtmc", "mdp"]), default="dtmc", show_default=True,
@@ -149,6 +156,7 @@ def paynt_run(
     mdp_discard_unreachable_choices,
     tree_depth, tree_enumeration, tree_map_scheduler, add_dont_care_action,
     constraint_bound,
+    dtnest, dtnest_subtree_depth, dtnest_error_threshold,
     ce_generator,
     profiling
 ):
@@ -180,6 +188,9 @@ def paynt_run(
     paynt.dt.DtSynthesizer.scheduler_path = tree_map_scheduler
     paynt.dt.DtColoredMdpFactory.add_dont_care_action = add_dont_care_action
 
+    paynt.dt.dtnest.DtNest.max_subtree_depth = dtnest_subtree_depth
+    paynt.dt.dtnest.DtNest.error_threshold = dtnest_error_threshold
+
     storm_control = None
     if storm_pomdp:
         storm_control = paynt.quotient.storm_pomdp_control.StormPOMDPControl()
@@ -191,7 +202,7 @@ def paynt_run(
     sketch_path = os.path.join(project, sketch)
     properties_path = os.path.join(project, props)
     quotient = paynt.parser.sketch.Sketch.load_sketch(sketch_path, properties_path, export, relative_error, precision, constraint_bound, exact)
-    synthesizer = paynt.synthesizer.synthesizer.Synthesizer.choose_synthesizer(quotient, method, fsc_synthesis, storm_control)
+    synthesizer = paynt.synthesizer.synthesizer.Synthesizer.choose_synthesizer(quotient, method, fsc_synthesis, storm_control, dtnest)
     synthesizer.run(optimum_threshold)
 
     if profiling:

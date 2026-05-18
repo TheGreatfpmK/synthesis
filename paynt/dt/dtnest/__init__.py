@@ -9,4 +9,6 @@ except ImportError:
 def version():
     return __version__
 
+from .api import *
 from .synthesizer import DtNest
+from .task import DtNestTask

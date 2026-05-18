@@ -19,7 +19,7 @@ def synthesize(cmdp_factory_dt : DtColoredMdpFactory, paynt_task_dt : DtTask, us
     if use_solver == "dtmap":
         return _run_dt_map_scheduler(cmdp_factory_dt, paynt_task_dt.scheduler_to_map, paynt_task_dt.tree_depth)
     elif use_solver == "dtpaynt":
-        return _run_dtpaynt(cmdp_factory_dt, paynt_task_dt.tree_depth)
+        return _run_dtpaynt(cmdp_factory_dt, paynt_task_dt.tree_depth, paynt_task_dt.timeout)
     
 
 def create_task(properties, tree_depth):

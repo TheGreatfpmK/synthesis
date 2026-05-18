@@ -490,7 +490,6 @@ class PomdpQuotient(paynt.quotient.quotient.Quotient):
                         options.append(action * num_updates + update)
                 restricted_family.hole_set_options(hole,options)
 
-        # print(restricted_family)
         logger.debug("Symmetry breaking: reduced design space from {} to {}".format(family.size, restricted_family.size))
 
         return restricted_family
@@ -597,7 +596,6 @@ class PomdpQuotient(paynt.quotient.quotient.Quotient):
         # export JSON
         import json
         output_json = json.dumps(obs_info, indent=4)
-        # print(output_json)
         scheduler_path = "scheduler.json"
         logger.info("Exporting optimal scheduler to {}".format(scheduler_path))
         with open(scheduler_path, 'w') as f:

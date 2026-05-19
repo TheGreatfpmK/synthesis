@@ -2,6 +2,9 @@ import time
 import psutil
 import os
 
+import logging
+logger = logging.getLogger(__name__)
+
 class Timer:
 
     def __init__(self, time_limit_seconds=None):

@@ -20,7 +20,7 @@ class Synthesizer:
     export_synthesis_filename_base = None
 
     @staticmethod
-    def choose_synthesizer(quotient, method, fsc_synthesis=False, storm_control=None):
+    def choose_synthesizer(quotient, method, fsc_synthesis=False, storm_control=None, dtnest=False):
 
         # hiding imports here to avoid mutual top-level imports
         import paynt.quotient.pomdp
@@ -38,12 +38,16 @@ class Synthesizer:
         import paynt.synthesizer.policy_tree
 
         from paynt.dt import DtColoredMdpFactory, DtSynthesizer
+        from paynt.dt.dtnest import DtNest
 
         if isinstance(quotient, paynt.quotient.pomdp_family.PomdpFamilyQuotient):
             logger.info("nothing to do with the POMDP sketch, aborting...")
             exit(0)
         if isinstance(quotient, DtColoredMdpFactory):
-            return DtSynthesizer(quotient)
+            if dtnest:
+                return DtNest(quotient)
+            else:
+                return DtSynthesizer(quotient)
         # FSC synthesis for POMDPs
         if isinstance(quotient, paynt.quotient.pomdp.PomdpQuotient) and fsc_synthesis:
             return paynt.synthesizer.synthesizer_pomdp.SynthesizerPomdp(quotient, method, storm_control)

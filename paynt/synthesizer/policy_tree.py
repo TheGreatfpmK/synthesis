@@ -359,16 +359,16 @@ class PolicyTree:
         else:
             leaf_unsolvable_avg = "NA"
 
-        print("--------------------")
-        print("Policy tree summary:")
-        print("found {} satisfying {} for {}/{} family members ({}%)".format(
+        logger.info("--------------------")
+        logger.info("Policy tree summary:")
+        logger.info("found {} satisfying {} for {}/{} family members ({}%)".format(
             num_policies, "policy" if num_policies==1 else "policies", members_satisfied,members_total,satisfied_percentage))
-        print("policy tree has {} nodes, {} of them are leaves:".format(num_nodes, num_leaves))
-        print("\t  solvable leaves: {} (avg.size: {})".format(num_leaves_solvable,leaf_solvable_avg))
-        print("\tunsolvable leaves: {} (avg.size: {})".format(num_leaves_unsolvable,leaf_unsolvable_avg))
-        print("\t singleton leaves: {}".format(num_leaves_singleton))
+        logger.info("policy tree has {} nodes, {} of them are leaves:".format(num_nodes, num_leaves))
+        logger.info("\t  solvable leaves: {} (avg.size: {})".format(num_leaves_solvable,leaf_solvable_avg))
+        logger.info("\tunsolvable leaves: {} (avg.size: {})".format(num_leaves_unsolvable,leaf_unsolvable_avg))
+        logger.info("\t singleton leaves: {}".format(num_leaves_singleton))
 
-        print("--------------------")
+        logger.info("--------------------")
 
     def discard_unused_policies(self):
         policy_old_to_new  = [None for _ in self.policies]

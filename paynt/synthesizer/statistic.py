@@ -159,7 +159,7 @@ class Statistic:
     def print_status(self):
         if not self.synthesis_timer.read() > self.status_horizon:
             return
-        print(self.status(), flush=True)
+        logger.info(self.status())
         self.status_horizon = self.synthesis_timer.read() + Statistic.status_period_seconds
 
 
@@ -249,7 +249,7 @@ class Statistic:
         return summary
     
     def print(self):    
-        print(self.get_summary(),end="")
+        logger.info(f'\n{self.get_summary()}')
 
 
     def print_mdp_family_table_entries(self):

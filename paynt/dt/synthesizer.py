@@ -41,9 +41,9 @@ def _run_dt_map_scheduler(cmdp_factory_dt, scheduler, tree_depth):
     )
 
 
-def _run_dtpaynt(cmdp_factory_dt, tree_depth):
+def _run_dtpaynt(cmdp_factory_dt, tree_depth, timeout=None):
     dt_synthesizer = DtSynthesizer(cmdp_factory_dt)
-    dt_synthesizer.synthesize_tree(tree_depth)
+    dt_synthesizer.synthesize_tree(tree_depth, timeout=timeout)
 
     simplify_tree(dt_synthesizer.best_tree, cmdp_factory_dt)
 
@@ -149,7 +149,6 @@ class DtSynthesizer(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
         logger.info(f"families model checked: {self.num_families_model_checked}")
         logger.info(f"harmonizations attempted: {self.num_harmonizations}")
         logger.info(f"harmonizations succeeded: {self.num_harmonization_succeeded}")
-        print()
 
     def export_decision_tree(self, decision_tree, export_filename_base):
         tree = decision_tree.to_graphviz()
@@ -171,11 +170,11 @@ class DtSynthesizer(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
         logger.info(f"exported decision tree string to {tree_string_filename}")
 
 
-    def synthesize_tree(self, depth : int):
+    def synthesize_tree(self, depth : int, family=None, timeout : int = None):
         self.counters_reset()
         self.quotient.reset_tree(depth)
         self.best_assignment = self.best_assignment_value = None
-        self.synthesize(keep_optimum=True)
+        self.synthesize(keep_optimum=True, timeout=timeout)
         if self.best_assignment is not None:
             self.quotient.decision_tree.root.associate_assignment(self.best_assignment)
             self.best_tree = self.quotient.decision_tree
@@ -183,14 +182,21 @@ class DtSynthesizer(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
         self.best_assignment = self.best_assignment_value = None
         self.counters_print()
 
-    def synthesize_tree_sequence(self, opt_result_value):
+    def synthesize_tree_sequence(self, opt_result_value, overall_timeout=None, max_depth=None, break_if_found=False):
         self.best_tree = self.best_tree_value = None
 
-        global_timeout = paynt.utils.timer.GlobalTimer.global_timer.time_limit_seconds
-        if global_timeout is None: global_timeout = 900
-        depth_timeout = global_timeout / 2 / DtSynthesizer.tree_depth
-        for depth in range(DtSynthesizer.tree_depth+1):
-            print()
+        if max_depth is None:
+            max_depth = DtSynthesizer.tree_depth+1
+        if overall_timeout is None:
+            global_timeout = paynt.utils.timer.GlobalTimer.global_timer.time_limit_seconds
+            if global_timeout is None: global_timeout = 900 # TODO this should probably not be the deafult behaviour, we want to run the synthesis indefinitely if the user does not give us timeout
+            overall_timeout = global_timeout
+            tree_sequence_timer = None
+        else:
+            tree_sequence_timer = paynt.utils.timer.Timer(overall_timeout)
+            tree_sequence_timer.start()
+        depth_timeout = overall_timeout / 2 / (max_depth-1) if max_depth > 1 else overall_timeout
+        for depth in range(max_depth):
             self.quotient.reset_tree(depth)
             best_assignment_old = self.best_assignment
 
@@ -199,7 +205,7 @@ class DtSynthesizer(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
             self.counters_reset()
             self.stat = paynt.synthesizer.statistic.Statistic(self)
             self.stat.start(family)
-            timeout = depth_timeout if depth < DtSynthesizer.tree_depth else None
+            timeout = depth_timeout if depth < max_depth-1 else overall_timeout / 2 # second half of the time for the last depth
             self.synthesis_timer = paynt.utils.timer.Timer(timeout)
             self.synthesis_timer.start()
             families = [family]
@@ -230,10 +236,10 @@ class DtSynthesizer(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
                 self.best_tree.root.associate_assignment(self.best_assignment)
                 self.best_tree_value = self.best_assignment_value
 
-                if abs( (self.best_assignment_value-opt_result_value)/opt_result_value ) < 1e-3:
+                if break_if_found or (opt_result_value != 0 and abs( (self.best_assignment_value-opt_result_value)/opt_result_value ) < 1e-3) or (opt_result_value == 0 and self.best_assignment_value < 1e-3):
                     break
 
-            if self.resource_limit_reached():
+            if self.resource_limit_reached() or tree_sequence_timer is not None and tree_sequence_timer.time_limit_reached():
                 break
 
     def map_scheduler(self, scheduler_choices, tree_depth=None):
@@ -326,7 +332,7 @@ class DtSynthesizer(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
                 if self.quotient.DONT_CARE_ACTION_LABEL in self.quotient.action_labels:
                     logger.info(f"the synthesized tree has relative value: {self.compute_normalized_value(self.best_tree_value, opt_result_value, random_result_value)}")
             logger.info(f"printing the synthesized tree below:")
-            print(self.best_tree.to_string())
+            logger.info(f"\n{self.best_tree.to_string()}")
 
             if self.export_synthesis_filename_base is not None:
                 self.export_decision_tree(self.best_tree, self.export_synthesis_filename_base)

@@ -17,6 +17,8 @@ set(STORM_GIT_REPO "" CACHE STRING  "Git repo used for fetching storm")
 set(STORM_GIT_TAG "" CACHE STRING "Git repo tag used for fetching storm")
 option(COMPILE_WITH_CCACHE "Compile using CCache (if found)" ON)
 mark_as_advanced(COMPILE_WITH_CCACHE)
+option(PAYNT_INFO_PRETEND_FETCH "[INTERNAL] Use for overriding some flags in the info by cibuildwheel." OFF)
+mark_as_advanced(PAYNT_INFO_PRETEND_FETCH)
 
 # Check whether inputs are sane.
 if (NOT ALLOW_STORM_SYSTEM AND NOT ALLOW_STORM_FETCH)
@@ -51,61 +53,84 @@ function(check_hint NAME DIR_FOUND HINT_DIR FOUND_VERSION)
 endfunction(check_hint)
 
 if(ALLOW_STORM_SYSTEM)
-    set(STORM_MIN_VERSION "1.11.0")
+    set(STORM_MIN_VERSION "1.12.0")
     if (ALLOW_STORM_FETCH)
         find_package(storm HINTS ${STORM_DIR_HINT}) # NOT REQUIRED, can be fetched.
     else()
         find_package(storm REQUIRED HINTS ${STORM_DIR_HINT}) # REQUIRED, cannot be fetched.
     endif()
-    check_hint("Storm" ${storm_DIR} "${STORM_DIR_HINT}" ${storm_VERSION})
-    # Check Storm version
-    if (${storm_VERSION} VERSION_LESS ${STORM_MIN_VERSION})
-        MESSAGE(FATAL_ERROR "PAYNT - Storm version ${storm_VERSION} from ${storm_DIR} is not supported anymore!\nPAYNT requires at least Storm version >= ${STORM_MIN_VERSION}.")
+    if (storm_FOUND)
+        check_hint("Storm" ${storm_DIR} "${STORM_DIR_HINT}" ${storm_VERSION})
+        # Check Storm version
+        if (${storm_VERSION} VERSION_LESS ${STORM_MIN_VERSION})
+            MESSAGE(FATAL_ERROR "PAYNT - Storm version ${storm_VERSION} from ${storm_DIR} is not supported anymore!\nPAYNT requires at least Storm version >= ${STORM_MIN_VERSION}.")
+        endif()
+
+        message(WARNING "PAYNT - When using system version of Storm, it's up to the user to ensure StormPy was built against the same version!")
+
+        set(STORM_FROM_SYSTEM TRUE)
+        get_filename_component(STORM_DIR_PATH ${storm_DIR} ABSOLUTE)
+        set(STORM_DIR "\"${STORM_DIR_PATH}\"")
+        if (PAYNT_INFO_PRETEND_FETCH)
+            # This is a workaround for our wheel construction which uses a system version of Storm for efficiency,
+            # but should provide wheels as if they were build against a fetched version of Storm.
+            message(WARNING "PAYNT - The behavior of PAYNT_INFO_PRETEND_FETCH is something we only want when building wheels. Please ensure that STORM_GIT_REPO and STORM_GIT_TAG are set accordingly.")
+            set(STORM_FETCHED_FROM_REPO ${STORM_GIT_REPO})
+            set(STORM_FETCHED_FROM_TAG ${STORM_GIT_TAG})
+            set(STORM_FROM_SYSTEM FALSE)
+            set(STORM_DIR "None")
+        endif()
+
+        # Set dependency variables
+        set_dependency_var(SPOT)
+        set_dependency_var(XERCES)
+        # Check for optional Storm libraries
+        storm_with_lib(DFT)
+        storm_with_lib(GSPN)
+        storm_with_lib(PARS)
+        storm_with_lib(POMDP)
+    elseif (STORM_DIR_HINT)
+        MESSAGE(FATAL_ERROR "PAYNT - Storm could not be found in ${STORM_DIR_HINT}.")
     endif()
-
-    message(WARNING "PAYNT - When using system version of Storm, it's up to the user to ensure StormPy was built against the same version!")
-
-    set(STORM_FROM_SYSTEM TRUE)
-    get_filename_component(STORM_DIR_PATH ${storm_DIR} ABSOLUTE)
-    set(STORM_DIR "\"${STORM_DIR_PATH}\"")
-
-    # Set dependency variables
-    set_dependency_var(SPOT)
-    set_dependency_var(XERCES)
-    # Check for optional Storm libraries
-    storm_with_lib(DFT)
-    storm_with_lib(GSPN)
-    storm_with_lib(PARS)
-    storm_with_lib(POMDP)
 endif ()
-if (NOT storm_FOUND AND ALLOW_STORM_FETCH)
-    include(FetchContent)
-    SET(FETCHCONTENT_QUIET OFF)
-    SET(STORM_BUILD_EXECUTABLES OFF)
-    FetchContent_Declare(
-            storm
-            GIT_REPOSITORY ${STORM_GIT_REPO}
-            GIT_TAG        ${STORM_GIT_TAG}
-    )
-    FETCHCONTENT_MAKEAVAILABLE(storm)
-    include(${storm_BINARY_DIR}/stormOptions.cmake)
-    set(HAVE_STORM_DFT TRUE)
-    set(HAVE_STORM_GSPN TRUE)
-    set(HAVE_STORM_PARS TRUE)
-    set(HAVE_STORM_POMDP TRUE)
-    # Set dependency variables
-    set_dependency_var(SPOT)
-    set_dependency_var(XERCES)
-    if (FETCHCONTENT_SOURCE_DIR_storm)
-        # We are setting the Storm source to be something local from the outside.
-        set(STORM_FETCHED_FROM_REPO ${FETCHCONTENT_SOURCE_DIR_storm})
-        set(STORM_FETCHED_FROM_TAG "__local-source-dir__")
+
+if (NOT storm_FOUND)
+    if (ALLOW_STORM_FETCH)
+        if (PAYNT_INFO_PRETEND_FETCH)
+            message(FATAL_ERROR "PAYNT - Do not set PAYNT_INFO_PRETEND_FETCH when fetching." )
+        endif()
+        # Storm not yet available.
+        include(FetchContent)
+        SET(FETCHCONTENT_QUIET OFF)
+        SET(STORM_BUILD_EXECUTABLES OFF)
+        FetchContent_Declare(
+                storm
+                GIT_REPOSITORY ${STORM_GIT_REPO}
+                GIT_TAG        ${STORM_GIT_TAG}
+        )
+        FETCHCONTENT_MAKEAVAILABLE(storm)
+        include(${storm_BINARY_DIR}/stormOptions.cmake)
+        set(HAVE_STORM_DFT TRUE)
+        set(HAVE_STORM_GSPN TRUE)
+        set(HAVE_STORM_PARS TRUE)
+        set(HAVE_STORM_POMDP TRUE)
+        # Set dependency variables
+        set_dependency_var(SPOT)
+        set_dependency_var(XERCES)
+        if (FETCHCONTENT_SOURCE_DIR_storm)
+            # We are setting the Storm source to be something local from the outside.
+            set(STORM_FETCHED_FROM_REPO ${FETCHCONTENT_SOURCE_DIR_storm})
+            set(STORM_FETCHED_FROM_TAG "__local-source-dir__")
+        else()
+            set(STORM_FETCHED_FROM_REPO ${STORM_GIT_REPO})
+            set(STORM_FETCHED_FROM_TAG ${STORM_GIT_TAG})
+        endif()
+        set(STORM_FROM_SYSTEM FALSE)
+        set(STORM_DIR "None")
     else()
-        set(STORM_FETCHED_FROM_REPO ${STORM_GIT_REPO})
-        set(STORM_FETCHED_FROM_TAG ${STORM_GIT_TAG})
+        # Should not be reachable because storm is required if we cannot fetch it.
+        message(FATAL_ERROR "PAYNT - No version of Storm configured. This situation should not occur. Please contact the PAYNT developers.")
     endif()
-    set(STORM_FROM_SYSTEM FALSE)
-    set(STORM_DIR "None")
 endif()
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib/payntbind")

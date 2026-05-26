@@ -64,7 +64,7 @@ class AllInOne:
         
         members_total = self.family.size
         members_sat_percentage = int(round(members_sat/members_total*100,0))
-        print(f"satisfied {members_sat}/{members_total} members ({members_sat_percentage}%)")
+        logger.info(f"satisfied {members_sat}/{members_total} members ({members_sat_percentage}%)")
 
         time_elapsed = round(all_in_one_timer.read(),1)
         logger.info(f"all in one analysis finished in {time_elapsed}s")

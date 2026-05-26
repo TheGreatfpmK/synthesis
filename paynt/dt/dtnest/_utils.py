@@ -3,39 +3,13 @@ import stormpy
 
 from ..decision_tree import DecisionTree
 
-import json
-
-import os
 from math import floor
-import shutil
-import subprocess
-from datetime import datetime
 
 from sklearn import tree
 
 import logging
 logger = logging.getLogger(__name__)
 
-
-def dt_to_scheduler_json(decision_tree, quotient, reachable_states=None):
-    if reachable_states is None:
-        reachable_states = stormpy.BitVector(quotient.quotient_mdp.nr_states, True)
-    scheduler = payntbind.synthesis.create_scheduler(quotient.quotient_mdp.nr_states)
-    nci = quotient.quotient_mdp.nondeterministic_choice_indices.copy()
-    for state in range(quotient.quotient_mdp.nr_states):
-        if quotient.state_is_relevant_bv.get(state) and reachable_states.get(state):
-            action_index = get_action_for_state(decision_tree.root, quotient, state, quotient.relevant_state_valuations[state], nci)
-        else:
-            # this should leave undefined in the scheduler and will be filtered below
-            payntbind.synthesis.set_dont_care_state_for_scheduler(scheduler, state, 0, False) # trying to filter out these states through Storm
-            continue
-        scheduler_choice = stormpy.storage.SchedulerChoice(action_index)
-        scheduler.set_choice(scheduler_choice, state)
-        
-    json_scheduler_full = json.loads(scheduler.to_json_str(quotient.quotient_mdp, skip_dont_care_states=True))
-
-    json_str = json.dumps(json_scheduler_full, indent=4)
-    return json_str
 
 def dt_to_state_to_actions(decision_tree, quotient, reachable_states=None):
     if reachable_states is None:
@@ -78,15 +52,15 @@ def get_action_for_state(node, quotient, state, state_valuation, nci):
 
 
 def get_states_satisfying_predicate(dt_colored_mdp_factory, node, current_states, leq=True):
-        bound = dt_colored_mdp_factory.variables[node.variable].domain[node.variable_bound]
-        for state,state_valuation in enumerate(dt_colored_mdp_factory.relevant_state_valuations):
-            if not current_states.get(state):
-                continue
-            if leq and state_valuation[node.variable] > bound:
-                current_states.set(state, False)
-            elif not leq and state_valuation[node.variable] <= bound:
-                current_states.set(state, False)
-        return current_states
+    bound = dt_colored_mdp_factory.variables[node.variable].domain[node.variable_bound]
+    for state,state_valuation in enumerate(dt_colored_mdp_factory.relevant_state_valuations):
+        if not current_states.get(state):
+            continue
+        if leq and state_valuation[node.variable] > bound:
+            current_states.set(state, False)
+        elif not leq and state_valuation[node.variable] <= bound:
+            current_states.set(state, False)
+    return current_states
 
 def get_state_space_for_tree_helper_node(dt_colored_mdp_factory, node_id):
     node = dt_colored_mdp_factory.tree_helper_tree.collect_nodes(lambda node : node.identifier == node_id)[0]
@@ -161,62 +135,6 @@ def create_uniform_random_tree(dt_colored_mdp_factory):
     decision_tree = DecisionTree(dt_colored_mdp_factory.action_labels,dt_colored_mdp_factory.variables)
     decision_tree.random_tree()
     return decision_tree
-
-
-def build_tree_helper(tree_node_json, helper=[]):
-    current_index = len(helper)
-    if tree_node_json['split'] is None:
-        # TODO this is a temp fix that only works for some models...
-        helper.append({'id': current_index, 'leaf': True, 'chosen': tree_node_json['actual_label']})
-        return helper
-    helper.append({'id': current_index, 'leaf': False, 'chosen': (tree_node_json['split']['lhs']['var'], floor(tree_node_json['split']['rhs'])), 'children': [], 'evaluations': {(x['split']['lhs']['var'], floor(x['split']['rhs'])): x['impurity'] for x in tree_node_json['additional_splits']}})
-    # sort the evaluations by impurity value
-    helper[current_index]['evaluations'] = {k: v for k, v in sorted(helper[current_index]['evaluations'].items(), key=lambda item: item[1])}
-
-    assert len(tree_node_json['children']) == 2, "expected two children"
-    # left child
-    assert tree_node_json['children'][0]['edge_label'] == "true", "expected left child edge label to be True"
-    helper[current_index]['children'].append(len(helper))
-    helper = build_tree_helper(tree_node_json['children'][0], helper)
-    # right child
-    assert tree_node_json['children'][1]['edge_label'] == "false", "expected right child edge label to be False"
-    helper[current_index]['children'].append(len(helper))
-    helper = build_tree_helper(tree_node_json['children'][1], helper)
-
-    return helper
-
-def parse_tree_helper_json(tree_helper_path):
-    with open(tree_helper_path, 'r') as file:
-        tree_helper = json.load(file)
-    tree_helper =  build_tree_helper(tree_helper, [])
-    return tree_helper
-
-
-def run_dtcontrol(scheduler_represenation, representation_file_type, metadata=None, preset="default", show_stdout=False):
-    timestamp = datetime.now().strftime("%Y%m%d%H%M%S%f")
-    temp_file_name = "subtree_test" + timestamp
-    try:
-        os.makedirs(temp_file_name, exist_ok=True)
-        open(f"{temp_file_name}/scheduler.{representation_file_type}", "w").write(scheduler_represenation)
-
-        if metadata is not None:
-            open(f"{temp_file_name}/scheduler_config.json", "w").write(metadata)
-
-        command = ["dtcontrol", "--input", f"scheduler.{representation_file_type}", "-r", "--use-preset", preset]
-        if show_stdout:
-            subprocess.run(command, cwd=f"{temp_file_name}")
-        else:
-            subprocess.run(command, cwd=f"{temp_file_name}", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-        logger.info(f"parsing new dtcontrol tree for setting {preset}")
-        dtcontrol_tree_helper = parse_tree_helper_json(f"{temp_file_name}/decision_trees/{preset}/scheduler/{preset}.json")
-
-        shutil.rmtree(f"{temp_file_name}")
-    except:
-        shutil.rmtree(f"{temp_file_name}")
-        raise Exception("error when calling dtcontrol. Possible KeyboardInterrupt?")
-    
-    return dtcontrol_tree_helper
 
 
 def state_to_choice_to_state_to_action(state_to_choice, quotient):

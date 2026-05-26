@@ -84,9 +84,8 @@ class DecisionTreeNode:
             self.action = action_labels.index(tree_helper_node["chosen"][0])
         else:
             self.variable = variable_names.index(tree_helper_node["chosen"][0])
-            # dtControl uses values that are not necessarily in the domain, e.g. let's say our domain is [0,2,3]
-            # and we want to split [0] and [2,3], dtControl can choose 0.5 or 1.5. We expect it will be 0 in this case.
-            # Note that dtControl bound decisions are floored when creating the tree helper i.e. 1.5 becomes 1
+            # tree helper can contain values that are not necessarily in the domain, e.g. let's say our domain is [0,2,3]
+            # and we want to split [0] and [2,3], tree helper can contain 0 or 1. We expect it will be 0 in this case.
             while tree_helper_node["chosen"][1] not in variable_domains[self.variable]:
                 tree_helper_node["chosen"] = (tree_helper_node["chosen"][0], tree_helper_node["chosen"][1]-1)
             self.variable_bound = variable_domains[self.variable].index(tree_helper_node["chosen"][1])

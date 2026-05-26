@@ -306,7 +306,6 @@ class Quotient:
             assert mdp.family.hole_num_options(splitter) > 1
             core_suboptions = self.suboptions_half(mdp, splitter)
             other_suboptions = []
-        # print(mdp.family[splitter], core_suboptions, other_suboptions)
 
         if len(other_suboptions) == 0:
             suboptions = core_suboptions

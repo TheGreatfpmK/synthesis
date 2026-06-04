@@ -123,10 +123,10 @@ def build_tree_helper_tree(dt_colored_mdp_factory, tree_helper=None):
     return helper_tree
 
 # unfixed_states is a bitvector of states that should be left unfixed in the submdp
-def get_submdp_from_unfixed_states(dt_colored_mdp_factory, unfixed_states=None):
+def get_submdp_from_unfixed_states(dt_colored_mdp_factory, unfixed_states=None, tree=None):
     if unfixed_states is None:
         unfixed_states = stormpy.storage.BitVector(dt_colored_mdp_factory.quotient_mdp.nr_states, False)
-    selected_choices = get_selected_choices_from_tree_helper(dt_colored_mdp_factory, unfixed_states)
+    selected_choices = get_selected_choices_from_tree_helper(dt_colored_mdp_factory, unfixed_states, tree)
     submdp = dt_colored_mdp_factory.build_from_choice_mask(selected_choices)
     return submdp
 

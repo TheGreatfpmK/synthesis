@@ -6,7 +6,9 @@ import stormpy
 import payntbind
 
 from .decision_tree import DecisionTree, DtVariable
-from ._utils import get_state_valuations
+from ._utils import get_state_valuations, feature_binarization
+
+import time
 
 import logging
 logger = logging.getLogger(__name__)
@@ -20,6 +22,8 @@ class DtColoredMdpFactory(paynt.quotient.quotient.Quotient):
     add_dont_care_action = True
     # if true, irrelevant states will not be considered for tree mapping
     filter_deterministic_states = True
+    # if true, performs state valuation binarization, i.e. for each variable with domain [x1,...,xn], creates n-1 binary variables encoding whether the original variable is <= x_i. This is kind of canonical form for the problem where all predicates are binary
+    perform_binarization = False
 
     def __init__(self, mdp, specification=None, use_exact=False):
         super().__init__(specification=specification, use_exact=use_exact)
@@ -80,14 +84,28 @@ class DtColoredMdpFactory(paynt.quotient.quotient.Quotient):
         variable_name = [value for variable,value in enumerate(variable_name) if variable_mask[variable]]
         variable_domain = [value for variable,value in enumerate(variable_domain) if variable_mask[variable]]
         # we filter unused variables from state valuations: this means that multiple states can now have the same "valuation"
-        state_valuations = [
+
+        self.variables = [DtVariable(name,variable_domain[variable]) for variable,name in enumerate(variable_name)]
+        self.relevant_state_valuations = [
             [value for variable,value in enumerate(valuations) if variable_mask[variable]]
             for valuations in state_valuations
         ]
-
-        self.variables = [DtVariable(name,variable_domain[variable]) for variable,name in enumerate(variable_name)]
-        self.relevant_state_valuations = state_valuations
         logger.debug(f"found the following {len(self.variables)} variables: {[str(v) for v in self.variables]}")
+
+
+        if self.perform_binarization == True:
+            binarized_variables, binarized_state_valuations = feature_binarization(self.variables, state_valuations)
+
+            components = stormpy.storage.SparseModelComponents(self.quotient_mdp.transition_matrix,self.quotient_mdp.labeling,self.quotient_mdp.reward_models)
+            components.choice_labeling = self.quotient_mdp.choice_labeling
+
+            self.quotient_mdp = stormpy.storage.SparseMdp(components)
+
+            self.quotient_mdp = payntbind.synthesis.addStateValuations(self.quotient_mdp, binarized_state_valuations)
+
+            self.variables = binarized_variables
+            self.relevant_state_valuations = [[x[1] for x in y] for y in binarized_state_valuations]
+
 
 
     def scheduler_json_to_choices(self, scheduler_json, discard_unreachable_states=False):

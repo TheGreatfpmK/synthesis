@@ -1,6 +1,7 @@
 import click
 import os
 
+from paynt.dt.decision_tree import DtVariable
 import paynt.parser.sketch
 
 import stormpy
@@ -18,14 +19,18 @@ from get_predicates import get_atomic_predicate_evals
 def get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates={}, ignore_original_features=False):
 
     features = dt_colored_mdp_factory.relevant_state_valuations
+    variables = dt_colored_mdp_factory.variables
 
     if ignore_original_features:
         features = [[] for _ in range(len(features))]
+        variables = []
 
     for predicate_name, predicate_eval in additional_atomic_predicates.items():
         for state in range(len(features)):
             features[state].append(1 if predicate_eval.get(state) else 0)
-    return features
+        variables.append(DtVariable(predicate_name, [0,1]))
+
+    return features, variables
 
 
 def sample_to_list(sample, dt_colored_mdp_factory, model_info):
@@ -47,6 +52,31 @@ def get_optimality_specification(specification):
     opt_property = stormpy.Property("", specification.constraints[0].formula.clone())
 
     paynt_opt_property = paynt.verification.property.construct_property(opt_property, 0, False)
+    properties = [paynt_opt_property]
+
+    return paynt.verification.property.Specification(properties)
+
+def get_constraint_specification(specification):
+
+    rf = specification.optimality.property.raw_formula
+
+    optimality_type = rf.optimality_type
+    is_probability_operator = rf.is_probability_operator
+    is_reward_operator = rf.is_reward_operator
+    subformula = rf.subformula
+
+    if is_reward_operator:
+        if rf.has_reward_name:
+            reward_name = rf.reward_name
+        constraint_formula_str = f"R{'{\"'+reward_name+'\"}' if rf.has_reward_name else ''}{'>=' if optimality_type == stormpy.OptimizationDirection.Maximize else '<='}0 [{subformula}]"
+    elif is_probability_operator:
+        constraint_formula_str = f"P{'>=' if optimality_type == stormpy.OptimizationDirection.Maximize else '<='}0 [{subformula}]"
+    else:
+        assert False, "currently only probability and reward operators are supported for optimality checking"
+
+    constraint_property = stormpy.parse_properties_without_context(constraint_formula_str)[0]
+
+    paynt_opt_property = paynt.verification.property.construct_property(constraint_property, 0, False)
     properties = [paynt_opt_property]
 
     return paynt.verification.property.Specification(properties)
@@ -240,7 +270,8 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     specification = dt_colored_mdp_factory.specification
 
     if len(specification.constraints) == 0:
-        assert False, "currently only specifications with constraints are supported for optimality checking"
+        optimality_specification = specification
+        specification = get_constraint_specification(optimality_specification)
     else:
         optimality_specification = get_optimality_specification(specification)
 
@@ -294,7 +325,9 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     # additional_atomic_predicates = get_atomic_predicate_evals(dt_colored_mdp_factory, default_predicates=True)
     # additional_atomic_predicates = {}
 
-    output_dict = {"X" : get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, ignore_original_features=len(additional_atomic_predicates)!=0), "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
+    features, variables = get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates)
+
+    output_dict = {"X" : features, "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
     if output is not None:
         with open(output, "w") as f:
             json.dump(output_dict, f, indent=4)

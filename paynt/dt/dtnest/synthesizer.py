@@ -320,6 +320,11 @@ class DtNest(DtSynthesizer):
 
             state_to_action = state_to_choice_to_state_to_action(state_to_choice, self.quotient)
             initial_tree_helper = run_scikit_learn_tree(self.quotient.relevant_state_valuations, state_to_action, self.quotient.variables, self.quotient.action_labels)
+
+            initial_tree = build_tree_helper_tree(self.quotient, initial_tree_helper)
+            logger.info(f'initial tree has depth {initial_tree.get_depth()} and {len(initial_tree.collect_nonterminals())} nodes')
+            # print(initial_tree.to_string())
+            exit()
    
         else:
 

@@ -1,22 +1,30 @@
 import click
 import os
 
+from paynt.dt.decision_tree import DtVariable, DecisionTree
+from paynt.dt.dtnest._utils import scikit_tree_to_tree_helper
 import paynt.parser.sketch
+
+import payntbind
 
 import stormpy
 import random
 import numpy as np
+from scipy import sparse
 import time
 import json
 
 from sklearn import tree, svm
 import matplotlib.pyplot as plt
 
-from sample_policies import mcmc_base, get_optimality_specification, get_bitvector_from_scheduler, get_mdp_features_list, sample_to_list
+from sample_policies import mcmc_base, get_optimality_specification, get_constraint_specification, get_bitvector_from_scheduler, get_mdp_features_list, remove_unreachable_choices_from_bitvector, sample_to_list
 
 from get_predicates import get_atomic_predicate_evals
 
 import payntbind
+
+from pystreed import STreeDClassifier
+from sklearn.metrics import accuracy_score
 
 
 def get_predicate_types(additional_atomic_predicates):
@@ -127,7 +135,9 @@ def run_dt_paynt_with_partial_family_init(dt_colored_mdp_factory, tree_depth, ad
 @click.option("--ccp-alpha", type=float, default=0.0, show_default=True, help="ccp_alpha parameter for decision tree learning, higher values lead to more pruning and thus simpler trees")
 @click.option("--output", type=click.Path(), default=None, show_default=True, help="file to write the sampled policies to json")
 @click.option("--append-stats", is_flag=True, default=False, show_default=True, help="whether to append sampling and learning stats to results/sampling_stats.csv")
-def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, ccp_alpha, output, append_stats):
+@click.option("--save-features", type=click.Path(), default=None, show_default=True, help="json file where to write the state features")
+@click.option("--load-features", type=click.Path(exists=True), default=None, show_default=True, help="json file from which to load state features instead of computing them from the MDP")
+def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, ccp_alpha, output, append_stats, save_features, load_features):
     sketch_path = os.path.join(project, sketch)
     props_path = os.path.join(project, props)
 
@@ -148,7 +158,9 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     specification = dt_colored_mdp_factory.specification
 
     if len(specification.constraints) == 0:
-        assert False, "currently only specifications with constraints are supported for optimality checking"
+        # assert False, "currently only specifications with constraints are supported for optimality checking"
+        optimality_specification = specification
+        specification = get_constraint_specification(optimality_specification)
     else:
         optimality_specification = get_optimality_specification(specification)
 
@@ -192,17 +204,17 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
 
     sampling_start_time = time.time()
     all_samples, last_sample = mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification, step_count=steps, burn_in=burn_in, sample_steps=sample_steps, seed=seed)
-    # all_samples, last_sample = rejection_sampling(model_info, dt_colored_mdp_factory, specification, step_count=steps, seed=seed)
+    # # all_samples, last_sample = rejection_sampling(model_info, dt_colored_mdp_factory, specification, step_count=steps, seed=seed)
     sampling_end_time = time.time()
     print(f"sampling took {sampling_end_time - sampling_start_time:.2f} seconds")
 
-    print(f"number of policies satisfying specification found: {len(all_samples)}")
+    # print(f"number of policies satisfying specification found: {len(all_samples)}")
 
-    additional_atomic_predicates = get_atomic_predicate_evals(dt_colored_mdp_factory)
+    # additional_atomic_predicates = get_atomic_predicate_evals(dt_colored_mdp_factory)
     # additional_atomic_predicates = get_atomic_predicate_evals(dt_colored_mdp_factory, default_predicates=True)
     # additional_atomic_predicates = {}
 
-    output_dict = {"X" : get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, ignore_original_features=len(additional_atomic_predicates)!=0), "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
+    # output_dict = {"X" : get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, ignore_original_features=False), "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
 
     # exit()
 
@@ -228,6 +240,45 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     # clf = svm.SVC(kernel="linear")
     # clf = clf.fit(output_dict["X"], output_dict["Y"][0])
 
+    if load_features is not None:
+        with open(load_features, 'r') as f:
+            loaded_json = json.load(f)
+        loaded_X = sparse.csr_matrix(loaded_json[0], dtype=np.uint8)
+        variables = [DtVariable(name, domain) for name, domain in loaded_json[1]]
+        output_dict = {"X": loaded_X, "Y": [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
+
+    else:
+
+        shed_bitvector = get_bitvector_from_scheduler(scheduler, model_info)
+        sample = remove_unreachable_choices_from_bitvector(shed_bitvector, dt_colored_mdp_factory, model_info)
+
+        get_predicates_time_start = time.time()
+        additional_atomic_predicates = payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations)
+        get_predicates_time_end = time.time()
+        print(f"getting predicate evaluations took {get_predicates_time_end - get_predicates_time_start:.2f} seconds")
+        # print(len(additional_atomic_predicates))
+
+        # get_predicates_time_start = time.time()
+        # additional_atomic_predicates = get_atomic_predicate_evals(dt_colored_mdp_factory)
+        # get_predicates_time_end = time.time()
+        # print(f"getting predicate evaluations took {get_predicates_time_end - get_predicates_time_start:.2f} seconds")
+        # print(len(additional_atomic_predicates))
+        # exit()
+        features, variables = get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, ignore_original_features=True)
+        # features, variables = get_mdp_features_list(dt_colored_mdp_factory, {}, ignore_original_features=False)
+
+        # output_dict = {"X" : get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, ignore_original_features=False), "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info)]}
+        output_dict = {"X" : features, "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
+
+        if save_features is not None:
+            variables_json = [[var.name, var.domain] for var in variables]
+            with open(save_features, 'w') as f:
+                saved_X = output_dict["X"].toarray().tolist() if sparse.issparse(output_dict["X"]) else output_dict["X"]
+                json.dump([saved_X, variables_json], f)
+
+
+    print(f"Number of features: {len(output_dict['X'])}")
+
     filter_unreachable_class = True
     smallest_tree = None
     smallest_tree_nodes = None
@@ -242,53 +293,96 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
 
     used_predicate_indices = set()
     predicate_indeces_to_lowest_depth = {}
-    used_predicate_frequencies_total = {i: 0 for i in range(len(output_dict["X"][0]))}
-    used_predicate_frequencies_per_tree = {i: set() for i in range(len(output_dict["X"][0]))}
+    used_predicate_frequencies_total = {i: 0 for i in range(len(output_dict['X']))}
+    used_predicate_frequencies_per_tree = {i: set() for i in range(len(output_dict['X']))}
+
+    tree_base = DecisionTree(dt_colored_mdp_factory.action_labels, variables)
     
     for i in range(len(output_dict["Y"])):
         clf = tree.DecisionTreeClassifier(criterion="gini", max_depth=None, random_state=0, ccp_alpha=ccp_alpha) # if random_state is None (default) then scikit does not have to be deterministic
         # Filter out points with class -1
+        X = output_dict["X"]
+        Y = output_dict["Y"][i]
         if filter_unreachable_class:
-            X = [x for j, x in enumerate(output_dict["X"]) if output_dict["Y"][i][j] != -1]
-            Y = [y for y in output_dict["Y"][i] if y != -1]
-        else:
-            X = output_dict["X"]
-            Y = output_dict["Y"][i]
+            reachable_mask = np.array(Y) != -1
+            if sparse.issparse(X):
+                X = X[reachable_mask]
+            else:
+                X = [x for j, x in enumerate(X) if reachable_mask[j]]
+            Y = np.array(Y)[reachable_mask]
+
+        adjusted_action_labels = [x for i, x in enumerate(dt_colored_mdp_factory.action_labels) if i in Y]
+
+        # print(X)
+        # print(Y)
+
+        X = np.array(X)
+        Y = np.array(Y)
+
+
+
+
+        # model = STreeDClassifier(max_depth=4, time_limit=10)
+        # model.fit(X, Y)
+
+        # model.print_tree()
+
+        # yhat = model.predict(X)
+
+        # accuracy = accuracy_score(Y, yhat)
+        # print(f"Train Accuracy Score: {accuracy * 100}%")
+
+        # exit()
         
         clf = clf.fit(X, Y)
         num_nodes = clf.tree_.node_count - clf.tree_.n_leaves
-        # print(f"Tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
+        print(f"Scikit tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
 
-        init_node = (0,0)
-        nodes_to_process = [init_node]
-        while nodes_to_process:
-            node_id, depth = nodes_to_process.pop()
-            if clf.tree_.children_left[node_id] != -1: # -2 means it's a leaf node
-                used_predicate_indices.add(int(clf.tree_.feature[node_id]))
-                used_predicate_frequencies_total[int(clf.tree_.feature[node_id])] += 1
-                used_predicate_frequencies_per_tree[int(clf.tree_.feature[node_id])].add(i)
-                if int(clf.tree_.feature[node_id]) not in predicate_indeces_to_lowest_depth.keys():
-                    predicate_indeces_to_lowest_depth[int(clf.tree_.feature[node_id])] = depth
-                else:
-                    predicate_indeces_to_lowest_depth[int(clf.tree_.feature[node_id])] = min(predicate_indeces_to_lowest_depth[int(clf.tree_.feature[node_id])], depth)
-                nodes_to_process.append((clf.tree_.children_left[node_id], depth+1))
-                nodes_to_process.append((clf.tree_.children_right[node_id], depth+1))
+        # scikit_tree_helper = scikit_tree_to_tree_helper(clf, variables, adjusted_action_labels)
+        # tree_base.build_from_tree_helper(scikit_tree_helper)
 
-        # for j in range(clf.tree_.node_count):
-        #     if clf.tree_.children_left[j] != -1: # -2 means it's a leaf node
-        #         used_predicate_indices.add(clf.tree_.feature[j])
+        # print(tree_base.to_string())
+        # exit()
 
-        average_tree_depth += clf.get_depth()
-        average_tree_nodes += num_nodes
+        # model = STreeDClassifier(max_depth=3, n_categories=100, n_thresholds=100) # TODO handle this n_categories somehow
+        # model.fit(X, Y)
+
+        # fit_score = model.score(X, Y)
+        # print(f"Streed tree depth: {model.get_depth()}, Number of nodes: {model.tree_.get_num_branching_nodes()}, Fit score: {fit_score}")
+        # exit()
+
+        # init_node = (0,0)
+        # nodes_to_process = [init_node]
+        # while nodes_to_process:
+        #     node_id, depth = nodes_to_process.pop()
+        #     if clf.tree_.children_left[node_id] != -1: # -2 means it's a leaf node
+        #         used_predicate_indices.add(int(clf.tree_.feature[node_id]))
+        #         used_predicate_frequencies_total[int(clf.tree_.feature[node_id])] += 1
+        #         used_predicate_frequencies_per_tree[int(clf.tree_.feature[node_id])].add(i)
+        #         if int(clf.tree_.feature[node_id]) not in predicate_indeces_to_lowest_depth.keys():
+        #             predicate_indeces_to_lowest_depth[int(clf.tree_.feature[node_id])] = depth
+        #         else:
+        #             predicate_indeces_to_lowest_depth[int(clf.tree_.feature[node_id])] = min(predicate_indeces_to_lowest_depth[int(clf.tree_.feature[node_id])], depth)
+        #         nodes_to_process.append((clf.tree_.children_left[node_id], depth+1))
+        #         nodes_to_process.append((clf.tree_.children_right[node_id], depth+1))
+
+        # # for j in range(clf.tree_.node_count):
+        # #     if clf.tree_.children_left[j] != -1: # -2 means it's a leaf node
+        # #         used_predicate_indices.add(clf.tree_.feature[j])
+
+        # average_tree_depth += clf.get_depth()
+        # average_tree_nodes += num_nodes
         
-        if smallest_tree_nodes is None or num_nodes < smallest_tree_nodes:
-            smallest_tree_nodes = num_nodes
-            smallest_tree = clf
-            smallest_tree_policy = output_dict["Y"][i]
+        # if smallest_tree_nodes is None or num_nodes < smallest_tree_nodes:
+        #     smallest_tree_nodes = num_nodes
+        #     smallest_tree = clf
+        #     smallest_tree_policy = output_dict["Y"][i]
 
-        if i == 0:
-            initial_tree = clf
-            initial_tree_nodes = num_nodes
+        # if i == 0:
+        #     initial_tree = clf
+        #     initial_tree_nodes = num_nodes
+
+    exit()
 
     learning_end_time = time.time()
     print(f"learning took {learning_end_time - learning_start_time:.2f} seconds")
@@ -327,11 +421,11 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     new_state_valuations = predicate_dict_to_state_valuations(top_predicates, dt_colored_mdp_factory=dt_colored_mdp_factory)
     # print(new_state_valuations)
 
-    new_mdp = payntbind.synthesis.addStateValuations(dt_colored_mdp_factory.quotient_mdp, new_state_valuations)
-    new_colored_mdp_factory_dt = paynt.dt.DtColoredMdpFactory(new_mdp)
-    new_colored_mdp_factory_dt.specification = optimality_specification
+    # new_mdp = payntbind.synthesis.addStateValuations(dt_colored_mdp_factory.quotient_mdp, new_state_valuations)
+    # new_colored_mdp_factory_dt = paynt.dt.DtColoredMdpFactory(new_mdp)
+    # new_colored_mdp_factory_dt.specification = optimality_specification
 
-    run_dt_paynt_with_partial_family_init(new_colored_mdp_factory_dt, tree_depth=4, added_predicates=list(top_predicates.keys()), fixed_predicates_depth=2)
+    # run_dt_paynt_with_partial_family_init(new_colored_mdp_factory_dt, tree_depth=4, added_predicates=list(top_predicates.keys()), fixed_predicates_depth=2)
     # run_dt_paynt_with_partial_family_init(new_colored_mdp_factory_dt, tree_depth=4, added_predicates=None, fixed_predicates_depth=2)
 
     # synthesizer = paynt.dt.DtSynthesizer(new_colored_mdp_factory_dt)

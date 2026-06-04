@@ -354,10 +354,10 @@ def get_atomic_predicate_evals(dt_colored_mdp_factory, default_predicates=False)
     else:
         constant_comparison_operators = {
             '==': operator.eq,
-            '!=': operator.ne,
-            '<': operator.lt,
+            # '!=': operator.ne,
+            # '<': operator.lt,
             '<=': operator.le,
-            '>': operator.gt,
+            # '>': operator.gt,
             '>=': operator.ge
         }
 
@@ -384,10 +384,10 @@ def get_atomic_predicate_evals(dt_colored_mdp_factory, default_predicates=False)
     else:
         comparison_operators = {
             '==': operator.eq,
-            '!=': operator.ne,
-            '<': operator.lt,
+            # '!=': operator.ne,
+            # '<': operator.lt,
             '<=': operator.le,
-            '>': operator.gt,
+            # '>': operator.gt,
             '>=': operator.ge
         }
 
@@ -403,6 +403,60 @@ def get_atomic_predicate_evals(dt_colored_mdp_factory, default_predicates=False)
             for state, state_valuation in enumerate(state_valuations):
                 if op_func(state_valuation[var1_id], state_valuation[var2_id]):
                     valuation.set(state)
+
+
+    # interval predicates
+    if not default_predicates:
+        for var_id, variable in enumerate(state_varriables):
+            domain_list = list(variable.domain)[:-1]
+            for constant1 in domain_list:
+                for constant2 in domain_list:
+                    if constant1 >= constant2:
+                        continue
+                    if f"{constant1}<={variable.name}<={constant2}" not in predicate_to_valuation:
+                        predicate_to_valuation[f"{constant1}<={variable.name}<={constant2}"] = stormpy.BitVector(dt_colored_mdp_factory.quotient_mdp.nr_states)
+                    valuation = predicate_to_valuation[f"{constant1}<={variable.name}<={constant2}"]
+                    for state, state_valuation in enumerate(state_valuations):
+                        if state_valuation[var_id] >= constant1 and state_valuation[var_id] <= constant2:
+                            valuation.set(state)
+
+    # max value predicates
+    if not default_predicates:
+        for var_id, variable in enumerate(state_varriables):
+            if f"max_variable=={variable.name}" not in predicate_to_valuation:
+                predicate_to_valuation[f"max_variable=={variable.name}"] = stormpy.BitVector(dt_colored_mdp_factory.quotient_mdp.nr_states)
+            valuation = predicate_to_valuation[f"max_variable=={variable.name}"]
+            for state, state_valuation in enumerate(state_valuations):
+                for var_id2, variable2 in enumerate(state_varriables):
+                    if state_valuation[var_id] < state_valuation[var_id2]:
+                        break
+                else:
+                    valuation.set(state)
+
+
+    # logical combinations of two predicates
+    if not default_predicates:
+        predicate_to_valuation = clean_useless_predicates(predicate_to_valuation)
+
+        LOGICAL_OPERATORS = ['AND', 'OR']
+        # Generate new predicates by combining existing ones with logical operators (up to a certain size)
+        existing_predicates = list(predicate_to_valuation.keys())
+        for pred1, pred2 in itertools.combinations(existing_predicates, 2):
+            val1 = predicate_to_valuation[pred1]
+            val2 = predicate_to_valuation[pred2]
+            for op in LOGICAL_OPERATORS:
+                new_pred = f"({pred1} {op} {pred2})"
+                if new_pred not in predicate_to_valuation:
+                    predicate_to_valuation[new_pred] = stormpy.BitVector(dt_colored_mdp_factory.quotient_mdp.nr_states)
+                new_val = predicate_to_valuation[new_pred]
+                if op == 'AND':
+                    for s in range(new_val.size()):
+                        if val1.get(s) and val2.get(s):
+                            new_val.set(s)
+                elif op == 'OR':
+                    for s in range(new_val.size()):
+                        if val1.get(s) or val2.get(s):
+                            new_val.set(s)
 
     predicate_to_valuation = clean_useless_predicates(predicate_to_valuation)
 

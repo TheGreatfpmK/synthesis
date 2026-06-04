@@ -4,7 +4,8 @@ import paynt.utils.timer
 
 import paynt.dt.result
 
-from ._utils import simplify_tree
+from .decision_tree import DecisionTree
+from ._utils import simplify_tree, pystreed_consistency_check
 
 import stormpy
 import payntbind
@@ -104,6 +105,108 @@ class DtSynthesizer(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
         selection_2 = hole_selection.copy(); selection_2[harmonizing_hole] = [selection_2[harmonizing_hole][1]]
         for selection in [selection_1,selection_2]:
             self.verify_hole_selection(family,selection)
+
+    def pystreed_consistency_check(self, mdp, scheduler):
+
+        assert scheduler.memoryless and scheduler.deterministic
+        state_to_choice = self.quotient.scheduler_to_state_to_choice(mdp, scheduler)
+
+        state_to_action = [self.quotient.choice_to_action[choice] if choice is not None else None for choice in state_to_choice]
+        consistent, tree_helper = pystreed_consistency_check(self.quotient.relevant_state_valuations, state_to_action, self.quotient.variables, self.quotient.action_labels, max_depth=self.quotient.decision_tree.get_depth())
+        pystreed_tree = DecisionTree(self.quotient.action_labels,self.quotient.variables)
+        pystreed_tree.build_from_tree_helper(tree_helper)
+
+        return consistent, pystreed_tree
+
+
+    # def check_specification(self, family):
+    #     ''' Check specification for mdp or smg based on self.quotient '''
+    #     mdp = family.mdp
+
+    #     if isinstance(self.quotient, paynt.quotient.posmg.PosmgQuotient):
+    #         model = self.quotient.create_smg_from_mdp(mdp)
+    #     else:
+    #         model = mdp
+
+    #     # check constraints
+    #     admissible_assignment = None
+    #     spec = self.quotient.specification
+    #     if family.constraint_indices is None:
+    #         family.constraint_indices = spec.all_constraint_indices()
+    #     results = [None for _ in spec.constraints]
+    #     for index in family.constraint_indices:
+    #         constraint = spec.constraints[index]
+    #         result = paynt.verification.property_result.MdpPropertyResult(constraint)
+    #         results[index] = result
+
+    #         # check primary direction
+    #         result.primary = model.model_check_property(constraint)
+    #         if result.primary.sat is False:
+    #             result.sat = False
+    #             break
+
+    #         # check if the primary scheduler is consistent
+    #         result.primary_selection,consistent = self.quotient.scheduler_is_consistent(mdp, constraint, result.primary.result)
+    #         if consistent:
+    #             assignment = family.assume_options_copy(result.primary_selection)
+    #             dtmc = self.quotient.build_assignment(assignment)
+    #             res = dtmc.check_specification(self.quotient.specification)
+    #             if res.accepting_dtmc(self.quotient.specification):
+    #                 result.sat = True
+    #                 admissible_assignment = assignment
+
+    #         # primary direction is SAT: check secondary direction to see whether all SAT
+    #         result.secondary = model.model_check_property(constraint, alt=True)
+    #         if mdp.is_deterministic and result.primary.value != result.secondary.value:
+    #             logger.warning("WARNING: model is deterministic but min<max")
+    #         if result.secondary.sat:
+    #             result.sat = True
+    #             continue
+
+    #     spec_result = paynt.verification.property_result.MdpSpecificationResult()
+    #     spec_result.constraints_result = paynt.verification.property_result.ConstraintsResult(results)
+
+    #     # check optimality
+    #     if spec.has_optimality and not spec_result.constraints_result.sat is False:
+    #         opt = spec.optimality
+    #         result = paynt.verification.property_result.MdpOptimalityResult(opt)
+
+    #         # check primary direction
+    #         result.primary = model.model_check_property(opt)
+    #         if not result.primary.improves_optimum:
+    #             # OPT <= LB
+    #             result.can_improve = False
+    #         else:
+    #             # LB < OPT, check if LB is tight
+    #             pystreed_consistent, tree = self.pystreed_consistency_check(mdp, result.primary.result.scheduler)
+
+    #             from .dtnest._utils import get_submdp_from_unfixed_states
+    #             submdp = get_submdp_from_unfixed_states(self.quotient, tree=tree)
+    #             res = submdp.model_check_property(opt)
+                
+    #             result.primary_selection,consistent = self.quotient.scheduler_is_consistent(mdp, opt, result.primary.result)
+
+    #             if self.quotient.specification.optimality.optimum is None or res.value >= self.quotient.specification.optimality.optimum:
+    #                 print(f'MDP: {result.primary.value}, current opt: {self.quotient.specification.optimality.optimum}')
+    #                 print(f'pystreed: {res.value}, consistent: {pystreed_consistent}')
+    #                 print(f'smt_consistent: {consistent}, selection: {result.primary_selection}')
+    #                 # exit()
+
+
+    #             result.can_improve = True
+    #             if consistent:
+    #                 # LB < OPT and it's tight, double-check the constraints and the value on the DTMC
+    #                 result.can_improve = False
+    #                 assignment = family.assume_options_copy(result.primary_selection)
+    #                 dtmc = self.quotient.build_assignment(assignment)
+    #                 res = dtmc.check_specification(self.quotient.specification)
+    #                 if res.constraints_result.sat and spec.optimality.improves_optimum(res.optimality_result.value):
+    #                     result.improving_assignment = assignment
+    #                     result.improving_value = res.optimality_result.value
+    #         spec_result.optimality_result = result
+
+    #     spec_result.evaluate(family, admissible_assignment)
+    #     family.analysis_result = spec_result
 
 
     def verify_family(self, family):

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "storm/storage/jani/Model.h"
-#include "storm/logic/Formula.h"
-#include "storm/models/sparse/Mdp.h"
-#include "storm/modelchecker/results/ExplicitQuantitativeCheckResult.h"
-#include "storm/modelchecker/results/ExplicitQualitativeCheckResult.h"
+#include <storm/storage/jani/Model.h>
+#include <storm/logic/Formula.h>
+#include <storm/models/sparse/Mdp.h>
+#include <storm/modelchecker/results/ExplicitQuantitativeCheckResult.h>
+#include <storm/modelchecker/results/ExplicitQualitativeCheckResult.h>
 
-#include "storm/models/sparse/Dtmc.h"
-#include "storm/utility/Stopwatch.h"
+#include <storm/models/sparse/Dtmc.h>
+#include <storm/utility/Stopwatch.h>
 
 namespace synthesis {
 

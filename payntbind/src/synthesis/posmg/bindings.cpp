@@ -1,9 +1,9 @@
-#include "../synthesis.h"
+#include "src/synthesis/synthesis.h"
 
 #include "Posmg.h"
 #include "PosmgManager.h"
 
-#include "storm/models/sparse/Smg.h"
+#include <storm/models/sparse/Smg.h>
 
 template <typename ValueType>
 void bindings_posmg_vt(py::module &m, std::string const& vtSuffix) {

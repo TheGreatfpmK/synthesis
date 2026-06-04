@@ -1,6 +1,6 @@
-#include "common.h"
+#include "src/common.h"
 
-#include "synthesis/synthesis.h"
+#include "src/synthesis/synthesis.h"
 
 PYBIND11_MODULE(_synthesis, m) {
     m.doc() = "Synthesis extension of Stormpy.";

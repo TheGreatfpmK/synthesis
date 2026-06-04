@@ -1,4 +1,4 @@
-#include "../synthesis.h"
+#include "src/synthesis/synthesis.h"
 
 #include <storm/api/verification.h>
 #include <storm/api/storm.h>

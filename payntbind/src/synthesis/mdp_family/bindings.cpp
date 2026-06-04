@@ -1,4 +1,4 @@
-#include "../synthesis.h"
+#include "src/synthesis/synthesis.h"
 
 #include "MemoryUnfolder.h"
 #include <storm/adapters/RationalNumberAdapter.h>

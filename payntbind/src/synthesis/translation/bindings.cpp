@@ -1,4 +1,4 @@
-#include "../synthesis.h"
+#include "src/synthesis/synthesis.h"
 #include "SubPomdpBuilder.h"
 
 #include <queue>
@@ -12,8 +12,7 @@
 #include <storm/builder/RewardModelBuilder.h>
 #include <storm/builder/RewardModelInformation.h>
 #include <storm/models/sparse/StandardRewardModel.h>
-
-#include "storm/utility/macros.h"
+#include <storm/utility/macros.h>
 
 namespace synthesis {
 template <typename ValueType>

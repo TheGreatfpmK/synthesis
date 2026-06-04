@@ -1,7 +1,7 @@
 #pragma once
 
-#include "madp/base/POMDPDiscrete.h"
-#include "madp/base/DecPOMDPDiscrete.h"
+#include "src/synthesis/decpomdp/madp/base/POMDPDiscrete.h"
+#include "src/synthesis/decpomdp/madp/base/DecPOMDPDiscrete.h"
 
 #include <storm/adapters/RationalNumberAdapter.h>
 #include <storm/models/sparse/Mdp.h>

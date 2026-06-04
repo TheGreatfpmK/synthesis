@@ -19,12 +19,12 @@
 #include <storm/environment/solver/MultiplierEnvironment.h>
 #include <storm/exceptions/InvalidPropertyException.h>
 #include <storm/exceptions/InvalidArgumentException.h>
-#include "storm/exceptions/NotImplementedException.h"
+#include <storm/exceptions/NotImplementedException.h>
 #include <storm/modelchecker/results/ExplicitParetoCurveCheckResult.h>
 #include <storm/logic/FragmentSpecification.h>
 
-#include "helper/SparseSmgRpatlHelper.h"
-#include "helper/SparseNondeterministicGameInfiniteHorizonHelper.h"
+#include "src/synthesis/smg/modelchecker/helper/SparseSmgRpatlHelper.h"
+#include "src/synthesis/smg/modelchecker/helper/SparseNondeterministicGameInfiniteHorizonHelper.h"
 
 namespace synthesis {
 

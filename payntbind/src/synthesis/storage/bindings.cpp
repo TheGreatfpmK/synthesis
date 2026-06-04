@@ -1,6 +1,6 @@
-#include "../synthesis.h"
+#include "src/synthesis/synthesis.h"
 
-#include "storm/storage/Scheduler.h"
+#include <storm/storage/Scheduler.h>
 
 namespace synthesis
 {

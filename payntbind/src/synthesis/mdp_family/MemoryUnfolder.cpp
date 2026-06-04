@@ -1,7 +1,7 @@
 #include "MemoryUnfolder.h"
 
 #include "src/synthesis/translation/componentTranslations.h"
-#include "storm/exceptions/NotSupportedException.h"
+#include <storm/exceptions/NotSupportedException.h>
 
 namespace synthesis {
 

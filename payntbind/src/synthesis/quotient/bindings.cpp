@@ -1,4 +1,4 @@
-#include "../synthesis.h"
+#include "src/synthesis/synthesis.h"
 
 #include "JaniChoices.h"
 #include "Family.h"

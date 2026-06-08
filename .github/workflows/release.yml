@@ -72,7 +72,7 @@ jobs:
     uses: ./.github/workflows/release_docker.yml
     with:
       # Use the git tag as a tag for the Docker image
-      tag: ${{ github.ref_name }}
+      tag: ${{ github.event.release.tag_name }}
       stormpy_tag: ${{ needs.env_storm_versions.outputs.stormpy_version }}
     secrets: inherit
 
@@ -86,7 +86,7 @@ jobs:
       - name: Git clone
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.event.release.tag_name }}
           fetch-depth: 0
       - name: Rebase
         run: |
@@ -94,7 +94,7 @@ jobs:
           git config user.email 'imacak@fit.vut.cz'
           git fetch origin stable
           git checkout stable
-          git rebase ${{ github.ref_name }}
+          git rebase ${{ github.event.release.tag_name }}
           git push origin stable
 
   deploy_docker_stable:
@@ -154,7 +154,7 @@ jobs:
 
       - name: Create unpin branch
         env:
-          RELEASE_VERSION: ${{ github.ref_name }}
+          RELEASE_VERSION: ${{ github.event.release.tag_name }}
         run: |
           set -euo pipefail
 
@@ -197,8 +197,33 @@ jobs:
         run: |
           gh pr create \
             --base master \
-            --head "unpin-stormpy-${{ github.ref_name }}" \
-            --title "Unpin stormpy after PAYNT ${{ github.ref_name }}" \
-            --body "Restore non-fixed stormpy requirements in pyproject.toml after publishing PAYNT ${{ github.ref_name }}. This replaces stormpy version pins with >= constraints in both the build and runtime dependency sections."
+            --head "unpin-stormpy-${{ github.event.release.tag_name }}" \
+            --title "Unpin stormpy after PAYNT ${{ github.event.release.tag_name }}" \
+            --body "Restore non-fixed stormpy requirements in pyproject.toml after publishing PAYNT ${{ github.event.release.tag_name }}. This replaces stormpy version pins with >= constraints in both the build and runtime dependency sections."
+
+  delete_release_branch:
+    # Delete the temporary release-preparation branch once the release has been published
+    needs: deploy_pypi
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v6
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Delete release prep branch
+        env:
+          RELEASE_VERSION: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+
+          branch="$RELEASE_VERSION"
+
+          if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+            git push origin --delete "$branch"
+          fi
 
   

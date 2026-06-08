@@ -137,3 +137,68 @@ jobs:
         with:
           verbose: true
           skip-existing: true
+
+  unpin_stormpy_versions:
+    # Open a PR that restores non-fixed stormpy requirements after the release tag is published
+    needs: deploy_pypi
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v6
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Create unpin branch
+        env:
+          RELEASE_VERSION: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+
+          branch="unpin-stormpy-${RELEASE_VERSION}"
+
+          if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+            echo "Branch $branch already exists"
+            exit 1
+          fi
+
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+
+          pyproject = Path("pyproject.toml")
+          content = pyproject.read_text()
+
+          content, count = re.subn(
+              r'stormpy\s*==\s*([0-9]+\.[0-9]+\.[0-9]+)',
+              r'stormpy>=\1',
+              content,
+          )
+
+          if count == 0:
+              raise SystemExit("No stormpy== pins found in pyproject.toml")
+
+          pyproject.write_text(content)
+          PY
+
+          git config user.name 'PAYNT release bot'
+          git config user.email 'imacak@fit.vut.cz'
+          git checkout -b "$branch"
+          git add pyproject.toml
+          git commit -m "release: unpin stormpy after ${RELEASE_VERSION}"
+          git push -u origin "$branch"
+
+      - name: Open pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "unpin-stormpy-${{ github.ref_name }}" \
+            --title "Unpin stormpy after PAYNT ${{ github.ref_name }}" \
+            --body "Restore non-fixed stormpy requirements in pyproject.toml after publishing PAYNT ${{ github.ref_name }}. This replaces stormpy version pins with >= constraints in both the build and runtime dependency sections."
+
+  

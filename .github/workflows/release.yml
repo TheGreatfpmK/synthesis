@@ -1,13 +1,12 @@
-name: New tag release
-# Triggered by new a tag
+name: New release
+# Triggered by a new release on Github
 # - deploys Docker containers
 # - updates stable branch
 # - creates new pypi package
 
 on:
-  push:
-    tags:
-      - 'v*'  # Matches all tags starting with 'v'
+  release:
+    types: [published]
 
 jobs:
 

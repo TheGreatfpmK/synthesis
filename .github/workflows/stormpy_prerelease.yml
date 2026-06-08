@@ -1,0 +1,177 @@
+name: StormPy pre-release
+
+on:
+  schedule:
+    # Check for a new stormpy every day.
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  create_pre_release_branch:
+    name: Create or update pre-release branch when stormpy advances
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout stable
+        uses: actions/checkout@v6
+        with:
+          ref: stable
+          fetch-depth: 0
+
+      - name: Resolve pre-release branch and stormpy versions
+        id: resolve
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          import subprocess
+          import urllib.request
+          from pathlib import Path
+
+          def parse_version(path: str):
+              match = re.search(
+                  r'__version__ = "([0-9]+)\.([0-9]+)\.([0-9]+)(?:\.dev([0-9]+))?"',
+                  Path(path).read_text(),
+              )
+              if not match:
+                  raise SystemExit(f"Could not parse version from {path}")
+              major, minor, patch = map(int, match.group(1, 2, 3))
+              dev = int(match.group(4)) if match.group(4) else None
+              return major, minor, patch, dev
+
+          stable_major, stable_minor, stable_patch, _ = parse_version("paynt/_version.py")
+          target_base = f"{stable_major}.{stable_minor}.{stable_patch + 1}"
+          target_branch = f"{target_base}-pre-release"
+
+          with urllib.request.urlopen("https://pypi.org/pypi/stormpy/json") as response:
+              latest_stormpy = json.load(response)["info"]["version"]
+
+          branch_exists = (
+              subprocess.run(
+                  ["git", "ls-remote", "--exit-code", "--heads", "origin", target_branch],
+                  stdout=subprocess.DEVNULL,
+                  stderr=subprocess.DEVNULL,
+              ).returncode
+              == 0
+          )
+
+          with Path(os.environ["GITHUB_OUTPUT"]).open("a") as output:
+              output.write(f"target_base={target_base}\n")
+              output.write(f"target_branch={target_branch}\n")
+              output.write(f"latest_stormpy={latest_stormpy}\n")
+              output.write(f"branch_exists={'true' if branch_exists else 'false'}\n")
+          PY
+
+      - name: Checkout existing pre-release branch
+        if: steps.resolve.outputs.branch_exists == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin "${{ steps.resolve.outputs.target_branch }}"
+          git checkout -B "${{ steps.resolve.outputs.target_branch }}" "origin/${{ steps.resolve.outputs.target_branch }}"
+
+      - name: Update pre-release branch contents
+        id: update
+        shell: bash
+        env:
+          BRANCH_EXISTS: ${{ steps.resolve.outputs.branch_exists }}
+          LATEST_STORMPY: ${{ steps.resolve.outputs.latest_stormpy }}
+          TARGET_BASE: ${{ steps.resolve.outputs.target_base }}
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+
+          branch_exists = os.environ["BRANCH_EXISTS"] == "true"
+          latest_stormpy = os.environ["LATEST_STORMPY"]
+          target_base = os.environ["TARGET_BASE"]
+          output_path = Path(os.environ["GITHUB_OUTPUT"])
+
+          pyproject_path = Path("pyproject.toml")
+          pyproject_text = pyproject_path.read_text()
+          current_stormpy_match = re.search(
+              r'stormpy\s*(?:==|>=|<=|~=|>|<)\s*([0-9]+\.[0-9]+\.[0-9]+)',
+              pyproject_text,
+          )
+          if not current_stormpy_match:
+              raise SystemExit("Could not parse stormpy version from pyproject.toml")
+
+          current_stormpy = current_stormpy_match.group(1)
+          if current_stormpy == latest_stormpy:
+              with output_path.open("a") as output:
+                  output.write("changed=false\n")
+              raise SystemExit(0)
+
+          version_match = re.search(
+              r'__version__ = "([0-9]+)\.([0-9]+)\.([0-9]+)(?:\.dev([0-9]+))?"',
+              Path("paynt/_version.py").read_text(),
+          )
+          if not version_match:
+              raise SystemExit("Could not parse version from paynt/_version.py")
+
+          major, minor, patch = map(int, version_match.group(1, 2, 3))
+          current_dev = int(version_match.group(4)) if version_match.group(4) else 0
+
+          if branch_exists:
+              new_version = f"{major}.{minor}.{patch}.dev{current_dev + 1}"
+          else:
+              new_version = f"{target_base}.dev1"
+
+          updated_pyproject_text = re.sub(
+              r'stormpy\s*(?:==|>=|<=|~=|>|<)\s*[0-9]+\.[0-9]+\.[0-9]+',
+              f'stormpy=={latest_stormpy}',
+              pyproject_text,
+          )
+          if updated_pyproject_text == pyproject_text:
+              raise SystemExit("Did not update stormpy version in pyproject.toml")
+          pyproject_path.write_text(updated_pyproject_text)
+
+          for version_file in [Path("paynt/_version.py"), Path("payntbind/lib/payntbind/_version.py")]:
+              version_file.write_text(f'__version__ = "{new_version}"\n')
+
+          with output_path.open("a") as output:
+              output.write("changed=true\n")
+              output.write(f"new_version={new_version}\n")
+              output.write(f"new_stormpy={latest_stormpy}\n")
+          PY
+
+      - name: Commit and push pre-release branch
+        if: steps.update.outputs.changed == 'true'
+        shell: bash
+        env:
+          BRANCH_EXISTS: ${{ steps.resolve.outputs.branch_exists }}
+          TARGET_BRANCH: ${{ steps.resolve.outputs.target_branch }}
+          NEW_VERSION: ${{ steps.update.outputs.new_version }}
+          NEW_STORMPY: ${{ steps.update.outputs.new_stormpy }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$BRANCH_EXISTS" != "true" ]]; then
+            git checkout -b "$TARGET_BRANCH"
+          fi
+
+          git config user.name 'PAYNT release bot'
+          git config user.email 'imacak@fit.vut.cz'
+          git add pyproject.toml paynt/_version.py payntbind/lib/payntbind/_version.py
+          git commit -m "release: ${NEW_VERSION} with stormpy ${NEW_STORMPY}"
+          git push -u origin "$TARGET_BRANCH"
+
+      - name: Run CI on pre-release branch
+        if: steps.update.outputs.changed == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_BRANCH: ${{ steps.resolve.outputs.target_branch }}
+        run: |
+          set -euo pipefail
+          gh workflow run ci_stable.yml --ref "$TARGET_BRANCH"

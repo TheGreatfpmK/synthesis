@@ -154,10 +154,12 @@ jobs:
 
       - name: Create unpin branch
         env:
-          RELEASE_VERSION: ${{ github.event.release.tag_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
           set -euo pipefail
 
+          # strip leading 'v' if present to form branch name
+          RELEASE_VERSION=${RELEASE_TAG#v}
           branch="unpin-stormpy-${RELEASE_VERSION}"
 
           if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
@@ -188,18 +190,21 @@ jobs:
           git config user.email 'imacak@fit.vut.cz'
           git checkout -b "$branch"
           git add pyproject.toml
-          git commit -m "release: unpin stormpy after ${RELEASE_VERSION}"
+          git commit -m "release: unpin stormpy after ${RELEASE_TAG}"
           git push -u origin "$branch"
 
       - name: Open pull request
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
+          RELEASE_TAG=${{ github.event.release.tag_name }}
+          RELEASE_VERSION=${RELEASE_TAG#v}
           gh pr create \
             --base master \
-            --head "unpin-stormpy-${{ github.event.release.tag_name }}" \
-            --title "Unpin stormpy after PAYNT ${{ github.event.release.tag_name }}" \
-            --body "Restore non-fixed stormpy requirements in pyproject.toml after publishing PAYNT ${{ github.event.release.tag_name }}. This replaces stormpy version pins with >= constraints in both the build and runtime dependency sections."
+            --head "unpin-stormpy-${RELEASE_VERSION}" \
+            --title "Unpin stormpy after PAYNT ${RELEASE_TAG}" \
+            --body "Restore non-fixed stormpy requirements in pyproject.toml after publishing PAYNT ${RELEASE_TAG}. This replaces stormpy version pins with >= constraints in both the build and runtime dependency sections."
 
   delete_release_branch:
     # Delete the temporary release-preparation branch once the release has been published
@@ -216,10 +221,11 @@ jobs:
 
       - name: Delete release prep branch
         env:
-          RELEASE_VERSION: ${{ github.event.release.tag_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
           set -euo pipefail
 
+          RELEASE_VERSION=${RELEASE_TAG#v}
           branch="$RELEASE_VERSION"
 
           if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then

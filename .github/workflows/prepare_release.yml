@@ -54,7 +54,7 @@ jobs:
             exit 1
           fi
 
-          branch="v${PAYNT_VERSION}"
+          branch="${PAYNT_VERSION}"
 
           if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
             echo "Branch $branch already exists"
@@ -100,6 +100,6 @@ jobs:
         run: |
           gh pr create \
             --base master \
-            --head "v${{ inputs.paynt_version }}" \
+            --head "${{ inputs.paynt_version }}" \
             --title "Release PAYNT v${{ inputs.paynt_version }}" \
             --body "Prepare PAYNT v${{ inputs.paynt_version }} with stormpy ${{ inputs.stormpy_version }}.\n\nThe PR updates the PAYNT version files and pins the stormpy dependency in pyproject.toml for the release. After this PR is merged and CI is green, publish the GitHub Release from the merged master commit to create the release tag."

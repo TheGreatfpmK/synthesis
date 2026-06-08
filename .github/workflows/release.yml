@@ -78,6 +78,7 @@ jobs:
 
   update_stable:
     # Update stable branch
+    if: ${{ !github.event.release.prerelease }}
     needs: env_storm_versions
     runs-on: ubuntu-latest
     permissions:
@@ -99,6 +100,7 @@ jobs:
 
   deploy_docker_stable:
     # Create Docker images for stable branch
+    if: ${{ !github.event.release.prerelease }}
     needs: update_stable
     uses: ./.github/workflows/release_docker.yml
     with:
@@ -108,7 +110,20 @@ jobs:
 
   create_wheels:
     # Create wheels and sdist
-    needs: [env_storm_versions, deploy_docker, deploy_docker_stable]
+    needs: [env_storm_versions, deploy_docker, update_stable, deploy_docker_stable]
+    if: >-
+      ${{
+        always() &&
+        needs.env_storm_versions.result == 'success' &&
+        needs.deploy_docker.result == 'success' &&
+        (
+          github.event.release.prerelease ||
+          (
+            needs.update_stable.result == 'success' &&
+            needs.deploy_docker_stable.result == 'success'
+          )
+        )
+      }}
     uses: ./.github/workflows/create_wheel.yml
     with:
       nightly: false
@@ -140,6 +155,7 @@ jobs:
 
   unpin_stormpy_versions:
     # Open a PR that restores non-fixed stormpy requirements after the release tag is published
+    if: ${{ !github.event.release.prerelease }}
     needs: deploy_pypi
     runs-on: ubuntu-latest
     permissions:

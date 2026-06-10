@@ -258,15 +258,10 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         shed_bitvector = get_bitvector_from_scheduler(scheduler, model_info)
         sample = remove_unreachable_choices_from_bitvector(shed_bitvector, dt_colored_mdp_factory, model_info)
 
-        # get_predicates_time_start = time.time()
-        # additional_atomic_predicates = payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, dt_colored_mdp_factory.state_is_relevant_bv)
-        # get_predicates_time_end = time.time()
-        # print(f"getting predicate evaluations took {get_predicates_time_end - get_predicates_time_start:.2f} seconds")
-        # print(len(additional_atomic_predicates))
-
+        # predicate type in {"default", "var_vs_const", "var_vs_var", "interval", "max_var", "var_distance"}
 
         get_predicates_time_start = time.time()
-        additional_atomic_predicates = payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, dt_colored_mdp_factory.state_is_relevant_bv, default_predicates=True)
+        additional_atomic_predicates = payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, dt_colored_mdp_factory.state_is_relevant_bv, predicate_type="max_var")
         get_predicates_time_end = time.time()
         print(f"getting predicate evaluations took {get_predicates_time_end - get_predicates_time_start:.2f} seconds")
         print(len(additional_atomic_predicates))
@@ -278,6 +273,7 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         # print(len(additional_atomic_predicates))
         # exit()
         features, variables = get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, only_relevant_states=True, ignore_original_features=True)
+        # print([x.name for x in variables])
         # features, variables = get_mdp_features_list(dt_colored_mdp_factory, {}, ignore_original_features=False)
 
         # output_dict = {"X" : get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, ignore_original_features=False), "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info)]}
@@ -360,7 +356,7 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         # print(tree_base.to_string())
         # exit()
 
-        # model = STreeDClassifier(max_depth=3, n_categories=100, n_thresholds=100) # TODO handle this n_categories somehow
+        # model = STreeDClassifier(max_depth=4, n_categories=100, n_thresholds=100) # TODO handle this n_categories somehow
         # model.fit(X, Y)
 
         # fit_score = model.score(X, Y)

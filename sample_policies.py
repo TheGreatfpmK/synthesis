@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 from get_predicates import get_atomic_predicate_evals
 
 
-def get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates={}, ignore_original_features=False):
+def get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates={}, only_relevant_states=False, ignore_original_features=False):
 
     features = dt_colored_mdp_factory.relevant_state_valuations
     variables = dt_colored_mdp_factory.variables
@@ -25,9 +25,16 @@ def get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates={
         features = [[] for _ in range(len(features))]
         variables = []
 
+    if only_relevant_states:
+        features = [features[i] for i in range(len(features)) if dt_colored_mdp_factory.state_is_relevant_bv.get(i)]
+
+
     for predicate_name, predicate_eval in additional_atomic_predicates.items():
-        for state in range(len(features)):
-            features[state].append(1 if predicate_eval.get(state) else 0)
+        rel_state = 0
+        for state in range(dt_colored_mdp_factory.state_is_relevant_bv.size()):
+            if dt_colored_mdp_factory.state_is_relevant_bv.get(state):
+                features[rel_state].append(1 if predicate_eval.get(rel_state) else 0)
+                rel_state += 1
         variables.append(DtVariable(predicate_name, [0,1]))
 
     return features, variables

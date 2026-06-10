@@ -154,6 +154,12 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     properties_path = os.path.join(project, props)
     dt_colored_mdp_factory = paynt.parser.sketch.Sketch.load_sketch(sketch_path, properties_path)
 
+    print(f"Model loaded: {project_name}")
+    print(f"Number of states: {dt_colored_mdp_factory.quotient_mdp.nr_states} (relevant: {dt_colored_mdp_factory.state_is_relevant_bv.number_of_set_bits()})")
+    print(f"Number of variables: {len(dt_colored_mdp_factory.variables)}")
+    # exit()
+
+
     underlying_mdp = dt_colored_mdp_factory.quotient_mdp
     specification = dt_colored_mdp_factory.specification
 
@@ -252,11 +258,18 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         shed_bitvector = get_bitvector_from_scheduler(scheduler, model_info)
         sample = remove_unreachable_choices_from_bitvector(shed_bitvector, dt_colored_mdp_factory, model_info)
 
+        # get_predicates_time_start = time.time()
+        # additional_atomic_predicates = payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, dt_colored_mdp_factory.state_is_relevant_bv)
+        # get_predicates_time_end = time.time()
+        # print(f"getting predicate evaluations took {get_predicates_time_end - get_predicates_time_start:.2f} seconds")
+        # print(len(additional_atomic_predicates))
+
+
         get_predicates_time_start = time.time()
-        additional_atomic_predicates = payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations)
+        additional_atomic_predicates = payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, dt_colored_mdp_factory.state_is_relevant_bv, default_predicates=True)
         get_predicates_time_end = time.time()
         print(f"getting predicate evaluations took {get_predicates_time_end - get_predicates_time_start:.2f} seconds")
-        # print(len(additional_atomic_predicates))
+        print(len(additional_atomic_predicates))
 
         # get_predicates_time_start = time.time()
         # additional_atomic_predicates = get_atomic_predicate_evals(dt_colored_mdp_factory)
@@ -264,7 +277,7 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         # print(f"getting predicate evaluations took {get_predicates_time_end - get_predicates_time_start:.2f} seconds")
         # print(len(additional_atomic_predicates))
         # exit()
-        features, variables = get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, ignore_original_features=True)
+        features, variables = get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, only_relevant_states=True, ignore_original_features=True)
         # features, variables = get_mdp_features_list(dt_colored_mdp_factory, {}, ignore_original_features=False)
 
         # output_dict = {"X" : get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, ignore_original_features=False), "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info)]}
@@ -277,7 +290,7 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
                 json.dump([saved_X, variables_json], f)
 
 
-    print(f"Number of features: {len(output_dict['X'])}")
+    print(f"Number of features: {len(output_dict['X'][0])}")
 
     filter_unreachable_class = True
     smallest_tree = None
@@ -297,19 +310,21 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     used_predicate_frequencies_per_tree = {i: set() for i in range(len(output_dict['X']))}
 
     tree_base = DecisionTree(dt_colored_mdp_factory.action_labels, variables)
+
+    relevant_states_list = [True if dt_colored_mdp_factory.state_is_relevant_bv.get(state) else False for state in range(dt_colored_mdp_factory.quotient_mdp.nr_states)]
+    relevant_states_array = np.array(relevant_states_list)
     
     for i in range(len(output_dict["Y"])):
         clf = tree.DecisionTreeClassifier(criterion="gini", max_depth=None, random_state=0, ccp_alpha=ccp_alpha) # if random_state is None (default) then scikit does not have to be deterministic
         # Filter out points with class -1
         X = output_dict["X"]
         Y = output_dict["Y"][i]
+        Y = np.array(Y)[relevant_states_array]
+
         if filter_unreachable_class:
             reachable_mask = np.array(Y) != -1
-            if sparse.issparse(X):
-                X = X[reachable_mask]
-            else:
-                X = [x for j, x in enumerate(X) if reachable_mask[j]]
             Y = np.array(Y)[reachable_mask]
+            X = np.array(X)[reachable_mask]
 
         adjusted_action_labels = [x for i, x in enumerate(dt_colored_mdp_factory.action_labels) if i in Y]
 
@@ -337,6 +352,7 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         clf = clf.fit(X, Y)
         num_nodes = clf.tree_.node_count - clf.tree_.n_leaves
         print(f"Scikit tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
+        exit()
 
         # scikit_tree_helper = scikit_tree_to_tree_helper(clf, variables, adjusted_action_labels)
         # tree_base.build_from_tree_helper(scikit_tree_helper)

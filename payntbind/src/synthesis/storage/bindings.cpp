@@ -3,6 +3,7 @@
 #include "storm/storage/Scheduler.h"
 #include "storm/storage/BitVector.h"
 
+#include <algorithm>
 #include <unordered_set>
 
 namespace synthesis
@@ -29,19 +30,27 @@ namespace synthesis
         scheduler.setDontCare(modelState, memoryState, setArbitraryChoice);
     }
 
-    std::map<std::string, storm::storage::BitVector> getAtomicPredicateEvals(uint64_t nrStates, const std::vector<std::string>& variableNames, const std::vector<std::vector<uint64_t>>& variableDomains, const std::vector<std::vector<uint64_t>>& stateValuations, bool defaultPredicates = false) {
+    std::map<std::string, storm::storage::BitVector> getAtomicPredicateEvals(uint64_t nrStates, const std::vector<std::string>& variableNames, const std::vector<std::vector<uint64_t>>& variableDomains, const std::vector<std::vector<uint64_t>>& stateValuations, const storm::storage::BitVector& relevantStates, bool defaultPredicates = false) {
 
         std::map<std::string, storm::storage::BitVector> predicateToValuation;
-        const size_t numStates = stateValuations.size();
+        std::vector<std::vector<uint64_t>> relevantStateValuations;
+        relevantStateValuations.reserve(relevantStates.getNumberOfSetBits());
+        const size_t numStates = std::min(stateValuations.size(), static_cast<size_t>(relevantStates.size()));
+        for (size_t state = 0; state < numStates; ++state) {
+            if (relevantStates.get(state)) {
+                relevantStateValuations.push_back(stateValuations[state]);
+            }
+        }
+        const size_t numRelevantStates = relevantStateValuations.size();
         const size_t numVariables = variableNames.size();
         
         if (defaultPredicates) {
             for (size_t i = 0; i < numVariables; ++i) {
                 for (size_t j = 0; j < variableDomains[i].size(); ++j) {
                     std::string predicateName = variableNames[i] + "<=" + std::to_string(variableDomains[i][j]);
-                    storm::storage::BitVector bitVector(nrStates);
-                    for (size_t k = 0; k < numStates; ++k) {
-                        if (stateValuations[k][i] <= variableDomains[i][j]) {
+                    storm::storage::BitVector bitVector(numRelevantStates);
+                    for (size_t k = 0; k < numRelevantStates; ++k) {
+                        if (relevantStateValuations[k][i] <= variableDomains[i][j]) {
                             bitVector.set(k);
                         }
                     }
@@ -87,9 +96,9 @@ namespace synthesis
                     const std::string& op_str = kv.first;
                     auto op_func = kv.second;
                     std::string key = variableNames[var_id] + op_str + std::to_string(constant);
-                    auto insertResult = predicateToValuation.emplace(key, storm::storage::BitVector(nrStates));
+                    auto insertResult = predicateToValuation.emplace(key, storm::storage::BitVector(numRelevantStates));
                     auto& valuation = insertResult.first->second;
-                    fillPredicateEvaluation(valuation, stateValuations, [&](const std::vector<uint64_t>& state) {
+                    fillPredicateEvaluation(valuation, relevantStateValuations, [&](const std::vector<uint64_t>& state) {
                         return op_func(state[var_id], constant);
                     });
                 }
@@ -104,9 +113,9 @@ namespace synthesis
                     const std::string& op_str = kv.first;
                     auto op_func = kv.second;
                     std::string key = variableNames[i] + op_str + variableNames[j];
-                    auto insertResult = predicateToValuation.emplace(key, storm::storage::BitVector(nrStates));
+                    auto insertResult = predicateToValuation.emplace(key, storm::storage::BitVector(numRelevantStates));
                     auto& valuation = insertResult.first->second;
-                    fillPredicateEvaluation(valuation, stateValuations, [&](const std::vector<uint64_t>& state) {
+                    fillPredicateEvaluation(valuation, relevantStateValuations, [&](const std::vector<uint64_t>& state) {
                         return op_func(state[i], state[j]);
                     });
                 }
@@ -123,9 +132,9 @@ namespace synthesis
                     uint64_t c2 = domain_list[j];
                     if (c1 >= c2) continue;
                     std::string key = std::to_string(c1) + "<=" + variableNames[var_id] + "<=" + std::to_string(c2);
-                    auto insertResult = predicateToValuation.emplace(key, storm::storage::BitVector(nrStates));
+                    auto insertResult = predicateToValuation.emplace(key, storm::storage::BitVector(numRelevantStates));
                     auto& valuation = insertResult.first->second;
-                    fillPredicateEvaluation(valuation, stateValuations, [&](const std::vector<uint64_t>& state) {
+                    fillPredicateEvaluation(valuation, relevantStateValuations, [&](const std::vector<uint64_t>& state) {
                         const uint64_t value = state[var_id];
                         return value >= c1 && value <= c2;
                     });
@@ -136,9 +145,9 @@ namespace synthesis
         // max variable predicates
         for (size_t var_id = 0; var_id < numVariables; ++var_id) {
             std::string key = std::string("max_variable==") + variableNames[var_id];
-            auto insertResult = predicateToValuation.emplace(key, storm::storage::BitVector(nrStates));
+            auto insertResult = predicateToValuation.emplace(key, storm::storage::BitVector(numRelevantStates));
             auto& valuation = insertResult.first->second;
-            fillPredicateEvaluation(valuation, stateValuations, [&](const std::vector<uint64_t>& state) {
+            fillPredicateEvaluation(valuation, relevantStateValuations, [&](const std::vector<uint64_t>& state) {
                 const uint64_t value = state[var_id];
                 for (size_t other = 0; other < numVariables; ++other) {
                     if (state[other] > value) {
@@ -165,7 +174,7 @@ namespace synthesis
                 for (auto const& op : LOGICAL_OPERATORS) {
                     std::string new_pred = std::string("(") + pred1 + " " + op + " " + pred2 + ")";
                     if (predicateToValuation.find(new_pred) == predicateToValuation.end()) {
-                        predicateToValuation.emplace(new_pred, storm::storage::BitVector(nrStates));
+                        predicateToValuation.emplace(new_pred, storm::storage::BitVector(numRelevantStates));
                     }
                     auto &new_val = predicateToValuation.at(new_pred);
                     if (op == "AND") {
@@ -187,5 +196,5 @@ void bindings_storage(py::module& m) {
     
     m.def("create_scheduler", &synthesis::createScheduler, py::arg("number_of_model_states"));
     m.def("set_dont_care_state_for_scheduler", &synthesis::setDontCareStateForScheduler, py::arg("scheduler"), py::arg("model_state"), py::arg("memory_state"), py::arg("set_arbitrary_choice"));
-    m.def("get_atomic_predicate_evals", &synthesis::getAtomicPredicateEvals, py::arg("nr_states"), py::arg("variable_names"), py::arg("variable_domains"), py::arg("state_valuations"), py::arg("default_predicates") = false);
+    m.def("get_atomic_predicate_evals", &synthesis::getAtomicPredicateEvals, py::arg("nr_states"), py::arg("variable_names"), py::arg("variable_domains"), py::arg("state_valuations"), py::arg("relevant_states"), py::arg("default_predicates") = false);
 }

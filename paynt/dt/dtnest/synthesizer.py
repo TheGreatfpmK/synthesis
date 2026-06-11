@@ -324,7 +324,7 @@ class DtNest(DtSynthesizer):
             initial_tree = build_tree_helper_tree(self.quotient, initial_tree_helper)
             logger.info(f'initial tree has depth {initial_tree.get_depth()} and {len(initial_tree.collect_nonterminals())} nodes')
             # print(initial_tree.to_string())
-            exit()
+            # exit()
    
         else:
 

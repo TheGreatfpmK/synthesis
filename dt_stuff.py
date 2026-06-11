@@ -2,8 +2,10 @@ import click
 import os
 
 from paynt.dt.decision_tree import DtVariable, DecisionTree
-from paynt.dt.dtnest._utils import scikit_tree_to_tree_helper
+from paynt.dt.dtnest._utils import get_submdp_from_unfixed_states, scikit_tree_to_tree_helper
 import paynt.parser.sketch
+import paynt.dt.dtnest.synthesizer
+import paynt.verification.property
 
 import payntbind
 
@@ -261,7 +263,12 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         # predicate type in {"default", "var_vs_const", "var_vs_var", "interval", "max_var", "var_distance"}
 
         get_predicates_time_start = time.time()
-        additional_atomic_predicates = payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, dt_colored_mdp_factory.state_is_relevant_bv, predicate_type="max_var")
+        # additional_atomic_predicates = payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, dt_colored_mdp_factory.state_is_relevant_bv, predicate_type="max_var")
+        additional_atomic_predicates = {}
+        additional_atomic_predicates.update(payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, stormpy.storage.BitVector(dt_colored_mdp_factory.quotient_mdp.nr_states, True), predicate_type="var_vs_const"))
+        additional_atomic_predicates.update(payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, stormpy.storage.BitVector(dt_colored_mdp_factory.quotient_mdp.nr_states, True), predicate_type="var_vs_var"))
+        additional_atomic_predicates.update(payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, stormpy.storage.BitVector(dt_colored_mdp_factory.quotient_mdp.nr_states, True), predicate_type="interval"))
+        additional_atomic_predicates.update(payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, stormpy.storage.BitVector(dt_colored_mdp_factory.quotient_mdp.nr_states, True), predicate_type="max_var"))
         get_predicates_time_end = time.time()
         print(f"getting predicate evaluations took {get_predicates_time_end - get_predicates_time_start:.2f} seconds")
         print(len(additional_atomic_predicates))
@@ -272,9 +279,10 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         # print(f"getting predicate evaluations took {get_predicates_time_end - get_predicates_time_start:.2f} seconds")
         # print(len(additional_atomic_predicates))
         # exit()
-        features, variables = get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, only_relevant_states=True, ignore_original_features=True)
+        # features, variables = get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, only_relevant_states=True, ignore_original_features=True)
+        features, variables = get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, only_relevant_states=False, ignore_original_features=False)
+        # features, variables = get_mdp_features_list(dt_colored_mdp_factory, {}, only_relevant_states=False, ignore_original_features=False)
         # print([x.name for x in variables])
-        # features, variables = get_mdp_features_list(dt_colored_mdp_factory, {}, ignore_original_features=False)
 
         # output_dict = {"X" : get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, ignore_original_features=False), "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info)]}
         output_dict = {"X" : features, "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
@@ -309,6 +317,37 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
 
     relevant_states_list = [True if dt_colored_mdp_factory.state_is_relevant_bv.get(state) else False for state in range(dt_colored_mdp_factory.quotient_mdp.nr_states)]
     relevant_states_array = np.array(relevant_states_list)
+
+
+    dt_colored_mdp_factory.relevant_state_valuations = features
+    dt_colored_mdp_factory.variables = variables
+
+    dtnest_synthesizer = paynt.dt.dtnest.synthesizer.DtNest(dt_colored_mdp_factory)
+
+    paynt.verification.property.Property.set_model_checking_precision(1e-6)
+
+    dtnest_synthesizer.epsilon = 1e-4
+    dtnest_synthesizer.timeout = 300
+
+    print("starting dtNest")
+
+    dtnest_timer_start = time.time()
+
+    tree = dtnest_synthesizer.run()
+
+    dtnest_timer_end = time.time()
+
+    # print(tree.to_string())
+    print(f"tree depth: {tree.get_depth()}, number of nodes: {len(tree.collect_nonterminals())}")
+    print(f"dtNest synthesizer took {dtnest_timer_end - dtnest_timer_start:.2f} seconds")
+
+    submdp = get_submdp_from_unfixed_states(dt_colored_mdp_factory, tree=tree)
+    mc_result_submdp = submdp.model_check_property(optimality_specification.all_properties()[0])
+    print("submdp value:", mc_result_submdp.value)
+
+
+    exit()
+
     
     for i in range(len(output_dict["Y"])):
         clf = tree.DecisionTreeClassifier(criterion="gini", max_depth=None, random_state=0, ccp_alpha=ccp_alpha) # if random_state is None (default) then scikit does not have to be deterministic

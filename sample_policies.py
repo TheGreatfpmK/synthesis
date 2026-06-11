@@ -32,7 +32,7 @@ def get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates={
     for predicate_name, predicate_eval in additional_atomic_predicates.items():
         rel_state = 0
         for state in range(dt_colored_mdp_factory.state_is_relevant_bv.size()):
-            if dt_colored_mdp_factory.state_is_relevant_bv.get(state):
+            if not only_relevant_states or (only_relevant_states and dt_colored_mdp_factory.state_is_relevant_bv.get(state)):
                 features[rel_state].append(1 if predicate_eval.get(rel_state) else 0)
                 rel_state += 1
         variables.append(DtVariable(predicate_name, [0,1]))

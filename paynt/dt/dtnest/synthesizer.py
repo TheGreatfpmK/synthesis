@@ -51,6 +51,7 @@ class DtNest(DtSynthesizer):
         self.allow_perturbations = True # If False all perturbations are disabled, meaning we are only using dtPAYNT to make the initial tree smaller
         self.recompute_scheduler = True # recomputes scheduler for the subtree outside of the replaced subtree
         self.use_states_for_node_priority = False # this is super slow for some models but should mean better prioritization
+        self.scikit_depth_perturbations = True # recomputes tree using different max depths and keeps the smallest one that satisfies the threshold
 
     @property
     def method_name(self):
@@ -116,19 +117,44 @@ class DtNest(DtSynthesizer):
         return helper_node_stats
     
 
-    def synthesize_subtrees(self, opt_result_value, random_result_value=None):
+    def scikit_depth_perturbation(self, tree, min_depth, max_depth, threshold):
+        # Perturbation #3 - recompute tree using different max depths and keep the smallest one that satisfies the threshold
+
+        current_tree_depth = tree.get_depth()
+        current_tree_nodes = len(tree.collect_nonterminals())
+
+        state_to_action = dt_to_state_to_actions(tree, self.quotient)
+
+        tree_helper_tree = None
+
+        for d in range(min_depth, max_depth):
+            new_learned_tree_helper = run_scikit_learn_tree(self.quotient.relevant_state_valuations, state_to_action, self.quotient.variables, self.quotient.action_labels, max_depth=d)
+            # self.dt_learning_calls += 1
+
+            new_tree_helper_tree = build_tree_helper_tree(self.quotient, new_learned_tree_helper)
+
+            if len(new_tree_helper_tree.collect_nonterminals()) > current_tree_nodes:
+                continue
+
+            submdp = get_submdp_from_unfixed_states(self.quotient, tree=new_tree_helper_tree)
+            perturbation_spec = self.quotient.specification.copy()
+            perturbation_spec.optimality.update_optimum(threshold)
+            result = submdp.check_specification(perturbation_spec)
+
+            if result.optimality_result.improves_optimum:
+                self.quotient.tree_helper = new_learned_tree_helper
+                self.quotient.tree_helper_tree = new_tree_helper_tree
+                tree_helper_tree = new_tree_helper_tree
+                break
+
+        return tree_helper_tree
+    
+
+    def synthesize_subtrees(self, opt_result_value, eps_optimum_threshold):
 
         # init
         self.counters_reset()
-        if random_result_value is None:
-            # if we dont have the random result value just make the threshold to be the epsilon of optimum value
-            mc_result_positive = opt_result_value > 0
-            if self.quotient.specification.optimality.maximizing == mc_result_positive:
-                self.epsilon *= -1
-            eps_optimum_threshold = opt_result_value * (1 + self.epsilon)
-        else: # this should result in normalised value of the produced tree being within espilon
-            opt_random_diff = opt_result_value - random_result_value
-            eps_optimum_threshold = opt_result_value - self.epsilon * opt_random_diff
+        
         self.synthesis_timer = paynt.utils.timer.Timer(self.timeout)
         self.synthesis_timer.start()
 
@@ -145,6 +171,12 @@ class DtNest(DtSynthesizer):
             if self.synthesis_timer.time_limit_reached():
                     logger.info(f"timeout reached")
                     break
+            
+            if self.allow_perturbations and self.scikit_depth_perturbations:
+                perturbation_tree = self.scikit_depth_perturbation(tree_helper_tree, current_depth+1, tree_helper_tree.get_depth(), eps_optimum_threshold)
+                if perturbation_tree is not None:
+                    tree_helper_tree = perturbation_tree
+                    logger.info(f"tree after scikit depth perturbation has depth {tree_helper_tree.get_depth()} and {len(tree_helper_tree.collect_nonterminals())} nodes")
 
             logger.info(f"starting iteration with subtree depth {current_depth}")
             # TODO this is not guaranteed to work in subsequent iterations when the dtPAYNT tree is used
@@ -216,7 +248,7 @@ class DtNest(DtSynthesizer):
                         logger.info(f'new learned tree (default) has depth {new_tree_helper_tree.get_depth()} and {len(new_tree_helper_tree.collect_nonterminals())} nodes')
                         dtlearn_trees["default"] = (new_learned_tree_helper, new_tree_helper_tree)
 
-                        #  Perturbations #2 - recompute scheduler for states outside of the new subtree and learn new tree based on that scheduler
+                        #  Perturbation #2 - recompute scheduler for states outside of the new subtree and learn new tree based on that scheduler
                         if self.recompute_scheduler:
 
                             submpd_dtlearn_of_subtree = get_submdp_from_unfixed_states(self.quotient, ~node_states)
@@ -236,10 +268,13 @@ class DtNest(DtSynthesizer):
 
                     chosen_tree = self.choose_tree_to_use(tree_helper_tree, dtpaynt_subtree_helper_tree_copy, dtlearn_trees, recomputed_dtlearn_trees)
 
+                    tree_changed = True
+
                     if chosen_tree == "current":
                         logger.info(f"None of the new trees are smaller, continuing with current tree")
                         self.all_larger += 1
                         self.quotient.tree_helper_tree = tree_helper_tree
+                        tree_changed = False
 
                     elif chosen_tree == "dtpaynt":
                         logger.info(f"New dtPAYNT tree is smallest")
@@ -275,6 +310,22 @@ class DtNest(DtSynthesizer):
                         self.quotient.tree_helper_tree = recomputed_scheduler_tree_helper_tree
                         tree_helper_tree = recomputed_scheduler_tree_helper_tree
                         node_queue = self.create_tree_node_queue_heuristic(tree_helper_tree, use_states_for_node_priority=self.use_states_for_node_priority)
+
+                    if tree_changed and self.allow_perturbations and self.scikit_depth_perturbations:
+                        # Perturbation #3 - recompute tree using different max depths and keep the smallest one that satisfies the threshold
+
+                        current_tree_depth = self.quotient.tree_helper_tree.get_depth()
+
+                        state_to_action = dt_to_state_to_actions(tree_helper_tree, self.quotient)
+
+                        for d in range(current_depth+1, current_tree_depth):
+                            new_learned_tree_helper = run_scikit_learn_tree(self.quotient.relevant_state_valuations, state_to_action, self.quotient.variables, self.quotient.action_labels, max_depth=d)
+                            self.dt_learning_calls += 1
+
+                            new_tree_helper_tree = build_tree_helper_tree(self.quotient, new_learned_tree_helper)
+
+
+
                     
                 else:
                     logger.info(f"no admissible subtree found from node {node['id']}")
@@ -314,26 +365,6 @@ class DtNest(DtSynthesizer):
         mc_result = paynt_mdp.model_check_property(self.quotient.get_property())
         opt_scheduler = mc_result.result.scheduler
 
-        state_to_choice = self.quotient.scheduler_to_state_to_choice(paynt_mdp, opt_scheduler)
-
-        if self.initial_tree is None:
-
-            state_to_action = state_to_choice_to_state_to_action(state_to_choice, self.quotient)
-            initial_tree_helper = run_scikit_learn_tree(self.quotient.relevant_state_valuations, state_to_action, self.quotient.variables, self.quotient.action_labels)
-
-            initial_tree = build_tree_helper_tree(self.quotient, initial_tree_helper)
-            logger.info(f'initial tree has depth {initial_tree.get_depth()} and {len(initial_tree.collect_nonterminals())} nodes')
-            # print(initial_tree.to_string())
-            # exit()
-   
-        else:
-
-            # TODO add some nice export for trees, decide on the format we will support here
-            raise NotImplementedError("the support for user provided initial tree is not implemented.")
-            
-
-        self.quotient.tree_helper = initial_tree_helper
-
         opt_result_value = mc_result.value
         logger.info(f"the optimal scheduler has value: {opt_result_value}")
 
@@ -345,12 +376,45 @@ class DtNest(DtSynthesizer):
             logger.info(f"the random scheduler has value: {random_result_value}")
             # self.set_optimality_threshold(random_result_value)
 
+        if random_result_value is None:
+            # if we dont have the random result value just make the threshold to be the epsilon of optimum value
+            mc_result_positive = opt_result_value > 0
+            if self.quotient.specification.optimality.maximizing == mc_result_positive:
+                self.epsilon *= -1
+            eps_optimum_threshold = opt_result_value * (1 + self.epsilon)
+        else: # this should result in normalised value of the produced tree being within espilon
+            opt_random_diff = opt_result_value - random_result_value
+            eps_optimum_threshold = opt_result_value - self.epsilon * opt_random_diff
+
+        state_to_choice = self.quotient.scheduler_to_state_to_choice(paynt_mdp, opt_scheduler)
+
+        if self.initial_tree is None:
+
+            state_to_action = state_to_choice_to_state_to_action(state_to_choice, self.quotient)
+            initial_tree_helper = run_scikit_learn_tree(self.quotient.relevant_state_valuations, state_to_action, self.quotient.variables, self.quotient.action_labels)
+
+            initial_tree = build_tree_helper_tree(self.quotient, initial_tree_helper)
+            self.quotient.tree_helper = initial_tree_helper
+            logger.info(f'initial tree has depth {initial_tree.get_depth()} and {len(initial_tree.collect_nonterminals())} nodes')
+        
+            if self.allow_perturbations and self.scikit_depth_perturbations:
+                perturbation_tree = self.scikit_depth_perturbation(initial_tree, 1, initial_tree.get_depth(), eps_optimum_threshold)
+                if perturbation_tree is not None:
+                    initial_tree = perturbation_tree
+                    logger.info(f"initial tree after scikit depth perturbation has depth {initial_tree.get_depth()} and {len(initial_tree.collect_nonterminals())} nodes")
+   
+        else:
+
+            # TODO add some nice export for trees, decide on the format we will support here
+            raise NotImplementedError("the support for user provided initial tree is not implemented.")
+
+
         self.best_assignment = self.best_assignment_value = None
         self.best_tree = self.best_tree_value = None
 
         assert self.quotient.tree_helper is not None, "tree helper not set, cannot run dtNest"
 
-        self.synthesize_subtrees(opt_result_value, random_result_value)
+        self.synthesize_subtrees(opt_result_value, eps_optimum_threshold)
 
         logger.info(f"the optimal scheduler has value: {opt_result_value}")
         if self.quotient.DONT_CARE_ACTION_LABEL in self.quotient.action_labels:

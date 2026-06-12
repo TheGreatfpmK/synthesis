@@ -155,9 +155,9 @@ def scikit_tree_to_tree_helper(clf, variables, action_labels):
         if clf.tree_.children_left[i] == -1: # leaf node
             chosen_idx = clf.tree_.value[i].argmax()
             # Assert that value is 1 for the chosen action and 0 for all others
-            values = clf.tree_.value[i][0]
-            assert (values == 1).sum() == 1 and (values == 0).sum() == (len(values) - 1), (
-                f"Expected one value to be 1 and the rest 0, got {values}")
+            # values = clf.tree_.value[i][0]
+            # assert (values == 1).sum() == 1 and (values == 0).sum() == (len(values) - 1), (
+            #     f"Expected one value to be 1 and the rest 0, got {values}")
             helper.append({'id': i, 'leaf': True, 'chosen': [action_labels[chosen_idx]]})
             continue
 

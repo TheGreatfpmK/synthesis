@@ -1,3 +1,5 @@
+import sys
+
 import click
 import os
 
@@ -27,6 +29,9 @@ import payntbind
 
 from pystreed import STreeDClassifier
 from sklearn.metrics import accuracy_score
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 def get_predicate_types(additional_atomic_predicates):

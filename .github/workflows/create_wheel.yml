@@ -40,14 +40,14 @@ jobs:
       - name: Set STORMPY_ARTIFACT_NAME
         if: env.NIGHTLY_BUILD == 'true'
         run: |
-          echo "STORMPY_ARTIFACT_NAME=stormpy-wheels-linux-intel" >> $GITHUB_ENV
+          echo "STORMPY_ARTIFACT_NAME=stormpy-wheels-linux-intel-Release" >> $GITHUB_ENV
       - name: Download stormpy nightly wheel if NIGHTLY_BUILD
         if: env.NIGHTLY_BUILD == 'true'
         uses: dawidd6/action-download-artifact@v21
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: create_wheel_scheduled.yml
-          repo: stormchecker/stormpy
+          workflow: create_nightly_wheel.yml
+          repo: stormchecker/stormpy-wheels
           name: ${{ env.STORMPY_ARTIFACT_NAME }}
           path: stormpy_wheels/
       - name: Install stormpy
@@ -143,9 +143,10 @@ jobs:
           xcode-version: ${{ matrix.xcode }}
       - name: Prepare nightly version
         if: env.NIGHTLY_BUILD == 'true'
-        run: | 
-          perl -i -pe 's/__version__ = "(\d+)\.(\d+)\.(\d+)"/"__version__ = \"$1.$2.".($3+1).".dev1\""/e' paynt/_version.py
-          perl -i -pe 's/__version__ = "(\d+)\.(\d+)\.(\d+)"/"__version__ = \"$1.$2.".($3+1).".dev1\""/e' payntbind/lib/payntbind/_version.py
+        run: |
+          DATE=$(date -u +%Y%m%d)
+          perl -i -pe 's/__version__ = "(\d+)\.(\d+)\.(\d+)"/"__version__ = \"$1.$2.".($3+1).".dev${DATE}\""/e' paynt/_version.py
+          perl -i -pe 's/__version__ = "(\d+)\.(\d+)\.(\d+)"/"__version__ = \"$1.$2.".($3+1).".dev${DATE}\""/e' payntbind/lib/payntbind/_version.py
       - name: Prepare storm version
         run: |
           python3 - <<'PY'
@@ -188,8 +189,9 @@ jobs:
       - name: Prepare nightly version
         if: env.NIGHTLY_BUILD == 'true'
         run: | 
-          perl -i -pe 's/__version__ = "(\d+)\.(\d+)\.(\d+)"/"__version__ = \"$1.$2.".($3+1).".dev1\""/e' paynt/_version.py
-          perl -i -pe 's/__version__ = "(\d+)\.(\d+)\.(\d+)"/"__version__ = \"$1.$2.".($3+1).".dev1\""/e' payntbind/lib/payntbind/_version.py
+          DATE=$(date -u +%Y%m%d)
+          perl -i -pe 's/__version__ = "(\d+)\.(\d+)\.(\d+)"/"__version__ = \"$1.$2.".($3+1).".dev${DATE}\""/e' paynt/_version.py
+          perl -i -pe 's/__version__ = "(\d+)\.(\d+)\.(\d+)"/"__version__ = \"$1.$2.".($3+1).".dev${DATE}\""/e' payntbind/lib/payntbind/_version.py
       - name: Build sdist
         run: pipx run build --sdist
       - uses: actions/upload-artifact@v7

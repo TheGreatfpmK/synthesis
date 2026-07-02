@@ -1,0 +1,40 @@
+mdp
+
+
+const int N = 64;
+
+
+formula goal = x=N & y=N;
+
+label "goal" = goal;
+
+formula xu = min(x+1,N);
+formula xd = max(x-1,0);
+formula yr = min(y+1,N);
+formula yl = max(y-1,0);
+
+formula slip_probability = x>=y ? (floor((x-y)/(N/4)) * (0.4/4)) : (floor((y-x)/(N/4)) * (0.4/4));
+
+
+module grid
+
+    x : [0..N] init 0;
+    y : [0..N] init 0;
+
+
+    [up]    !goal -> slip_probability : true + 1-slip_probability : (x'=xu);
+    [down]  !goal -> slip_probability : true + 1-slip_probability : (x'=xd);
+    [right] !goal -> slip_probability : true + 1-slip_probability : (y'=yr);
+    [left]  !goal -> slip_probability : true + 1-slip_probability : (y'=yl);
+
+endmodule
+
+
+rewards "steps"
+
+    [up] true : 1;
+    [down] true : 1;
+    [right] true : 1;
+    [left] true : 1;
+
+endrewards

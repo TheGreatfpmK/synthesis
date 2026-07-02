@@ -311,22 +311,15 @@ class DtNest(DtSynthesizer):
                         tree_helper_tree = recomputed_scheduler_tree_helper_tree
                         node_queue = self.create_tree_node_queue_heuristic(tree_helper_tree, use_states_for_node_priority=self.use_states_for_node_priority)
 
-                    if tree_changed and self.allow_perturbations and self.scikit_depth_perturbations:
-                        # Perturbation #3 - recompute tree using different max depths and keep the smallest one that satisfies the threshold
+                    # if tree_changed and self.allow_perturbations and self.scikit_depth_perturbations:
+                    #     # Perturbation #3 - recompute tree using different max depths and keep the smallest one that satisfies the threshold
 
-                        current_tree_depth = self.quotient.tree_helper_tree.get_depth()
+                    #     perturbation_tree = self.scikit_depth_perturbation(tree_helper_tree, current_depth+1, tree_helper_tree.get_depth(), eps_optimum_threshold)
+                    #     if perturbation_tree is not None:
+                    #         tree_helper_tree = perturbation_tree
+                    #         logger.info(f"tree after scikit depth perturbation has depth {tree_helper_tree.get_depth()} and {len(tree_helper_tree.collect_nonterminals())} nodes")
+                    #         node_queue = self.create_tree_node_queue_heuristic(tree_helper_tree, use_states_for_node_priority=self.use_states_for_node_priority)
 
-                        state_to_action = dt_to_state_to_actions(tree_helper_tree, self.quotient)
-
-                        for d in range(current_depth+1, current_tree_depth):
-                            new_learned_tree_helper = run_scikit_learn_tree(self.quotient.relevant_state_valuations, state_to_action, self.quotient.variables, self.quotient.action_labels, max_depth=d)
-                            self.dt_learning_calls += 1
-
-                            new_tree_helper_tree = build_tree_helper_tree(self.quotient, new_learned_tree_helper)
-
-
-
-                    
                 else:
                     logger.info(f"no admissible subtree found from node {node['id']}")
 
@@ -396,12 +389,14 @@ class DtNest(DtSynthesizer):
             initial_tree = build_tree_helper_tree(self.quotient, initial_tree_helper)
             self.quotient.tree_helper = initial_tree_helper
             logger.info(f'initial tree has depth {initial_tree.get_depth()} and {len(initial_tree.collect_nonterminals())} nodes')
+            print(f'initial tree has depth {initial_tree.get_depth()} and {len(initial_tree.collect_nonterminals())} nodes')
         
             if self.allow_perturbations and self.scikit_depth_perturbations:
                 perturbation_tree = self.scikit_depth_perturbation(initial_tree, 1, initial_tree.get_depth(), eps_optimum_threshold)
                 if perturbation_tree is not None:
                     initial_tree = perturbation_tree
                     logger.info(f"initial tree after scikit depth perturbation has depth {initial_tree.get_depth()} and {len(initial_tree.collect_nonterminals())} nodes")
+                    print(f"initial tree after scikit depth perturbation has depth {initial_tree.get_depth()} and {len(initial_tree.collect_nonterminals())} nodes")
    
         else:
 

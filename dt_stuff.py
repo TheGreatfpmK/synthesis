@@ -18,7 +18,9 @@ from scipy import sparse
 import time
 import json
 
-from sklearn import tree, svm
+import sklearn
+import sklearn.ensemble
+import sklearn.feature_selection
 import matplotlib.pyplot as plt
 
 from sample_policies import mcmc_base, get_optimality_specification, get_constraint_specification, get_bitvector_from_scheduler, get_mdp_features_list, remove_unreachable_choices_from_bitvector, sample_to_list
@@ -128,6 +130,38 @@ def run_dt_paynt_with_partial_family_init(dt_colored_mdp_factory, tree_depth, ad
 
 
 
+def select_features(features, labels):
+
+
+    X = features
+    Y = labels
+
+    reachable_mask = np.array(Y) != -1
+    Y = np.array(Y)[reachable_mask]
+    X = np.array(X)[reachable_mask]
+
+
+    nr_features = X.shape[1]
+    nr_wanted_features = int(nr_features * 0.2)  # Keep top 20% features
+
+    tree_ensemble = sklearn.ensemble.ExtraTreesClassifier(n_estimators=100, random_state=0)
+    # tree_ensemble.fit(X, Y)
+
+    # feature_selector = sklearn.feature_selection.SelectFromModel(tree_ensemble, prefit=True, max_features=nr_wanted_features)
+    feature_selector = sklearn.feature_selection.RFECV(tree_ensemble, min_features_to_select=1)
+
+    feature_selector.fit(X, Y)
+    mask = feature_selector.get_support()
+
+    X_new = feature_selector.transform(X)
+
+    # print(tree_ensemble.feature_importances_)
+    print(X.shape)
+    print(X_new.shape)
+    print(mask)
+
+
+
 @click.command()
 @click.argument('project', type=click.Path(exists=True))
 @click.option("--sketch", default="sketch.templ", show_default=True,
@@ -136,7 +170,7 @@ def run_dt_paynt_with_partial_family_init(dt_colored_mdp_factory, tree_depth, ad
     help="name of the properties file in the project")
 @click.option("--relative-eps", type=float, default=None, show_default=True, help="relative epsilon threhshold computed from random policy")
 @click.option("--seed", type=int, default=None, show_default=True, help="random seed for policy sampling")
-@click.option("--steps", type=int, default=10000, show_default=True, help="number of MCMC steps")
+@click.option("--steps", type=int, default=0, show_default=True, help="number of MCMC steps")
 @click.option("--burn-in", type=int, default=None, show_default=True, help="number of burn in steps for MCMC sampling")
 @click.option("--sample-steps", type=int, default=None, show_default=True, help="interval for collecting samples during MCMC sampling, e.g. if set to 10 then every 10th step after burn in will be collected as a sample")
 @click.option("--ccp-alpha", type=float, default=0.0, show_default=True, help="ccp_alpha parameter for decision tree learning, higher values lead to more pruning and thus simpler trees")
@@ -144,7 +178,9 @@ def run_dt_paynt_with_partial_family_init(dt_colored_mdp_factory, tree_depth, ad
 @click.option("--append-stats", is_flag=True, default=False, show_default=True, help="whether to append sampling and learning stats to results/sampling_stats.csv")
 @click.option("--save-features", type=click.Path(), default=None, show_default=True, help="json file where to write the state features")
 @click.option("--load-features", type=click.Path(exists=True), default=None, show_default=True, help="json file from which to load state features instead of computing them from the MDP")
-def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, ccp_alpha, output, append_stats, save_features, load_features):
+@click.option("--default-predicates", is_flag=True, default=False, show_default=True, help="whether to use the default predicates (state variables) as features for decision tree learning")
+@click.option("--run-dtnest", is_flag=True, default=False, show_default=True, help="whether to run the dtNest synthesizer instead of scikit-learn decision tree learning")
+def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, ccp_alpha, output, append_stats, save_features, load_features, default_predicates, run_dtnest):
     sketch_path = os.path.join(project, sketch)
     props_path = os.path.join(project, props)
 
@@ -267,16 +303,21 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
 
         # predicate type in {"default", "var_vs_const", "var_vs_var", "interval", "max_var", "var_distance"}
 
-        get_predicates_time_start = time.time()
-        # additional_atomic_predicates = payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, dt_colored_mdp_factory.state_is_relevant_bv, predicate_type="max_var")
         additional_atomic_predicates = {}
-        additional_atomic_predicates.update(payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, stormpy.storage.BitVector(dt_colored_mdp_factory.quotient_mdp.nr_states, True), predicate_type="var_vs_const"))
-        additional_atomic_predicates.update(payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, stormpy.storage.BitVector(dt_colored_mdp_factory.quotient_mdp.nr_states, True), predicate_type="var_vs_var"))
-        additional_atomic_predicates.update(payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, stormpy.storage.BitVector(dt_colored_mdp_factory.quotient_mdp.nr_states, True), predicate_type="interval"))
-        additional_atomic_predicates.update(payntbind.synthesis.get_atomic_predicate_evals(dt_colored_mdp_factory.quotient_mdp.nr_states, [var.name for var in dt_colored_mdp_factory.variables], [var.domain for var in dt_colored_mdp_factory.variables], dt_colored_mdp_factory.relevant_state_valuations, stormpy.storage.BitVector(dt_colored_mdp_factory.quotient_mdp.nr_states, True), predicate_type="max_var"))
-        get_predicates_time_end = time.time()
-        print(f"getting predicate evaluations took {get_predicates_time_end - get_predicates_time_start:.2f} seconds")
-        print(len(additional_atomic_predicates))
+        if not default_predicates:
+            nr_states = dt_colored_mdp_factory.quotient_mdp.nr_states
+            var_names = [var.name for var in dt_colored_mdp_factory.variables]
+            var_domains = [var.domain for var in dt_colored_mdp_factory.variables]
+            all_states_true_bv = stormpy.storage.BitVector(dt_colored_mdp_factory.quotient_mdp.nr_states, True)
+            get_predicates_time_start = time.time()
+            additional_atomic_predicates.update(payntbind.synthesis.get_atomic_predicate_evals(nr_states, var_names, var_domains, dt_colored_mdp_factory.relevant_state_valuations, all_states_true_bv, predicate_type="var_vs_const"))
+            additional_atomic_predicates.update(payntbind.synthesis.get_atomic_predicate_evals(nr_states, var_names, var_domains, dt_colored_mdp_factory.relevant_state_valuations, all_states_true_bv, predicate_type="var_vs_var"))
+            additional_atomic_predicates.update(payntbind.synthesis.get_atomic_predicate_evals(nr_states, var_names, var_domains, dt_colored_mdp_factory.relevant_state_valuations, all_states_true_bv, predicate_type="interval"))
+            additional_atomic_predicates.update(payntbind.synthesis.get_atomic_predicate_evals(nr_states, var_names, var_domains, dt_colored_mdp_factory.relevant_state_valuations, all_states_true_bv, predicate_type="max_var"))
+            additional_atomic_predicates.update(payntbind.synthesis.get_atomic_predicate_evals(nr_states, var_names, var_domains, dt_colored_mdp_factory.relevant_state_valuations, all_states_true_bv, predicate_type="var_distance"))
+            get_predicates_time_end = time.time()
+            print(f"getting predicate evaluations took {get_predicates_time_end - get_predicates_time_start:.2f} seconds")
+            print(len(additional_atomic_predicates))
 
         # get_predicates_time_start = time.time()
         # additional_atomic_predicates = get_atomic_predicate_evals(dt_colored_mdp_factory)
@@ -284,7 +325,6 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         # print(f"getting predicate evaluations took {get_predicates_time_end - get_predicates_time_start:.2f} seconds")
         # print(len(additional_atomic_predicates))
         # exit()
-        # features, variables = get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, only_relevant_states=True, ignore_original_features=True)
         features, variables = get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, only_relevant_states=False, ignore_original_features=False)
         # features, variables = get_mdp_features_list(dt_colored_mdp_factory, {}, only_relevant_states=False, ignore_original_features=False)
         # print([x.name for x in variables])
@@ -298,8 +338,15 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
                 saved_X = output_dict["X"].toarray().tolist() if sparse.issparse(output_dict["X"]) else output_dict["X"]
                 json.dump([saved_X, variables_json], f)
 
+    number_of_predicates = 0
+    for var in variables:
+        number_of_predicates += len(var.domain) - 1
+
+    # select_features(output_dict["X"], output_dict["Y"][0])
+    # exit()
 
     print(f"Number of features: {len(output_dict['X'][0])}")
+    print(f"Number of predicates: {number_of_predicates}")
 
     filter_unreachable_class = True
     smallest_tree = None
@@ -327,39 +374,74 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     dt_colored_mdp_factory.relevant_state_valuations = features
     dt_colored_mdp_factory.variables = variables
 
-    dtnest_synthesizer = paynt.dt.dtnest.synthesizer.DtNest(dt_colored_mdp_factory)
 
-    paynt.verification.property.Property.set_model_checking_precision(1e-6)
+    if run_dtnest:
 
-    dtnest_synthesizer.epsilon = 1e-4
-    dtnest_synthesizer.timeout = 300
+        dtnest_synthesizer = paynt.dt.dtnest.synthesizer.DtNest(dt_colored_mdp_factory)
 
-    print("starting dtNest")
+        paynt.verification.property.Property.set_model_checking_precision(1e-8)
 
-    dtnest_timer_start = time.time()
+        dtnest_synthesizer.epsilon = relative_eps if relative_eps is not None else 1e-6
+        dtnest_synthesizer.timeout = 300
 
-    tree = dtnest_synthesizer.run()
+        print()
+        print("starting dtNest")
 
-    dtnest_timer_end = time.time()
+        dtnest_timer_start = time.time()
 
-    # print(tree.to_string())
-    print(f"tree depth: {tree.get_depth()}, number of nodes: {len(tree.collect_nonterminals())}")
-    print(f"dtNest synthesizer took {dtnest_timer_end - dtnest_timer_start:.2f} seconds")
+        tree = dtnest_synthesizer.run()
 
-    submdp = get_submdp_from_unfixed_states(dt_colored_mdp_factory, tree=tree)
-    mc_result_submdp = submdp.model_check_property(optimality_specification.all_properties()[0])
-    print("submdp value:", mc_result_submdp.value)
+        dtnest_timer_end = time.time()
+
+        # print(tree.to_string())
+        print(f"tree depth: {tree.get_depth()}, number of nodes: {len(tree.collect_nonterminals())}")
+        print(f"dtNest synthesizer took {dtnest_timer_end - dtnest_timer_start:.2f} seconds")
+
+        submdp = get_submdp_from_unfixed_states(dt_colored_mdp_factory, tree=tree)
+        mc_result_submdp = submdp.model_check_property(optimality_specification.all_properties()[0])
+        print("submdp value:", mc_result_submdp.value)
 
 
-    exit()
+        # exit()
 
+        # Old dtnest
+
+        dtnest_synthesizer = paynt.dt.dtnest.synthesizer.DtNest(dt_colored_mdp_factory)
+
+        paynt.verification.property.Property.set_model_checking_precision(1e-8)
+
+        dtnest_synthesizer.epsilon = relative_eps if relative_eps is not None else 1e-6
+        dtnest_synthesizer.timeout = 300
+        dtnest_synthesizer.scikit_depth_perturbations = False
+
+        print()
+        print("starting Old dtNest")
+
+        dtnest_timer_start = time.time()
+
+        tree = dtnest_synthesizer.run()
+
+        dtnest_timer_end = time.time()
+
+        # print(tree.to_string())
+        print(f"tree depth: {tree.get_depth()}, number of nodes: {len(tree.collect_nonterminals())}")
+        print(f"Old dtNest synthesizer took {dtnest_timer_end - dtnest_timer_start:.2f} seconds")
+
+        submdp = get_submdp_from_unfixed_states(dt_colored_mdp_factory, tree=tree)
+        mc_result_submdp = submdp.model_check_property(optimality_specification.all_properties()[0])
+        print("submdp value:", mc_result_submdp.value)
+
+
+    scikit_time_start = time.time()
+    scikit_smallest_tree_info = {'nodes': None, 'depth': None, 'value': None}
     
     for i in range(len(output_dict["Y"])):
-        clf = tree.DecisionTreeClassifier(criterion="gini", max_depth=None, random_state=0, ccp_alpha=ccp_alpha) # if random_state is None (default) then scikit does not have to be deterministic
+        scikit_learn_timer_start = time.time()
+
+        clf = sklearn.tree.DecisionTreeClassifier(criterion="gini", max_depth=None, random_state=0, ccp_alpha=ccp_alpha) # if random_state is None (default) then scikit does not have to be deterministic
         # Filter out points with class -1
         X = output_dict["X"]
         Y = output_dict["Y"][i]
-        Y = np.array(Y)[relevant_states_array]
 
         if filter_unreachable_class:
             reachable_mask = np.array(Y) != -1
@@ -376,7 +458,6 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
 
 
 
-
         # model = STreeDClassifier(max_depth=4, time_limit=10)
         # model.fit(X, Y)
 
@@ -390,53 +471,33 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         # exit()
         
         clf = clf.fit(X, Y)
+        scikit_learn_timer_end = time.time()
+
         num_nodes = clf.tree_.node_count - clf.tree_.n_leaves
-        print(f"Scikit tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
-        exit()
+        if scikit_smallest_tree_info['nodes'] is None or num_nodes < scikit_smallest_tree_info['nodes']:
+            scikit_smallest_tree_info['nodes'] = num_nodes
+            scikit_smallest_tree_info['depth'] = clf.get_depth()
 
-        # scikit_tree_helper = scikit_tree_to_tree_helper(clf, variables, adjusted_action_labels)
-        # tree_base.build_from_tree_helper(scikit_tree_helper)
+            scikit_tree_helper = scikit_tree_to_tree_helper(clf, variables, adjusted_action_labels)
+            tree_base.build_from_tree_helper(scikit_tree_helper)
 
-        # print(tree_base.to_string())
-        # exit()
-
-        # model = STreeDClassifier(max_depth=4, n_categories=100, n_thresholds=100) # TODO handle this n_categories somehow
-        # model.fit(X, Y)
-
-        # fit_score = model.score(X, Y)
-        # print(f"Streed tree depth: {model.get_depth()}, Number of nodes: {model.tree_.get_num_branching_nodes()}, Fit score: {fit_score}")
-        # exit()
-
-        # init_node = (0,0)
-        # nodes_to_process = [init_node]
-        # while nodes_to_process:
-        #     node_id, depth = nodes_to_process.pop()
-        #     if clf.tree_.children_left[node_id] != -1: # -2 means it's a leaf node
-        #         used_predicate_indices.add(int(clf.tree_.feature[node_id]))
-        #         used_predicate_frequencies_total[int(clf.tree_.feature[node_id])] += 1
-        #         used_predicate_frequencies_per_tree[int(clf.tree_.feature[node_id])].add(i)
-        #         if int(clf.tree_.feature[node_id]) not in predicate_indeces_to_lowest_depth.keys():
-        #             predicate_indeces_to_lowest_depth[int(clf.tree_.feature[node_id])] = depth
-        #         else:
-        #             predicate_indeces_to_lowest_depth[int(clf.tree_.feature[node_id])] = min(predicate_indeces_to_lowest_depth[int(clf.tree_.feature[node_id])], depth)
-        #         nodes_to_process.append((clf.tree_.children_left[node_id], depth+1))
-        #         nodes_to_process.append((clf.tree_.children_right[node_id], depth+1))
-
-        # # for j in range(clf.tree_.node_count):
-        # #     if clf.tree_.children_left[j] != -1: # -2 means it's a leaf node
-        # #         used_predicate_indices.add(clf.tree_.feature[j])
-
-        # average_tree_depth += clf.get_depth()
-        # average_tree_nodes += num_nodes
+            submdp = get_submdp_from_unfixed_states(dt_colored_mdp_factory, tree=tree_base)
+            mc_result_submdp = submdp.model_check_property(optimality_specification.all_properties()[0])
+            scikit_smallest_tree_info['value'] = mc_result_submdp.value
         
-        # if smallest_tree_nodes is None or num_nodes < smallest_tree_nodes:
-        #     smallest_tree_nodes = num_nodes
-        #     smallest_tree = clf
-        #     smallest_tree_policy = output_dict["Y"][i]
+            # print(f"Scikit tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
+            # print(f"Scikit learn took {scikit_learn_timer_end - scikit_learn_timer_start:.2f} seconds")
+            # print(tree_base.to_string())
+            # print("submdp value:", mc_result_submdp.value)
+            # exit()
 
-        # if i == 0:
-        #     initial_tree = clf
-        #     initial_tree_nodes = num_nodes
+
+    scikit_time_end = time.time()
+    print()
+    print(f"scikit-learn decision tree learning took {scikit_time_end - scikit_time_start:.2f} seconds for {len(output_dict['Y'])} trees")
+    print(f"scikit best tree depth: {scikit_smallest_tree_info['depth']}, number of nodes: {scikit_smallest_tree_info['nodes']}")
+    print(f"submdp value: {scikit_smallest_tree_info['value']}")
+    
 
     exit()
 

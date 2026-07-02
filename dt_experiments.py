@@ -1,0 +1,66 @@
+
+
+import os
+
+import paynt
+import stormpy
+
+import paynt.parser.sketch
+
+import subprocess
+
+import tqdm
+
+import click
+
+
+MODELS_FOLDER = "models/predicates/eval/"
+RESULTS_FOLDER = "results/predicates-stuff-logs/"
+
+
+# models = ['consensus-4-2', 'frozenlake_12x12', 'ij-14-single', 'maze-7', 'system_administrator_2', 'tictactoe_vs_random', 'wlan-1-2']
+models = ['consensus-4-2', 'frozenlake_12x12', 'maze-7', 'system_administrator_2', 'tictactoe_vs_random', 'wlan-1-2', 'orchard-simple', 'orchard-classic', 'pacman', 'signal-16', 'signal-64']
+
+@click.command()
+@click.option("--relative-eps", type=float, default=None, show_default=True, help="relative epsilon threhshold computed from random policy")
+def main(relative_eps):
+
+if not os.path.exists(RESULTS_FOLDER):
+    os.makedirs(RESULTS_FOLDER)
+
+
+for model in tqdm.tqdm(models):
+
+    model_folder = MODELS_FOLDER + model + "/"
+    model_path = model_folder + "sketch.templ"
+    prop_path = model_folder + "sketch.props"
+
+
+    if not os.path.exists(RESULTS_FOLDER + model + "-all.log"):
+        print(f"Running {model} with all predicates")
+        process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest"], stdout=subprocess.PIPE, stderr=None)
+
+        lines = process.stdout.readlines()
+
+        with open(RESULTS_FOLDER + model + "-all.log", "w") as f:
+            for line in lines:
+                f.write(line.decode("utf-8"))
+    else:
+        print(f"Skipping {model} with all predicates because log file already exists")
+
+    if not os.path.exists(RESULTS_FOLDER + model + "-default.log"):
+        print(f"Running {model} with default predicates")
+        process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest", "--default-predicates"], stdout=subprocess.PIPE, stderr=None)
+
+        lines = process.stdout.readlines()
+
+        with open(RESULTS_FOLDER + model + "-default.log", "w") as f:
+            for line in lines:
+                f.write(line.decode("utf-8"))
+    else:
+        print(f"Skipping {model} with default predicates because log file already exists")
+
+
+
+if __name__ == "__main__":
+    main()

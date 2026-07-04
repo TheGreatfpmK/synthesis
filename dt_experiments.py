@@ -25,40 +25,40 @@ models = ['consensus-4-2', 'frozenlake_12x12', 'maze-7', 'system_administrator_2
 @click.option("--relative-eps", type=float, default=None, show_default=True, help="relative epsilon threhshold computed from random policy")
 def main(relative_eps):
 
-if not os.path.exists(RESULTS_FOLDER):
-    os.makedirs(RESULTS_FOLDER)
+    if not os.path.exists(RESULTS_FOLDER):
+        os.makedirs(RESULTS_FOLDER)
 
 
-for model in tqdm.tqdm(models):
+    for model in tqdm.tqdm(models):
 
-    model_folder = MODELS_FOLDER + model + "/"
-    model_path = model_folder + "sketch.templ"
-    prop_path = model_folder + "sketch.props"
+        model_folder = MODELS_FOLDER + model + "/"
+        model_path = model_folder + "sketch.templ"
+        prop_path = model_folder + "sketch.props"
 
 
-    if not os.path.exists(RESULTS_FOLDER + model + "-all.log"):
-        print(f"Running {model} with all predicates")
-        process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest"], stdout=subprocess.PIPE, stderr=None)
+        if not os.path.exists(RESULTS_FOLDER + model + "-all.log"):
+            print(f"Running {model} with all predicates")
+            process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest"], stdout=subprocess.PIPE, stderr=None)
 
-        lines = process.stdout.readlines()
+            lines = process.stdout.readlines()
 
-        with open(RESULTS_FOLDER + model + "-all.log", "w") as f:
-            for line in lines:
-                f.write(line.decode("utf-8"))
-    else:
-        print(f"Skipping {model} with all predicates because log file already exists")
+            with open(RESULTS_FOLDER + model + "-all.log", "w") as f:
+                for line in lines:
+                    f.write(line.decode("utf-8"))
+        else:
+            print(f"Skipping {model} with all predicates because log file already exists")
 
-    if not os.path.exists(RESULTS_FOLDER + model + "-default.log"):
-        print(f"Running {model} with default predicates")
-        process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest", "--default-predicates"], stdout=subprocess.PIPE, stderr=None)
+        if not os.path.exists(RESULTS_FOLDER + model + "-default.log"):
+            print(f"Running {model} with default predicates")
+            process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest", "--default-predicates"], stdout=subprocess.PIPE, stderr=None)
 
-        lines = process.stdout.readlines()
+            lines = process.stdout.readlines()
 
-        with open(RESULTS_FOLDER + model + "-default.log", "w") as f:
-            for line in lines:
-                f.write(line.decode("utf-8"))
-    else:
-        print(f"Skipping {model} with default predicates because log file already exists")
+            with open(RESULTS_FOLDER + model + "-default.log", "w") as f:
+                for line in lines:
+                    f.write(line.decode("utf-8"))
+        else:
+            print(f"Skipping {model} with default predicates because log file already exists")
 
 
 

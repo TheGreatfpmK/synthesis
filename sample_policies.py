@@ -75,7 +75,9 @@ def get_constraint_specification(specification):
     if is_reward_operator:
         if rf.has_reward_name:
             reward_name = rf.reward_name
-        constraint_formula_str = f"R{'{\"'+reward_name+'\"}' if rf.has_reward_name else ''}{'>=' if optimality_type == stormpy.OptimizationDirection.Maximize else '<='}0 [{subformula}]"
+        reward_part = f'{{"{reward_name}"}}' if rf.has_reward_name else ''
+        comparison_op = '>=' if optimality_type == stormpy.OptimizationDirection.Maximize else '<='
+        constraint_formula_str = f"R{reward_part}{comparison_op}0 [{subformula}]"
     elif is_probability_operator:
         constraint_formula_str = f"P{'>=' if optimality_type == stormpy.OptimizationDirection.Maximize else '<='}0 [{subformula}]"
     else:

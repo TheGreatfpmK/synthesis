@@ -23,10 +23,12 @@ models = ['consensus-4-2', 'frozenlake_12x12', 'maze-7', 'system_administrator_2
 
 @click.command()
 @click.option("--relative-eps", type=float, default=None, show_default=True, help="relative epsilon threhshold computed from random policy")
-def main(relative_eps):
+@click.option("--results-folder", type=str, default=RESULTS_FOLDER, show_default=True, help="folder to store results")
+@click.option("--sampling-steps", type=int, default=1000, show_default=True, help="number of sampling steps for dtnest")
+def main(relative_eps, results_folder, sampling_steps):
 
-    if not os.path.exists(RESULTS_FOLDER):
-        os.makedirs(RESULTS_FOLDER)
+    if not os.path.exists(results_folder):
+        os.makedirs(results_folder)
 
 
     for model in tqdm.tqdm(models):
@@ -36,25 +38,25 @@ def main(relative_eps):
         prop_path = model_folder + "sketch.props"
 
 
-        if not os.path.exists(RESULTS_FOLDER + model + "-all.log"):
+        if not os.path.exists(results_folder + model + "-all.log"):
             print(f"Running {model} with all predicates")
-            process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest"], stdout=subprocess.PIPE, stderr=None)
+            process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest", "--relative-eps", str(relative_eps), "--sampling-steps", str(sampling_steps)], stdout=subprocess.PIPE, stderr=None)
 
             lines = process.stdout.readlines()
 
-            with open(RESULTS_FOLDER + model + "-all.log", "w") as f:
+            with open(results_folder + model + "-all.log", "w") as f:
                 for line in lines:
                     f.write(line.decode("utf-8"))
         else:
             print(f"Skipping {model} with all predicates because log file already exists")
 
-        if not os.path.exists(RESULTS_FOLDER + model + "-default.log"):
+        if not os.path.exists(results_folder + model + "-default.log"):
             print(f"Running {model} with default predicates")
-            process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest", "--default-predicates"], stdout=subprocess.PIPE, stderr=None)
+            process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest", "--default-predicates", "--relative-eps", str(relative_eps), "--sampling-steps", str(sampling_steps)], stdout=subprocess.PIPE, stderr=None)
 
             lines = process.stdout.readlines()
 
-            with open(RESULTS_FOLDER + model + "-default.log", "w") as f:
+            with open(results_folder + model + "-default.log", "w") as f:
                 for line in lines:
                     f.write(line.decode("utf-8"))
         else:

@@ -40,7 +40,7 @@ def main(relative_eps, results_folder, sampling_steps):
 
         if not os.path.exists(results_folder + model + "-all.log"):
             print(f"Running {model} with all predicates")
-            process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest", "--relative-eps", str(relative_eps), "--sampling-steps", str(sampling_steps)], stdout=subprocess.PIPE, stderr=None)
+            process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest", "--relative-eps", str(relative_eps), "--steps", str(sampling_steps)], stdout=subprocess.PIPE, stderr=None)
 
             lines = process.stdout.readlines()
 
@@ -52,7 +52,7 @@ def main(relative_eps, results_folder, sampling_steps):
 
         if not os.path.exists(results_folder + model + "-default.log"):
             print(f"Running {model} with default predicates")
-            process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest", "--default-predicates", "--relative-eps", str(relative_eps), "--sampling-steps", str(sampling_steps)], stdout=subprocess.PIPE, stderr=None)
+            process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest", "--default-predicates", "--relative-eps", str(relative_eps), "--steps", str(sampling_steps)], stdout=subprocess.PIPE, stderr=None)
 
             lines = process.stdout.readlines()
 

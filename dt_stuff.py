@@ -492,11 +492,11 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
             mc_result_submdp = submdp.model_check_property(optimality_specification.all_properties()[0])
             scikit_smallest_tree_info['value'] = mc_result_submdp.value
         
-            print(f"Scikit tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
-            print(f"Scikit learn took {scikit_learn_timer_end - scikit_learn_timer_start:.2f} seconds")
-            print(tree_base.to_string())
-            print("submdp value:", mc_result_submdp.value)
-            exit()
+            # print(f"Scikit tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
+            # print(f"Scikit learn took {scikit_learn_timer_end - scikit_learn_timer_start:.2f} seconds")
+            # print(tree_base.to_string())
+            # print("submdp value:", mc_result_submdp.value)
+            # exit()
 
 
     scikit_time_end = time.time()

@@ -180,11 +180,14 @@ def select_features(features, labels):
 @click.option("--load-features", type=click.Path(exists=True), default=None, show_default=True, help="json file from which to load state features instead of computing them from the MDP")
 @click.option("--default-predicates", is_flag=True, default=False, show_default=True, help="whether to use the default predicates (state variables) as features for decision tree learning")
 @click.option("--run-dtnest", is_flag=True, default=False, show_default=True, help="whether to run the dtNest synthesizer instead of scikit-learn decision tree learning")
-def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, ccp_alpha, output, append_stats, save_features, load_features, default_predicates, run_dtnest):
+@click.option("--max-used-samples", type=int, default=100, show_default=True, help="maximum number of sampled policies to use for decision tree learning, if None then all samples will be used")
+def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, ccp_alpha, output, append_stats, save_features, load_features, default_predicates, run_dtnest, max_used_samples):
     sketch_path = os.path.join(project, sketch)
     props_path = os.path.join(project, props)
 
     project_name = os.path.basename(project)
+
+    random.seed(seed)
 
     if append_stats:
         stats_file = 'results/sampling_stats.csv'
@@ -256,6 +259,10 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     # # all_samples, last_sample = rejection_sampling(model_info, dt_colored_mdp_factory, specification, step_count=steps, seed=seed)
     sampling_end_time = time.time()
     print(f"sampling took {sampling_end_time - sampling_start_time:.2f} seconds")
+
+    if max_used_samples is not None and len(all_samples) > max_used_samples:
+        all_samples = random.sample(all_samples, max_used_samples)
+        print(f"using {max_used_samples} samples for decision tree learning")
 
     # print(f"number of policies satisfying specification found: {len(all_samples)}")
 
@@ -382,7 +389,7 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         paynt.verification.property.Property.set_model_checking_precision(1e-8)
 
         dtnest_synthesizer.epsilon = relative_eps if relative_eps is not None else 1e-6
-        dtnest_synthesizer.timeout = 300
+        dtnest_synthesizer.timeout = 600
 
         print()
         print("starting dtNest")
@@ -411,7 +418,7 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         paynt.verification.property.Property.set_model_checking_precision(1e-8)
 
         dtnest_synthesizer.epsilon = relative_eps if relative_eps is not None else 1e-6
-        dtnest_synthesizer.timeout = 300
+        dtnest_synthesizer.timeout = 600
         dtnest_synthesizer.scikit_depth_perturbations = False
 
         print()
@@ -485,11 +492,11 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
             mc_result_submdp = submdp.model_check_property(optimality_specification.all_properties()[0])
             scikit_smallest_tree_info['value'] = mc_result_submdp.value
         
-            # print(f"Scikit tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
-            # print(f"Scikit learn took {scikit_learn_timer_end - scikit_learn_timer_start:.2f} seconds")
-            # print(tree_base.to_string())
-            # print("submdp value:", mc_result_submdp.value)
-            # exit()
+            print(f"Scikit tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
+            print(f"Scikit learn took {scikit_learn_timer_end - scikit_learn_timer_start:.2f} seconds")
+            print(tree_base.to_string())
+            print("submdp value:", mc_result_submdp.value)
+            exit()
 
 
     scikit_time_end = time.time()

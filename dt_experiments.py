@@ -19,7 +19,7 @@ RESULTS_FOLDER = "results/predicates-stuff-logs/"
 
 
 # models = ['consensus-4-2', 'frozenlake_12x12', 'ij-14-single', 'maze-7', 'system_administrator_2', 'tictactoe_vs_random', 'wlan-1-2']
-models = ['consensus-4-2', 'frozenlake_12x12', 'maze-7', 'system_administrator_2', 'tictactoe_vs_random', 'wlan-1-2', 'orchard-simple', 'orchard-classic', 'pacman', 'signal-16', 'signal-64']
+models = ['consensus-4-2', 'frozenlake_8x8', 'frozenlake_12x12', 'maze-7', 'maze-steps', 'system_administrator_1', 'system_administrator_2', 'wlan-1-2', 'orchard-simple', 'orchard-classic', 'pacman', 'stairs-16', 'stairs-64']
 
 @click.command()
 @click.option("--relative-eps", type=float, default=None, show_default=True, help="relative epsilon threhshold computed from random policy")

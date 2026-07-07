@@ -442,4 +442,6 @@ class DtNest(DtSynthesizer):
             if self.export_synthesis_filename_base is not None:
                 self.export_decision_tree(self.best_tree, self.export_synthesis_filename_base)
 
+            print(f"finished dtnest synthesis with dt learning calls: {self.dt_learning_calls}, dt learning successes: {self.dt_learning_successes}, dt learning recomputed calls: {self.dt_learning_recomputed_calls}, dt learning recomputed successes: {self.dt_learning_recomputed_successes}, dtpaynt calls: {self.dtpaynt_calls}, dtpaynt successes smaller: {self.dtpaynt_successes_smaller}, dtpaynt tree found: {self.dtpaynt_tree_found}, all larger: {self.all_larger}")
+
         return self.best_tree

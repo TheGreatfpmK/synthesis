@@ -130,35 +130,57 @@ def run_dt_paynt_with_partial_family_init(dt_colored_mdp_factory, tree_depth, ad
 
 
 
-def select_features(features, labels):
+def select_features(features, labels, features_ids):
 
 
     X = features
-    Y = labels
-
-    reachable_mask = np.array(Y) != -1
-    Y = np.array(Y)[reachable_mask]
-    X = np.array(X)[reachable_mask]
+    Y_list = labels
 
 
-    nr_features = X.shape[1]
-    nr_wanted_features = int(nr_features * 0.2)  # Keep top 20% features
+    feature_score = {id:0 for id in features_ids}
 
-    tree_ensemble = sklearn.ensemble.ExtraTreesClassifier(n_estimators=100, random_state=0)
-    # tree_ensemble.fit(X, Y)
 
-    # feature_selector = sklearn.feature_selection.SelectFromModel(tree_ensemble, prefit=True, max_features=nr_wanted_features)
-    feature_selector = sklearn.feature_selection.RFECV(tree_ensemble, min_features_to_select=1)
+    for Y in Y_list:
 
-    feature_selector.fit(X, Y)
-    mask = feature_selector.get_support()
+        reachable_mask = np.array(Y) != -1
+        Y = np.array(Y)[reachable_mask]
+        X = np.array(features)[reachable_mask]
+        ids_subset = [id for i, id in enumerate(features_ids) if reachable_mask[i]]
 
-    X_new = feature_selector.transform(X)
 
-    # print(tree_ensemble.feature_importances_)
-    print(X.shape)
-    print(X_new.shape)
-    print(mask)
+        nr_features = X.shape[1]
+        nr_wanted_features = int(nr_features * 0.2)  # Keep top 20% features
+        min_wanted_features = int(nr_features * 0.1)  # Ensure at least 10% features are kept
+
+        tree_ensemble = sklearn.ensemble.ExtraTreesClassifier(n_estimators=1, random_state=0)
+        # tree_ensemble.fit(X, Y)
+
+        # feature_selector = sklearn.feature_selection.SelectFromModel(tree_ensemble, prefit=True, max_features=nr_wanted_features)
+        feature_selector = sklearn.feature_selection.RFECV(tree_ensemble, min_features_to_select=min_wanted_features)
+
+        feature_selector.fit(X, Y)
+        mask = feature_selector.get_support()
+
+        for i, id in enumerate(ids_subset):
+            if mask[i]:
+                feature_score[id] += 1
+
+        # X_new = feature_selector.transform(X)
+        # print(tree_ensemble.feature_importances_)
+        # print(X.shape)
+        # print(X_new.shape)
+        # print(mask)
+
+    # print(f"Feature selection scores: {feature_score}")
+
+    top_feature_keys = [
+        key for key, _ in sorted(feature_score.items(), key=lambda item: item[1], reverse=True)[:nr_wanted_features]
+    ]
+
+
+    return top_feature_keys
+
+    
 
 
 
@@ -181,7 +203,8 @@ def select_features(features, labels):
 @click.option("--default-predicates", is_flag=True, default=False, show_default=True, help="whether to use the default predicates (state variables) as features for decision tree learning")
 @click.option("--run-dtnest", is_flag=True, default=False, show_default=True, help="whether to run the dtNest synthesizer instead of scikit-learn decision tree learning")
 @click.option("--max-used-samples", type=int, default=100, show_default=True, help="maximum number of sampled policies to use for decision tree learning, if None then all samples will be used")
-def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, ccp_alpha, output, append_stats, save_features, load_features, default_predicates, run_dtnest, max_used_samples):
+@click.option("--predicate-selection", is_flag=True, default=False, show_default=True, help="whether to run a heuristic that tries to select a subset opf important predicates")
+def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, ccp_alpha, output, append_stats, save_features, load_features, default_predicates, run_dtnest, max_used_samples, predicate_selection):
     sketch_path = os.path.join(project, sketch)
     props_path = os.path.join(project, props)
 
@@ -345,12 +368,24 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
                 saved_X = output_dict["X"].toarray().tolist() if sparse.issparse(output_dict["X"]) else output_dict["X"]
                 json.dump([saved_X, variables_json], f)
 
+    
+
+    if predicate_selection:
+        selected_feature_ids = select_features(output_dict["X"], output_dict["Y"], [i for i,x in enumerate(variables)])
+
+        variables = [variables[i] for i in selected_feature_ids]
+        updated_features = [[] for _ in range(len(features))]
+        for state_id, state_features in enumerate(features):
+            for i in selected_feature_ids:
+                updated_features[state_id].append(state_features[i])
+        features = updated_features
+        output_dict["X"] = features
+
+        
     number_of_predicates = 0
     for var in variables:
         number_of_predicates += len(var.domain) - 1
-
-    # select_features(output_dict["X"], output_dict["Y"][0])
-    # exit()
+        
 
     print(f"Number of features: {len(output_dict['X'][0])}")
     print(f"Number of predicates: {number_of_predicates}")

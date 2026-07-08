@@ -25,7 +25,8 @@ models = ['consensus-4-2', 'frozenlake_8x8', 'frozenlake_12x12', 'maze-7', 'maze
 @click.option("--relative-eps", type=float, default=None, show_default=True, help="relative epsilon threhshold computed from random policy")
 @click.option("--results-folder", type=str, default=RESULTS_FOLDER, show_default=True, help="folder to store results")
 @click.option("--sampling-steps", type=int, default=1000, show_default=True, help="number of sampling steps for dtnest")
-def main(relative_eps, results_folder, sampling_steps):
+@click.option("--predicate-selection", type=bool, default=False, show_default=True, help="whether to perform predicate selection or not")
+def main(relative_eps, results_folder, sampling_steps, predicate_selection):
 
     if not os.path.exists(results_folder):
         os.makedirs(results_folder)
@@ -36,6 +37,21 @@ def main(relative_eps, results_folder, sampling_steps):
         model_folder = MODELS_FOLDER + model + "/"
         model_path = model_folder + "sketch.templ"
         prop_path = model_folder + "sketch.props"
+
+        if predicate_selection:
+            if not os.path.exists(results_folder + model + "-all.log"):
+                print(f"Running {model} with all predicates and predicate selection")
+                process = subprocess.Popen(["python3", "dt_stuff.py", model_folder, "--run-dtnest", "--relative-eps", str(relative_eps), "--steps", str(sampling_steps), "--predicate-selection"], stdout=subprocess.PIPE, stderr=None)
+
+                lines = process.stdout.readlines()
+
+                with open(results_folder + model + "-all.log", "w") as f:
+                    for line in lines:
+                        f.write(line.decode("utf-8"))
+            else:
+                print(f"Skipping {model} with all predicates because log file already exists")
+
+            continue
 
 
         if not os.path.exists(results_folder + model + "-all.log"):

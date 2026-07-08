@@ -130,14 +130,14 @@ def run_dt_paynt_with_partial_family_init(dt_colored_mdp_factory, tree_depth, ad
 
 
 
-def select_features(features, labels, features_ids):
+def select_features(features, labels, features_names):
 
 
     X = features
     Y_list = labels
 
 
-    feature_score = {id:0 for id in features_ids}
+    feature_score = {(id, name):0 for id, name in enumerate(features_names)}
 
 
     for Y in Y_list:
@@ -145,12 +145,11 @@ def select_features(features, labels, features_ids):
         reachable_mask = np.array(Y) != -1
         Y = np.array(Y)[reachable_mask]
         X = np.array(features)[reachable_mask]
-        ids_subset = [id for i, id in enumerate(features_ids) if reachable_mask[i]]
 
 
         nr_features = X.shape[1]
         nr_wanted_features = int(nr_features * 0.2)  # Keep top 20% features
-        min_wanted_features = int(nr_features * 0.1)  # Ensure at least 10% features are kept
+        min_wanted_features = int(nr_features * 0.05)  # Ensure at least 5% features are kept
 
         tree_ensemble = sklearn.ensemble.ExtraTreesClassifier(n_estimators=1, random_state=0)
         # tree_ensemble.fit(X, Y)
@@ -161,9 +160,9 @@ def select_features(features, labels, features_ids):
         feature_selector.fit(X, Y)
         mask = feature_selector.get_support()
 
-        for i, id in enumerate(ids_subset):
-            if mask[i]:
-                feature_score[id] += 1
+        # print(mask)
+
+        feature_score = {(id, name): feature_score[(id, name)] + int(mask[id]) for id, name in enumerate(features_names)}
 
         # X_new = feature_selector.transform(X)
         # print(tree_ensemble.feature_importances_)
@@ -171,14 +170,16 @@ def select_features(features, labels, features_ids):
         # print(X_new.shape)
         # print(mask)
 
+
+    # print(feature_score)
     # print(f"Feature selection scores: {feature_score}")
 
-    top_feature_keys = [
-        key for key, _ in sorted(feature_score.items(), key=lambda item: item[1], reverse=True)[:nr_wanted_features]
+    top_feature_ids = [
+        id for (id, name), _ in sorted(feature_score.items(), key=lambda item: item[1], reverse=True)[:nr_wanted_features]
     ]
 
 
-    return top_feature_keys
+    return top_feature_ids
 
     
 
@@ -362,24 +363,27 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         # output_dict = {"X" : get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, ignore_original_features=False), "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info)]}
         output_dict = {"X" : features, "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
 
+        if predicate_selection:
+            predicate_selection_start_time = time.time()
+
+            selected_feature_ids = select_features(output_dict["X"], output_dict["Y"], [var.name for var in variables])
+
+            variables = [variables[i] for i in selected_feature_ids]
+            updated_features = [[] for _ in range(len(features))]
+            for state_id, state_features in enumerate(features):
+                for i in selected_feature_ids:
+                    updated_features[state_id].append(state_features[i])
+            features = updated_features
+            output_dict["X"] = features
+
+            predicate_selection_end_time = time.time()
+            print(f"predicate selection took {predicate_selection_end_time - predicate_selection_start_time:.2f} seconds")
+
         if save_features is not None:
             variables_json = [[var.name, var.domain] for var in variables]
             with open(save_features, 'w') as f:
                 saved_X = output_dict["X"].toarray().tolist() if sparse.issparse(output_dict["X"]) else output_dict["X"]
                 json.dump([saved_X, variables_json], f)
-
-    
-
-    if predicate_selection:
-        selected_feature_ids = select_features(output_dict["X"], output_dict["Y"], [i for i,x in enumerate(variables)])
-
-        variables = [variables[i] for i in selected_feature_ids]
-        updated_features = [[] for _ in range(len(features))]
-        for state_id, state_features in enumerate(features):
-            for i in selected_feature_ids:
-                updated_features[state_id].append(state_features[i])
-        features = updated_features
-        output_dict["X"] = features
 
         
     number_of_predicates = 0

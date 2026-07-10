@@ -5,6 +5,7 @@ import os
 
 from paynt.dt.decision_tree import DtVariable, DecisionTree
 from paynt.dt.dtnest._utils import get_submdp_from_unfixed_states, scikit_tree_to_tree_helper
+from paynt.dt._utils import pystreed_tree_to_tree_helper
 import paynt.parser.sketch
 import paynt.dt.dtnest.synthesizer
 import paynt.verification.property
@@ -182,6 +183,39 @@ def select_features(features, labels, features_names):
     return top_feature_ids
 
     
+def run_pystreed(X, Y, quotient, variables, action_labels, tree_base, threshold, max_depth=12):
+
+    for depth in range(max_depth):
+        model = STreeDClassifier(max_depth=depth, n_categories=100, n_thresholds=100, time_limit=60) # TODO handle this n_categories somehow
+        model.fit(X, Y)
+
+        fit_score = model.score(X, Y)
+        consistent = fit_score == 1.0
+
+        if consistent:
+            tree_helper = []
+            pystreed_tree_to_tree_helper(model.tree_, variables, action_labels, tree_helper)
+            tree_base.build_from_tree_helper(tree_helper)
+            return tree_base
+
+        tree_helper = []
+        pystreed_tree_to_tree_helper(model.tree_, variables, action_labels, tree_helper)
+
+        tree_base.build_from_tree_helper(tree_helper)
+
+        submdp = get_submdp_from_unfixed_states(quotient, tree=tree_base)
+        perturbation_spec = quotient.specification.copy()
+        perturbation_spec.optimality.update_optimum(threshold)
+        result = submdp.check_specification(perturbation_spec)
+
+
+        print(f"Depth {depth}: fit_score={fit_score}, consistent={consistent}, value={result.optimality_result.value}, num_nodes={len(tree_base.collect_nonterminals())}, depth={tree_base.get_depth()}")
+
+        if result.optimality_result.improves_optimum:
+            return tree_base
+
+    return None
+
 
 
 
@@ -205,7 +239,9 @@ def select_features(features, labels, features_names):
 @click.option("--run-dtnest", is_flag=True, default=False, show_default=True, help="whether to run the dtNest synthesizer instead of scikit-learn decision tree learning")
 @click.option("--max-used-samples", type=int, default=100, show_default=True, help="maximum number of sampled policies to use for decision tree learning, if None then all samples will be used")
 @click.option("--predicate-selection", is_flag=True, default=False, show_default=True, help="whether to run a heuristic that tries to select a subset opf important predicates")
-def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, ccp_alpha, output, append_stats, save_features, load_features, default_predicates, run_dtnest, max_used_samples, predicate_selection):
+@click.option("--binarize-features", is_flag=True, default=False, show_default=True, help="whether to binarize features for decision tree learning")
+@click.option("--run-pystreed", is_flag=True, default=False, show_default=True, help="whether to run pystreed decision tree learning for decision tree learning")
+def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, ccp_alpha, output, append_stats, save_features, load_features, default_predicates, run_dtnest, max_used_samples, predicate_selection, binarize_features, run_pystreed):
     sketch_path = os.path.join(project, sketch)
     props_path = os.path.join(project, props)
 
@@ -222,6 +258,7 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     
     sketch_path = os.path.join(project, sketch)
     properties_path = os.path.join(project, props)
+    paynt.dt.factory.DtColoredMdpFactory.perform_binarization = binarize_features
     dt_colored_mdp_factory = paynt.parser.sketch.Sketch.load_sketch(sketch_path, properties_path)
 
     print(f"Model loaded: {project_name}")
@@ -264,6 +301,8 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     else:
         specification.constraints[0].threshold = opt_result_value
         specification.constraints[0].property.raw_formula.set_bound(specification.constraints[0].formula.comparison_type, stormpy.ExpressionManager().create_rational(stormpy.Rational(opt_result_value)))
+
+    used_threshold = specification.constraints[0].threshold
 
     # model info important for working with bitvectors
     model_info = {
@@ -543,6 +582,61 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     print(f"scikit-learn decision tree learning took {scikit_time_end - scikit_time_start:.2f} seconds for {len(output_dict['Y'])} trees")
     print(f"scikit best tree depth: {scikit_smallest_tree_info['depth']}, number of nodes: {scikit_smallest_tree_info['nodes']}")
     print(f"submdp value: {scikit_smallest_tree_info['value']}")
+
+
+    if run_pystreed:
+        pystreed_time_start = time.time()
+        pystreed_smallest_tree_info = {'nodes': None, 'depth': None, 'value': None}
+        
+        for i in range(len(output_dict["Y"])):
+            pystreed_learn_timer_start = time.time()
+
+            X = output_dict["X"]
+            Y = output_dict["Y"][i]
+
+            if filter_unreachable_class:
+                reachable_mask = np.array(Y) != -1
+                Y = np.array(Y)[reachable_mask]
+                X = np.array(X)[reachable_mask]
+
+            adjusted_action_labels = [x for i, x in enumerate(dt_colored_mdp_factory.action_labels) if i in Y]
+
+            X = np.array(X)
+            Y = np.array(Y)
+
+
+            pystreed_tree = run_pystreed(X, Y, dt_colored_mdp_factory, variables, dt_colored_mdp_factory.action_labels, tree_base, used_threshold, max_depth=12)
+
+
+            pystreed_learn_timer_end = time.time()
+
+            if pystreed_tree is None:
+                continue
+
+            num_nodes = len(pystreed_tree.collect_nonterminals())
+            if pystreed_smallest_tree_info['nodes'] is None or num_nodes < pystreed_smallest_tree_info['nodes']:
+                pystreed_smallest_tree_info['nodes'] = num_nodes
+                pystreed_smallest_tree_info['depth'] = pystreed_tree.get_depth()
+
+
+                submdp = get_submdp_from_unfixed_states(dt_colored_mdp_factory, tree=pystreed_tree)
+                mc_result_submdp = submdp.model_check_property(optimality_specification.all_properties()[0])
+                pystreed_smallest_tree_info['value'] = mc_result_submdp.value
+            
+                # print(f"Scikit tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
+                # print(f"Scikit learn took {scikit_learn_timer_end - scikit_learn_timer_start:.2f} seconds")
+                # print(pystreed_tree.to_string())
+                # print("submdp value:", mc_result_submdp.value)
+                # exit()
+
+
+        pystreed_time_end = time.time()
+        print()
+        print(f"pystreed decision tree learning took {pystreed_time_end - pystreed_time_start:.2f} seconds for {len(output_dict['Y'])} trees")
+        print(f"pystreed best tree depth: {pystreed_smallest_tree_info['depth']}, number of nodes: {pystreed_smallest_tree_info['nodes']}")
+        print(f"submdp value: {pystreed_smallest_tree_info['value']}")
+
+
     
 
     exit()

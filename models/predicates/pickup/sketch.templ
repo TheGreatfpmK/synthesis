@@ -1,0 +1,65 @@
+mdp
+
+
+const int N = 8;
+
+
+formula goal = x=gx & y=gy & picked=1;
+
+label "goal" = goal;
+
+formula xu = min(x+1,N);
+formula xd = max(x-1,0);
+formula yr = min(y+1,N);
+formula yl = max(y-1,0);
+
+formula oxu = min(ox+1,N);
+formula oxd = max(ox-1,0);
+formula oyr = min(oy+1,N);
+formula oyl = max(oy-1,0);
+
+const double slip_probability = 0.1;
+
+formula at_object = x=ox & y=oy;
+
+module grid
+
+    start : [0..1] init 0;
+    x : [0..N] init 4;
+    y : [0..N] init 4;
+    ox : [0..N] init 0;
+    oy : [0..N] init 0;
+    gx : [0..N] init 0;
+    gy : [0..N] init 0;
+    picked : [0..1] init 0;
+
+    [start] start=0 -> 1/4 : (ox'=1)&(oy'=1)&(gx'=3)&(gy'=5)&(start'=1) +
+                     1/4 : (ox'=1)&(oy'=N-1)&(gx'=5)&(gy'=5)&(start'=1) +
+                     1/4 : (ox'=N-1)&(oy'=1)&(gx'=3)&(gy'=3)&(start'=1) +
+                     1/4 : (ox'=N-1)&(oy'=N-1)&(gx'=5)&(gy'=3)&(start'=1);
+
+    [up]    !goal & start=1 & picked=0 -> slip_probability : (y'=yr) + 1-slip_probability : (x'=xu);
+    [down]  !goal & start=1 & picked=0 -> slip_probability : (y'=yl) + 1-slip_probability : (x'=xd);
+    [right] !goal & start=1 & picked=0 -> slip_probability : (x'=xd) + 1-slip_probability : (y'=yr);
+    [left]  !goal & start=1 & picked=0 -> slip_probability : (x'=xu) + 1-slip_probability : (y'=yl);
+
+    [up]    !goal & start=1 & picked=1 -> slip_probability : (y'=yr)&(oy'=yr) + 1-slip_probability : (x'=xu)&(ox'=xu);
+    [down]  !goal & start=1 & picked=1 -> slip_probability : (y'=yl)&(oy'=yl) + 1-slip_probability : (x'=xd)&(ox'=xd);
+    [right] !goal & start=1 & picked=1 -> slip_probability : (x'=xd)&(ox'=xd) + 1-slip_probability : (y'=yr)&(oy'=yr);
+    [left]  !goal & start=1 & picked=1 -> slip_probability : (x'=xu)&(ox'=xu) + 1-slip_probability : (y'=yl)&(oy'=yl);
+
+    [pickup] start=1 & at_object -> 1 : (picked'=1);
+    [pickup] start=1 & !at_object -> true;
+
+endmodule
+
+
+rewards "steps"
+
+    [up] true : 1;
+    [down] true : 1;
+    [right] true : 1;
+    [left] true : 1;
+    [pickup] true: 1;
+
+endrewards

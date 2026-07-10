@@ -1,0 +1,47 @@
+mdp
+
+
+const int N = 8;
+
+
+formula goal = x=N & y=N;
+formula crash = x=ox & y=oy;
+
+label "goal" = goal;
+
+formula xu = min(x+1,N);
+formula xd = max(x-1,0);
+formula yr = min(y+1,N);
+formula yl = max(y-1,0);
+
+formula oxu = min(ox+1,N);
+formula oxd = max(ox-1,0);
+formula oyr = min(oy+1,N);
+formula oyl = max(oy-1,0);
+
+module grid
+
+    x : [0..N] init 0;
+    y : [0..N] init 0;
+    ox : [0..N] init 4;
+    oy : [0..N] init 4;
+
+
+    [up]    !goal & !crash -> 1/4 : (x'=xu)&(ox'=oxu) + 1/4 : (x'=xu)&(ox'=oxd) + 1/4 : (x'=xu)&(oy'=oyr) + 1/4 : (x'=xu)&(oy'=oyl);
+    [down]  !goal & !crash -> 1/4 : (x'=xd)&(ox'=oxu) + 1/4 : (x'=xd)&(ox'=oxd) + 1/4 : (x'=xd)&(oy'=oyr) + 1/4 : (x'=xd)&(oy'=oyl);
+    [right] !goal & !crash -> 1/4 : (y'=yr)&(ox'=oxu) + 1/4 : (y'=yr)&(ox'=oxd) + 1/4 : (y'=yr)&(oy'=oyr) + 1/4 : (y'=yr)&(oy'=oyl);
+    [left]  !goal & !crash -> 1/4 : (y'=yl)&(ox'=oxu) + 1/4 : (y'=yl)&(ox'=oxd) + 1/4 : (y'=yl)&(oy'=oyr) + 1/4 : (y'=yl)&(oy'=oyl);
+
+    [fail] crash -> true;
+
+endmodule
+
+
+rewards "steps"
+
+    [up] true : 1;
+    [down] true : 1;
+    [right] true : 1;
+    [left] true : 1;
+
+endrewards

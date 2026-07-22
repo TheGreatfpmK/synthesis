@@ -324,8 +324,15 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     print(f"sampling took {sampling_end_time - sampling_start_time:.2f} seconds")
 
     if max_used_samples is not None and len(all_samples) > max_used_samples:
-        all_samples = random.sample(all_samples, max_used_samples)
-        print(f"using {max_used_samples} samples for decision tree learning")
+        # always keep the first element and sample the remaining policies
+        first = all_samples[0]
+        if max_used_samples > 1:
+            rest = all_samples[1:]
+            sampled_rest = random.sample(rest, min(max_used_samples - 1, len(rest)))
+        else:
+            sampled_rest = []
+        all_samples = [first] + sampled_rest
+        print(f"using {len(all_samples)} samples for decision tree learning")
 
     # print(f"number of policies satisfying specification found: {len(all_samples)}")
 
@@ -559,6 +566,7 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         scikit_learn_timer_end = time.time()
 
         num_nodes = clf.tree_.node_count - clf.tree_.n_leaves
+        # print(num_nodes)
         if scikit_smallest_tree_info['nodes'] is None or num_nodes < scikit_smallest_tree_info['nodes']:
             scikit_smallest_tree_info['nodes'] = num_nodes
             scikit_smallest_tree_info['depth'] = clf.get_depth()

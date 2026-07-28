@@ -21,7 +21,7 @@ class DtVariable:
         domain = domain_new
         domain = sorted(domain)
         self.domain = domain
-        self.is_bool_var = all(value in (0, 1) for value in self.domain)
+        self.is_bool_var = self.domain == [0,1]
 
     @property
     def domain_min(self) -> int:

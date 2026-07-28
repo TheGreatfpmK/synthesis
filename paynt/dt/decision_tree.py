@@ -21,6 +21,7 @@ class DtVariable:
         domain = domain_new
         domain = sorted(domain)
         self.domain = domain
+        self.is_bool_var = all(value in (0, 1) for value in self.domain)
 
     @property
     def domain_min(self) -> int:
@@ -56,6 +57,7 @@ class DecisionTreeNode:
         self.action = None
         self.variable = None
         self.variable_bound = None
+        self.is_bool_normalized = False
 
     @property
     def is_terminal(self) -> bool:
@@ -181,8 +183,12 @@ class DecisionTreeNode:
     def branch_expression(self, variables : list["DtVariable"], true_branch : bool = True) -> str:
         var = variables[self.variable]
         if true_branch:
+            if var.is_bool_var:
+                return f"{var.name}"
             return f"{var.name}<={var.domain[self.variable_bound]}"
         else:
+            if var.is_bool_var:
+                return f"not ({var.name})"
             return f"{var.name}>{var.domain[self.variable_bound]}"
 
     def path_expression(self, variables : list["DtVariable"]) -> list[str]:
@@ -194,6 +200,7 @@ class DecisionTreeNode:
         node_copy = DecisionTreeNode(parent)
         node_copy.identifier = self.identifier
         node_copy.parameters = self.parameters
+        node_copy.is_bool_normalized = self.is_bool_normalized
         if self.is_terminal:
             node_copy.action = self.action
         else:
@@ -202,6 +209,14 @@ class DecisionTreeNode:
             node_copy.child_true = self.child_true.copy(node_copy)
             node_copy.child_false = self.child_false.copy(node_copy)
         return node_copy
+
+    def node_label(self, variables : list["DtVariable"], action_labels : list[str]) -> str:
+        if self.is_terminal:
+            return action_labels[self.action]
+        var = variables[self.variable]
+        if var.is_bool_var:
+            return f"{var.name}"
+        return f"{var.name}<={var.domain[self.variable_bound]}"
 
     def to_string(self, variables : list["DtVariable"], action_labels : list[str], indent_level : int = 0, indent_size : int = 2) -> str:
         indent = " "*indent_level*indent_size
@@ -223,11 +238,7 @@ class DecisionTreeNode:
             for child in self.child_nodes:
                 child.to_graphviz(graphviz_tree,variables,action_labels,highlight_nodes)
 
-        if self.is_terminal:
-            node_label = action_labels[self.action]
-        else:
-            var = variables[self.variable]
-            node_label = f"{var.name}<={var.domain[self.variable_bound]}"
+        node_label = self.node_label(variables, action_labels)
 
         if self.identifier in highlight_nodes:
             graphviz_tree.node(self.graphviz_id, label=node_label, shape="box", style="filled", fillcolor="lightgreen", margin="0.05,0.05")
@@ -258,6 +269,20 @@ class DecisionTreeNode:
 
         self.child_true.fix_with_respect_to_quotient(action_labels, new_action_labels, variables, new_variables)
         self.child_false.fix_with_respect_to_quotient(action_labels, new_action_labels, variables, new_variables)
+
+    def normalize_boolean_variable_nodes_for_output(self, variables : list["DtVariable"]):
+        if self.is_terminal:
+            return
+        var = variables[self.variable]
+        if var.is_bool_var and not self.is_bool_normalized:
+            self.variable_bound = 0
+            child_true = self.child_true
+            child_false = self.child_false
+            self.child_true = child_false
+            self.child_false = child_true
+            self.is_bool_normalized = True
+        self.child_true.normalize_boolean_variable_nodes_for_output(variables)
+        self.child_false.normalize_boolean_variable_nodes_for_output(variables)
 
 
 
@@ -346,16 +371,23 @@ class DecisionTree:
     def simplify(self, state_valuations : list[list[int]]):
         self.root.simplify(self.variables, state_valuations)
 
+    def normalize_boolean_variable_nodes_for_output(self):
+        self.root.normalize_boolean_variable_nodes_for_output(self.variables)
+
     def to_string(self) -> str:
-        return self.root.to_string(self.variables,self.action_labels)
+        output_tree = self.copy()
+        output_tree.normalize_boolean_variable_nodes_for_output()
+        return output_tree.root.to_string(output_tree.variables, output_tree.action_labels)
 
     def to_prism(self, indent_size : int = 2):
+        output_tree = self.copy()
+        output_tree.normalize_boolean_variable_nodes_for_output()
         indent = " "*indent_size
         s = ""
         s += "module scheduler\n"
-        for terminal in self.collect_terminals():
-            action = f"{self.action_labels[terminal.action]}"
-            guard = " & ".join(terminal.path_expression(self.variables))
+        for terminal in output_tree.collect_terminals():
+            action = f"{output_tree.action_labels[terminal.action]}"
+            guard = " & ".join(terminal.path_expression(output_tree.variables))
             if guard == "":
                 guard = "true"
             s += f"{indent}[{action}] {guard} -> true;\n"
@@ -367,10 +399,12 @@ class DecisionTree:
         return s
 
     def to_graphviz(self, highlight_nodes : list[int] = []) -> graphviz.Digraph:
+        output_tree = self.copy()
+        output_tree.normalize_boolean_variable_nodes_for_output()
         logging.getLogger("graphviz").setLevel(logging.WARNING)
         logging.getLogger("graphviz.sources").setLevel(logging.ERROR)
         graphviz_tree = graphviz.Digraph(comment="decision tree")
-        self.root.to_graphviz(graphviz_tree,self.variables,self.action_labels, highlight_nodes)
+        output_tree.root.to_graphviz(graphviz_tree,output_tree.variables,output_tree.action_labels, highlight_nodes)
         return graphviz_tree
     
     def append_tree_as_subtree(self, new_subtree, subtree_root_node_id, subtree_quotient):

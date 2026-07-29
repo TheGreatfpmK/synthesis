@@ -188,7 +188,7 @@ class DecisionTreeNode:
             return f"{var.name}<={var.domain[self.variable_bound]}"
         else:
             if var.is_bool_var:
-                return f"not ({var.name})"
+                return f"!({var.name})"
             return f"{var.name}>{var.domain[self.variable_bound]}"
 
     def path_expression(self, variables : list["DtVariable"]) -> list[str]:

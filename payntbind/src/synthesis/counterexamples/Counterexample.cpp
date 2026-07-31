@@ -5,7 +5,7 @@
 #include <storm/exceptions/NotImplementedException.h>
 
 #include <storm/storage/sparse/JaniChoiceOrigins.h>
-#include <storm/storage/sparse/StateValuations.h>
+#include <storm/storage/valuations/Valuations.h>
 
 #include <storm/utility/builder.h>
 #include <storm/storage/SparseMatrix.h>

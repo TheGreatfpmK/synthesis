@@ -3,7 +3,7 @@
 #include "src/synthesis/quotient/Family.h"
 
 #include <storm/storage/BitVector.h>
-#include <storm/storage/sparse/StateValuations.h>
+#include <storm/storage/valuations/Valuations.h>
 #include <storm/utility/Stopwatch.h>
 
 #include <cstdint>

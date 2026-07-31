@@ -11,8 +11,8 @@ MARK_AS_ADVANCED(STORMPY_DISABLE_SIGNATURE_DOC)
 set(PYBIND_VERSION "" CACHE STRING "Pybind11 version to use")
 MARK_AS_ADVANCED(PYBIND_VERSION)
 set(STORM_DIR_HINT "" CACHE STRING "A hint where the Storm library can be found.")
-option(ALLOW_STORM_SYSTEM "Allow finding a storm version on the system" ON)
-option(ALLOW_STORM_FETCH "Allow fetching storm" ON)
+option(PAYNT_ALLOW_STORM_SYSTEM "Allow finding a storm version on the system" ON)
+option(PAYNT_ALLOW_STORM_FETCH "Allow fetching storm" ON)
 set(STORM_GIT_REPO "" CACHE STRING  "Git repo used for fetching storm")
 set(STORM_GIT_TAG "" CACHE STRING "Git repo tag used for fetching storm")
 option(COMPILE_WITH_CCACHE "Compile using CCache (if found)" ON)
@@ -21,8 +21,8 @@ option(PAYNT_INFO_PRETEND_FETCH "[INTERNAL] Use for overriding some flags in the
 mark_as_advanced(PAYNT_INFO_PRETEND_FETCH)
 
 # Check whether inputs are sane.
-if (NOT ALLOW_STORM_SYSTEM AND NOT ALLOW_STORM_FETCH)
-    message(FATAL_ERROR "PAYNT - Storm must be either fetched or used from system, yet ALLOW_STORM_SYSTEM=OFF and ALLOW_STORM_FETCH=OFF was set.")
+if (NOT PAYNT_ALLOW_STORM_SYSTEM AND NOT PAYNT_ALLOW_STORM_FETCH)
+    message(FATAL_ERROR "PAYNT - Storm must be either fetched or used from system, yet PAYNT_ALLOW_STORM_SYSTEM=OFF and PAYNT_ALLOW_STORM_FETCH=OFF was set.")
 endif()
 
 if (DEFINED DISABLE_SMG)
@@ -52,9 +52,9 @@ function(check_hint NAME DIR_FOUND HINT_DIR FOUND_VERSION)
     endif()
 endfunction(check_hint)
 
-if(ALLOW_STORM_SYSTEM)
+if(PAYNT_ALLOW_STORM_SYSTEM)
     set(STORM_MIN_VERSION "1.12.0")
-    if (ALLOW_STORM_FETCH)
+    if (PAYNT_ALLOW_STORM_FETCH)
         find_package(storm HINTS ${STORM_DIR_HINT}) # NOT REQUIRED, can be fetched.
     else()
         find_package(storm REQUIRED HINTS ${STORM_DIR_HINT}) # REQUIRED, cannot be fetched.
@@ -95,7 +95,7 @@ if(ALLOW_STORM_SYSTEM)
 endif ()
 
 if (NOT storm_FOUND)
-    if (ALLOW_STORM_FETCH)
+    if (PAYNT_ALLOW_STORM_FETCH)
         if (PAYNT_INFO_PRETEND_FETCH)
             message(FATAL_ERROR "PAYNT - Do not set PAYNT_INFO_PRETEND_FETCH when fetching." )
         endif()

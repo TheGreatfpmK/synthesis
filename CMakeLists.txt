@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 # Configuration options
 set(STORM_DIR_HINT "" CACHE STRING "A hint where the Storm library can be found.")
-option(ALLOW_STORM_SYSTEM "Allow finding a storm version on the system" ON)
-option(ALLOW_STORM_FETCH "Allow fetching storm" ON)
+option(PAYNT_ALLOW_STORM_SYSTEM "Allow finding a storm version on the system" ON)
+option(PAYNT_ALLOW_STORM_FETCH "Allow fetching storm" ON)
 set(STORM_GIT_REPO "" CACHE STRING  "Git repo used for fetching storm")
 set(STORM_GIT_TAG "" CACHE STRING "Git repo tag used for fetching storm")
 option(PAYNT_INFO_PRETEND_FETCH "[INTERNAL] Use for overriding some flags in the info by cibuildwheel." OFF)
@@ -44,8 +44,8 @@ if (NOT PAYNT_INFO_PRETEND_FETCH)
         message(STATUS "PAYNT - StormPy uses system Storm from: ${STORM_DIRECTORY_INFO} - configuring PAYNT to use the same system Storm")
 
         set(STORM_DIR_HINT "${STORM_DIRECTORY_INFO}")
-        set(ALLOW_STORM_SYSTEM ON)
-        set(ALLOW_STORM_FETCH OFF)
+        set(PAYNT_ALLOW_STORM_SYSTEM ON)
+        set(PAYNT_ALLOW_STORM_FETCH OFF)
     else()
         message(STATUS "PAYNT - StormPy uses fetched Storm - querying Storm origin information")
 
@@ -72,8 +72,8 @@ if (NOT PAYNT_INFO_PRETEND_FETCH)
         message(STATUS "PAYNT - Storm origin tag: ${STORM_ORIGIN_TAG}")
         
         # Configure to fetch the same Storm version as stormpy
-        set(ALLOW_STORM_SYSTEM OFF)
-        set(ALLOW_STORM_FETCH ON)
+        set(PAYNT_ALLOW_STORM_SYSTEM OFF)
+        set(PAYNT_ALLOW_STORM_FETCH ON)
         
         if(NOT STORM_ORIGIN_REPO STREQUAL "")
             set(STORM_GIT_REPO "${STORM_ORIGIN_REPO}")
@@ -98,8 +98,8 @@ endif()
 # can overwrite the values computed above (based on `stormpy.info`), causing
 # `payntbind` to FetchContent Storm again during wheel builds.
 set(STORM_DIR_HINT "${STORM_DIR_HINT}" CACHE STRING "A hint where the Storm library can be found." FORCE)
-set(ALLOW_STORM_SYSTEM "${ALLOW_STORM_SYSTEM}" CACHE BOOL "Allow finding a storm version on the system" FORCE)
-set(ALLOW_STORM_FETCH "${ALLOW_STORM_FETCH}" CACHE BOOL "Allow fetching storm" FORCE)
+set(PAYNT_ALLOW_STORM_SYSTEM "${PAYNT_ALLOW_STORM_SYSTEM}" CACHE BOOL "Allow finding a storm version on the system" FORCE)
+set(PAYNT_ALLOW_STORM_FETCH "${PAYNT_ALLOW_STORM_FETCH}" CACHE BOOL "Allow fetching storm" FORCE)
 set(STORM_GIT_REPO "${STORM_GIT_REPO}" CACHE STRING "Git repo used for fetching storm" FORCE)
 set(STORM_GIT_TAG "${STORM_GIT_TAG}" CACHE STRING "Git repo tag used for fetching storm" FORCE)
 set(PAYNT_INFO_PRETEND_FETCH "${PAYNT_INFO_PRETEND_FETCH}" CACHE BOOL " [INTERNAL] Use for overriding some flags in the info by cibuildwheel." FORCE)

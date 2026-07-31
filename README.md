@@ -62,7 +62,7 @@ mkdir storm/build && cd storm/build
 cmake ..
 make storm storm-cli storm-pomdp
 cd - && cd stormpy
-pip install . --config-settings=cmake.define.USE_STORM_DFT=OFF --config-settings=cmake.define.USE_STORM_GSPN=OFF
+pip install . --config-settings=cmake.define.STORMPY_USE_STORM_DFT=OFF --config-settings=cmake.define.STORMPY_USE_STORM_GSPN=OFF
 ```
 
 ## Running PAYNT

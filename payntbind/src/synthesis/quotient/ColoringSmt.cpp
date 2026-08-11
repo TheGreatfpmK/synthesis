@@ -5,6 +5,7 @@
 #include <storm/storage/valuations/Valuations.h>
 #include <storm/exceptions/UnexpectedException.h>
 
+#include <algorithm>
 #include <sstream>
 
 namespace synthesis {

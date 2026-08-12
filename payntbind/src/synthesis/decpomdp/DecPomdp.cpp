@@ -632,23 +632,23 @@ namespace synthesis {
         
         DecPOMDPDiscrete *model;
         
-        STORM_PRINT_AND_LOG("MADP: trying to parse as POMDP...\n");
+        STORM_LOG_PROGRESS("MADP: trying to parse as POMDP...\n");
         model = parse_as_pomdp(filename);
         if(model != NULL) {
-            STORM_PRINT_AND_LOG("MADP: parsing success\n");
+            STORM_LOG_PROGRESS("MADP: parsing success\n");
             return model;
         }
 
-        STORM_PRINT_AND_LOG("MADP: parsing success\n");
-        STORM_PRINT_AND_LOG("MADP: trying to parse as dec-POMDP...\n");
+        STORM_LOG_PROGRESS("MADP: parsing success\n");
+        STORM_LOG_PROGRESS("MADP: trying to parse as dec-POMDP...\n");
         model = parse_as_decpomdp(filename);
         if(model != NULL) {
-            STORM_PRINT_AND_LOG("MADP: parsing success\n");
+            STORM_LOG_PROGRESS("MADP: parsing success\n");
             return model;
         }
 
         if(model == NULL) {
-            STORM_PRINT_AND_LOG("MADP: parsing failure\n");
+            STORM_LOG_PROGRESS("MADP: parsing failure\n");
         }
         return model;
         

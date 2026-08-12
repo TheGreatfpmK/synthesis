@@ -40,7 +40,7 @@ public:
         std::vector<uint64_t> const& choice_to_action,
         uint64_t num_actions,
         uint64_t dont_care_action,
-        storm::storage::sparse::StateValuations const& state_valuations,
+        storm::storage::sparse::Valuations const& state_valuations,
         BitVector const& state_is_relevant,
         std::vector<std::string> const& variable_name,
         std::vector<std::vector<int64_t>> const& variable_domain,

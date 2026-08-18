@@ -32,26 +32,30 @@ namespace synthesis {
         // evaluate observation expression for each state valuation
         storm::expressions::ExpressionEvaluator<double> evaluator(prism.getManager());
         auto const& state_valuations = model.getStateValuations();
+        auto const& state_valuation_variables = state_valuations.getAllVariables();
         // associate each evaluation with the unique observation class
         this->state_to_obs_class.resize(model.getNumberOfStates());
         this->num_obs_classes = 0;
         for(uint64_t state = 0; state < model.getNumberOfStates(); state++) {
 
             // collect state valuation into evaluator
-            for(auto it = state_valuations.at(state).begin(); it != state_valuations.at(state).end(); ++it) {
-                // we pass Jani variables to the evaluator, but it seems to work, perhaps it works with variable names
-                auto const& var = it.getVariable();
-                if(it.isBoolean()) {
-                    evaluator.setBooleanValue(var, it.getBooleanValue());
-                } else if(it.isInteger()) {
-                    evaluator.setIntegerValue(var, it.getIntegerValue());
+            // we pass Jani variables to the evaluator, but it seems to work, perhaps it works with variable names
+            for(auto const& var: state_valuation_variables) {
+                if(var.hasBooleanType()) {
+                    if(auto value = state_valuations.getOptionalBooleanValue(state,var)) {
+                        evaluator.setBooleanValue(var, *value);
+                    }
+                } else if(var.hasIntegerType()) {
+                    if(auto value = state_valuations.getOptionalInt64Value(state,var)) {
+                        evaluator.setIntegerValue(var, *value);
+                    }
                 } else {
                     // this is a rational variable: we skip it in a hope that this variable encodes reward value
                     // which is not relevant for the observation
-                    // evaluator.setRationalValue(var, it.getRationalValue());
+                    // evaluator.setRationalValue(var, state_valuations.getRationalValue(state,var));
                 }
             }
-            
+
             // evaluate observation expressions and assign class
             storm::storage::BitVector evaluation(OBS_EXPR_VALUE_SIZE*num_obs_expressions);
             for (uint32_t o = 0; o < num_obs_expressions; o++) {

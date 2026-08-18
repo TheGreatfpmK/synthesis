@@ -1,9 +1,9 @@
 #pragma once
 
-#include "storm/environment/Environment.h"
-#include "storm/models/sparse/Mdp.h"
-#include "storm/modelchecker/CheckTask.h"
-#include "storm/modelchecker/results/CheckResult.h"
+#include <storm/environment/Environment.h>
+#include <storm/models/sparse/Mdp.h>
+#include <storm/modelchecker/CheckTask.h>
+#include <storm/modelchecker/results/CheckResult.h>
 
 namespace synthesis {
 

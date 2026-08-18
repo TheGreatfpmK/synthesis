@@ -1,0 +1,105 @@
+name: Prepare PAYNT release
+
+on:
+  workflow_dispatch:
+    inputs:
+      paynt_version:
+        description: "PAYNT version to release, for example 0.3.2"
+        required: true
+        type: string
+      stormpy_version:
+        description: "Pinned stormpy version to use, for example 1.13.2"
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      paynt_version:
+        description: "PAYNT version to release, for example 0.3.2"
+        required: true
+        type: string
+      stormpy_version:
+        description: "Pinned stormpy version to use, for example 1.13.2"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  prepare_release:
+    name: Prepare release branch and PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v7
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Create release branch
+        env:
+          PAYNT_VERSION: ${{ inputs.paynt_version }}
+          STORMPY_VERSION: ${{ inputs.stormpy_version }}
+        run: |
+          set -euo pipefail
+
+          if ! [[ "$PAYNT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "PAYNT version must match x.y.z"
+            exit 1
+          fi
+
+          if ! [[ "$STORMPY_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "stormpy version must match x.y.z"
+            exit 1
+          fi
+
+          branch="${PAYNT_VERSION}"
+
+          if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+            echo "Branch $branch already exists"
+            exit 1
+          fi
+
+          python3 - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+
+          paynt_version = os.environ["PAYNT_VERSION"]
+          stormpy_version = os.environ["STORMPY_VERSION"]
+
+          for version_file in [
+              Path("paynt/_version.py"),
+              Path("payntbind/lib/payntbind/_version.py"),
+          ]:
+              version_file.write_text(f'__version__ = "{paynt_version}"\n')
+
+          pyproject = Path("pyproject.toml")
+          content = pyproject.read_text()
+
+          content = re.sub(
+              r'stormpy\s*(?:==|>=|<=|~=|>|<)\s*[^",\]]+',
+              f'stormpy=={stormpy_version}',
+              content,
+          )
+
+          pyproject.write_text(content)
+          PY
+
+          git config user.name 'PAYNT release bot'
+          git config user.email 'imacak@fit.vut.cz'
+          git checkout -b "$branch"
+          git add paynt/_version.py payntbind/lib/payntbind/_version.py pyproject.toml
+          git commit -m "release: v${PAYNT_VERSION}"
+          git push -u origin "$branch"
+
+      - name: Open pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "${{ inputs.paynt_version }}" \
+            --title "Release PAYNT v${{ inputs.paynt_version }}" \
+            --body "Prepare PAYNT v${{ inputs.paynt_version }} with stormpy ${{ inputs.stormpy_version }}.\n\nThe PR updates the PAYNT version files and pins the stormpy dependency in pyproject.toml for the release. After this PR is merged and CI is green, publish the GitHub Release from the merged master commit to create the release tag."

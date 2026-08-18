@@ -225,7 +225,11 @@ class DtSynthesizer(paynt.synthesizer.synthesizer_ar.SynthesizerAR):
                 family.scheduler_choices = family.parent_info.scheduler_choices
                 consistent,hole_selection = self.quotient.are_choices_consistent(family.scheduler_choices, family)
                 assert not consistent
-                family.analysis_result.optimality_result.primary_selection = hole_selection
+                if family.analysis_result.optimality_result is None:
+                    for constraint_res in family.analysis_result.constraints_result.results:
+                        constraint_res.primary_selection = hole_selection
+                else:
+                    family.analysis_result.optimality_result.primary_selection = hole_selection
                 return
 
         self.num_families_model_checked += 1

@@ -1,7 +1,7 @@
-#include "../synthesis.h"
+#include "src/synthesis/synthesis.h"
 
-#include "storm/storage/Scheduler.h"
-#include "storm/storage/BitVector.h"
+#include <storm/storage/Scheduler.h>
+#include <storm/storage/BitVector.h>
 
 #include <algorithm>
 #include <unordered_set>

@@ -1,7 +1,7 @@
 #include "MdpModelChecker.h"
 
-#include "storm/modelchecker/prctl/SparseMdpPrctlModelChecker.h"
-#include "storm/exceptions/NotSupportedException.h"
+#include <storm/modelchecker/prctl/SparseMdpPrctlModelChecker.h>
+#include <storm/exceptions/NotSupportedException.h>
 
 namespace synthesis {
 

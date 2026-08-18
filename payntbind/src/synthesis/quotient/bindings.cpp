@@ -1,4 +1,4 @@
-#include "../synthesis.h"
+#include "src/synthesis/synthesis.h"
 
 #include "JaniChoices.h"
 #include "Family.h"
@@ -8,7 +8,9 @@
 
 #include <storm/storage/expressions/ExpressionManager.h>
 #include <storm/storage/expressions/Variable.h>
-#include <storm/storage/sparse/StateValuations.h>
+#include <storm/storage/valuations/Valuations.h>
+#include <storm/storage/valuations/ValuationDescriptionBuilder.h>
+#include <storm/storage/valuations/ValuationsStorage.h>
 #include <storm/utility/builder.h>
 
 #include <storm/exceptions/InvalidModelException.h>
@@ -20,6 +22,9 @@
 #include <storm/storage/Scheduler.h>
 
 #include <storm/adapters/RationalNumberAdapter.h>
+
+#include <algorithm>
+#include <map>
 
 #include <z3++.h>
 
@@ -35,20 +40,34 @@ std::shared_ptr<storm::models::sparse::Model<ValueType>> addStateValuations(
         "Number of state valuations does not match the state count."
     );
     std::shared_ptr<storm::expressions::ExpressionManager> em(new storm::expressions::ExpressionManager());
-    storm::storage::sparse::StateValuationsBuilder sv_builder;
-    for(auto [variable_name,_]: state_valuations[0]) {
-        sv_builder.addVariable(em->declareIntegerVariable(variable_name));
-    }
-    for(uint64_t state = 0; state < model.getNumberOfStates(); ++state) {
-        std::vector<bool> boolean_values;
-        std::vector<int64_t> integer_values(em->getNumberOfVariables());
-        for(auto [variable_name,value]: state_valuations[state]) {
-            integer_values[em->getVariable(variable_name).getOffset()] = value;
+    std::map<std::string,storm::expressions::Variable> name_to_variable;
+    std::map<std::string,int64_t> variable_lower_bound;
+    std::map<std::string,int64_t> variable_upper_bound;
+    for(auto const& state_valuation: state_valuations) {
+        for(auto const& [variable_name,value]: state_valuation) {
+            auto it = name_to_variable.find(variable_name);
+            if(it == name_to_variable.end()) {
+                name_to_variable.emplace(variable_name,em->declareIntegerVariable(variable_name));
+                variable_lower_bound[variable_name] = value;
+                variable_upper_bound[variable_name] = value;
+            } else {
+                variable_lower_bound[variable_name] = std::min(variable_lower_bound[variable_name],value);
+                variable_upper_bound[variable_name] = std::max(variable_upper_bound[variable_name],value);
+            }
         }
-        sv_builder.addState(state, std::move(boolean_values), std::move(integer_values));
+    }
+    storm::storage::sparse::ValuationDescriptionBuilder desc_builder(em);
+    for(auto const& [variable_name,variable]: name_to_variable) {
+        desc_builder.addIntegerVariable(variable, variable_lower_bound[variable_name], variable_upper_bound[variable_name]);
+    }
+    storm::storage::sparse::Valuations valuations(desc_builder.buildClassDescription(), em, model.getNumberOfStates());
+    for(uint64_t state = 0; state < model.getNumberOfStates(); ++state) {
+        for(auto const& [variable_name,value]: state_valuations[state]) {
+            valuations.getStorage().writeValue<int64_t>(state, name_to_variable.at(variable_name), value);
+        }
     }
     storm::storage::sparse::ModelComponents<ValueType> components = synthesis::componentsFromModel(model);
-    components.stateValuations = sv_builder.build();
+    components.stateValuations = std::move(valuations);
     return storm::utility::builder::buildModelFromComponents<ValueType>(model.getType(),std::move(components));
 }
 
@@ -335,7 +354,7 @@ void bindings_coloring(py::module& m) {
             std::vector<uint64_t> const&,
             std::vector<uint64_t> const&,
             uint64_t, uint64_t,
-            storm::storage::sparse::StateValuations const&,
+            storm::storage::sparse::Valuations const&,
             storm::storage::BitVector const&,
             std::vector<std::string> const&,
             std::vector<std::vector<int64_t>> const&,

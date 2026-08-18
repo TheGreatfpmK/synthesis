@@ -1,4 +1,4 @@
-#include "../synthesis.h"
+#include "src/synthesis/synthesis.h"
 
 #include "ObservationEvaluator.h"
 #include "FscUnfolder.h"

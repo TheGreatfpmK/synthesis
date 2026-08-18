@@ -2,9 +2,10 @@
 
 #include "src/synthesis/translation/choiceTransformation.h"
 
-#include <storm/storage/sparse/StateValuations.h>
+#include <storm/storage/valuations/Valuations.h>
 #include <storm/exceptions/UnexpectedException.h>
 
+#include <algorithm>
 #include <sstream>
 
 namespace synthesis {
@@ -16,7 +17,7 @@ ColoringSmt<ValueType>::ColoringSmt(
     std::vector<uint64_t> const& choice_to_action,
     uint64_t num_actions,
     uint64_t dont_care_action,
-    storm::storage::sparse::StateValuations const& state_valuations,
+    storm::storage::sparse::Valuations const& state_valuations,
     BitVector const& state_is_relevant,
     std::vector<std::string> const& variable_name,
     std::vector<std::vector<int64_t>> const& variable_domain,
@@ -47,11 +48,10 @@ ColoringSmt<ValueType>::ColoringSmt(
 
     // extract variables in the order of variable_name
     std::vector<storm::expressions::Variable> program_variables;
-    auto const& valuation = state_valuations.at(0);
+    auto const& all_variables = state_valuations.getAllVariables();
     for(std::string const& name: variable_name) {
         bool variable_found = false;
-        for(auto x = valuation.begin(); x != valuation.end(); ++x) {
-            storm::expressions::Variable const& program_variable = x.getVariable();
+        for(auto const& program_variable: all_variables) {
             if(program_variable.getName() == name) {
                 program_variables.push_back(program_variable);
                 variable_found = true;
@@ -94,7 +94,7 @@ ColoringSmt<ValueType>::ColoringSmt(
             if(program_variable.hasBooleanType()) {
                 value = (int64_t)state_valuations.getBooleanValue(state,program_variable);
             } else {
-                value = state_valuations.getIntegerValue(state,program_variable);
+                value = state_valuations.getInt64Value(state,program_variable);
             }
             bool domain_option_found = false;
             for(uint64_t domain_option = 0; domain_option < variable_domain[variable].size(); ++domain_option) {

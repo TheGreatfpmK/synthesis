@@ -1,6 +1,7 @@
 #include "synthesis.h"
-#include "storm/utility/initialize.h"
-#include "storm/settings/SettingsManager.h"
+
+#include <storm/utility/initialize.h>
+#include <storm/settings/SettingsManager.h>
 
 void define_synthesis(py::module& m) {
 

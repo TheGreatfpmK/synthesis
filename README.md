@@ -1,10 +1,10 @@
 # PAYNT
 
-[![CI (Latest)](https://github.com/randriu/synthesis/actions/workflows/ci_latest.yml/badge.svg?branch=master)](https://github.com/randriu/synthesis/actions/workflows/ci_latest.yml)
-[![CI (Stable & Fetched)](https://github.com/randriu/synthesis/actions/workflows/ci_stable.yml/badge.svg?branch=master)](https://github.com/randriu/synthesis/actions/workflows/ci_stable.yml)
+[![CI (Latest)](https://github.com/randriu/paynt/actions/workflows/ci_latest.yml/badge.svg?branch=master)](https://github.com/randriu/paynt/actions/workflows/ci_latest.yml)
+[![CI (Stable & Fetched)](https://github.com/randriu/paynt/actions/workflows/ci_stable.yml/badge.svg?branch=master)](https://github.com/randriu/paynt/actions/workflows/ci_stable.yml)
 [![PyPI - Version](https://img.shields.io/pypi/v/paynt)](https://pypi.org/project/paynt/)
 
-PAYNT (Probabilistic progrAm sYNThesizer) is a tool for the automated synthesis of probabilistic programs. PAYNT takes a program with holes (a so-called sketch) and a PCTL specification, and outputs a concrete hole assignment that yields a satisfying program, if such an assignment exists. PAYNT also supports the synthesis of finite-state controllers for POMDPs, Dec-POMDPs and one-sided POSMGs, synthesis of decision trees for MDPs and synthesis of policy trees for families of MDPs. Internally, PAYNT interprets the incomplete probabilistic program as a family of Markov chains and uses state-of-the-art synthesis methods on top of the model checker [Storm](https://github.com/moves-rwth/storm) to identify satisfying realization. PAYNT is implemented in Python and uses [stormpy](https://github.com/moves-rwth/stormpy), Python bindings for Storm. PAYNT is hosted on [github](https://github.com/randriu/synthesis).
+PAYNT (Probabilistic progrAm sYNThesizer) is a tool for the automated synthesis of probabilistic programs. PAYNT takes a program with holes (a so-called sketch) and a PCTL specification, and outputs a concrete hole assignment that yields a satisfying program, if such an assignment exists. PAYNT also supports the synthesis of finite-state controllers for POMDPs, Dec-POMDPs and one-sided POSMGs, synthesis of decision trees for MDPs and synthesis of policy trees for families of MDPs. Internally, PAYNT interprets the incomplete probabilistic program as a family of Markov chains and uses state-of-the-art synthesis methods on top of the model checker [Storm](https://github.com/moves-rwth/storm) to identify satisfying realization. PAYNT is implemented in Python and uses [stormpy](https://github.com/moves-rwth/stormpy), Python bindings for Storm. PAYNT is hosted on [github](https://github.com/randriu/paynt).
 
 PAYNT is described in 
 - [1] PAYNT: A Tool for Inductive Synthesis of Probabilistic Programs by Roman Andriushchenko, Milan Ceska, Sebastian Junges, Joost-Pieter Katoen and Simon Stupinsky. In: CAV'21.
@@ -24,7 +24,7 @@ pip install paynt
 Alternatively, you may build PAYNT from source:
 
 ```shell
-git clone https://github.com/randriu/synthesis.git
+git clone https://github.com/randriu/paynt.git
 cd synthesis
 python3 -m venv venv && source venv/bin/activate
 pip install .

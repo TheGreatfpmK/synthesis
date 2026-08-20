@@ -23,6 +23,7 @@ jobs:
     if: github.repository == 'randriu/paynt' || github.repository == 'TheGreatfpmK/paynt'
     env:
       GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
       PROBE_BRANCH: stormpy-pre-release-probe
     steps:
       - name: Checkout
@@ -186,13 +187,23 @@ jobs:
         run: |
           set -euo pipefail
 
-          conclusion="$(gh run list --workflow ci_stable.yml --branch master --status completed --limit 1 --json conclusion --jq '.[0].conclusion // empty')"
-          echo "Latest completed ci_stable.yml run on master concluded: ${conclusion:-unknown}"
-          if [[ "$conclusion" == "success" ]]; then
-            echo "ok=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "ok=false" >> "$GITHUB_OUTPUT"
-          fi
+          # Fetch the recent runs ourselves rather than relying on gh's
+          # --status filter, and pick the newest completed one by createdAt -
+          # easier to log/debug if this ever disagrees with what's on GitHub.
+          runs_json="$(gh run list --workflow ci_stable.yml --branch master --limit 10 --json databaseId,status,conclusion,createdAt,url)"
+          echo "Recent ci_stable.yml runs on master:"
+          echo "$runs_json" | python3 -m json.tool 2>/dev/null || echo "$runs_json"
+
+          ok="$(echo "$runs_json" | python3 -c '
+          import json, sys
+
+          runs = json.load(sys.stdin)
+          completed = [r for r in runs if r["status"] == "completed"]
+          completed.sort(key=lambda r: r["createdAt"], reverse=True)
+          print("true" if completed and completed[0]["conclusion"] == "success" else "false")
+          ')"
+          echo "ok=$ok"
+          echo "ok=$ok" >> "$GITHUB_OUTPUT"
 
       - name: Publish pre-release branch from stable
         if: steps.try_stable.outputs.passed == 'true'

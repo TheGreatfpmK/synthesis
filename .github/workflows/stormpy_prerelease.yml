@@ -280,3 +280,15 @@ jobs:
           if git ls-remote --exit-code --heads origin "$PROBE_BRANCH" >/dev/null 2>&1; then
             git push origin --delete "$PROBE_BRANCH"
           fi
+
+      - name: Trigger wheel build on pre-release branch
+        if: steps.resolve.outputs.changed == 'true' && (steps.try_stable.outputs.passed == 'true' || steps.check_master.outputs.ok == 'true')
+        shell: bash
+        env:
+          TARGET_BRANCH: ${{ steps.resolve.outputs.target_branch }}
+        run: |
+          set -euo pipefail
+          # nightly=false: the pre-release branch already pins the exact
+          # stormpy version that was just verified compatible, so this
+          # should build against that instead of stormpy's own nightly.
+          gh workflow run create_wheel.yml --ref "$TARGET_BRANCH" -f nightly=false

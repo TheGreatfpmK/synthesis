@@ -1,0 +1,68 @@
+name: Cleanup release branches
+
+# Triggered when the "unpin stormpy" PR (opened by release.yml after a release
+# is published) is merged. At that point the release branch, the unpin branch
+# itself, and any now-stale pre-release branch(es) have served their purpose.
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: >-
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'unpin-stormpy-')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete release, pre-release and unpin branches
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          UNPIN_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          import subprocess
+
+          repo = os.environ["REPO"]
+          unpin_branch = os.environ["UNPIN_BRANCH"]
+          release_version = re.sub(r'^unpin-stormpy-', '', unpin_branch)
+          release_tuple = tuple(int(x) for x in release_version.split('.'))
+
+          branches_json = subprocess.run(
+              ["gh", "api", f"repos/{repo}/branches", "--paginate"],
+              check=True, capture_output=True, text=True,
+          ).stdout
+          all_branches = [b["name"] for b in json.loads(branches_json)]
+
+          to_delete = {unpin_branch, release_version}
+
+          for branch in all_branches:
+              match = re.fullmatch(r'([0-9]+\.[0-9]+\.[0-9]+)-pre-release', branch)
+              if not match:
+                  continue
+              branch_tuple = tuple(int(x) for x in match.group(1).split('.'))
+              # A pre-release branch targeting this version or an earlier one is now
+              # stale (its target already shipped or was skipped). One targeting a
+              # later version is a newer cycle already in progress; leave it alone.
+              if branch_tuple <= release_tuple:
+                  to_delete.add(branch)
+
+          for branch in sorted(to_delete):
+              result = subprocess.run(
+                  ["gh", "api", "-X", "DELETE", f"repos/{repo}/git/refs/heads/{branch}"],
+                  capture_output=True, text=True,
+              )
+              status = "deleted" if result.returncode == 0 else "not found, skipping"
+              print(f"{branch}: {status}")
+          PY

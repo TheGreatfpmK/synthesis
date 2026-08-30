@@ -24,13 +24,13 @@ import sklearn.ensemble
 import sklearn.feature_selection
 import matplotlib.pyplot as plt
 
-from sample_policies import mcmc_base, get_optimality_specification, get_constraint_specification, get_bitvector_from_scheduler, get_mdp_features_list, remove_unreachable_choices_from_bitvector, sample_to_list
+from sample_policies import mcmc_base, mcmc_permissive, mcmc_permissive_optimized, get_optimality_specification, get_constraint_specification, get_bitvector_from_scheduler, get_mdp_features_list, remove_unreachable_choices_from_bitvector, sample_to_list, permissive_sample_to_action_sets
 
 from get_predicates import get_atomic_predicate_evals
 
 import payntbind
 
-from pystreed import STreeDClassifier
+from pystreed import STreeDClassifier, STreeDInstanceCostSensitiveClassifier
 from sklearn.metrics import accuracy_score
 
 import logging
@@ -186,17 +186,13 @@ def select_features(features, labels, features_names):
 def run_pystreed(X, Y, quotient, variables, action_labels, tree_base, threshold, max_depth=12):
 
     for depth in range(max_depth):
-        model = STreeDClassifier(max_depth=depth, n_categories=100, n_thresholds=100, time_limit=60) # TODO handle this n_categories somehow
+        model = STreeDClassifier(max_depth=depth, time_limit=60) # TODO handle this n_categories somehow
         model.fit(X, Y)
 
         fit_score = model.score(X, Y)
         consistent = fit_score == 1.0
 
-        if consistent:
-            tree_helper = []
-            pystreed_tree_to_tree_helper(model.tree_, variables, action_labels, tree_helper)
-            tree_base.build_from_tree_helper(tree_helper)
-            return tree_base
+        
 
         tree_helper = []
         pystreed_tree_to_tree_helper(model.tree_, variables, action_labels, tree_helper)
@@ -211,7 +207,49 @@ def run_pystreed(X, Y, quotient, variables, action_labels, tree_base, threshold,
 
         print(f"Depth {depth}: fit_score={fit_score}, consistent={consistent}, value={result.optimality_result.value}, num_nodes={len(tree_base.collect_nonterminals())}, depth={tree_base.get_depth()}")
 
-        if result.optimality_result.improves_optimum:
+        if consistent or result.optimality_result.improves_optimum:
+            return tree_base
+
+    return None
+
+
+def run_pystreed_permissive(X, action_sets, quotient, variables, action_labels, tree_base, threshold, max_depth=12):
+
+    keep = [i for i, a in enumerate(action_sets) if a != -1]
+    X = np.array([X[i] for i in keep])
+    action_sets = [set(action_sets[i]) for i in keep]
+
+    n_classes = len(action_labels)
+    if len(X) < 2 or n_classes < 2:
+        print("pystreed permissive: too few reachable states or actions, skipping")
+        return None
+
+    cost_matrix = np.ones((len(X), n_classes))
+    for row, allowed in enumerate(action_sets):
+        for action in allowed:
+            cost_matrix[row, action] = 0.0
+
+    for depth in range(max_depth):
+        model = STreeDInstanceCostSensitiveClassifier(max_depth=depth, time_limit=60) # TODO handle this n_categories somehow
+        model.fit(X, cost_matrix)
+
+        predicted = model.predict(X)
+        num_violations = sum(1 for row, action in enumerate(predicted) if action not in action_sets[row])
+        consistent = num_violations == 0
+
+        tree_helper = []
+        pystreed_tree_to_tree_helper(model.tree_, variables, action_labels, tree_helper)
+        tree_base.build_from_tree_helper(tree_helper)
+
+
+        submdp = get_submdp_from_unfixed_states(quotient, tree=tree_base)
+        perturbation_spec = quotient.specification.copy()
+        perturbation_spec.optimality.update_optimum(threshold)
+        result = submdp.check_specification(perturbation_spec)
+
+        print(f"Depth {depth}: violations={num_violations}/{len(X)}, value={result.optimality_result.value}, num_nodes={len(tree_base.collect_nonterminals())}, depth={tree_base.get_depth()}")
+
+        if consistent or result.optimality_result.improves_optimum:
             return tree_base
 
     return None
@@ -240,8 +278,11 @@ def run_pystreed(X, Y, quotient, variables, action_labels, tree_base, threshold,
 @click.option("--max-used-samples", type=int, default=100, show_default=True, help="maximum number of sampled policies to use for decision tree learning, if None then all samples will be used")
 @click.option("--predicate-selection", is_flag=True, default=False, show_default=True, help="whether to run a heuristic that tries to select a subset opf important predicates")
 @click.option("--binarize-features", is_flag=True, default=False, show_default=True, help="whether to binarize features for decision tree learning")
-@click.option("--run-pystreed", is_flag=True, default=False, show_default=True, help="whether to run pystreed decision tree learning for decision tree learning")
-def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, ccp_alpha, output, append_stats, save_features, load_features, default_predicates, run_dtnest, max_used_samples, predicate_selection, binarize_features, run_pystreed):
+@click.option("--run-pystreed", "run_pystreed_flag", is_flag=True, default=False, show_default=True, help="whether to run pystreed decision tree learning for decision tree learning")
+@click.option("--permissive", is_flag=True, default=False, show_default=True, help="if set then a permissive policy (a set of policies that satisfy the specification) will be sampled instead of individual policies, and pystreed will search for the smallest tree resolving it")
+@click.option("--optimized", is_flag=True, default=False, show_default=True, help="if set together with --permissive, use mcmc_permissive_optimized instead of mcmc_permissive")
+@click.option("--run-scikit", "run_scikit_flag", is_flag=True, default=False, show_default=True, help="whether to run scikit-learn decision tree learning for decision tree learning")
+def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_steps, ccp_alpha, output, append_stats, save_features, load_features, default_predicates, run_dtnest, max_used_samples, predicate_selection, binarize_features, run_pystreed_flag, permissive, optimized, run_scikit_flag):
     sketch_path = os.path.join(project, sketch)
     props_path = os.path.join(project, props)
 
@@ -298,9 +339,15 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
 
         specification.constraints[0].threshold = eps_optimum_threshold
         specification.constraints[0].property.raw_formula.set_bound(specification.constraints[0].formula.comparison_type, stormpy.ExpressionManager().create_rational(stormpy.Rational(eps_optimum_threshold)))
+
+        if permissive:
+            specification.constraints[0] = specification.constraints[0].negate()
     else:
         specification.constraints[0].threshold = opt_result_value
         specification.constraints[0].property.raw_formula.set_bound(specification.constraints[0].formula.comparison_type, stormpy.ExpressionManager().create_rational(stormpy.Rational(opt_result_value)))
+
+        if permissive:
+            specification.constraints[0] = specification.constraints[0].negate()
 
     used_threshold = specification.constraints[0].threshold
 
@@ -318,12 +365,21 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
     shed_bitvector = get_bitvector_from_scheduler(scheduler, model_info)
 
     sampling_start_time = time.time()
-    all_samples, last_sample = mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification, step_count=steps, burn_in=burn_in, sample_steps=sample_steps, seed=seed)
-    # # all_samples, last_sample = rejection_sampling(model_info, dt_colored_mdp_factory, specification, step_count=steps, seed=seed)
+    if permissive:
+        if optimized:
+            permissive_bitvector = mcmc_permissive_optimized(
+                shed_bitvector, model_info, dt_colored_mdp_factory, specification,
+                optimality_specification.all_properties()[0], full_mc_result.result.get_values(),
+                step_count=steps, seed=seed)
+        else:
+            permissive_bitvector = mcmc_permissive(shed_bitvector, model_info, dt_colored_mdp_factory, specification, step_count=steps, seed=seed)
+    else:
+        all_samples, last_sample = mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification, step_count=steps, burn_in=burn_in, sample_steps=sample_steps, seed=seed)
+        # # all_samples, last_sample = rejection_sampling(model_info, dt_colored_mdp_factory, specification, step_count=steps, seed=seed)
     sampling_end_time = time.time()
     print(f"sampling took {sampling_end_time - sampling_start_time:.2f} seconds")
 
-    if max_used_samples is not None and len(all_samples) > max_used_samples:
+    if not permissive and max_used_samples is not None and len(all_samples) > max_used_samples:
         # always keep the first element and sample the remaining policies
         first = all_samples[0]
         if max_used_samples > 1:
@@ -371,7 +427,10 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
             loaded_json = json.load(f)
         loaded_X = sparse.csr_matrix(loaded_json[0], dtype=np.uint8)
         variables = [DtVariable(name, domain) for name, domain in loaded_json[1]]
-        output_dict = {"X": loaded_X, "Y": [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
+        if permissive:
+            output_dict = {"X": loaded_X, "Y_actions_allowed": permissive_sample_to_action_sets(permissive_bitvector, dt_colored_mdp_factory, model_info)}
+        else:
+            output_dict = {"X": loaded_X, "Y": [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
 
     else:
 
@@ -402,14 +461,19 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         # print(f"getting predicate evaluations took {get_predicates_time_end - get_predicates_time_start:.2f} seconds")
         # print(len(additional_atomic_predicates))
         # exit()
-        features, variables = get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, only_relevant_states=False, ignore_original_features=False)
+        features, variables = get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, only_relevant_states=False, ignore_original_features=False, binarize_features=True)
         # features, variables = get_mdp_features_list(dt_colored_mdp_factory, {}, only_relevant_states=False, ignore_original_features=False)
         # print([x.name for x in variables])
 
         # output_dict = {"X" : get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates, ignore_original_features=False), "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info)]}
-        output_dict = {"X" : features, "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
+        if permissive:
+            output_dict = {"X" : features, "Y_actions_allowed" : permissive_sample_to_action_sets(permissive_bitvector, dt_colored_mdp_factory, model_info)}
+        else:
+            output_dict = {"X" : features, "Y" : [sample_to_list(sample, dt_colored_mdp_factory, model_info) for sample in all_samples]}
 
-        if predicate_selection:
+        if predicate_selection and permissive:
+            print("predicate selection is not supported together with --permissive, skipping")
+        elif predicate_selection:
             predicate_selection_start_time = time.time()
 
             selected_feature_ids = select_features(output_dict["X"], output_dict["Y"], [var.name for var in variables])
@@ -524,125 +588,158 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
         print("submdp value:", mc_result_submdp.value)
 
 
-    scikit_time_start = time.time()
-    scikit_smallest_tree_info = {'nodes': None, 'depth': None, 'value': None}
-    
-    for i in range(len(output_dict["Y"])):
-        scikit_learn_timer_start = time.time()
+    if run_scikit_flag:
+        if permissive:
+            print("skipping scikit-learn baseline: it does not generalize to a single permissive envelope")
+        else:
+            scikit_time_start = time.time()
+            scikit_smallest_tree_info = {'nodes': None, 'depth': None, 'value': None}
 
-        clf = sklearn.tree.DecisionTreeClassifier(criterion="gini", max_depth=None, random_state=0, ccp_alpha=ccp_alpha) # if random_state is None (default) then scikit does not have to be deterministic
-        # Filter out points with class -1
-        X = output_dict["X"]
-        Y = output_dict["Y"][i]
+            for i in range(len(output_dict["Y"])):
+                scikit_learn_timer_start = time.time()
 
-        if filter_unreachable_class:
-            reachable_mask = np.array(Y) != -1
-            Y = np.array(Y)[reachable_mask]
-            X = np.array(X)[reachable_mask]
+                clf = sklearn.tree.DecisionTreeClassifier(criterion="gini", max_depth=None, random_state=0, ccp_alpha=ccp_alpha) # if random_state is None (default) then scikit does not have to be deterministic
+                # Filter out points with class -1
+                X = output_dict["X"]
+                Y = output_dict["Y"][i]
 
-        adjusted_action_labels = [x for i, x in enumerate(dt_colored_mdp_factory.action_labels) if i in Y]
+                if filter_unreachable_class:
+                    reachable_mask = np.array(Y) != -1
+                    Y = np.array(Y)[reachable_mask]
+                    X = np.array(X)[reachable_mask]
 
-        # print(X)
-        # print(Y)
+                adjusted_action_labels = [x for i, x in enumerate(dt_colored_mdp_factory.action_labels) if i in Y]
 
-        X = np.array(X)
-        Y = np.array(Y)
+                # print(X)
+                # print(Y)
 
-
-
-        # model = STreeDClassifier(max_depth=4, time_limit=10)
-        # model.fit(X, Y)
-
-        # model.print_tree()
-
-        # yhat = model.predict(X)
-
-        # accuracy = accuracy_score(Y, yhat)
-        # print(f"Train Accuracy Score: {accuracy * 100}%")
-
-        # exit()
-        
-        clf = clf.fit(X, Y)
-        scikit_learn_timer_end = time.time()
-
-        num_nodes = clf.tree_.node_count - clf.tree_.n_leaves
-        # print(num_nodes)
-        if scikit_smallest_tree_info['nodes'] is None or num_nodes < scikit_smallest_tree_info['nodes']:
-            scikit_smallest_tree_info['nodes'] = num_nodes
-            scikit_smallest_tree_info['depth'] = clf.get_depth()
-
-            scikit_tree_helper = scikit_tree_to_tree_helper(clf, variables, adjusted_action_labels)
-            tree_base.build_from_tree_helper(scikit_tree_helper)
-
-            submdp = get_submdp_from_unfixed_states(dt_colored_mdp_factory, tree=tree_base)
-            mc_result_submdp = submdp.model_check_property(optimality_specification.all_properties()[0])
-            scikit_smallest_tree_info['value'] = mc_result_submdp.value
-        
-            # print(f"Scikit tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
-            # print(f"Scikit learn took {scikit_learn_timer_end - scikit_learn_timer_start:.2f} seconds")
-            # print(tree_base.to_string())
-            # print("submdp value:", mc_result_submdp.value)
-            # exit()
+                X = np.array(X)
+                Y = np.array(Y)
 
 
-    scikit_time_end = time.time()
-    print()
-    print(f"scikit-learn decision tree learning took {scikit_time_end - scikit_time_start:.2f} seconds for {len(output_dict['Y'])} trees")
-    print(f"scikit best tree depth: {scikit_smallest_tree_info['depth']}, number of nodes: {scikit_smallest_tree_info['nodes']}")
-    print(f"submdp value: {scikit_smallest_tree_info['value']}")
 
+                # model = STreeDClassifier(max_depth=4, time_limit=10)
+                # model.fit(X, Y)
 
-    if run_pystreed:
-        pystreed_time_start = time.time()
-        pystreed_smallest_tree_info = {'nodes': None, 'depth': None, 'value': None}
-        
-        for i in range(len(output_dict["Y"])):
-            pystreed_learn_timer_start = time.time()
+                # model.print_tree()
 
-            X = output_dict["X"]
-            Y = output_dict["Y"][i]
+                # yhat = model.predict(X)
 
-            if filter_unreachable_class:
-                reachable_mask = np.array(Y) != -1
-                Y = np.array(Y)[reachable_mask]
-                X = np.array(X)[reachable_mask]
+                # accuracy = accuracy_score(Y, yhat)
+                # print(f"Train Accuracy Score: {accuracy * 100}%")
 
-            adjusted_action_labels = [x for i, x in enumerate(dt_colored_mdp_factory.action_labels) if i in Y]
-
-            X = np.array(X)
-            Y = np.array(Y)
-
-
-            pystreed_tree = run_pystreed(X, Y, dt_colored_mdp_factory, variables, dt_colored_mdp_factory.action_labels, tree_base, used_threshold, max_depth=12)
-
-
-            pystreed_learn_timer_end = time.time()
-
-            if pystreed_tree is None:
-                continue
-
-            num_nodes = len(pystreed_tree.collect_nonterminals())
-            if pystreed_smallest_tree_info['nodes'] is None or num_nodes < pystreed_smallest_tree_info['nodes']:
-                pystreed_smallest_tree_info['nodes'] = num_nodes
-                pystreed_smallest_tree_info['depth'] = pystreed_tree.get_depth()
-
-
-                submdp = get_submdp_from_unfixed_states(dt_colored_mdp_factory, tree=pystreed_tree)
-                mc_result_submdp = submdp.model_check_property(optimality_specification.all_properties()[0])
-                pystreed_smallest_tree_info['value'] = mc_result_submdp.value
-            
-                # print(f"Scikit tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
-                # print(f"Scikit learn took {scikit_learn_timer_end - scikit_learn_timer_start:.2f} seconds")
-                # print(pystreed_tree.to_string())
-                # print("submdp value:", mc_result_submdp.value)
                 # exit()
 
+                clf = clf.fit(X, Y)
+                scikit_learn_timer_end = time.time()
 
-        pystreed_time_end = time.time()
-        print()
-        print(f"pystreed decision tree learning took {pystreed_time_end - pystreed_time_start:.2f} seconds for {len(output_dict['Y'])} trees")
-        print(f"pystreed best tree depth: {pystreed_smallest_tree_info['depth']}, number of nodes: {pystreed_smallest_tree_info['nodes']}")
-        print(f"submdp value: {pystreed_smallest_tree_info['value']}")
+                num_nodes = clf.tree_.node_count - clf.tree_.n_leaves
+                # print(num_nodes)
+                if scikit_smallest_tree_info['nodes'] is None or num_nodes < scikit_smallest_tree_info['nodes']:
+                    scikit_smallest_tree_info['nodes'] = num_nodes
+                    scikit_smallest_tree_info['depth'] = clf.get_depth()
+
+                    scikit_tree_helper = scikit_tree_to_tree_helper(clf, variables, adjusted_action_labels)
+                    tree_base.build_from_tree_helper(scikit_tree_helper)
+
+                    submdp = get_submdp_from_unfixed_states(dt_colored_mdp_factory, tree=tree_base)
+                    mc_result_submdp = submdp.model_check_property(optimality_specification.all_properties()[0])
+                    scikit_smallest_tree_info['value'] = mc_result_submdp.value
+
+                    # print(f"Scikit tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
+                    # print(f"Scikit learn took {scikit_learn_timer_end - scikit_learn_timer_start:.2f} seconds")
+                    # print(tree_base.to_string())
+                    # print("submdp value:", mc_result_submdp.value)
+                    # exit()
+
+
+            scikit_time_end = time.time()
+            print()
+            print(f"scikit-learn decision tree learning took {scikit_time_end - scikit_time_start:.2f} seconds for {len(output_dict['Y'])} trees")
+            print(f"scikit best tree depth: {scikit_smallest_tree_info['depth']}, number of nodes: {scikit_smallest_tree_info['nodes']}")
+            print(f"submdp value: {scikit_smallest_tree_info['value']}")
+
+
+    if run_pystreed_flag:
+        if permissive:
+            pystreed_time_start = time.time()
+
+            X = output_dict["X"]
+            action_sets = output_dict["Y_actions_allowed"]
+
+            if filter_unreachable_class:
+                reachable_mask = np.array(action_sets, dtype=object) != -1
+                action_sets = [a for a, keep in zip(action_sets, reachable_mask) if keep]
+                X = np.array(X)[reachable_mask]
+
+            X = np.array(X)
+
+            pystreed_tree = run_pystreed_permissive(X, action_sets, dt_colored_mdp_factory, variables, dt_colored_mdp_factory.action_labels, tree_base, used_threshold, max_depth=20)
+
+            pystreed_time_end = time.time()
+            print()
+            if pystreed_tree is None:
+                print("pystreed permissive: no consistent/improving tree found within max_depth")
+            else:
+                submdp = get_submdp_from_unfixed_states(dt_colored_mdp_factory, tree=pystreed_tree)
+                mc_result_submdp = submdp.model_check_property(optimality_specification.all_properties()[0])
+                print(f"pystreed permissive best tree depth: {pystreed_tree.get_depth()}, number of nodes: {len(pystreed_tree.collect_nonterminals())}")
+                print(f"submdp value: {mc_result_submdp.value}")
+            print(f"pystreed permissive decision tree learning took {pystreed_time_end - pystreed_time_start:.2f} seconds")
+
+        else:
+            pystreed_time_start = time.time()
+            pystreed_smallest_tree_info = {'nodes': None, 'depth': None, 'value': None}
+
+            for i in range(len(output_dict["Y"])):
+                pystreed_learn_timer_start = time.time()
+
+                X = output_dict["X"]
+                Y = output_dict["Y"][i]
+
+                if filter_unreachable_class:
+                    reachable_mask = np.array(Y) != -1
+                    Y = np.array(Y)[reachable_mask]
+                    X = np.array(X)[reachable_mask]
+
+                adjusted_action_labels = [x for i, x in enumerate(dt_colored_mdp_factory.action_labels) if i in Y]
+
+                X = np.array(X)
+                Y = np.array(Y)
+
+
+                pystreed_tree = run_pystreed(X, Y, dt_colored_mdp_factory, variables, dt_colored_mdp_factory.action_labels, tree_base, used_threshold, max_depth=12)
+
+
+                pystreed_learn_timer_end = time.time()
+
+                if pystreed_tree is None:
+                    continue
+
+                num_nodes = len(pystreed_tree.collect_nonterminals())
+                if pystreed_smallest_tree_info['nodes'] is None or num_nodes < pystreed_smallest_tree_info['nodes']:
+                    pystreed_smallest_tree_info['nodes'] = num_nodes
+                    pystreed_smallest_tree_info['depth'] = pystreed_tree.get_depth()
+
+
+                    submdp = get_submdp_from_unfixed_states(dt_colored_mdp_factory, tree=pystreed_tree)
+                    mc_result_submdp = submdp.model_check_property(optimality_specification.all_properties()[0])
+                    pystreed_smallest_tree_info['value'] = mc_result_submdp.value
+
+                    # print(f"Scikit tree depth: {clf.get_depth()}, Number of nodes: {num_nodes}")
+                    # print(f"Scikit learn took {scikit_learn_timer_end - scikit_learn_timer_start:.2f} seconds")
+                    # print(pystreed_tree.to_string())
+                    # print("submdp value:", mc_result_submdp.value)
+                    # exit()
+
+                exit()
+
+
+            pystreed_time_end = time.time()
+            print()
+            print(f"pystreed decision tree learning took {pystreed_time_end - pystreed_time_start:.2f} seconds for {len(output_dict['Y'])} trees")
+            print(f"pystreed best tree depth: {pystreed_smallest_tree_info['depth']}, number of nodes: {pystreed_smallest_tree_info['nodes']}")
+            print(f"submdp value: {pystreed_smallest_tree_info['value']}")
 
 
     

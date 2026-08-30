@@ -3,6 +3,7 @@ import math
 import click
 import os
 
+from paynt.dt._utils import feature_binarization
 from paynt.dt.decision_tree import DtVariable
 import paynt.parser.sketch
 
@@ -18,10 +19,14 @@ import matplotlib.pyplot as plt
 from get_predicates import get_atomic_predicate_evals
 
 
-def get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates={}, only_relevant_states=False, ignore_original_features=False):
+def get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates={}, only_relevant_states=False, ignore_original_features=False, binarize_features=True):
 
     features = dt_colored_mdp_factory.relevant_state_valuations
     variables = dt_colored_mdp_factory.variables
+
+    if binarize_features:
+        variables, binarized_valuations = feature_binarization(variables, features)
+        features = [[x[1] for x in y] for y in binarized_valuations]
 
     if ignore_original_features:
         features = [[] for _ in range(len(features))]
@@ -52,6 +57,22 @@ def sample_to_list(sample, dt_colored_mdp_factory, model_info):
         else:
             result_list.append(dt_colored_mdp_factory.choice_to_action[choice])
     
+    return result_list
+
+
+def permissive_sample_to_action_sets(permissive_bitvector, dt_colored_mdp_factory, model_info):
+    unreachable_choices = compute_permissive_unreachable_choices(permissive_bitvector, dt_colored_mdp_factory, model_info)
+    result_list = []
+    for state in range(model_info["nr_states"]):
+        first_choice = model_info["nondeterministic_choice_indices"][state]
+        if unreachable_choices.get(first_choice) or not dt_colored_mdp_factory.state_is_relevant_bv.get(state):
+            result_list.append(-1)
+            continue
+        allowed_actions = set()
+        for choice in range(first_choice, model_info["nondeterministic_choice_indices"][state + 1]):
+            if permissive_bitvector.get(choice):
+                allowed_actions.add(dt_colored_mdp_factory.choice_to_action[choice])
+        result_list.append(sorted(allowed_actions))
     return result_list
 
 
@@ -638,6 +659,15 @@ def main(project, sketch, props, relative_eps, seed, steps, burn_in, sample_step
                 step_count=steps, seed=seed)
         else:
             permissive_sample = mcmc_permissive(shed_bitvector, model_info, dt_colored_mdp_factory, specification, step_count=steps, seed=seed)
+
+        additional_atomic_predicates = get_atomic_predicate_evals(dt_colored_mdp_factory)
+        features, variables = get_mdp_features_list(dt_colored_mdp_factory, additional_atomic_predicates)
+        action_sets = permissive_sample_to_action_sets(permissive_sample, dt_colored_mdp_factory, model_info)
+
+        output_dict = {"X" : features, "Y_actions_allowed" : action_sets}
+        if output is not None:
+            with open(output, "w") as f:
+                json.dump(output_dict, f, indent=4)
     else:
         sampling_start_time = time.time()
         all_samples, last_sample = mcmc_base(shed_bitvector, model_info, dt_colored_mdp_factory, specification, step_count=steps, burn_in=burn_in, sample_steps=sample_steps, seed=seed)
